@@ -27,10 +27,12 @@ public class Serveur {
         System.out.println("Lancement du serveur");
         ServeurJeu serveurJeu = new ServeurJeu();
         System.out.println("Socket créer");
+
         while (true) {
             System.out.println("En attente d'un nouveau clients");
             serveurJeu.accept();
         }
+
     }
 
 }

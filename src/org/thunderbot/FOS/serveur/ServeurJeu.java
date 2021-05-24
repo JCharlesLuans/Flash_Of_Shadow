@@ -36,7 +36,7 @@ public class ServeurJeu  {
             socket = this.serverSocket.accept();
             ClientConnecter clientConnecter = new ClientConnecter(socket);
             listeClient.add(clientConnecter);
-            new Thread(runnableService(clientConnecter)).run();
+            new Thread(runnableService(clientConnecter)).start();
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

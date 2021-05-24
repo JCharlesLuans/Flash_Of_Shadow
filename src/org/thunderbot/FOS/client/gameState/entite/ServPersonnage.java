@@ -5,13 +5,15 @@
 
 package org.thunderbot.FOS.client.gameState.entite;
 
+import java.io.Serializable;
+
 /**
  * Classe personnage, partager entre les clients et le serveurs
  *
  * @author J-Charles Luans
  * @version 1.0
  */
-public class ServPersonnage {
+public class ServPersonnage implements Serializable {
 
     protected float positionX; /** Position en X */
     protected float positionY; /** Position en Y */
@@ -27,5 +29,21 @@ public class ServPersonnage {
 
     public String getPseudo() {
         return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
+    public float getPositionX() {
+        return positionX;
+    }
+
+    public float getPositionY() {
+        return positionY;
+    }
+
+    public int getDirection() {
+        return direction;
     }
 }

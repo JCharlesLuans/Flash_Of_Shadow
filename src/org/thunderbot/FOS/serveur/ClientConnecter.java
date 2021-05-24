@@ -41,6 +41,9 @@ public class ClientConnecter {
 
         // Init du clients
         this.pseudo = (String) reception();
+        servPersonnage = new ServPersonnage();
+        servPersonnage.setPseudo(pseudo);
+
         System.out.println("Connexion de : " + pseudo);
     }
 
