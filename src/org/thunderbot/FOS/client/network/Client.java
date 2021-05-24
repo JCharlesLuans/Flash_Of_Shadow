@@ -41,11 +41,10 @@ public class Client {
 
         in = new ObjectInputStream(socket.getInputStream());
 
-        System.out.println("org.thunderbot.FOS.Client a cree les flux");
     }
 
     public void authentification(String pseudo) throws IOException {
-        envoi(new Authentification(pseudo));
+        envoi(pseudo);
     }
 
     public void deconnexion() throws IOException {

@@ -21,44 +21,21 @@ import java.net.Socket;
  */
 public class Serveur {
 
-    public final static int PORT = 6700;
+
 
     /**
      * Lancement du serveur
      * @param args
      */
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException {
         System.out.println("Lancement du serveur");
-
-        ServerSocket s = new ServerSocket(PORT);
-        System.out.println("Socket serveur: " + s);
-
+        ServeurJeu serveurJeu = new ServeurJeu();
+        System.out.println("Socket créer");
         while (true) {
-            Socket soc = s.accept();
-
-            System.out.println("org.thunderbot.FOS.Serveur a accepte connexion: " + soc);
-
-            ObjectOutputStream out = new ObjectOutputStream(soc.getOutputStream());
-            out.flush();
-
-            ObjectInputStream in = new ObjectInputStream(soc.getInputStream());
-
-
-            System.out.println("org.thunderbot.FOS.Serveur a cree les flux");
-
-            int[] tableauAEmettre = {7, 8, 9};
-
-            out.writeObject(tableauAEmettre);
-            out.flush();
-
-            System.out.println("org.thunderbot.FOS.Serveur: donnees emises");
-
-            Authentification objetRecu = (Authentification) in.readObject();
-            System.out.println("org.thunderbot.FOS.Serveur recoit: " + objetRecu);
-
+            System.out.println("En attente d'un nouveau clients");
+            serveurJeu.accept();
         }
-//        in.close();
-//        out.close();
-//        soc.close();
     }
+
 }
+
