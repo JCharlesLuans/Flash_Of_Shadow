@@ -17,10 +17,15 @@ public class ServPersonnage {
     protected float positionY; /** Position en Y */
     protected int direction; /** Position en Y */
 
+    private String pseudo; /** Pseudo du joueur / nom du personnage */
+
     public ServPersonnage() {
         positionX = 300;
         positionY = 300;
         direction = 0;
     }
 
+    public String getPseudo() {
+        return pseudo;
+    }
 }

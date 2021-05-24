@@ -5,10 +5,15 @@
 
 package org.thunderbot.FOS.client.network;
 
+import org.thunderbot.FOS.client.gameState.entite.Personnage;
+import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.serveur.ClientConnecter;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Communique avec le serveur pour tenir a jour le client
@@ -38,8 +43,6 @@ public class Client {
         out.flush();
 
         in = new ObjectInputStream(socket.getInputStream());
-
-        new Thread()
     }
 
     public void authentification(String pseudo) throws IOException {
@@ -50,6 +53,26 @@ public class Client {
         in.close();
         out.close();
         socket.close();
+    }
+
+    public void update(ArrayList<ServPersonnage> listeJoueur)  {
+        System.out.println("En attente de reception");
+
+        try {
+            ServPersonnage tmp = (ServPersonnage) reception();
+            for (int i = 0; i < listeJoueur.size(); i++) {
+
+                // Joueur a actualiser
+                if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
+
+                    // Suppression de l'ancien puis remplacement
+                    listeJoueur.remove(i);
+                    listeJoueur.add(i, tmp);
+                }
+            }
+        } catch (IOException | ClassNotFoundException err) {
+            err.printStackTrace();
+        }
     }
 
     /**
@@ -64,6 +87,7 @@ public class Client {
 
     /**
      * Receptionne des donnée du serveurs
+     *
      * @return l'objets reçu
      * @throws IOException
      * @throws ClassNotFoundException
@@ -73,3 +97,5 @@ public class Client {
         return objetRecu;
     }
 }
+
+

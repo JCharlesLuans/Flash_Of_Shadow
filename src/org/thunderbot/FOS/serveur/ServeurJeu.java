@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * TODO decrire la classe
+ * Serveur de jeu FOS
  *
  * @author J-Charles Luans
  * @version 1.0
@@ -33,7 +33,6 @@ public class ServeurJeu  {
 
         Socket socket = null;
         try {
-
             socket = this.serverSocket.accept();
             ClientConnecter clientConnecter = new ClientConnecter(socket);
             listeClient.add(clientConnecter);
@@ -49,27 +48,23 @@ public class ServeurJeu  {
     Runnable runnableService(final ClientConnecter client) {
         return new Runnable() {
             public void run() {
+                    try {
 
-                try {
+                        // Mise a jour des clients deja existant exepter le dernier
+                        for (int i = 0; i < listeClient.size(); i++) {
+                            if (!listeClient.get(i).equals(client)) {
 
-                    // Mise a jour des clients deja existant exepter le dernier
-                    for (int i = 0; i < listeClient.size(); i++) {
-                       if (!listeClient.get(i).equals(client)) {
+                                // Envoi le personnage du nouveau client aux clients deja existant
+                                listeClient.get(i).envoi(client.getPersonnage());
 
-                           // Envoi le personnage du nouveau client aux clients deja existant
-                           listeClient.get(i).envoi(client.getPersonnage());
+                                // Envoi des personnages des clients deja existant au nouveau clients
+                                client.envoi(listeClient.get(i).getPersonnage());
+                            }
+                        }
 
-                           // Envoi des personnages des clients deja existant au nouveau clients
-                           client.envoi(listeClient.get(i).getPersonnage());
-                       }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-
             }
         };
     }

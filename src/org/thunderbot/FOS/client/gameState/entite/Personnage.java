@@ -9,9 +9,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.thunderbot.FOS.serveur.ServeurJeu;
-
-import java.io.IOException;
 
 /**
  * Personnage du client
