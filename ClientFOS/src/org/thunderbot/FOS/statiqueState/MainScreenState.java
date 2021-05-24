@@ -11,6 +11,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.Client;
 import org.thunderbot.FOS.gameState.MapGameState;
 
 /**
@@ -24,6 +25,12 @@ public class MainScreenState extends BasicGameState {
     public static final int ID = 1;
     private Image background;
     private StateBasedGame game;
+
+    private Client client;
+
+    public MainScreenState(Client client) {
+        this.client = client;
+    }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {

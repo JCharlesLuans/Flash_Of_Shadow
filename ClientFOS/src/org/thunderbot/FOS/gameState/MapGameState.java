@@ -10,6 +10,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.Client;
+
+import java.util.Map;
 
 /**
  * State du monde de base
@@ -19,8 +22,16 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class MapGameState extends BasicGameState {
 
+
+    /** Client pour la communication multijoueur */
+    Client client;
+
     public static final int ID = 2;
     // déclaration des autres objets (cf leçon précédente)
+
+    public MapGameState(Client client) {
+        this.client = client;
+    }
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
