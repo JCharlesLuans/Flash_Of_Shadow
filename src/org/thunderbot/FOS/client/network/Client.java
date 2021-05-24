@@ -5,9 +5,9 @@
 
 package org.thunderbot.FOS.client.network;
 
+import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
-import org.thunderbot.FOS.serveur.ClientConnecter;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -55,24 +55,9 @@ public class Client {
         socket.close();
     }
 
-    public void update(ArrayList<ServPersonnage> listeJoueur)  {
-        System.out.println("En attente de reception");
-
-        try {
-            ServPersonnage tmp = (ServPersonnage) reception();
-            for (int i = 0; i < listeJoueur.size(); i++) {
-
-                // Joueur a actualiser
-                if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
-
-                    // Suppression de l'ancien puis remplacement
-                    listeJoueur.remove(i);
-                    listeJoueur.add(i, tmp);
-                }
-            }
-        } catch (IOException | ClassNotFoundException err) {
-            err.printStackTrace();
-        }
+    public void update(MapGameState mapGameState) {
+        new Thread(actualisationDonneeSurServeur(mapGameState.getJoueur()));
+        new Thread(actualisationDonneeDistante(mapGameState.getListeJoueur())).start();
     }
 
     /**
@@ -87,7 +72,6 @@ public class Client {
 
     /**
      * Receptionne des donnée du serveurs
-     *
      * @return l'objets reçu
      * @throws IOException
      * @throws ClassNotFoundException
@@ -96,6 +80,46 @@ public class Client {
         Object objetRecu = in.readObject();
         return objetRecu;
     }
+
+    /**
+     * Renvoie au serveur les nouvelle donée du client
+     */
+    private Runnable actualisationDonneeSurServeur(Personnage personnage) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    envoi(personnage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+    }
+
+    private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
+        return new Runnable() {
+            public void run() {
+
+                System.out.println("En attente de reception");
+
+                try {
+                    ServPersonnage tmp = (ServPersonnage) reception();
+                    for (int i = 0; i < listeJoueur.size(); i++) {
+
+                        // Joueur a actualiser
+                        if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
+
+                            // Suppression de l'ancien puis remplacement
+                            listeJoueur.remove(i);
+                            listeJoueur.add(i, tmp);
+                        }
+                    }
+                } catch (IOException | ClassNotFoundException err) {
+                    err.printStackTrace();
+                }
+            }
+        };
+    }
 }
-
-

@@ -64,7 +64,7 @@ public class MapGameState extends BasicGameState {
 
         // UPDATTE DU JOUEUR
 
-        client.update(listeJoueur);
+        client.update(this);
     }
 
     @Override
@@ -75,5 +75,13 @@ public class MapGameState extends BasicGameState {
     @Override
     public int getID() {
         return ID;
+    }
+
+    public Personnage getJoueur() {
+        return joueur;
+    }
+
+    public ArrayList<ServPersonnage> getListeJoueur() {
+        return listeJoueur;
     }
 }
