@@ -5,8 +5,6 @@
 
 package org.thunderbot.FOS.client.network;
 
-import org.thunderbot.FOS.client.network.beans.Authentification;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -20,8 +18,8 @@ import java.net.Socket;
  */
 public class Client {
 
-    static final String serverName = "localhost";
-    static final int serverPort = 6700;
+    public static final String SERVER_NAME = "localhost"; // Adresse du serveur
+    public static final int SERVER_PORT = 6700;
 
     private Socket socket;
 
@@ -33,7 +31,7 @@ public class Client {
      * Création de l'objet client, encapsulation de la socket
      */
     public Client() throws IOException {
-        socket = new Socket(serverName, serverPort);
+        socket = new Socket(SERVER_NAME, SERVER_PORT);
         System.out.println("Socket client: " + socket);
 
         out = new ObjectOutputStream(socket.getOutputStream());
@@ -41,6 +39,7 @@ public class Client {
 
         in = new ObjectInputStream(socket.getInputStream());
 
+        new Thread()
     }
 
     public void authentification(String pseudo) throws IOException {
@@ -60,7 +59,7 @@ public class Client {
         out.writeObject(object);
         out.flush();
 
-        System.out.println("org.thunderbot.FOS.Client: donnees emises");
+        System.out.println("Client: donnees emises");
     }
 
     /**

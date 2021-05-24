@@ -10,6 +10,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.client.gameState.entite.Personnage;
+import org.thunderbot.FOS.client.gameState.world.Map;
 import org.thunderbot.FOS.client.network.Client;
 
 /**
@@ -20,9 +22,13 @@ import org.thunderbot.FOS.client.network.Client;
  */
 public class MapGameState extends BasicGameState {
 
+    /** Carte afficher a l'écran */
+    Map map;
 
-    /** org.thunderbot.FOS.Client pour la communication multijoueur */
+    /** Client pour la communication multijoueur */
     Client client;
+
+    Personnage joueur;
 
     public static final int ID = 2;
     // déclaration des autres objets (cf leçon précédente)
@@ -33,12 +39,18 @@ public class MapGameState extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        // initialisation des objets (cf leçon précédente)
+        map = new Map();
+        joueur = new Personnage();
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        map.renderBackground();
 
+        // Render des joueur et des mobs
+        joueur.render(graphics);
+
+        map.renderForeground();
     }
 
     @Override

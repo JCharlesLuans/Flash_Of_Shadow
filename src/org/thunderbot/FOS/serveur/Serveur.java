@@ -5,8 +5,6 @@
 
 package org.thunderbot.FOS.serveur;
 
-import org.thunderbot.FOS.client.network.beans.Authentification;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -20,8 +18,6 @@ import java.net.Socket;
  * @version 1.0
  */
 public class Serveur {
-
-
 
     /**
      * Lancement du serveur

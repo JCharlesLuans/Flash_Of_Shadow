@@ -5,7 +5,7 @@
 
 package org.thunderbot.FOS.serveur;
 
-import org.thunderbot.FOS.client.gameState.entite.Personnage;
+import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,7 +23,7 @@ public class ClientConnecter {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
-    private Personnage personnage;
+    private ServPersonnage servPersonnage;
 
     private String pseudo; // ID
 
@@ -67,7 +67,7 @@ public class ClientConnecter {
     /**
      * @return le personnage de ce client
      */
-    public Personnage getPersonnage() {
-        return personnage;
+    public ServPersonnage getPersonnage() {
+        return servPersonnage;
     }
 }
