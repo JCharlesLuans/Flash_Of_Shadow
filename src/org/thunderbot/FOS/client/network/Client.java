@@ -56,7 +56,7 @@ public class Client {
     }
 
     public void update(MapGameState mapGameState) {
-        new Thread(actualisationDonneeSurServeur(mapGameState.getJoueur()));
+        //new Thread(actualisationDonneeSurServeur(mapGameState.getJoueur())).start();
         new Thread(actualisationDonneeDistante(mapGameState.getListeJoueur())).start();
     }
 
@@ -102,20 +102,34 @@ public class Client {
         return new Runnable() {
             public void run() {
 
+                boolean existe = false;
+
                 System.out.println("En attente de reception");
 
                 try {
                     ServPersonnage tmp = (ServPersonnage) reception();
+
+                    // Joueur existe deja
                     for (int i = 0; i < listeJoueur.size(); i++) {
 
-                        // Joueur a actualiser
+                        System.out.println("Joueur existant");
+
                         if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
+
+                            existe = true;
 
                             // Suppression de l'ancien puis remplacement
                             listeJoueur.remove(i);
                             listeJoueur.add(i, tmp);
                         }
                     }
+
+                    // Joueur exite pas
+                    if (!existe) {
+                        listeJoueur.add(tmp);
+                        System.out.println("Joueur inexistant");
+                    }
+
                 } catch (IOException | ClassNotFoundException err) {
                     err.printStackTrace();
                 }

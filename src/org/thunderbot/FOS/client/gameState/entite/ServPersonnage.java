@@ -5,6 +5,8 @@
 
 package org.thunderbot.FOS.client.gameState.entite;
 
+import org.newdawn.slick.Graphics;
+
 import java.io.Serializable;
 
 /**
@@ -25,6 +27,11 @@ public class ServPersonnage implements Serializable {
         positionX = 300;
         positionY = 300;
         direction = 0;
+    }
+
+    public void render(Graphics graphics) {
+        //stub
+        graphics.drawRect(positionX, positionY, 64, 64);
     }
 
     public String getPseudo() {

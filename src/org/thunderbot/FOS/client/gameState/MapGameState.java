@@ -50,11 +50,22 @@ public class MapGameState extends BasicGameState {
     }
 
     @Override
+    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        client.update(this);
+    }
+
+    @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         map.renderBackground();
 
         // Render des joueur et des mobs
         joueur.render(graphics);
+
+        if (listeJoueur.size() > 0) {
+            for (int i = 0; i < listeJoueur.size(); i++) {
+                listeJoueur.get(i).render(graphics);
+            }
+        }
 
         map.renderForeground();
     }
@@ -64,7 +75,7 @@ public class MapGameState extends BasicGameState {
 
         // UPDATTE DU JOUEUR
 
-        client.update(this);
+
     }
 
     @Override
