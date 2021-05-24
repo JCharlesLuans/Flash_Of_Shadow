@@ -3,16 +3,14 @@
  * Copyright et copyleft TNLag Corp.
  */
 
-package org.thunderbot.FOS.gameState;
+package org.thunderbot.FOS.client.gameState;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.thunderbot.FOS.Client;
-
-import java.util.Map;
+import org.thunderbot.FOS.client.network.Client;
 
 /**
  * State du monde de base
@@ -23,7 +21,7 @@ import java.util.Map;
 public class MapGameState extends BasicGameState {
 
 
-    /** Client pour la communication multijoueur */
+    /** org.thunderbot.FOS.Client pour la communication multijoueur */
     Client client;
 
     public static final int ID = 2;

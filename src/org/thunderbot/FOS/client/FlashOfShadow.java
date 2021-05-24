@@ -3,14 +3,15 @@
  * Copyright et copyleft TNLag Corp.
  */
 
-package org.thunderbot.FOS;
+package org.thunderbot.FOS.client;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.thunderbot.FOS.gameState.MapGameState;
-import org.thunderbot.FOS.statiqueState.MainScreenState;
+import org.thunderbot.FOS.client.gameState.MapGameState;
+import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.client.statiqueState.MainScreenState;
 
 import java.io.IOException;
 

@@ -1,15 +1,16 @@
 /*
- * Client.java             24/05/2021
+ * org.thunderbot.FOS.Client.java             24/05/2021
  * Copyright et copyleft TNLag Corp.
  */
 
-package org.thunderbot.FOS;
+package org.thunderbot.FOS.client.network;
+
+import org.thunderbot.FOS.client.network.beans.Authentification;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Arrays;
 
 /**
  * Communique avec le serveur pour tenir a jour le client
@@ -40,7 +41,11 @@ public class Client {
 
         in = new ObjectInputStream(socket.getInputStream());
 
-        System.out.println("Client a cree les flux");
+        System.out.println("org.thunderbot.FOS.Client a cree les flux");
+    }
+
+    public void authentification(String pseudo) throws IOException {
+        envoi(new Authentification(pseudo));
     }
 
     public void deconnexion() throws IOException {
@@ -49,14 +54,23 @@ public class Client {
         socket.close();
     }
 
-    public void envoi(Object object) throws IOException {
+    /**
+     * @param object a envoyer
+     */
+    private void envoi(Object object) throws IOException {
         out.writeObject(object);
         out.flush();
 
-        System.out.println("Client: donnees emises");
+        System.out.println("org.thunderbot.FOS.Client: donnees emises");
     }
 
-    public Object reception() throws IOException, ClassNotFoundException {
+    /**
+     * Receptionne des donnée du serveurs
+     * @return l'objets reçu
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private Object reception() throws IOException, ClassNotFoundException {
         Object objetRecu = in.readObject();
         return objetRecu;
     }
