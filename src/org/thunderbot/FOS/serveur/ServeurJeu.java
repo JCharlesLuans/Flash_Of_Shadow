@@ -29,6 +29,10 @@ public class ServeurJeu  {
         serverSocket = new ServerSocket(PORT);
     }
 
+    /**
+     * Accepte la connexion d'un nouveau socket
+     * Et ajoute se dernier a la liste des clients connecter
+     */
     public void accept() {
 
         Socket socket = null;
@@ -45,6 +49,11 @@ public class ServeurJeu  {
 
     }
 
+    /**
+     * Thread qui geres les clients connecter, en transferant ses données au autre clients
+     * @param client a gerer
+     * @return le thread a run
+     */
     Runnable runnableService(final ClientConnecter client) {
         return new Runnable() {
             public void run() {
