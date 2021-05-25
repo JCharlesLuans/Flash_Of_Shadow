@@ -5,6 +5,8 @@
 
 package org.thunderbot.FOS.serveur;
 
+import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -37,10 +39,9 @@ public class ServeurJeu  {
 
         Socket socket = null;
         try {
-            socket = this.serverSocket.accept();
-            ClientConnecter clientConnecter = new ClientConnecter(socket);
-            listeClient.add(clientConnecter);
-            new Thread(runnableService(clientConnecter)).start();
+
+            listeClient.add(new ClientConnecter(serverSocket.accept()));
+            new Thread(runnableService(listeClient.get(listeClient.size()-1))).start();
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -55,11 +56,13 @@ public class ServeurJeu  {
      * @return le thread a run
      */
     Runnable runnableService(final ClientConnecter client) {
-        return new Runnable() {
-            public void run() {
-                    try {
+        return () -> {
+                try {
 
-                        // Mise a jour des clients deja existant exepter le dernier
+                    while (true) {
+                        System.out.println("Actualisation de : " + client.getPersonnage().getPseudo());
+
+                        // Mise a jour des clients deja existant
                         for (int i = 0; i < listeClient.size(); i++) {
                             if (!listeClient.get(i).equals(client)) {
 
@@ -71,10 +74,16 @@ public class ServeurJeu  {
                             }
                         }
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        // Blocage du thread pour attendre nouvelle reception
+                        System.out.println("Attente actualisation");
+                        client.actualiseClient();
+
+
+                        System.out.println(client.getPersonnage().getDirection());
                     }
-            }
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
         };
     }
 }

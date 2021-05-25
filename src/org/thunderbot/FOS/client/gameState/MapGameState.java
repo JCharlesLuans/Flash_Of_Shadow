@@ -58,7 +58,8 @@ public class MapGameState extends BasicGameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        client.update(this);
+        client.updateClient(this); // Création du thread qui recois les données
+        joueur.setPseudo(client.getPseudo());
     }
 
     @Override
@@ -68,6 +69,7 @@ public class MapGameState extends BasicGameState {
         // Render des joueur et des mobs
         joueur.render(graphics);
 
+        // Affichage des autres joueur
         if (listeJoueur.size() > 0) {
             for (int i = 0; i < listeJoueur.size(); i++) {
                 listeJoueur.get(i).render(graphics);
@@ -82,6 +84,7 @@ public class MapGameState extends BasicGameState {
 
         // UPDATTE DU JOUEUR
         joueur.update(delta);
+        client.updateServeur(this);
 
     }
 

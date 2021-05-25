@@ -78,6 +78,7 @@ public class MainScreenState extends BasicGameState {
     private void connexionJeu() throws IOException {
         String pseudo = zoneSaisie.getText();
         client.authentification(pseudo);
+        client.setPseudo(pseudo);
         game.enterState(MapGameState.ID);
     }
 }

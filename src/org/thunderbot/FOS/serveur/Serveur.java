@@ -25,11 +25,12 @@ public class Serveur {
      */
     public static void main(String[] args) throws IOException {
         System.out.println("Lancement du serveur");
+
+        // Création du serveur de jeu
         ServeurJeu serveurJeu = new ServeurJeu();
-        System.out.println("Socket créer");
 
         while (true) {
-            System.out.println("En attente d'un nouveau clients");
+            System.out.println("THREAD PRINCIPAL : En attente d'un nouveau clients");
             serveurJeu.accept();
         }
 

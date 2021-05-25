@@ -26,6 +26,8 @@ public class Client {
     public static final String SERVER_NAME = "172.20.10.3"; // Adresse du serveur
     public static final int SERVER_PORT = 6700;
 
+    private String pseudo;
+
     private Socket socket;
 
     private ObjectOutputStream out; // Sortie du socket
@@ -55,8 +57,7 @@ public class Client {
         socket.close();
     }
 
-    public void update(MapGameState mapGameState) {
-        //new Thread(actualisationDonneeSurServeur(mapGameState.getJoueur())).start();
+    public void updateClient(MapGameState mapGameState) {
         new Thread(actualisationDonneeDistante(mapGameState.getListeJoueur())).start();
     }
 
@@ -66,8 +67,6 @@ public class Client {
     private void envoi(Object object) throws IOException {
         out.writeObject(object);
         out.flush();
-
-        System.out.println("Client: donnees emises");
     }
 
     /**
@@ -79,23 +78,6 @@ public class Client {
     private Object reception() throws IOException, ClassNotFoundException {
         Object objetRecu = in.readObject();
         return objetRecu;
-    }
-
-    /**
-     * Renvoie au serveur les nouvelle donée du client
-     */
-    private Runnable actualisationDonneeSurServeur(Personnage personnage) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    envoi(personnage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
     }
 
     private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
@@ -135,5 +117,29 @@ public class Client {
                 }
             }
         };
+    }
+
+    public void updateServeur(MapGameState mapGameState) {
+        try {
+            ServPersonnage tmp = new ServPersonnage();
+            tmp.setPositionX(mapGameState.getJoueur().getPositionX());
+            tmp.setPositionY(mapGameState.getJoueur().getPositionY());
+            tmp.setDirection(mapGameState.getJoueur().getDirection());
+            tmp.setPseudo(mapGameState.getJoueur().getPseudo());
+
+            envoi(tmp);
+            System.out.println("Envoi de donnée : x =" + mapGameState.getJoueur().getPositionX());
+            System.out.println("Envoi de donnée : y =" + mapGameState.getJoueur().getPositionY());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 }

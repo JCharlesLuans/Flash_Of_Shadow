@@ -21,7 +21,7 @@ public class ServPersonnage implements Serializable {
     protected float positionY; /** Position en Y */
     protected int direction; /** Position en Y */
 
-    private String pseudo; /** Pseudo du joueur / nom du personnage */
+    protected String pseudo; /** Pseudo du joueur / nom du personnage */
 
     public ServPersonnage() {
         positionX = 300;

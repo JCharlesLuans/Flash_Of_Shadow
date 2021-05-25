@@ -68,9 +68,23 @@ public class ClientConnecter {
     }
 
     /**
+     * Reception de donnée
+     * @return l'objet reçu
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    public void actualiseClient() throws IOException, ClassNotFoundException {
+        this.servPersonnage = (ServPersonnage) in.readObject();
+    }
+
+    /**
      * @return le personnage de ce client
      */
     public ServPersonnage getPersonnage() {
         return servPersonnage;
+    }
+
+    public void setPersonnage(ServPersonnage newServPersonnage) {
+        this.servPersonnage = newServPersonnage;
     }
 }
