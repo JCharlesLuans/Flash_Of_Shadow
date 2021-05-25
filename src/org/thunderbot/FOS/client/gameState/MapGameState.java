@@ -12,6 +12,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
 import org.thunderbot.FOS.client.gameState.world.Map;
 import org.thunderbot.FOS.client.network.Client;
 
@@ -28,15 +29,16 @@ public class MapGameState extends BasicGameState {
     /** Carte afficher a l'écran */
     Map map;
 
-    /** Client pour la communication multijoueur */
+    /** Client pour la communication multijoueur et liste des joueurs connecter */
     Client client;
     ArrayList<ServPersonnage> listeJoueur;
 
     /** Personnage */
     Personnage joueur;
 
+    PersonnageController personnageController;
+
     public static final int ID = 2;
-    // déclaration des autres objets (cf leçon précédente)
 
     public MapGameState(Client client) {
         listeJoueur = new ArrayList<>();
@@ -47,6 +49,11 @@ public class MapGameState extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         map = new Map();
         joueur = new Personnage();
+
+        personnageController = new PersonnageController(joueur);
+
+        container.getInput().addKeyListener(personnageController);
+        container.getInput().addControllerListener(personnageController);
     }
 
     @Override
@@ -74,7 +81,7 @@ public class MapGameState extends BasicGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 
         // UPDATTE DU JOUEUR
-
+        joueur.update(delta);
 
     }
 

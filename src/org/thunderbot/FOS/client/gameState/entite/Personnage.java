@@ -38,6 +38,17 @@ public class Personnage extends ServPersonnage {
         graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionX, positionY);
     }
 
+    public void update(int delta) {
+        if (this.moving) {
+            switch (this.direction) {
+                case 0: this.positionY -= .1f * delta; break;
+                case 1: this.positionX -= .1f * delta; break;
+                case 2: this.positionY += .1f * delta; break;
+                case 3: this.positionX += .1f * delta; break;
+            }
+        }
+    }
+
     private Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
         Animation animation = new Animation();
         for (int x = startX; x < endX; x++) {
