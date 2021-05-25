@@ -45,4 +45,8 @@ public class Personnage extends ServPersonnage {
         }
         return animation;
     }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
 }

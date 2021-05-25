@@ -53,4 +53,16 @@ public class ServPersonnage implements Serializable {
     public int getDirection() {
         return direction;
     }
+
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
 }
