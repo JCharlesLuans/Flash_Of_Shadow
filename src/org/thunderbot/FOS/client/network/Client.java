@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class Client {
 
-    public static final String SERVER_NAME = "172.20.10.3"; // Adresse du serveur
+    public static final String SERVER_NAME = "192.168.1.21"; // Adresse du serveur
     public static final int SERVER_PORT = 6700;
 
     private String pseudo;
@@ -82,40 +82,43 @@ public class Client {
     }
 
     private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
-        return new Runnable() {
-            public void run() {
+        return () -> {
 
-                boolean existe = false;
+            boolean existe = false;
 
-                System.out.println("En attente de reception");
+            try {
+                while (true) {
 
-                try {
-                    ServPersonnage tmp = (ServPersonnage) reception();
+                        ServPersonnage tmp = (ServPersonnage) reception();
 
-                    // Joueur existe deja
-                    for (int i = 0; i < listeJoueur.size(); i++) {
+                        System.out.println("En attente de reception");
+                        System.out.println(listeJoueur.size());
 
-                        System.out.println("Joueur existant");
+                        // Mise a jour des joueur qui existe
+                        for (int i = 0; i < listeJoueur.size(); i++) {
 
-                        if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
+                            System.out.println("HEAY");
 
-                            existe = true;
+                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
 
-                            // Suppression de l'ancien puis remplacement
-                            listeJoueur.remove(i);
-                            listeJoueur.add(i, tmp);
+                                existe = true;
+
+                                // Suppression de l'ancien puis remplacement
+                                listeJoueur.remove(i);
+                                listeJoueur.add(i, tmp);
+                                System.out.println("Mise a jour");
+                            }
                         }
-                    }
 
-                    // Joueur exite pas
-                    if (!existe) {
-                        listeJoueur.add(tmp);
-                        System.out.println("Joueur inexistant");
-                    }
+                        // Ajout du joueur a la liste
+                        if (!existe) {
+                            listeJoueur.add(tmp);
+                            System.out.println("Joueur inexistant");
+                        }
 
-                } catch (IOException | ClassNotFoundException err) {
-                    err.printStackTrace();
                 }
+            } catch (IOException | ClassNotFoundException err) {
+                err.printStackTrace();
             }
         };
     }
@@ -129,8 +132,6 @@ public class Client {
             tmp.setPseudo(mapGameState.getJoueur().getPseudo());
 
             envoi(tmp);
-            System.out.println("Envoi de donnée : x =" + mapGameState.getJoueur().getPositionX());
-            System.out.println("Envoi de donnée : y =" + mapGameState.getJoueur().getPositionY());
         } catch (IOException e) {
             e.printStackTrace();
         }

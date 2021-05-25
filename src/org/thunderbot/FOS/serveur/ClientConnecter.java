@@ -73,8 +73,9 @@ public class ClientConnecter {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void actualiseClient() throws IOException, ClassNotFoundException {
+    public boolean actualiseClient() throws IOException, ClassNotFoundException {
         this.servPersonnage = (ServPersonnage) in.readObject();
+        return servPersonnage != null;
     }
 
     /**
