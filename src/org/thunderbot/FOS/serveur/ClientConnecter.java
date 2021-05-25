@@ -87,4 +87,8 @@ public class ClientConnecter {
     public void setPersonnage(ServPersonnage newServPersonnage) {
         this.servPersonnage = newServPersonnage;
     }
+
+    public boolean stop() throws IOException, ClassNotFoundException {
+        return reception().equals("STOP");
+    }
 }

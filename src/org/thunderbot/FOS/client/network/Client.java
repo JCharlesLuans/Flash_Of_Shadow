@@ -52,6 +52,7 @@ public class Client {
     }
 
     public void deconnexion() throws IOException {
+        envoi("STOP");
         in.close();
         out.close();
         socket.close();

@@ -37,7 +37,6 @@ public class ServeurJeu  {
      */
     public void accept() {
 
-        Socket socket = null;
         try {
 
             listeClient.add(new ClientConnecter(serverSocket.accept()));
@@ -78,6 +77,9 @@ public class ServeurJeu  {
                         System.out.println("Attente actualisation");
                         client.actualiseClient();
 
+                        if (client.stop()) {
+                            listeClient.remove(client);
+                        }
 
                         System.out.println(client.getPersonnage().getDirection());
                     }
