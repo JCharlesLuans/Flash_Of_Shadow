@@ -27,6 +27,14 @@ public class ServPersonnage implements Serializable {
         positionX = 300;
         positionY = 300;
         direction = 0;
+        pseudo = "";
+    }
+
+    public ServPersonnage(String pseudo, int direction, float x, float y) {
+        this.pseudo = pseudo;
+        this.direction = direction;
+        this.positionX = x;
+        this.positionY = y;
     }
 
     public void render(Graphics graphics) {
