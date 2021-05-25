@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class Client {
 
-    public static final String SERVER_NAME = "localhost"; // Adresse du serveur
+    public static final String SERVER_NAME = "172.20.10.3"; // Adresse du serveur
     public static final int SERVER_PORT = 6700;
 
     private Socket socket;
