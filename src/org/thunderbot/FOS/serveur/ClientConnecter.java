@@ -65,6 +65,8 @@ public class ClientConnecter {
     public void envoi(String string) throws IOException {
         out.writeObject(string);
         out.flush();
+
+        out.reset(); // Evite de remplir le flux
     }
 
     /**
