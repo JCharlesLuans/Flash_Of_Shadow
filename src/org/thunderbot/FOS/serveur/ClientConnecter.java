@@ -40,7 +40,7 @@ public class ClientConnecter {
         in = new ObjectInputStream(socket.getInputStream());
 
         // Init du clients
-        this.pseudo = (String) reception();
+        this.pseudo = reception();
         servPersonnage = new ServPersonnage();
         servPersonnage.setPseudo(pseudo);
 
@@ -54,16 +54,16 @@ public class ClientConnecter {
      * @throws ClassNotFoundException
      */
     public String reception() throws IOException, ClassNotFoundException {
-        return String.valueOf(in.read());
+        return (String) in.readObject();
     }
 
     /**
      * Envoi de donnée
-     * @param object a envoyer
+     * @param string a envoyer
      * @throws IOException
      */
     public void envoi(String string) throws IOException {
-        out.write(string.getBytes());
+        out.writeObject(string);
         out.flush();
     }
 
@@ -87,6 +87,14 @@ public class ClientConnecter {
 
     public void setPersonnage(ServPersonnage newServPersonnage) {
         this.servPersonnage = newServPersonnage;
+    }
+
+    public String getPseudo() {
+        return this.pseudo;
+    }
+
+    public void setPseudo(String newPseudo) {
+        this.pseudo = newPseudo;
     }
 
     public boolean stop() throws IOException, ClassNotFoundException {

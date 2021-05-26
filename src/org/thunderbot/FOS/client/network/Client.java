@@ -67,7 +67,7 @@ public class Client {
      * @param string a envoyer
      */
     private void envoi(String string) throws IOException {
-        out.write(string.getBytes());
+        out.writeObject(string);
         out.flush();
     }
 
@@ -78,7 +78,11 @@ public class Client {
      * @throws ClassNotFoundException
      */
     private String reception() throws IOException {
-        return String.valueOf(in.read());
+        try {
+            return (String) in.readObject();
+        } catch (ClassNotFoundException err) {
+            return "";
+        }
     }
 
     private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
