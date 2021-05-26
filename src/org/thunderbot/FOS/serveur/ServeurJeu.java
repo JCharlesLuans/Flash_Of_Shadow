@@ -6,6 +6,7 @@
 package org.thunderbot.FOS.serveur;
 
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.utils.XMLTools;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -57,17 +58,21 @@ public class ServeurJeu  {
         return () -> {
                 try {
 
-                    while (client.reception() != null) {
+                    ServPersonnage tmp;
 
+                    while (true) {
+
+                        String xmlPersonnage = client.reception();
+                        client.setPersonnage((ServPersonnage) XMLTools.decodeString(xmlPersonnage));
                         // Mise a jour des clients deja existant
                         for (int i = 0; i < listeClient.size(); i++) {
 
                             if (!listeClient.get(i).equals(client)) {
                                 // Envoi le personnage du nouveau client aux clients deja existant
-                                listeClient.get(i).envoi(client.getPersonnage());
+                                listeClient.get(i).envoi(xmlPersonnage);
 
                                 // Envoi des personnages des clients deja existant au nouveau clients
-                                client.envoi(listeClient.get(i).getPersonnage());
+                                client.envoi(XMLTools.encodeString(listeClient.get(i).getPersonnage()));
                             }
                         }
 
@@ -81,7 +86,7 @@ public class ServeurJeu  {
                         System.out.println(client.getPersonnage().getDirection());
                     }
 
-                    System.out.println("STOP : " + client.getPersonnage().getPseudo());
+                    //System.out.println("STOP : " + client.getPersonnage().getPseudo());
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();

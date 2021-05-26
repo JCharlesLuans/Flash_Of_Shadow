@@ -53,8 +53,8 @@ public class ClientConnecter {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public Object reception() throws IOException, ClassNotFoundException {
-        return in.readObject();
+    public String reception() throws IOException, ClassNotFoundException {
+        return String.valueOf(in.read());
     }
 
     /**
@@ -62,8 +62,8 @@ public class ClientConnecter {
      * @param object a envoyer
      * @throws IOException
      */
-    public void envoi(Object object) throws IOException {
-        out.writeObject(object);
+    public void envoi(String string) throws IOException {
+        out.write(string.getBytes());
         out.flush();
     }
 

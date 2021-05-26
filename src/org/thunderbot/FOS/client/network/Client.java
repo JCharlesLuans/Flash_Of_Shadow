@@ -8,6 +8,7 @@ package org.thunderbot.FOS.client.network;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.utils.XMLTools;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -63,10 +64,10 @@ public class Client {
     }
 
     /**
-     * @param object a envoyer
+     * @param string a envoyer
      */
-    private void envoi(Object object) throws IOException {
-        out.writeObject(object);
+    private void envoi(String string) throws IOException {
+        out.write(string.getBytes());
         out.flush();
     }
 
@@ -76,9 +77,8 @@ public class Client {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private Object reception() throws IOException, ClassNotFoundException {
-        Object objetRecu = in.readObject();
-        return objetRecu;
+    private String reception() throws IOException {
+        return String.valueOf(in.read());
     }
 
     private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
@@ -90,7 +90,8 @@ public class Client {
             while (true) {
                 try {
 
-                    ServPersonnage tmp = (ServPersonnage) reception();
+                    String reception = reception();
+                    ServPersonnage tmp = (ServPersonnage) XMLTools.decodeString(reception);
 
                     System.out.println("En attente de reception");
                     System.out.println(listeJoueur.size());
@@ -118,11 +119,8 @@ public class Client {
                     }
 
 
-                } catch(IOException | ClassNotFoundException err){
+                } catch(IOException err){
                     err.printStackTrace();
-                } catch(ClassCastException e){
-                    System.out.println("Erreur de cast");
-
                 }
             }
         };
@@ -136,7 +134,7 @@ public class Client {
             tmp.setDirection(mapGameState.getJoueur().getDirection());
             tmp.setPseudo(mapGameState.getJoueur().getPseudo());
 
-            envoi(tmp);
+            envoi(XMLTools.encodeString(tmp));
         } catch (IOException e) {
             e.printStackTrace();
         }
