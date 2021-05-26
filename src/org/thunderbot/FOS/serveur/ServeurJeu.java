@@ -58,12 +58,11 @@ public class ServeurJeu  {
         return () -> {
                 try {
 
-                    ServPersonnage tmp;
-
                     while (true) {
 
                         String xmlPersonnage = client.reception();
                         client.setPersonnage((ServPersonnage) XMLTools.decodeString(xmlPersonnage));
+                        System.out.println(client.getPersonnage().toString());
                         // Mise a jour des clients deja existant
                         for (int i = 0; i < listeClient.size(); i++) {
 
@@ -76,9 +75,6 @@ public class ServeurJeu  {
                             }
                         }
 
-                        // Blocage du thread pour attendre nouvelle reception
-                        //client.actualiseClient();
-
                         if (client.stop()) {
                             listeClient.remove(client);
                         }
@@ -86,9 +82,7 @@ public class ServeurJeu  {
                         System.out.println(client.getPersonnage().getDirection());
                     }
 
-                    //System.out.println("STOP : " + client.getPersonnage().getPseudo());
-
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException | ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
         };
