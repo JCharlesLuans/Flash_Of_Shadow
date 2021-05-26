@@ -38,7 +38,6 @@ public class ServeurJeu  {
     public void accept() {
 
         try {
-
             listeClient.add(new ClientConnecter(serverSocket.accept()));
             new Thread(runnableService(listeClient.get(listeClient.size()-1))).start();
 
@@ -62,6 +61,7 @@ public class ServeurJeu  {
 
                         // Mise a jour des clients deja existant
                         for (int i = 0; i < listeClient.size(); i++) {
+
                             if (!listeClient.get(i).equals(client)) {
                                 // Envoi le personnage du nouveau client aux clients deja existant
                                 listeClient.get(i).envoi(client.getPersonnage());
@@ -72,7 +72,7 @@ public class ServeurJeu  {
                         }
 
                         // Blocage du thread pour attendre nouvelle reception
-                        client.actualiseClient();
+                        //client.actualiseClient();
 
                         if (client.stop()) {
                             listeClient.remove(client);

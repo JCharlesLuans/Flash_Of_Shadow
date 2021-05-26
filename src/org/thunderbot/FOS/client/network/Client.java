@@ -84,41 +84,46 @@ public class Client {
     private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
         return () -> {
 
+            // Joueur a actualiser existe ou pas
             boolean existe = false;
 
-            try {
-                while (true) {
+            while (true) {
+                try {
 
-                        ServPersonnage tmp = (ServPersonnage) reception();
+                    ServPersonnage tmp = (ServPersonnage) reception();
 
-                        System.out.println("En attente de reception");
-                        System.out.println(listeJoueur.size());
+                    System.out.println("En attente de reception");
+                    System.out.println(listeJoueur.size());
 
-                        // Mise a jour des joueur qui existe
-                        for (int i = 0; i < listeJoueur.size(); i++) {
+                    // Mise a jour des joueur qui existe
+                    for (int i = 0; i < listeJoueur.size(); i++) {
 
-                            System.out.println("HEAY");
+                        System.out.println("HEAY");
 
-                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
+                        if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
 
-                                existe = true;
+                            existe = true;
 
-                                // Suppression de l'ancien puis remplacement
-                                listeJoueur.remove(i);
-                                listeJoueur.add(i, tmp);
-                                System.out.println("Mise a jour");
-                            }
+                            // Suppression de l'ancien puis remplacement
+                            listeJoueur.remove(i);
+                            listeJoueur.add(i, tmp);
+                            System.out.println("Mise a jour");
                         }
+                    }
 
-                        // Ajout du joueur a la liste
-                        if (!existe) {
-                            listeJoueur.add(tmp);
-                            System.out.println("Joueur inexistant");
-                        }
+                    // Ajout du joueur a la liste
+                    if (!existe) {
+                        listeJoueur.add(tmp);
+                        System.out.println("Joueur inexistant");
+                    }
+
+
+                } catch(IOException | ClassNotFoundException err){
+                    err.printStackTrace();
+                } catch(ClassCastException e){
+                    System.out.println("Erreur de cast");
 
                 }
-            } catch (IOException | ClassNotFoundException err) {
-                err.printStackTrace();
             }
         };
     }
