@@ -8,12 +8,15 @@ package org.thunderbot.FOS.client.network;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.serveur.Serveur;
+import org.thunderbot.FOS.serveur.beans.Authentification;
+import org.thunderbot.FOS.serveur.beans.Stop;
 import org.thunderbot.FOS.utils.XMLTools;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.net.*;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +32,7 @@ public class Client {
 
     private String pseudo;
 
-    private Socket socket;
+    private DatagramSocket socket;
 
     private ObjectOutputStream out; // Sortie du socket
 
@@ -39,24 +42,16 @@ public class Client {
      * Création de l'objet client, encapsulation de la socket
      */
     public Client() throws IOException {
-        socket = new Socket(SERVER_NAME, SERVER_PORT);
+        socket = new DatagramSocket();
         System.out.println("Socket client: " + socket);
-
-        out = new ObjectOutputStream(socket.getOutputStream());
-        out.flush();
-
-        in = new ObjectInputStream(socket.getInputStream());
     }
 
     public void authentification(String pseudo) throws IOException {
-        envoi(pseudo);
+        envoi(XMLTools.encodeString(new Authentification(pseudo)));
     }
 
     public void deconnexion() throws IOException {
-        envoi("STOP");
-        in.close();
-        out.close();
-        socket.close();
+        envoi(XMLTools.encodeString(new Stop(pseudo)));
     }
 
     public void updateClient(MapGameState mapGameState) {
@@ -67,8 +62,9 @@ public class Client {
      * @param string a envoyer
      */
     private void envoi(String string) throws IOException {
-        out.writeObject(string);
-        out.flush();
+        byte[] buffer = string.getBytes();
+        DatagramPacket packetEnvoi = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(SERVER_NAME), SERVER_PORT);
+        socket.send(packetEnvoi);
     }
 
     /**
@@ -78,11 +74,10 @@ public class Client {
      * @throws ClassNotFoundException
      */
     private String reception() throws IOException {
-        try {
-            return (String) in.readObject();
-        } catch (ClassNotFoundException err) {
-            return "";
-        }
+        byte[] buffer = new byte[Serveur.TAILLE_BUFFER];
+        DatagramPacket packetReception = new DatagramPacket(buffer, buffer.length);
+        socket.receive(packetReception);
+        return new String(packetReception.getData());
     }
 
     private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {

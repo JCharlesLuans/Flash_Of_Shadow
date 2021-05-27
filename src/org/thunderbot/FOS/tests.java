@@ -21,8 +21,9 @@ public class tests {
         String xml = XMLTools.encodeString(aSerialiser);
         System.out.println(xml);
 
-        ServPersonnage aAfficher = (ServPersonnage) XMLTools.decodeString(xml);
-        System.out.println(aAfficher.toString());
+        Object aAfficher = XMLTools.decodeString(xml);
+
+        System.out.println(aAfficher.getClass());
 
     }
 }
