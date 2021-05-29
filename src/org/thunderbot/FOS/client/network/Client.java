@@ -108,32 +108,54 @@ public class Client {
                     System.out.println("En attente de reception");
                     String reception = reception();
 
-                    Update update = (Update) XMLTools.decodeString(reception);
-                    ServPersonnage tmp = update.getServPersonnage();
+                    Object objReception = XMLTools.decodeString(reception);
 
-                    System.out.println(listeJoueur.size());
+                    // Update
+                    if (objReception.getClass() == Update.class) {
+                        Update update = (Update) objReception;
+                        ServPersonnage tmp = update.getServPersonnage();
 
-                    // Mise a jour des joueur qui existe
-                    for (int i = 0; i < listeJoueur.size(); i++) {
+                        System.out.println(listeJoueur.size());
 
-                        System.out.println("HEAY");
+                        // Mise a jour des joueur qui existe
+                        for (int i = 0; i < listeJoueur.size(); i++) {
 
-                        if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
+                            System.out.println("HEAY");
 
-                            existe = true;
+                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
 
-                            // Suppression de l'ancien puis remplacement
-                            listeJoueur.remove(i);
-                            listeJoueur.add(i, tmp);
-                            System.out.println("Mise a jour");
+                                existe = true;
+
+                                // Suppression de l'ancien puis remplacement
+                                listeJoueur.remove(i);
+                                listeJoueur.add(i, tmp);
+                                System.out.println("Mise a jour");
+                            }
+                        }
+
+                        // Ajout du joueur a la liste
+                        if (!existe) {
+                            listeJoueur.add(tmp);
+                            System.out.println("Joueur inexistant");
+                        }
+
+                    } else if (objReception.getClass() == Stop.class) {
+
+                        Stop tmp = (Stop) objReception;
+                        // Deconnexion
+                        // Recherche du joueur a remove
+                        for (int i = 0; i < listeJoueur.size(); i++) {
+
+                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
+
+                                // Suppression de l'ancien puis remplacement
+                                listeJoueur.remove(i);
+                                System.out.println("Deconexion de " + tmp.getPseudo());
+                            }
                         }
                     }
 
-                    // Ajout du joueur a la liste
-                    if (!existe) {
-                        listeJoueur.add(tmp);
-                        System.out.println("Joueur inexistant");
-                    }
+
 
 
                 } catch(IOException err){
