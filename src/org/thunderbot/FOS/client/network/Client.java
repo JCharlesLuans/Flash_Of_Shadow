@@ -11,6 +11,7 @@ import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.serveur.Serveur;
 import org.thunderbot.FOS.serveur.beans.Authentification;
 import org.thunderbot.FOS.serveur.beans.Stop;
+import org.thunderbot.FOS.serveur.beans.Update;
 import org.thunderbot.FOS.utils.XMLTools;
 
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class Client {
     }
 
     /**
-     * @param string a envoyer
+     * @param string a envoyer encoder en XML
      */
     private void envoi(String string) throws IOException {
         byte[] buffer = string.getBytes();
@@ -83,16 +84,18 @@ public class Client {
     private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
         return () -> {
 
+
             // Joueur a actualiser existe ou pas
             boolean existe = false;
 
             while (true) {
+                System.out.println("lancement du thread");
                 try {
 
+                    System.out.println("En attente de reception");
                     String reception = reception();
                     ServPersonnage tmp = (ServPersonnage) XMLTools.decodeString(reception);
 
-                    System.out.println("En attente de reception");
                     System.out.println(listeJoueur.size());
 
                     // Mise a jour des joueur qui existe
@@ -133,7 +136,7 @@ public class Client {
             tmp.setDirection(mapGameState.getJoueur().getDirection());
             tmp.setPseudo(mapGameState.getJoueur().getPseudo());
 
-            envoi(XMLTools.encodeString(tmp));
+            envoi(XMLTools.encodeString(new Update(tmp)));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -51,7 +51,6 @@ public class Serveur {
             // Reception et traitement de la donnée
             socket.receive(recv);
             xmlRecu = new String(recv.getData());
-            System.out.println(xmlRecu);
             Object donneeRecu = XMLTools.decodeString(xmlRecu);
 
             // Choix de l'action a effectuer
@@ -64,8 +63,10 @@ public class Serveur {
             } else if (donneeRecu.getClass() == Update.class) {
 
                 // Update
+                System.out.println("UPDATE");
                 for (int i = 0; i < listeClientConnecter.size(); i++) {
                     if (!listeClientConnecter.get(i).equals(recv.getAddress())) {
+                        System.out.println("Update envoyer a : " + listeClientConnecter.get(i));
                         envoi.setAddress(listeClientConnecter.get(i));
                         envoi.setData(xmlRecu.getBytes());
                         socket.send(envoi);
