@@ -6,7 +6,6 @@
 package org.thunderbot.FOS.client.network;
 
 import org.thunderbot.FOS.client.gameState.MapGameState;
-import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.serveur.Serveur;
 import org.thunderbot.FOS.serveur.beans.Authentification;
@@ -29,7 +28,8 @@ import java.util.ArrayList;
 public class Client {
 
     public static final String SERVER_NAME = "192.168.1.21"; // Adresse du serveur
-    public static final int SERVER_PORT = 6700;
+    public static final int PORT_SERVEUR = 6700;
+    public static final int PORT_CLIENT = 6701;
 
     private String pseudo;
 
@@ -43,18 +43,31 @@ public class Client {
      * Création de l'objet client, encapsulation de la socket
      */
     public Client() throws IOException {
-        socket = new DatagramSocket();
+        socket = new DatagramSocket(PORT_CLIENT);
         System.out.println("Socket client: " + socket);
     }
 
+    /**
+     * Authentification du client auprés du serveur
+     * @param pseudo du client
+     * @throws IOException
+     */
     public void authentification(String pseudo) throws IOException {
         envoi(XMLTools.encodeString(new Authentification(pseudo)));
     }
 
+    /**
+     * Dconnecte le client auprés du serveur
+     * @throws IOException
+     */
     public void deconnexion() throws IOException {
         envoi(XMLTools.encodeString(new Stop(pseudo)));
     }
 
+    /**
+     * Actualise les données du client
+     * @param mapGameState
+     */
     public void updateClient(MapGameState mapGameState) {
         new Thread(actualisationDonneeDistante(mapGameState.getListeJoueur())).start();
     }
@@ -64,7 +77,7 @@ public class Client {
      */
     private void envoi(String string) throws IOException {
         byte[] buffer = string.getBytes();
-        DatagramPacket packetEnvoi = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(SERVER_NAME), SERVER_PORT);
+        DatagramPacket packetEnvoi = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(SERVER_NAME), PORT_SERVEUR);
         socket.send(packetEnvoi);
     }
 
@@ -94,7 +107,9 @@ public class Client {
 
                     System.out.println("En attente de reception");
                     String reception = reception();
-                    ServPersonnage tmp = (ServPersonnage) XMLTools.decodeString(reception);
+
+                    Update update = (Update) XMLTools.decodeString(reception);
+                    ServPersonnage tmp = update.getServPersonnage();
 
                     System.out.println(listeJoueur.size());
 

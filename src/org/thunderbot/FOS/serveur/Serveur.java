@@ -26,6 +26,9 @@ public class Serveur {
 
     public static final int TAILLE_BUFFER = 1024;
 
+    public static final int PORT_SERVEUR = 6700;
+    public static final int PORT_CLIENT = 6701;
+
     /**
      * Lancement du serveur
      * @param args
@@ -33,7 +36,7 @@ public class Serveur {
     public static void main(String[] args) throws IOException {
         System.out.println("Lancement du serveur");
 
-        DatagramSocket socket = new DatagramSocket(ServeurJeu.PORT);
+        DatagramSocket socket = new DatagramSocket(PORT_SERVEUR);
 
         ArrayList<InetAddress> listeClientConnecter = new ArrayList<>();
 
@@ -67,6 +70,7 @@ public class Serveur {
                 for (int i = 0; i < listeClientConnecter.size(); i++) {
                     if (!listeClientConnecter.get(i).equals(recv.getAddress())) {
                         System.out.println("Update envoyer a : " + listeClientConnecter.get(i));
+                        envoi.setPort(PORT_CLIENT);
                         envoi.setAddress(listeClientConnecter.get(i));
                         envoi.setData(xmlRecu.getBytes());
                         socket.send(envoi);
