@@ -81,8 +81,6 @@ public class Serveur {
                 System.out.println("LOG : deconnexion");
                 listeClientConnecter.remove(recv.getAddress()); // Suppression du client
 
-                // TODO getsion de la deconnexion
-
                 // Envoi de la deconnexion au client
                 for (int i = 0; i < listeClientConnecter.size(); i++) {
                     if (!listeClientConnecter.get(i).equals(recv.getAddress())) {
