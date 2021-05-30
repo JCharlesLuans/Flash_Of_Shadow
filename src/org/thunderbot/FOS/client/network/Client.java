@@ -126,9 +126,8 @@ public class Client {
 
                                 existe = true;
 
-                                // Suppression de l'ancien puis remplacement
-                                listeJoueur.remove(i);
-                                listeJoueur.add(i, tmp);
+                                // Mise à jours du joueur
+                                listeJoueur.get(i).miseAJour(tmp);
                                 System.out.println("Mise a jour");
                             }
                         }

@@ -41,12 +41,13 @@ public class MapGameState extends BasicGameState {
     public static final int ID = 2;
 
     public MapGameState(Client client) {
-        listeJoueur = new ArrayList<>();
         this.client = client;
     }
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
+        listeJoueur = new ArrayList<>();
+
         map = new Map();
         joueur = new Personnage();
 
@@ -84,7 +85,9 @@ public class MapGameState extends BasicGameState {
 
         // UPDATTE DU JOUEUR
         joueur.update(delta);
-        client.updateServeur(this);
+        client.updateServeur(this); //Envoi des data au joueur
+
+
 
     }
 
