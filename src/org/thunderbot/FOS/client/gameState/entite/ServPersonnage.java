@@ -82,6 +82,21 @@ public class ServPersonnage implements Serializable {
         graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionX, positionY);
     }
 
+    protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
+        Animation animation = new Animation();
+        for (int x = startX; x < endX; x++) {
+            animation.addFrame(spriteSheet.getSprite(x, y), 100);
+        }
+        return animation;
+    }
+
+    public void miseAJour(ServPersonnage servPersonnage) {
+        this.positionX = servPersonnage.positionX;
+        this.positionY = servPersonnage.positionY;
+        this.direction = servPersonnage.direction;
+        this.moving = servPersonnage.moving;
+    }
+
     public String getPseudo() {
         return pseudo;
     }
@@ -114,22 +129,15 @@ public class ServPersonnage implements Serializable {
         this.direction = direction;
     }
 
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
     public String toString() {
         return "ServPersonnage(" + pseudo + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
-    }
-
-    protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
-        Animation animation = new Animation();
-        for (int x = startX; x < endX; x++) {
-            animation.addFrame(spriteSheet.getSprite(x, y), 100);
-        }
-        return animation;
-    }
-
-    public void miseAJour(ServPersonnage servPersonnage) {
-        this.positionX = servPersonnage.positionX;
-        this.positionY = servPersonnage.positionY;
-        this.direction = servPersonnage.direction;
-        this.moving = servPersonnage.moving;
     }
 }

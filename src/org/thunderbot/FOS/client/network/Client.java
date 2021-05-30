@@ -114,8 +114,6 @@ public class Client {
                         Update update = (Update) objReception;
                         ServPersonnage tmp = update.getServPersonnage();
 
-                        System.out.println(listeJoueur.size());
-
                         // Mise a jour des joueur qui existe
                         for (int i = 0; i < listeJoueur.size(); i++) {
 
@@ -125,18 +123,20 @@ public class Client {
 
                                 // Mise à jours du joueur
                                 listeJoueur.get(i).miseAJour(tmp);
+                                System.out.println(tmp.isMoving());
                             }
                         }
 
-                        // Ajout du joueur a la liste
+                        // Ajout du nouveau joueur a la liste
                         if (!existe) {
                             listeJoueur.add(new ServPersonnage(tmp));
                         }
 
                     } else if (objReception.getClass() == Stop.class) {
 
-                        Stop tmp = (Stop) objReception;
                         // Deconnexion
+                        Stop tmp = (Stop) objReception;
+
                         // Recherche du joueur a remove
                         for (int i = 0; i < listeJoueur.size(); i++) {
 
