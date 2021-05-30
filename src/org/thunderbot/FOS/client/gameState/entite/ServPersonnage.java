@@ -21,7 +21,7 @@ import java.io.Serializable;
  */
 public class ServPersonnage implements Serializable {
 
-    private boolean moving = false;
+    protected boolean moving = false;
 
     protected float positionX; /** Position en X */
     protected float positionY; /** Position en Y */
@@ -91,10 +91,12 @@ public class ServPersonnage implements Serializable {
     }
 
     public void miseAJour(ServPersonnage servPersonnage) {
+
         this.positionX = servPersonnage.positionX;
         this.positionY = servPersonnage.positionY;
         this.direction = servPersonnage.direction;
         this.moving = servPersonnage.moving;
+        System.out.println(moving);
     }
 
     public String getPseudo() {

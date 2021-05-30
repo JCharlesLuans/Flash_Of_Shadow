@@ -95,6 +95,11 @@ public class Client {
         return new String(packetReception.getData());
     }
 
+    /**
+     * Reception et actualisation des donnée sur le client de jeu
+     * @param listeJoueur liste des joueur a actualiser
+     * @return un thread
+     */
     private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
         return () -> {
 
@@ -123,7 +128,6 @@ public class Client {
 
                                 // Mise à jours du joueur
                                 listeJoueur.get(i).miseAJour(tmp);
-                                System.out.println(tmp.isMoving());
                             }
                         }
 

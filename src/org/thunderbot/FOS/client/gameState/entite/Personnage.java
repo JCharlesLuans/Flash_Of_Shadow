@@ -18,7 +18,6 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class Personnage extends ServPersonnage {
 
-    private boolean moving = false;
     private Animation[] animations = new Animation[8];
 
     public Personnage() throws SlickException {

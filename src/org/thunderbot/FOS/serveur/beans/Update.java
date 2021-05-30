@@ -23,6 +23,7 @@ public class Update implements Serializable {
     }
 
     public Update(ServPersonnage newServPersonnage) {
+        System.out.println("ServPersonnage : " + newServPersonnage);
         servPersonnage = newServPersonnage;
     }
 
