@@ -5,6 +5,7 @@
 
 package org.thunderbot.FOS.client.network;
 
+import org.newdawn.slick.SlickException;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.serveur.Serveur;
@@ -102,10 +103,8 @@ public class Client {
             boolean existe = false;
 
             while (true) {
-                System.out.println("lancement du thread");
                 try {
 
-                    System.out.println("En attente de reception");
                     String reception = reception();
 
                     Object objReception = XMLTools.decodeString(reception);
@@ -120,22 +119,18 @@ public class Client {
                         // Mise a jour des joueur qui existe
                         for (int i = 0; i < listeJoueur.size(); i++) {
 
-                            System.out.println("HEAY");
-
                             if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
 
                                 existe = true;
 
                                 // Mise à jours du joueur
                                 listeJoueur.get(i).miseAJour(tmp);
-                                System.out.println("Mise a jour");
                             }
                         }
 
                         // Ajout du joueur a la liste
                         if (!existe) {
-                            listeJoueur.add(tmp);
-                            System.out.println("Joueur inexistant");
+                            listeJoueur.add(new ServPersonnage(tmp));
                         }
 
                     } else if (objReception.getClass() == Stop.class) {
@@ -157,22 +152,20 @@ public class Client {
 
 
 
-                } catch(IOException err){
+                } catch(IOException | SlickException err){
                     err.printStackTrace();
                 }
             }
         };
     }
 
+    /**
+     * Renvoi les donnée actuelle du client au serveur pour actualiser les autres clients
+     * @param mapGameState - State mise a jour
+     */
     public void updateServeur(MapGameState mapGameState) {
         try {
-            ServPersonnage tmp = new ServPersonnage();
-            tmp.setPositionX(mapGameState.getJoueur().getPositionX());
-            tmp.setPositionY(mapGameState.getJoueur().getPositionY());
-            tmp.setDirection(mapGameState.getJoueur().getDirection());
-            tmp.setPseudo(mapGameState.getJoueur().getPseudo());
-
-            envoi(XMLTools.encodeString(new Update(tmp)));
+            envoi(XMLTools.encodeString(new Update(mapGameState.getJoueur())));
         } catch (IOException e) {
             e.printStackTrace();
         }

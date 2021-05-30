@@ -55,6 +55,28 @@ public class ServPersonnage implements Serializable {
         this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
     }
 
+    public ServPersonnage(ServPersonnage servPersonnage) throws SlickException {
+        this.pseudo = servPersonnage.pseudo;
+        this.direction = servPersonnage.direction;
+        this.positionX = servPersonnage.positionX;
+        this.positionY =servPersonnage.positionY;
+        this.moving = servPersonnage.moving;
+
+        SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/personnage.png", 64, 64);
+        this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
+        this.animations[1] = loadAnimation(spriteSheet, 0, 1, 1);
+        this.animations[2] = loadAnimation(spriteSheet, 0, 1, 2);
+        this.animations[3] = loadAnimation(spriteSheet, 0, 1, 3);
+        this.animations[4] = loadAnimation(spriteSheet, 1, 9, 0);
+        this.animations[5] = loadAnimation(spriteSheet, 1, 9, 1);
+        this.animations[6] = loadAnimation(spriteSheet, 1, 9, 2);
+        this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
+    }
+
+    /**
+     * Affichage du personnage sur le graphics passer en parametre
+     * @param graphics graphic sur lequel afficher le personnage
+     */
     public void render(Graphics graphics) {
         //stub
         graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionX, positionY);
@@ -93,7 +115,7 @@ public class ServPersonnage implements Serializable {
     }
 
     public String toString() {
-        return "ServPersonnage(" + pseudo + ", " + direction + ", " + positionX + ", " + positionY + ")";
+        return "ServPersonnage(" + pseudo + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
     }
 
     protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
