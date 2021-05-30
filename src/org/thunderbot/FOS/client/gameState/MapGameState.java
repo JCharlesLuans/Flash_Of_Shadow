@@ -10,6 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.client.gameState.entite.Camera;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
@@ -36,6 +37,9 @@ public class MapGameState extends BasicGameState {
     /** Personnage */
     Personnage joueur;
 
+    /** Camera */
+    Camera camera;
+
     PersonnageController personnageController;
 
     public static final int ID = 2;
@@ -50,7 +54,7 @@ public class MapGameState extends BasicGameState {
 
         map = new Map();
         joueur = new Personnage();
-
+        camera = new Camera(joueur);
         personnageController = new PersonnageController(joueur);
 
         container.getInput().addKeyListener(personnageController);
@@ -65,9 +69,9 @@ public class MapGameState extends BasicGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        map.renderBackground();
 
-        // Render des joueur et des mobs
+        camera.render(gameContainer, graphics);
+        map.renderBackground();
         joueur.render(graphics);
 
         // Affichage des autres joueur
@@ -85,9 +89,8 @@ public class MapGameState extends BasicGameState {
 
         // UPDATTE DU JOUEUR
         joueur.update(delta);
+        camera.update(container, map);
         client.updateServeur(this); //Envoi des data au joueur
-
-
 
     }
 

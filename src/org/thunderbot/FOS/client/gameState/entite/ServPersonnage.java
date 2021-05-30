@@ -10,30 +10,35 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
-import java.beans.Transient;
 import java.io.Serializable;
 
 /**
  * Classe personnage, partager entre les clients et le serveurs
+ * Infomration important a partager
  *
  * @author J-Charles Luans
  * @version 1.0
  */
 public class ServPersonnage implements Serializable {
 
+    public static final int HAUT = 0,
+                   GAUCHE = 1,
+            BAS = 2,
+            DROITE = 3;
+
     protected boolean moving = false;
 
     protected float positionX; /** Position en X */
     protected float positionY; /** Position en Y */
-    protected int direction; /** Position en Y */
+    protected int direction;   /** Direction vers laquelle va le personnage */
 
     protected String pseudo; /** Pseudo du joueur / nom du personnage */
 
     private transient Animation[] animations = new Animation[8];
 
     public ServPersonnage() {
-        positionX = 300;
-        positionY = 300;
+        positionX = 650;
+        positionY = 400;
         direction = 0;
         pseudo = "";
     }
@@ -96,7 +101,6 @@ public class ServPersonnage implements Serializable {
         this.positionY = servPersonnage.positionY;
         this.direction = servPersonnage.direction;
         this.moving = servPersonnage.moving;
-        System.out.println(moving);
     }
 
     public String getPseudo() {
