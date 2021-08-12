@@ -35,7 +35,12 @@ public class Personnage extends ServPersonnage {
     }
 
     public void render(Graphics graphics) {
-        graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionX, positionY);
+
+        // Application d'un delta pour les collisions
+        float positionAnimationX = positionX-32;
+        float positionAnimationY = positionY-60;
+
+        graphics.drawAnimation(animations[direction + (moving ? 4 : 0)],positionAnimationX , positionAnimationY);
     }
 
     /**
@@ -54,6 +59,11 @@ public class Personnage extends ServPersonnage {
 
             if (carte.isCollision(futurX, futurY)) {
                 System.out.println("COLLISION");
+
+                // TODO DEBUG
+                System.out.println("Futur X = " + futurX);
+                System.out.println("Futur Y = " + futurY);
+
             }  else {
                 positionX = futurX;
                 positionY = futurY;
