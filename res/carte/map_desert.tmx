@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="21">
+<carte version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="21">
  <properties>
   <property name="nbMob" type="int" value="5"/>
   <property name="niveau" type="int" value="2"/>
@@ -65,4 +65,4 @@
    </properties>
   </object>
  </objectgroup>
-</map>
+</carte>

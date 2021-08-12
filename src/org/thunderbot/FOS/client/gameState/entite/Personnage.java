@@ -9,6 +9,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.thunderbot.FOS.client.gameState.world.Carte;
 
 /**
  * Personnage du client
@@ -37,15 +38,68 @@ public class Personnage extends ServPersonnage {
         graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionX, positionY);
     }
 
-    public void update(int delta) {
+    /**
+     * Update le du client
+     * @param carte Map sur laquelle evolue le personnage
+     * @param delta
+     */
+    public void update(Carte carte, int delta) {
+
+        float futurX,
+              futurY;
+
         if (this.moving) {
-            switch (this.direction) {
-                case 0: this.positionY -= .1f * delta; break;
-                case 1: this.positionX -= .1f * delta; break;
-                case 2: this.positionY += .1f * delta; break;
-                case 3: this.positionX += .1f * delta; break;
+            futurX = getFuturX(delta);
+            futurY = getFuturY(delta);
+
+            if (carte.isCollision(futurX, futurY)) {
+                System.out.println("COLLISION");
+            }  else {
+                positionX = futurX;
+                positionY = futurY;
             }
+
         }
+    }
+
+    /**
+     * @param delta
+     * @return la position en X aprés déplacement
+     */
+    private float getFuturX(int delta) {
+
+        float futurX = positionX;
+
+        switch (this.direction) {
+            case DROITE :
+                futurX += .1f * delta;
+                break;
+            case GAUCHE :
+                futurX -= .1f * delta;
+                break;
+        }
+
+        return futurX;
+    }
+
+    /**
+     * @param delta
+     * @return la position en Y aprés déplacement
+     */
+    private float getFuturY(int delta) {
+
+        float futurY = positionY;
+
+        switch (this.direction) {
+            case BAS :
+                futurY += .1f * delta;
+                break;
+            case HAUT :
+                futurY -= .1f * delta;
+                break;
+        }
+
+        return futurY;
     }
 
     public void setMoving(boolean moving) {

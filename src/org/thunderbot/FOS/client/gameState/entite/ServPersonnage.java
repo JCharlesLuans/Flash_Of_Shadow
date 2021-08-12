@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 /**
  * Classe personnage, partager entre les clients et le serveurs
- * Infomration important a partager
+ * Infomration importantes a partager
  *
  * @author J-Charles Luans
  * @version 1.0
@@ -83,7 +83,6 @@ public class ServPersonnage implements Serializable {
      * @param graphics graphic sur lequel afficher le personnage
      */
     public void render(Graphics graphics) {
-        //stub
         graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionX, positionY);
     }
 
@@ -95,8 +94,11 @@ public class ServPersonnage implements Serializable {
         return animation;
     }
 
+    /**
+     * Mise a jour réseaux
+     * @param servPersonnage
+     */
     public void miseAJour(ServPersonnage servPersonnage) {
-
         this.positionX = servPersonnage.positionX;
         this.positionY = servPersonnage.positionY;
         this.direction = servPersonnage.direction;

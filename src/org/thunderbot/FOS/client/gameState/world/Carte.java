@@ -12,7 +12,7 @@ import java.util.Random;
 /**
  * Map et affichage de cette derniere
  */
-public class Map {
+public class Carte {
 
     /** Taille d'une tuille */
     private final int TAILLE_TUILLE = 32;
@@ -29,13 +29,13 @@ public class Map {
      * Initialise la map
      * @throws SlickException
      */
-    public Map() throws SlickException {
+    public Carte() throws SlickException {
         initialiseMap("res/carte/map_campagne_ThunderSun.tmx");
         map = new TiledMap("res/carte/map_campagne_ThunderSun.tmx");
         nomMap = "map_campagne_ThunderSun.tmx";
     }
 
-    public Map(String nom) throws SlickException {
+    public Carte(String nom) throws SlickException {
         initialiseMap("src/Ressources/Map/" + nom);
         map = new TiledMap("Ressources/Map/" + nom);
         nomMap = nom;

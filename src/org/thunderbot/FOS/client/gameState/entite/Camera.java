@@ -7,7 +7,7 @@ package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.thunderbot.FOS.client.gameState.world.Map;
+import org.thunderbot.FOS.client.gameState.world.Carte;
 
 /**
  * Camera flottante qui suit le personnage
@@ -42,10 +42,10 @@ public class Camera {
     /**
      * Actualise et deplace la camera en fonction du joueur
      */
-    public void update(GameContainer container, Map map) {
+    public void update(GameContainer container, Carte carte) {
 
-        int largeurCarte = map.getWidth() * 32; // Récupere la demi largeur de l'ecran
-        int hauteurCarte = map.getHeight()  * 32; // Récupere la demi hauteur de l'ecran
+        int largeurCarte = carte.getWidth() * 32; // Récupere la demi largeur de l'ecran
+        int hauteurCarte = carte.getHeight()  * 32; // Récupere la demi hauteur de l'ecran
         int demiEcranLarg = container.getWidth() / 2;
         int demiEcranHaut = container.getHeight() / 2;
 

@@ -14,7 +14,7 @@ import org.thunderbot.FOS.client.gameState.entite.Camera;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
-import org.thunderbot.FOS.client.gameState.world.Map;
+import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class MapGameState extends BasicGameState {
 
     /** Carte afficher a l'écran */
-    Map map;
+    Carte carte;
 
     /** Client pour la communication multijoueur et liste des joueurs connecter */
     Client client;
@@ -52,7 +52,7 @@ public class MapGameState extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         listeJoueur = new ArrayList<>();
 
-        map = new Map();
+        carte = new Carte();
         joueur = new Personnage();
         camera = new Camera(joueur);
         personnageController = new PersonnageController(joueur);
@@ -71,7 +71,7 @@ public class MapGameState extends BasicGameState {
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
 
         camera.render(gameContainer, graphics);
-        map.renderBackground();
+        carte.renderBackground();
         joueur.render(graphics);
 
         // Affichage des autres joueur
@@ -81,15 +81,15 @@ public class MapGameState extends BasicGameState {
             }
         }
 
-        map.renderForeground();
+        carte.renderForeground();
     }
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 
         // UPDATTE DU JOUEUR
-        joueur.update(delta);
-        camera.update(container, map);
+        joueur.update(carte, delta);
+        camera.update(container, carte);
         client.updateServeur(this); //Envoi des data au joueur
 
     }
