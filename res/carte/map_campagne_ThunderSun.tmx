@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="2">
  <tileset firstgid="1" source="tile_base_out_atlas.tsx"/>
  <tileset firstgid="1025" source="tile_colision.tsx"/>
+ <tileset firstgid="1050" source="tile_terrain_atlas.tsx"/>
  <layer id="2" name="eau" width="40" height="25">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACu3DMQ0AAAwDoE5/TVfGHkjoJVVVVVVfD3shm7ugDwAA
@@ -14,17 +15,17 @@
  </layer>
  <layer id="3" name="background" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGAWjYOiDRUC8GIjTkcTScagdCHAIiA8zDF73PQLix0DcjoZHwSgYBaNgFIyCUTAKRsHgAnyMCMzPONCuwQR6jAisP+o+kgEAzlGT/qAPAAA=
+   H4sIAAAAAAAACu2WwQ3CMAxFU6m9wiYUJgGm4AhMwRFYAQYAVoABUFeARXAPUY3lOG5jcuJL/5Im9mvsGpz7i6opO1vpaRDLmimXcnCfwGfwCq2tAnu9flHnkO7gh9Px5eTyeoHf4B0yzo/7dyhXG8PiO/AMTcnHTLk3DV+sPn6di5VaV/y+IdaG1Io6xGPVd8/y2xIfxxFjs/4uKGcsfl05NxU8q+z6nFOs9+aQfyF4mYEPc1JLfK08X6x3U/k4tXnXkH8jeFt1s0cb15KP3q9f98ZzEa/9gk8zg+i6NB/7SJovfecP92wIHz1D64DrEcqhubsUPu1vnDaH1HdDpDnbt4c0/b+G5xvwtsc7x/qf6wdpv6Q97DmAj2jvqOg8LvSsHF/q/7MLnL2CbyjGpOhcB/hC4mabtVL4cugDtqxBI6APAAA=
   </data>
  </layer>
  <layer id="4" name="background 2" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3UwQ2CQBBG4YGL2gjaAR2olYiViHUoRm1DD0obelBDEz4SEibEG4bZw7zkS9gTfzYBkX4lmDbSuH3umvV8zz/2aUeclLPRvgKHjgVuuCNrlEb7VmqD9sJbbfy1rzLYN8cOeyzVxlDurz5fcMVa2nv8GO3bIFfq8wNPbDGKRMaYREYDPc+4If5jQ77H80LOvwOb/N49L6y+myxlyKAPAAA=
+   H4sIAAAAAAAACmNgoAyoAbE6FJszIdjoWINCe6jhPmS8HIhXIOGVA+S+JUC8FA27A/FxID4BxOlQfHKA3JeG5AZk/ByIXyC5EZv7Xg+A+9yAeBEQLwZiDyQ3DpbwA/EPAfFhIM5gQITjSxq7owqYN6uBuIYJVbwNiNuRMIj/CIgfA3EHELMzMjBwADEnI23dNwvortlAPIeJsNqBALuA7toNxHsGqftGIsCVpqkNyC3HSE3T9CgvkcFomh4cgF7pmFxA77KZ1HwwXNMxvdMFqeE+WmePglFAWwAARAvdK6APAAA=
   </data>
  </layer>
  <layer id="5" name="overground" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3SsQ0AIAwDwShjA5MAkwDD4QHoUhAlPsm9ixchouiKilSs6e8nbx2/Bjad/lv4tbHj9F9GbNqGTfvAjm2idswubKJ2QXlcYbQz2aAPAAA=
+   H4sIAAAAAAAACmNgGAXDBdxiY2C4DcR32AbaJdjBL6C7fgPxn0HqPil2BgZpIJZhH2iXUB9UMQ20C0bTJ6VgOKdPcgAsTdcMgrQ9CkbBKBgFwwUMh7p61wDWC6N19SigBgAAYy7diqAPAAA=
   </data>
  </layer>
  <layer id="6" name="overground 2" width="40" height="25">
@@ -32,9 +33,12 @@
    H4sIAAAAAAAACu3SsQ2AMAxEUXv/CQKTkEwSsgw3AAWSi1jmP+n6K74ZkF9zs0M7ffeTd5d+dW0k/Tf169ZW0n9/RNMxNJ0DHcdU7ZguYqp2AeCbB/XKoQCgDwAA
   </data>
  </layer>
- <layer id="7" name="logique" width="40" height="25">
+ <layer id="7" name="logique" width="40" height="25" visible="0">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu2XwQ6AIAhAtbh16ND//2vrwFYsTQMRqbdxE3zgpjNCCHHAKGVKrN1IvbmiJiLld5e/wtXRmh915PhxyPmdHa36oeMbJPwOFngODT+JXmqQml8rfj8eUn6cGrlc6mdtll8531Z48tPsA/fyNL8eaLy/3LvR0/y0GcXPqmfvP2xJ7DPSP/ygDwAA
+   H4sIAAAAAAAACu2Wuw6AIAxFQbs5OPj//2ocmihBsfZhqZ6kG5TDJQEypJQ7rLsMJ2OXot9I6IlI+dXmz3B09OZXOtb8WutQXah+e0dOfpp+6PgECb+NCdpl4SexFwpS+Wnx+/GQ8uP0uJpb+nnL8ivnq0UkP8t94FqR8nsDi/eXezdGys8azr/egh79vNUKyCrPA6APAAA=
   </data>
  </layer>
+ <objectgroup id="8" name="trigger" width="1" height="1" >
+  <object id="1" x="678" y="132" width="50" height="69"/>
+ </objectgroup>
 </map>
