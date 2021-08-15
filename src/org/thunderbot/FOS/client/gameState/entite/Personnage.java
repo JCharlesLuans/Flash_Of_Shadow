@@ -19,10 +19,18 @@ import org.thunderbot.FOS.client.gameState.world.Carte;
  */
 public class Personnage extends ServPersonnage {
 
+    /** Annimations du personnages */
     private Animation[] animations = new Animation[8];
 
-    public Personnage() throws SlickException {
+    /**  Inidique si le personnage est sur un escalier ou pas */
+    private boolean escalierDroite,
+                    escalierGauche;
+
+    private Carte carte; /** Carte sur laquelle évolue le personnage */
+
+    public Personnage(Carte newCarte) throws SlickException {
         super();
+        this.carte = newCarte;
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/personnage.png", 64, 64);
         this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
         this.animations[1] = loadAnimation(spriteSheet, 0, 1, 1);
@@ -48,10 +56,12 @@ public class Personnage extends ServPersonnage {
      * @param carte Map sur laquelle evolue le personnage
      * @param delta
      */
-    public void update(Carte carte, int delta) {
+    public void update(int delta) {
 
         float futurX,
               futurY;
+
+        updateTrigger();
 
         if (this.moving) {
             futurX = getFuturX(delta);
@@ -60,10 +70,6 @@ public class Personnage extends ServPersonnage {
             if (carte.isCollision(futurX, futurY)) {
                 System.out.println("COLLISION");
 
-                // TODO DEBUG
-                System.out.println("Futur X = " + futurX);
-                System.out.println("Futur Y = " + futurY);
-
             }  else {
                 positionX = futurX;
                 positionY = futurY;
@@ -71,6 +77,38 @@ public class Personnage extends ServPersonnage {
 
         }
     }
+
+    /**
+     * Gere les update de triggerr
+     */
+    private void updateTrigger() {
+
+        escalierDroite = escalierGauche = false;
+
+        for (int objectID = 0; objectID < carte.getObjectCount(); objectID++) {
+
+            if (carte.isInTrigger(positionX, positionY, objectID)) {
+                escalierGauche = "escalierGauche".equals(carte.getObjectType(objectID));
+                escalierDroite = "escalierDroite".equals(carte.getObjectType(objectID));
+
+                if ("changementMap".equals(carte.getObjectType(objectID))) {
+                    String newMap = carte.getObjectProperty(objectID, "destiMap", "undefine");
+                    positionX = Integer.parseInt(carte.getObjectProperty(objectID, "destiX", "undefinine"));
+                    positionY = Integer.parseInt(carte.getObjectProperty(objectID, "destiY", "undefinine"));
+
+                    try {
+                        carte.changeMap(newMap);
+                    } catch (SlickException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        }
+    }
+
+
 
     /**
      * @param delta
@@ -106,6 +144,24 @@ public class Personnage extends ServPersonnage {
                 break;
             case HAUT :
                 futurY -= .1f * delta;
+                break;
+
+            case GAUCHE:
+                if (escalierDroite) {
+                    futurY = positionY + .1f * delta;
+                }
+                if (escalierGauche) {
+                    futurY = positionY - .1f * delta;
+                }
+                break;
+
+            case 3:
+                if (escalierGauche) {
+                    futurY = positionY + .1f * delta;
+                }
+                if (escalierDroite) {
+                    futurY = positionY - .1f * delta;
+                }
                 break;
         }
 

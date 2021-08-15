@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="2">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="5">
  <tileset firstgid="1" source="tile_base_out_atlas.tsx"/>
  <tileset firstgid="1025" source="tile_colision.tsx"/>
  <tileset firstgid="1050" source="tile_terrain_atlas.tsx"/>
@@ -40,5 +40,6 @@
  </layer>
  <objectgroup id="8" name="trigger" width="1" height="1" >
   <object id="1" x="678" y="132" width="50" height="69"/>
+  <object id="2" type="escalierGauche" x="720" y="37" width="133" height="165"/>
  </objectgroup>
 </map>

@@ -23,8 +23,8 @@ public class ServPersonnage implements Serializable {
 
     public static final int HAUT = 0,
                    GAUCHE = 1,
-            BAS = 2,
-            DROITE = 3;
+                   BAS = 2,
+                   DROITE = 3;
 
     protected boolean moving = false;
 

@@ -149,6 +149,21 @@ public class Carte {
         nomMap = nom;
     }
 
+    /**
+     * Verifie si la position en X Y est dans un trigger dont l'id est ID
+     * @param positionX position en X
+     * @param positionY position en Y
+     * @param ID id de l'objet
+     * @return true si il y a un trigger
+     */
+    public boolean isInTrigger(float positionX, float positionY, int id) {
+
+        return positionX > getObjectX(id)
+                && positionX < getObjectX(id) + getObjectWidth(id)
+                && positionY > getObjectY(id)
+                && positionY < getObjectY(id) + getObjectHeight(id);
+    }
+
 
     /*-- Getter et setters --*/
 
