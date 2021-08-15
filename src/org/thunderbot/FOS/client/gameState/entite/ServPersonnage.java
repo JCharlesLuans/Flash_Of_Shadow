@@ -83,9 +83,21 @@ public class ServPersonnage implements Serializable {
      * @param graphics graphic sur lequel afficher le personnage
      */
     public void render(Graphics graphics) {
-        graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionX, positionY);
+        // Application d'un delta pour les collisions
+        float positionAnimationX = positionX-32;
+        float positionAnimationY = positionY-60;
+
+        graphics.drawAnimation(animations[direction + (moving ? 4 : 0)],positionAnimationX , positionAnimationY);
     }
 
+    /**
+     * Charge une animations a partir d'une sprite sheet, en indiquant les début e l'annimation et la fin
+     * @param spriteSheet
+     * @param startX
+     * @param endX
+     * @param y
+     * @return
+     */
     protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
         Animation animation = new Animation();
         for (int x = startX; x < endX; x++) {

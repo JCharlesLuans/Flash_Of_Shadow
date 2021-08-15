@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 public class Client {
 
-    public static final String SERVER_NAME = "192.168.1.21"; // Adresse du serveur
+    public static final String SERVER_NAME = "192.168.1.186"; // Adresse du serveur
     public static final int PORT_SERVEUR = 6700;
     public static final int PORT_CLIENT = 6701;
 
