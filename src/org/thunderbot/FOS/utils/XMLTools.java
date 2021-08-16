@@ -5,6 +5,15 @@
 
 package org.thunderbot.FOS.utils;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
@@ -21,7 +30,7 @@ public class XMLTools {
      * Serialisation d'un objet dans un fichier
      *
      * @param object   objet a serialiser
-     * @param fileName chemin du fichier
+     * @return l'object encoder en XML
      */
     public static String encodeString(Object object) {
         // ouverture de l'encodeur vers le fichier
@@ -62,4 +71,33 @@ public class XMLTools {
         }
         return object;
     }
+
+    /**
+     *
+     */
+    public static String readXMLElement(String documentName, String elementName) {
+
+        String aRetourner = "";
+
+        try {
+            File file = new File(documentName);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document document = db.parse(file);
+            document.getDocumentElement().normalize();
+
+            aRetourner = document.getElementsByTagName(elementName).item(0).getTextContent();
+
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+
+
+        return aRetourner;
+    }
+
 }

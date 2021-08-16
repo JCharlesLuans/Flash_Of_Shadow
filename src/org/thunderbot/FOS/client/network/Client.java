@@ -28,7 +28,6 @@ import java.util.ArrayList;
  */
 public class Client {
 
-    public static final String SERVER_NAME = "192.168.1.186"; // Adresse du serveur
     public static final int PORT_SERVEUR = 6700;
     public static final int PORT_CLIENT = 6701;
 
@@ -78,7 +77,7 @@ public class Client {
      */
     private void envoi(String string) throws IOException {
         byte[] buffer = string.getBytes();
-        DatagramPacket packetEnvoi = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(SERVER_NAME), PORT_SERVEUR);
+        DatagramPacket packetEnvoi = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(lectureIpServeur()), PORT_SERVEUR);
         socket.send(packetEnvoi);
     }
 
@@ -181,5 +180,9 @@ public class Client {
 
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
+    }
+
+    private String lectureIpServeur() {
+        return XMLTools.readXMLElement("option.xml", "ipServeur");
     }
 }
