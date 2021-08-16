@@ -103,7 +103,7 @@ public class Personnage extends ServPersonnage {
 
                     try {
                         carte.changeMap(newMap);
-                        System.out.println("Change map");
+                        carte.setChangeCarte(true);
                     } catch (SlickException e) {
                         e.printStackTrace();
                     }

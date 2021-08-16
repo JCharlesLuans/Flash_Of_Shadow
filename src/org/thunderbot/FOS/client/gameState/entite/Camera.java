@@ -19,8 +19,8 @@ public class Camera {
 
     private Personnage personnage; // Personnage que doit suivre la camera
 
-    private float positionX;  // Position X de la camera
-    private float positionY;  // Position Y de la camera
+    private float positionX;  // Position X du centre de la camera
+    private float positionY;  // Position Y du centre de la camera
 
     /**
      * Initialisation d'une nouvelle camera avec un personnage null
@@ -49,6 +49,7 @@ public class Camera {
         int demiEcranLarg = container.getWidth() / 2;
         int demiEcranHaut = container.getHeight() / 2;
 
+        updateChangementCarte(carte, demiEcranLarg, demiEcranHaut);
 
         if (positionX < largeurCarte - demiEcranLarg) {
 
@@ -71,7 +72,54 @@ public class Camera {
         } else if (personnage.getDirection() == ServPersonnage.HAUT && personnage.getPositionY() < hauteurCarte - demiEcranHaut) {
             positionY = personnage.getPositionY();
         }
+    }
 
+    private void updateChangementCarte(Carte carte, int demiEcranLarg, int demiEcranHaut) {
+
+        int hauteurCarte = carte.getHeight() * 32;
+        int largeurCarte = carte.getWidth() * 32;
+
+        float largeurEnMoins;
+        float largeurEnTrop;
+        float hauteurEnMoins;
+        float hauteurEnTrop;
+
+        // TODO DEBUG
+        System.out.println(demiEcranLarg);
+        System.out.println(demiEcranHaut);
+        System.out.println(hauteurCarte);
+
+        if (carte.getChangeCarte()) {
+            /* Recadrage de la camera */
+            // Déplacement du centre de la camera au coordonnée du joueur
+            positionX = personnage.getPositionX() - 32;
+            positionY = personnage.getPositionY() + 60;
+
+            // Application d'un delta si la camera dépasse la limite de la carte
+
+            largeurEnMoins = positionX - demiEcranLarg;
+            largeurEnTrop  = positionX + demiEcranLarg;
+
+            // Recalage en X
+            if (largeurEnMoins <= 0) {
+                positionX = positionX - largeurEnMoins;
+            } else if (largeurEnTrop > largeurCarte) {
+                positionX = largeurCarte - demiEcranLarg;
+
+            }
+
+            hauteurEnMoins = positionY - demiEcranHaut;
+            hauteurEnTrop  = positionY + demiEcranHaut;
+
+            // Recalage en Y
+            if (hauteurEnMoins <= 0) {
+                positionY = positionY - hauteurEnMoins;
+            } else if (hauteurEnTrop > hauteurCarte) {
+                positionY = hauteurCarte - demiEcranHaut;
+            }
+
+            carte.setChangeCarte(false);
+        }
     }
 
     /**

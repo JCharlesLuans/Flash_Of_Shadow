@@ -23,6 +23,8 @@ public class Carte {
 
     private int niveau;
 
+    private boolean changeCarte; // Indique si la map change
+
     private Random rnd = new Random(); // Générateur de aléa
 
     /**
@@ -201,6 +203,15 @@ public class Carte {
 
     public int getHeight() {
         return map.getHeight();
+    }
+
+    public void setChangeCarte(boolean newEtat) {
+        changeCarte = newEtat;
+    }
+
+    public boolean getChangeCarte() {
+        return changeCarte;
+
     }
 
     public String getNomMap() {
