@@ -26,8 +26,6 @@ public class Personnage extends ServPersonnage {
     private boolean escalierDroite,
                     escalierGauche;
 
-    private Carte carte; /** Carte sur laquelle évolue le personnage */
-
     public Personnage(Carte newCarte) throws SlickException {
         super();
         this.carte = newCarte;
