@@ -78,6 +78,7 @@ public class MapGameState extends BasicGameState {
         if (listeJoueur.size() > 0) {
             for (int i = 0; i < listeJoueur.size(); i++) {
                 listeJoueur.get(i).render(graphics);
+                //TODO prendre en compte la carte
             }
         }
 

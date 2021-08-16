@@ -26,6 +26,10 @@ public class Personnage extends ServPersonnage {
     private boolean escalierDroite,
                     escalierGauche;
 
+    /**
+     * Nouveau ppersonnage joueur de ce client
+     * @throws SlickException
+     */
     public Personnage() throws SlickException {
         super();
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/personnage.png", 64, 64);
@@ -39,6 +43,10 @@ public class Personnage extends ServPersonnage {
         this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
     }
 
+    /**
+     * Affichage du personnage jouuer sur le client
+     * @param graphics graphic sur lequel afficher le personnage
+     */
     public void render(Graphics graphics) {
 
         // Application d'un delta pour les collisions
@@ -61,13 +69,13 @@ public class Personnage extends ServPersonnage {
         updateTrigger(carte);
 
         if (this.moving) {
+
+            // Calcul des de la futur position
             futurX = getFuturX(delta);
             futurY = getFuturY(delta);
 
-            if (carte.isCollision(futurX, futurY)) {
-                System.out.println("COLLISION");
-
-            }  else {
+            // Gestion des collisions avec un mur
+            if (!carte.isCollision(futurX, futurY)) {
                 positionX = futurX;
                 positionY = futurY;
             }
@@ -76,7 +84,7 @@ public class Personnage extends ServPersonnage {
     }
 
     /**
-     * Gere les update de triggerr
+     * Gere les updates de triggerr
      */
     private void updateTrigger(Carte carte) {
 
@@ -95,6 +103,7 @@ public class Personnage extends ServPersonnage {
 
                     try {
                         carte.changeMap(newMap);
+                        System.out.println("Change map");
                     } catch (SlickException e) {
                         e.printStackTrace();
                     }
@@ -165,6 +174,9 @@ public class Personnage extends ServPersonnage {
         return futurY;
     }
 
+    /**
+     * @param moving nouvelle état de moving
+     */
     public void setMoving(boolean moving) {
         this.moving = moving;
     }

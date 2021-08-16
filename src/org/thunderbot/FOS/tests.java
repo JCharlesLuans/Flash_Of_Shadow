@@ -10,7 +10,7 @@ import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.utils.XMLTools;
 
 /**
- * TODO decrire la classe
+ * Classe de test pour XML et autres utils
  *
  * @author J-Charles Luans
  * @version 1.0

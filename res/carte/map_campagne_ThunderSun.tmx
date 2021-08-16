@@ -39,7 +39,13 @@
   </data>
  </layer>
  <objectgroup id="8" name="trigger" width="1" height="1" >
-  <object id="1" x="678" y="132" width="50" height="69"/>
+  <object id="1" type="changementMap" x="677" y="145" width="50" height="69">
+   <properties>
+    <property name="destiMap" value="map_grotte.tmx"/>
+    <property name="destiX" type="int" value="40"/>
+    <property name="destiY" type="int" value="736"/>
+   </properties>
+  </object>
   <object id="2" type="escalierGauche" x="720" y="37" width="133" height="165"/>
  </objectgroup>
 </map>
