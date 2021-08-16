@@ -37,10 +37,7 @@ public class ServPersonnage implements Serializable {
 
     private transient Animation[] animations = new Animation[8];
 
-    protected Carte carte; /** Carte sur laquelle évolue le personnage */
-
     public ServPersonnage() {
-        carte = null;
         positionX = 650;
         positionY = 400;
         direction = 0;

@@ -26,9 +26,8 @@ public class Personnage extends ServPersonnage {
     private boolean escalierDroite,
                     escalierGauche;
 
-    public Personnage(Carte newCarte) throws SlickException {
+    public Personnage() throws SlickException {
         super();
-        this.carte = newCarte;
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/personnage.png", 64, 64);
         this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
         this.animations[1] = loadAnimation(spriteSheet, 0, 1, 1);
@@ -54,12 +53,12 @@ public class Personnage extends ServPersonnage {
      * @param carte Map sur laquelle evolue le personnage
      * @param delta
      */
-    public void update(int delta) {
+    public void update(Carte carte, int delta) {
 
         float futurX,
               futurY;
 
-        updateTrigger();
+        updateTrigger(carte);
 
         if (this.moving) {
             futurX = getFuturX(delta);
@@ -79,7 +78,7 @@ public class Personnage extends ServPersonnage {
     /**
      * Gere les update de triggerr
      */
-    private void updateTrigger() {
+    private void updateTrigger(Carte carte) {
 
         escalierDroite = escalierGauche = false;
 
