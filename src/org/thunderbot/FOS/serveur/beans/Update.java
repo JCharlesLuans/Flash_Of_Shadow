@@ -16,7 +16,10 @@ import java.io.Serializable;
  * @version 1.0
  */
 public class Update implements Serializable {
+
     private ServPersonnage servPersonnage;
+
+    private String map;
 
     public Update() {
         servPersonnage = null;
@@ -32,5 +35,13 @@ public class Update implements Serializable {
 
     public void setServPersonnage(ServPersonnage servPersonnage) {
         this.servPersonnage = servPersonnage;
+    }
+
+    public String getMap() {
+        return map;
+    }
+
+    public void setMap(String map) {
+        this.map = map;
     }
 }

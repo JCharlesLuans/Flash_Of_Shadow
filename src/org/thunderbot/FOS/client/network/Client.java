@@ -104,9 +104,12 @@ public class Client {
 
 
             // Joueur a actualiser existe ou pas
-            boolean existe = false;
+            boolean existe;
 
             while (true) {
+
+                existe = false;
+
                 try {
 
                     String reception = reception();
@@ -152,9 +155,6 @@ public class Client {
                         }
                     }
 
-
-
-
                 } catch(IOException | SlickException err){
                     err.printStackTrace();
                 }
@@ -168,7 +168,9 @@ public class Client {
      */
     public void updateServeur(MapGameState mapGameState) {
         try {
-            envoi(XMLTools.encodeString(new Update(mapGameState.getJoueur())));
+            Update tmp = new Update(mapGameState.getJoueur());
+            tmp.setMap(mapGameState.getJoueur().getNomCarte());
+            envoi(XMLTools.encodeString(tmp));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -183,6 +185,6 @@ public class Client {
     }
 
     private String lectureIpServeur() {
-        return XMLTools.readXMLElement("option.xml", "ipServeur");
+        return XMLTools.readXMLElement("res/option.xml", "ipServeur");
     }
 }

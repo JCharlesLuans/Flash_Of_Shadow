@@ -32,6 +32,7 @@ public class Personnage extends ServPersonnage {
      */
     public Personnage() throws SlickException {
         super();
+        this.nomCarte = "map";
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/personnage.png", 64, 64);
         this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
         this.animations[1] = loadAnimation(spriteSheet, 0, 1, 1);
@@ -102,6 +103,7 @@ public class Personnage extends ServPersonnage {
                     positionY = Integer.parseInt(carte.getObjectProperty(objectID, "destiY", "undefinine"));
 
                     try {
+                        nomCarte = newMap;
                         carte.changeMap(newMap);
                         carte.setChangeCarte(true);
                     } catch (SlickException e) {

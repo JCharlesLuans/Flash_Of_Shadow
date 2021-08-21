@@ -8,6 +8,10 @@ package org.thunderbot.FOS;
 import org.newdawn.slick.SlickException;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.utils.XMLTools;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 /**
  * Classe de test pour XML et autres utils
@@ -16,7 +20,20 @@ import org.thunderbot.FOS.utils.XMLTools;
  * @version 1.0
  */
 public class tests {
-    public static void main(String[] args) throws SlickException {
+    public static void main(String[] args) {
+        try {
+            //testSerialisation();
+            testLectureFichierXML();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void testSerialisation() throws SlickException {
         ServPersonnage aSerialiser = new ServPersonnage("JS", 7, 300f, 300f);
 
         String xml = XMLTools.encodeString(aSerialiser);
@@ -25,6 +42,9 @@ public class tests {
         Object aAfficher = XMLTools.decodeString(xml);
 
         System.out.println(aAfficher.getClass());
+    }
 
+    public static void testLectureFichierXML() throws ParserConfigurationException, IOException, SAXException {
+        System.out.println(XMLTools.readXMLElement("ipServeur", "res/option.xml"));
     }
 }

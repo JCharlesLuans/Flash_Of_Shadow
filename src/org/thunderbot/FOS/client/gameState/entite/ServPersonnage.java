@@ -35,6 +35,8 @@ public class ServPersonnage implements Serializable {
 
     protected String pseudo; /** Pseudo du joueur / nom du personnage */
 
+    protected String nomCarte; /** Carte sur laquelle se situe le personnage */
+
     private transient Animation[] animations = new Animation[8];
 
     public ServPersonnage() {
@@ -116,6 +118,7 @@ public class ServPersonnage implements Serializable {
         this.positionY = servPersonnage.positionY;
         this.direction = servPersonnage.direction;
         this.moving = servPersonnage.moving;
+        this.nomCarte = servPersonnage.nomCarte;
     }
 
     public String getPseudo() {
@@ -158,7 +161,15 @@ public class ServPersonnage implements Serializable {
         this.moving = moving;
     }
 
+    public String getNomCarte() {
+        return this.nomCarte;
+    }
+
     public String toString() {
         return "ServPersonnage(" + pseudo + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
+    }
+
+    public void setNomCarte(String nomCarte) {
+        this.nomCarte = nomCarte;
     }
 }
