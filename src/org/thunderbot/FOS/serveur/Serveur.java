@@ -69,9 +69,12 @@ public class Serveur {
                 Update tmp = (Update) donneeRecu;
                 System.out.println(tmp.getMap());
                 System.out.println("UPDATE");
+
+                // Renvoie des données à tout les clients, sauf les clients concerné
                 for (int i = 0; i < listeClientConnecter.size(); i++) {
 
-                    // Renvoie des données à tout les clients, sauf les clients concerné
+                    // Verifie que le client update n'est pas le meme client qui a envoyer les data, et qu'il est bien
+                    // dans la meme carte
                     if (!listeClientConnecter.get(i).equals(recv.getAddress())) {
                         System.out.println("Update envoyer a : " + listeClientConnecter.get(i));
                         envoi.setPort(PORT_CLIENT);
