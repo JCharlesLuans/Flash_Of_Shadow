@@ -6,10 +6,12 @@
 package org.thunderbot.FOS.client.network;
 
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tests.xml.XMLTest;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.serveur.Serveur;
 import org.thunderbot.FOS.serveur.beans.Authentification;
+import org.thunderbot.FOS.serveur.beans.Ping;
 import org.thunderbot.FOS.serveur.beans.Stop;
 import org.thunderbot.FOS.serveur.beans.Update;
 import org.thunderbot.FOS.utils.XMLTools;
@@ -39,12 +41,42 @@ public class Client {
 
     private ObjectInputStream in;   // Entrée du socket
 
+    private boolean serveur;
+
     /**
      * Création de l'objet client, encapsulation de la socket
      */
     public Client() throws IOException {
         socket = new DatagramSocket(PORT_CLIENT);
-        System.out.println("Socket client: " + socket);
+        envoi(XMLTools.encodeString(new Ping()));
+
+        Object synchro = new Object();
+        serveur = false;
+
+        new Thread()
+        {
+            public void run()
+            {
+                synchronized(synchro)
+                {
+                    try
+                    {
+                        synchro.wait(10000);
+                    } catch (Exception e) {}
+                }
+
+                if (!serveur) {
+                    System.out.print("Connexion impossible");
+                }
+            }
+        }.run();
+
+        reception();
+        // A l'insertion de la cle tu fais
+        serveur = true;
+        synchro.notifyAll();
+
+
     }
 
     /**
@@ -52,8 +84,9 @@ public class Client {
      * @param pseudo du client
      * @throws IOException
      */
-    public void authentification(String pseudo) throws IOException {
-        envoi(XMLTools.encodeString(new Authentification(pseudo)));
+    public void authentification(String pseudo, String mdp) throws IOException {
+        envoi(XMLTools.encodeString(new Authentification(pseudo, mdp)));
+        reception();
     }
 
     /**

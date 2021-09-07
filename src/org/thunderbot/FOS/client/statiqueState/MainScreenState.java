@@ -26,7 +26,8 @@ public class MainScreenState extends BasicGameState {
     private Image background;
     private StateBasedGame game;
 
-    private TextField zoneSaisie;
+    private TextField zoneSaisiePseudo;
+    private TextField zoneSaisieMotDePasse;
 
     private Client client;
 
@@ -40,7 +41,8 @@ public class MainScreenState extends BasicGameState {
         background = new Image("res/menuState/background.png");
 
         //L'initialisation du TextField
-        zoneSaisie = new TextField(gameContainer, gameContainer.getDefaultFont(), 110, 30, 480, 40);
+        zoneSaisiePseudo     = new TextField(gameContainer, gameContainer.getDefaultFont(), 110, 30, 480, 40);
+        zoneSaisieMotDePasse = new TextField(gameContainer, gameContainer.getDefaultFont(), 110, 60, 480, 40);
 
     }
 
@@ -48,7 +50,8 @@ public class MainScreenState extends BasicGameState {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         background.draw(0, 0, container.getWidth(), container.getHeight());
         g.drawString("Appuyer sur une touche", 300, 300);
-        zoneSaisie.render(container, g);
+        zoneSaisiePseudo.render(container, g);
+        zoneSaisieMotDePasse.render(container, g);
     }
 
     @Override
@@ -76,8 +79,9 @@ public class MainScreenState extends BasicGameState {
      * Entrée dans la map game state et authentification au serveur multijoueur
      */
     private void connexionJeu() throws IOException {
-        String pseudo = zoneSaisie.getText();
-        client.authentification(pseudo);
+        String pseudo = zoneSaisiePseudo.getText();
+        String mdp = zoneSaisieMotDePasse.getText();
+        client.authentification(pseudo, mdp);
         client.setPseudo(pseudo);
         game.enterState(MapGameState.ID);
     }

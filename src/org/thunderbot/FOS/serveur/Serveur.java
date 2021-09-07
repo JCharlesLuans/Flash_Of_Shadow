@@ -5,7 +5,9 @@
 
 package org.thunderbot.FOS.serveur;
 
+import org.thunderbot.FOS.database.HelperBD;
 import org.thunderbot.FOS.serveur.beans.Authentification;
+import org.thunderbot.FOS.serveur.beans.Ping;
 import org.thunderbot.FOS.serveur.beans.Stop;
 import org.thunderbot.FOS.serveur.beans.Update;
 import org.thunderbot.FOS.utils.XMLTools;
@@ -34,6 +36,9 @@ public class Serveur {
      * @param args
      */
     public static void main(String[] args) throws IOException {
+
+        HelperBD helperBD = new HelperBD();
+
         System.out.println("Lancement du serveur");
 
         DatagramSocket socket = new DatagramSocket(PORT_SERVEUR);
@@ -57,7 +62,13 @@ public class Serveur {
             Object donneeRecu = XMLTools.decodeString(xmlRecu);
 
             // Choix de l'action a effectuer
-            if (donneeRecu.getClass() == Authentification.class) {
+            if (donneeRecu.getClass() == Ping.class) {
+                envoi.setAddress(recv.getAddress());
+                envoi.setPort(PORT_CLIENT);
+                envoi.setData(xmlRecu.getBytes());
+                socket.send(envoi);
+
+            } else if (donneeRecu.getClass() == Authentification.class) {
 
                 // Authentification
                 System.out.println("LOG : nouveau client");
