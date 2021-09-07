@@ -15,13 +15,15 @@ import java.io.Serializable;
  */
 public class Authentification implements Serializable {
     private String pseudo;
+    private String mdp;
 
     public Authentification() {
         pseudo = "";
     }
 
-    public Authentification(String newMessage) {
-        this.pseudo = newMessage;
+    public Authentification(String pseudo, String mdp) {
+        this.pseudo = pseudo;
+        this.mdp = mdp;
     }
 
     public String getPseudo() {
