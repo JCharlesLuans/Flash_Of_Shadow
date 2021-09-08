@@ -49,7 +49,7 @@ public class Client {
      * @throws IOException
      */
     public void authentification(String pseudo, String mdp) throws IOException {
-        envoi(new Authentification(pseudo, mdp));
+        envoi(new Authentification(pseudo, mdp, true));
         reception();
     }
 

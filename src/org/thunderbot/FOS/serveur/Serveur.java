@@ -5,7 +5,9 @@
 
 package org.thunderbot.FOS.serveur;
 
+import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.HelperBD;
+import org.thunderbot.FOS.database.beans.Joueur;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 
 import java.io.IOException;
@@ -27,7 +29,7 @@ public class Serveur extends Thread {
 
     private ArrayList<Socket> listeSocketClient;
     private Socket me;
-    private static HelperBD helperBD;
+    private static FosDAO accesBD;
 
     /**
      * Lancement du serveur
@@ -39,7 +41,7 @@ public class Serveur extends Thread {
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
-            helperBD = new HelperBD();
+            accesBD = new FosDAO();
             System.out.println("Lancement du serveur");
 
             while (true) {
@@ -84,6 +86,10 @@ public class Serveur extends Thread {
 
     private void connexion(ObjectInputStream entree, ObjectOutputStream sortie) throws IOException, ClassNotFoundException {
 
+        int code;
+
+        Joueur joueur;
+
         String pseudo;
         String mdp;
         boolean nouveauJoueur;
@@ -95,10 +101,28 @@ public class Serveur extends Thread {
         mdp    = tmp.getMdp();
         nouveauJoueur = tmp.isNouveauJoueur();
 
+        joueur = accesBD.getJoueurByPseudo(pseudo);
+
         if (nouveauJoueur) {
-            // Création en BD, si le pseudo n'existe pas
+            //si le joueur n'existe pas
+            joueur.setPseudo(pseudo);
+            joueur.setMdp(mdp);
+
+            if (!joueur.isExistant()) {
+                // Insertion en BD
+                accesBD.addJoueur(joueur);
+                code = 0;
+            } else {
+                code = 1;
+            }
+
         } else {
             // Verification cohérance pseudo + mdp
+            if (joueur.isExistant() && joueur.getMdp().equals(mdp)) {
+                // Connexion ok
+            } else {
+                code = 2;
+            }
         }
 
     }

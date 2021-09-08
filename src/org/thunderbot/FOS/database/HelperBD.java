@@ -3,10 +3,7 @@
  */
 package org.thunderbot.FOS.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 /**
  * Acces au table de la BD
@@ -28,11 +25,12 @@ public class HelperBD {
                  + " );" ;
 
     Connection connection;
+    Statement statement;
 
-    public HelperBD() {
-        open("test.db");
-        executeSQL(CREATION_TABLE_JOUEUR);
-        initDataJoueur();
+    public HelperBD(String nomBD) {
+        open(nomBD);
+        executeUpdate(CREATION_TABLE_JOUEUR);
+        //initDataJoueur();
     }
 
     private void open(String nomBD) {
@@ -46,11 +44,11 @@ public class HelperBD {
     }
 
     /**
-     * Execute une requetes SQL sur la BD
+     * Execute une updateSQL sur la BD
      * @param sql la requetes a executer
      */
-    private void executeSQL(String sql) {
-        Statement statement = null;
+    public void executeUpdate(String sql) {
+        statement = null;
 
         try {
             statement =  connection.createStatement();
@@ -61,10 +59,32 @@ public class HelperBD {
         }
     }
 
+    /**
+     * Execute une requetes SQL sur la BD
+     * @param sql la requetes a executer
+     */
+    public ResultSet executeRequete(String sql) {
+        Statement statement = null;
+
+        try {
+            statement =  connection.createStatement();
+            return statement.executeQuery(sql);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+
     private void initDataJoueur() {
-        executeSQL(
+        executeUpdate(
                 "INSERT INTO JOUEUR (" + JOUEUR_PSEUDO + ","+ JOUEUR_MDP + ")"
                 + "VALUES           (    \"Jean Test\",           \"leserveur\"     );"
         );
     }
+
+
 }
