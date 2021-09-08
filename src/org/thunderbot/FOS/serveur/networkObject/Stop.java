@@ -3,7 +3,7 @@
  * Copyright et copyleft TNLag Corp.
  */
 
-package org.thunderbot.FOS.serveur.beans;
+package org.thunderbot.FOS.serveur.networkObject;
 
 /**
  * Classe de deconexion
