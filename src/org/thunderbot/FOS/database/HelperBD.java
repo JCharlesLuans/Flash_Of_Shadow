@@ -70,7 +70,7 @@ public class HelperBD {
         try {
             statement =  connection.createStatement();
             rs = statement.executeQuery(sql);
-            statement.close();
+            //statement.close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
