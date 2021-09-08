@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
-    <ipServeur>192.168.1.186</ipServeur>
+    <ipServeur>localhost</ipServeur>
 </configuration>

@@ -5,22 +5,13 @@
 
 package org.thunderbot.FOS.client.network;
 
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.tests.xml.XMLTest;
-import org.thunderbot.FOS.client.gameState.MapGameState;
-import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
-import org.thunderbot.FOS.serveur.Serveur;
-import org.thunderbot.FOS.serveur.beans.Authentification;
-import org.thunderbot.FOS.serveur.beans.Ping;
-import org.thunderbot.FOS.serveur.beans.Stop;
-import org.thunderbot.FOS.serveur.beans.Update;
+import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.utils.XMLTools;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
-import java.util.ArrayList;
 
 /**
  * Communique avec le serveur pour tenir a jour le client
@@ -30,53 +21,26 @@ import java.util.ArrayList;
  */
 public class Client {
 
-    public static final int PORT_SERVEUR = 6700;
-    public static final int PORT_CLIENT = 6701;
+    public static final int PORT = 6700;
 
     private String pseudo;
 
-    private DatagramSocket socket;
+    private Socket socket;
 
-    private ObjectOutputStream out; // Sortie du socket
+    private ObjectOutputStream sortie; // Sortie du socket
 
-    private ObjectInputStream in;   // Entrée du socket
+    private ObjectInputStream entree;   // Entrée du socket
 
-    private boolean serveur;
 
     /**
-     * Création de l'objet client, encapsulation de la socket
+     * Création de l'objet client, encapsulation de la socket, gestion de la connection avec le serveur
      */
     public Client() throws IOException {
-        socket = new DatagramSocket(PORT_CLIENT);
-        envoi(XMLTools.encodeString(new Ping()));
+        InetAddress adresseServeur = InetAddress.getByName(lectureIpServeur());
+        socket = new Socket(adresseServeur, PORT);
 
-        Object synchro = new Object();
-        serveur = false;
-
-        new Thread()
-        {
-            public void run()
-            {
-                synchronized(synchro)
-                {
-                    try
-                    {
-                        synchro.wait(10000);
-                    } catch (Exception e) {}
-                }
-
-                if (!serveur) {
-                    System.out.print("Connexion impossible");
-                }
-            }
-        }.run();
-
-        reception();
-        // A l'insertion de la cle tu fais
-        serveur = true;
-        synchro.notifyAll();
-
-
+        entree = new ObjectInputStream(socket.getInputStream());
+        sortie = new ObjectOutputStream(socket.getOutputStream());
     }
 
     /**
@@ -85,129 +49,129 @@ public class Client {
      * @throws IOException
      */
     public void authentification(String pseudo, String mdp) throws IOException {
-        envoi(XMLTools.encodeString(new Authentification(pseudo, mdp)));
+        envoi(new Authentification(pseudo, mdp));
         reception();
     }
 
-    /**
-     * Dconnecte le client auprés du serveur
-     * @throws IOException
-     */
-    public void deconnexion() throws IOException {
-        envoi(XMLTools.encodeString(new Stop(pseudo)));
-    }
+//    /**
+//     * Dconnecte le client auprés du serveur
+//     * @throws IOException
+//     */
+//    public void deconnexion() throws IOException {
+//        envoi(XMLTools.encodeString(new Stop(pseudo)));
+//    }
+//
+//    /**
+//     * Actualise les données du client
+//     * @param mapGameState
+//     */
+//    public void updateClient(MapGameState mapGameState) {
+//        new Thread(actualisationDonneeDistante(mapGameState.getListeJoueur())).start();
+//    }
 
     /**
-     * Actualise les données du client
-     * @param mapGameState
+     * @param objet a envoyer
      */
-    public void updateClient(MapGameState mapGameState) {
-        new Thread(actualisationDonneeDistante(mapGameState.getListeJoueur())).start();
-    }
-
-    /**
-     * @param string a envoyer encoder en XML
-     */
-    private void envoi(String string) throws IOException {
-        byte[] buffer = string.getBytes();
-        DatagramPacket packetEnvoi = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(lectureIpServeur()), PORT_SERVEUR);
-        socket.send(packetEnvoi);
+    private void envoi(Object objet) throws IOException {
+        sortie.writeObject(objet);
+        sortie.flush();
     }
 
     /**
      * Receptionne des donnée du serveurs
      * @return l'objets reçu
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private String reception() throws IOException {
-        byte[] buffer = new byte[Serveur.TAILLE_BUFFER];
-        DatagramPacket packetReception = new DatagramPacket(buffer, buffer.length);
-        socket.receive(packetReception);
-        return new String(packetReception.getData());
-    }
-
-    /**
-     * Reception et actualisation des donnée sur le client de jeu
-     * @param listeJoueur liste des joueur a actualiser
-     * @return un thread
-     */
-    private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
-        return () -> {
-
-
-            // Joueur a actualiser existe ou pas
-            boolean existe;
-
-            while (true) {
-
-                existe = false;
-
-                try {
-
-                    String reception = reception();
-
-                    Object objReception = XMLTools.decodeString(reception);
-
-                    // Update
-                    if (objReception.getClass() == Update.class) {
-                        Update update = (Update) objReception;
-                        ServPersonnage tmp = update.getServPersonnage();
-
-                        // Mise a jour des joueur qui existe
-                        for (int i = 0; i < listeJoueur.size(); i++) {
-
-                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
-
-                                existe = true;
-
-                                // Mise à jours du joueur
-                                listeJoueur.get(i).miseAJour(tmp);
-                            }
-                        }
-
-                        // Ajout du nouveau joueur a la liste
-                        if (!existe) {
-                            listeJoueur.add(new ServPersonnage(tmp));
-                        }
-
-                    } else if (objReception.getClass() == Stop.class) {
-
-                        // Deconnexion
-                        Stop tmp = (Stop) objReception;
-
-                        // Recherche du joueur a remove
-                        for (int i = 0; i < listeJoueur.size(); i++) {
-
-                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
-
-                                // Suppression de l'ancien puis remplacement
-                                listeJoueur.remove(i);
-                                System.out.println("Deconexion de " + tmp.getPseudo());
-                            }
-                        }
-                    }
-
-                } catch(IOException | SlickException err){
-                    err.printStackTrace();
-                }
-            }
-        };
-    }
-
-    /**
-     * Renvoi les donnée actuelle du client au serveur pour actualiser les autres clients
-     * @param mapGameState - State mise a jour
-     */
-    public void updateServeur(MapGameState mapGameState) {
+    private Object reception() {
         try {
-            Update tmp = new Update(mapGameState.getJoueur());
-            tmp.setMap(mapGameState.getJoueur().getNomCarte());
-            envoi(XMLTools.encodeString(tmp));
-        } catch (IOException e) {
+            return entree.readObject();
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
+
+//    /**
+//     * Reception et actualisation des donnée sur le client de jeu
+//     * @param listeJoueur liste des joueur a actualiser
+//     * @return un thread
+//     */
+//    private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
+//        return () -> {
+//
+//
+//            // Joueur a actualiser existe ou pas
+//            boolean existe;
+//
+//            while (true) {
+//
+//                existe = false;
+//
+//                try {
+//
+//                    String reception = reception();
+//
+//                    Object objReception = XMLTools.decodeString(reception);
+//
+//                    // Update
+//                    if (objReception.getClass() == Update.class) {
+//                        Update update = (Update) objReception;
+//                        ServPersonnage tmp = update.getServPersonnage();
+//
+//                        // Mise a jour des joueur qui existe
+//                        for (int i = 0; i < listeJoueur.size(); i++) {
+//
+//                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
+//
+//                                existe = true;
+//
+//                                // Mise à jours du joueur
+//                                listeJoueur.get(i).miseAJour(tmp);
+//                            }
+//                        }
+//
+//                        // Ajout du nouveau joueur a la liste
+//                        if (!existe) {
+//                            listeJoueur.add(new ServPersonnage(tmp));
+//                        }
+//
+//                    } else if (objReception.getClass() == Stop.class) {
+//
+//                        // Deconnexion
+//                        Stop tmp = (Stop) objReception;
+//
+//                        // Recherche du joueur a remove
+//                        for (int i = 0; i < listeJoueur.size(); i++) {
+//
+//                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
+//
+//                                // Suppression de l'ancien puis remplacement
+//                                listeJoueur.remove(i);
+//                                System.out.println("Deconexion de " + tmp.getPseudo());
+//                            }
+//                        }
+//                    }
+//
+//                } catch(IOException | SlickException err){
+//                    err.printStackTrace();
+//                }
+//            }
+//        };
+//    }
+//
+//    /**
+//     * Renvoi les donnée actuelle du client au serveur pour actualiser les autres clients
+//     * @param mapGameState - State mise a jour
+//     */
+//    public void updateServeur(MapGameState mapGameState) {
+//        try {
+//            Update tmp = new Update(mapGameState.getJoueur());
+//            tmp.setMap(mapGameState.getJoueur().getNomCarte());
+//            envoi(XMLTools.encodeString(tmp));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public String getPseudo() {
         return pseudo;

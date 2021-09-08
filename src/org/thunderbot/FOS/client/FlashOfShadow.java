@@ -5,6 +5,7 @@
 
 package org.thunderbot.FOS.client;
 
+import org.lwjgl.Sys;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -13,7 +14,9 @@ import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.MainScreenState;
 
+import javax.swing.*;
 import java.io.IOException;
+import java.net.ConnectException;
 
 /**
  * Jeu
@@ -34,7 +37,13 @@ public class FlashOfShadow extends StateBasedGame {
 
     public FlashOfShadow() throws IOException {
         super("Flash Of Shadow");
-        client = new Client();
+        try {
+            client = new Client();
+        } catch (ConnectException e) {
+            JFrame jFrame = new JFrame();
+            JOptionPane.showMessageDialog(jFrame, "Erreur lors de la connection au serveur ! Verifier votre connection, puis relancer le jeu");
+            System.exit(1);
+        }
     }
 
     @Override
@@ -45,11 +54,11 @@ public class FlashOfShadow extends StateBasedGame {
 
     @Override
     public boolean closeRequested() {
-        try {
-            client.deconnexion();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            client.deconnexion();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         System.exit(0); // Use this if you want to quit the app.
         return false;
     }

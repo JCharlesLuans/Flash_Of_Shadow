@@ -3,7 +3,7 @@
  * Copyright et copyleft TNLag Corp.
  */
 
-package org.thunderbot.FOS.serveur.beans;
+package org.thunderbot.FOS.serveur.networkObject;
 
 import java.io.Serializable;
 
@@ -16,14 +16,12 @@ import java.io.Serializable;
 public class Authentification implements Serializable {
     private String pseudo;
     private String mdp;
+    private boolean nouveauJoueur;
 
-    public Authentification() {
-        pseudo = "";
-    }
-
-    public Authentification(String pseudo, String mdp) {
+    public Authentification(String pseudo, String mdp, boolean nouveauJoueur) {
         this.pseudo = pseudo;
         this.mdp = mdp;
+        this.nouveauJoueur = nouveauJoueur;
     }
 
     public String getPseudo() {
@@ -32,5 +30,21 @@ public class Authentification implements Serializable {
 
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
+    }
+
+    public boolean isNouveauJoueur() {
+        return nouveauJoueur;
+    }
+
+    public void setNouveauJoueur(boolean nouveauJoueur) {
+        this.nouveauJoueur = nouveauJoueur;
     }
 }

@@ -6,113 +6,101 @@
 package org.thunderbot.FOS.serveur;
 
 import org.thunderbot.FOS.database.HelperBD;
-import org.thunderbot.FOS.serveur.beans.Authentification;
-import org.thunderbot.FOS.serveur.beans.Ping;
-import org.thunderbot.FOS.serveur.beans.Stop;
-import org.thunderbot.FOS.serveur.beans.Update;
-import org.thunderbot.FOS.utils.XMLTools;
+import org.thunderbot.FOS.serveur.networkObject.Authentification;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /**
  * org.thunderbot.FOS.Serveur de FOS
  *
  * @author J-Charles Luans
- * @version 1.0
+ * @version 2.0
  */
-public class Serveur {
+public class Serveur extends Thread {
 
-    public static final int TAILLE_BUFFER = 1024;
+    public static final int PORT = 6700;
 
-    public static final int PORT_SERVEUR = 6700;
-    public static final int PORT_CLIENT = 6701;
+    private ArrayList<Socket> listeSocketClient;
+    private Socket me;
+    private static HelperBD helperBD;
 
     /**
      * Lancement du serveur
      * @param args
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        HelperBD helperBD = new HelperBD();
+        ArrayList<Socket> listeSocketClient = new ArrayList<>(); // Liste des sockets des clients connectés
 
-        System.out.println("Lancement du serveur");
+        try {
+            ServerSocket serverSocket = new ServerSocket(PORT);
+            helperBD = new HelperBD();
+            System.out.println("Lancement du serveur");
 
-        DatagramSocket socket = new DatagramSocket(PORT_SERVEUR);
-
-        ArrayList<InetAddress> listeClientConnecter = new ArrayList<>();
-
-        byte[] bufferReception = new byte[TAILLE_BUFFER];
-        byte[] bufferEnvoi = new byte[TAILLE_BUFFER];
-
-        String xmlRecu;
-
-
-        while(true)
-        {
-            DatagramPacket recv = new DatagramPacket(bufferReception,bufferReception.length);
-            DatagramPacket envoi = new DatagramPacket(bufferEnvoi, bufferEnvoi.length);
-
-            // Reception et traitement de la donnée
-            socket.receive(recv);
-            xmlRecu = new String(recv.getData());
-            Object donneeRecu = XMLTools.decodeString(xmlRecu);
-
-            // Choix de l'action a effectuer
-            if (donneeRecu.getClass() == Ping.class) {
-                envoi.setAddress(recv.getAddress());
-                envoi.setPort(PORT_CLIENT);
-                envoi.setData(xmlRecu.getBytes());
-                socket.send(envoi);
-
-            } else if (donneeRecu.getClass() == Authentification.class) {
-
-                // Authentification
-                System.out.println("LOG : nouveau client");
-                listeClientConnecter.add(recv.getAddress()); // Ajout du client
-
-            } else if (donneeRecu.getClass() == Update.class) {
-
-                // Update
-                Update tmp = (Update) donneeRecu;
-                System.out.println(tmp.getMap());
-                System.out.println("UPDATE");
-
-                // Renvoie des données à tout les clients, sauf les clients concerné
-                for (int i = 0; i < listeClientConnecter.size(); i++) {
-
-                    // Verifie que le client update n'est pas le meme client qui a envoyer les data, et qu'il est bien
-                    // dans la meme carte
-                    if (!listeClientConnecter.get(i).equals(recv.getAddress())) {
-                        System.out.println("Update envoyer a : " + listeClientConnecter.get(i));
-                        envoi.setPort(PORT_CLIENT);
-                        envoi.setAddress(listeClientConnecter.get(i));
-                        envoi.setData(xmlRecu.getBytes());
-                        socket.send(envoi);
-                    }
-                }
-
-            } else if (donneeRecu.getClass() == Stop.class) {
-                System.out.println("LOG : deconnexion");
-                listeClientConnecter.remove(recv.getAddress()); // Suppression du client
-
-                // Envoi de la deconnexion au client
-                for (int i = 0; i < listeClientConnecter.size(); i++) {
-                    if (!listeClientConnecter.get(i).equals(recv.getAddress())) {
-                        System.out.println("Deconnexion envoyer a : " + listeClientConnecter.get(i));
-                        envoi.setPort(PORT_CLIENT);
-                        envoi.setAddress(listeClientConnecter.get(i));
-                        envoi.setData(xmlRecu.getBytes());
-                        socket.send(envoi);
-                    }
-                }
-
+            while (true) {
+                Socket newClient = serverSocket.accept();
+                listeSocketClient.add(newClient);
+                Serveur thread = new Serveur(listeSocketClient, newClient);
+                thread.start();
             }
 
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+
+    /**
+     * Thread
+     */
+    public Serveur(ArrayList<Socket> listeSocketClient, Socket me) {
+        this.listeSocketClient = listeSocketClient;
+        this.me = me;
+    }
+
+    public void run() {
+        traitement();
+    }
+
+    private void traitement() {
+        System.out.println("Connection de : " + me.getInetAddress());
+
+        try {
+            ObjectOutputStream sortie = new ObjectOutputStream(me.getOutputStream());
+            ObjectInputStream entree = new ObjectInputStream(me.getInputStream());
+
+            connexion(entree, sortie);
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void connexion(ObjectInputStream entree, ObjectOutputStream sortie) throws IOException, ClassNotFoundException {
+
+        String pseudo;
+        String mdp;
+        boolean nouveauJoueur;
+
+        Object reception = entree.readObject();
+        Authentification tmp = (Authentification) reception;
+
+        pseudo = tmp.getPseudo();
+        mdp    = tmp.getMdp();
+        nouveauJoueur = tmp.isNouveauJoueur();
+
+        if (nouveauJoueur) {
+            // Création en BD, si le pseudo n'existe pas
+        } else {
+            // Verification cohérance pseudo + mdp
+        }
+
     }
 }
 
