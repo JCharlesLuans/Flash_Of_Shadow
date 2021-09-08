@@ -92,6 +92,8 @@ public class Serveur extends Thread {
 
     private void connexion(ObjectInputStream entree, ObjectOutputStream sortie) throws IOException, ClassNotFoundException {
 
+        // TODO ECHAPER CHAR SPECIAUX SQL
+
         int code = 0;
 
         Joueur joueur;

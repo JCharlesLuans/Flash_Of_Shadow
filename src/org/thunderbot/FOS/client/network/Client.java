@@ -5,6 +5,7 @@
 
 package org.thunderbot.FOS.client.network;
 
+import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.utils.XMLTools;
 
@@ -51,10 +52,20 @@ public class Client {
     public int authentification(String pseudo, String mdp, boolean nouveauJoueur) throws IOException {
         int code; // Retour
 
+        // TODO ECHAPER CHAR SPECIAUX SQL
+
         envoi(new Authentification(pseudo, mdp, nouveauJoueur));
         code = (int) reception();
 
         return code;
+    }
+
+    /**
+     * Charge un personnage suite a une connexion
+     * @return
+     */
+    public ServPersonnage loadJoueur() {
+        return (ServPersonnage) reception();
     }
 
 //    /**

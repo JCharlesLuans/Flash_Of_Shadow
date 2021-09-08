@@ -27,8 +27,9 @@ public class Personnage extends ServPersonnage {
                     escalierGauche;
 
     /**
-     * Nouveau ppersonnage joueur de ce client
+     * Nouveau personnage joueur de ce client
      * @throws SlickException
+     * @param servPersonnage
      */
     public Personnage() throws SlickException {
         super();
