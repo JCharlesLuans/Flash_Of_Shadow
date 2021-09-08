@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.newdawn.slick.gui.TextField;
+import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -32,6 +33,9 @@ public class MainScreenState extends BasicGameState {
 
     private Client client;
 
+    private Bouton boutonInscription;
+    private Bouton boutonConnexion;
+
     public MainScreenState(Client client) {
         this.client = client;
     }
@@ -41,9 +45,12 @@ public class MainScreenState extends BasicGameState {
         this.game = stateBasedGame;
         background = new Image("res/menuState/background.png");
 
+        boutonInscription = new Bouton(120, 40, 680, 30, "Inscription");
+        boutonConnexion = new Bouton(120, 40, 680, 100, "Connexion");
+
         //L'initialisation du TextField
         zoneSaisiePseudo     = new TextField(gameContainer, gameContainer.getDefaultFont(), 110, 30, 480, 40);
-        zoneSaisieMotDePasse = new TextField(gameContainer, gameContainer.getDefaultFont(), 110, 60, 480, 40);
+        zoneSaisieMotDePasse = new TextField(gameContainer, gameContainer.getDefaultFont(), 110, 100, 480, 40);
 
     }
 
@@ -53,6 +60,9 @@ public class MainScreenState extends BasicGameState {
         g.drawString("Appuyer sur une touche", 300, 300);
         zoneSaisiePseudo.render(container, g);
         zoneSaisieMotDePasse.render(container, g);
+
+        boutonInscription.render(g);
+        boutonConnexion.render(g);
     }
 
     @Override
@@ -74,6 +84,11 @@ public class MainScreenState extends BasicGameState {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void mouseClicked(int button, int x, int y, int clickCount) {
+        super.mouseClicked(button, x, y, clickCount);
     }
 
     /**

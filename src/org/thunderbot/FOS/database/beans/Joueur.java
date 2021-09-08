@@ -1,3 +1,6 @@
+/* Joueur.java             08/09/2021
+ * Copyright et copyleft ThunderBot
+ */
 package org.thunderbot.FOS.database.beans;
 
 public class Joueur {
