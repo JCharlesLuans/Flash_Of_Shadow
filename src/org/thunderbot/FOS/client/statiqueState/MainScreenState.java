@@ -83,9 +83,9 @@ public class MainScreenState extends BasicGameState {
     public void mouseClicked(int button, int x, int y, int clickCount) {
         try {
             if (boutonConnexion.isInBouton(x, y)) {
-                connexionJeu(CONNEXION);
+                entreeJeu(CONNEXION);
             } else if (boutonInscription.isInBouton(x, y)) {
-                connexionJeu(INSCRIPTION);
+                entreeJeu(INSCRIPTION);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,15 +95,18 @@ public class MainScreenState extends BasicGameState {
     /**
      * Entrée dans la map game state et authentification au serveur multijoueur
      */
-    private void connexionJeu(boolean nouveauJoueur) throws IOException {
+    private void entreeJeu(boolean nouveauJoueur) throws IOException {
 
         int code;
         JFrame jFrame = new JFrame();
 
         String pseudo = zoneSaisiePseudo.getText();
         String mdp = zoneSaisieMotDePasse.getText();
-        code = client.authentification(pseudo, mdp);
+        code = client.authentification(pseudo, mdp, nouveauJoueur);
         client.setPseudo(pseudo);
+
+        // TODO debug
+        System.out.println(code);
 
         switch (code) {
             case 0:

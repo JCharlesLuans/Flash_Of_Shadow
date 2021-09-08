@@ -48,10 +48,10 @@ public class Client {
      * @param pseudo du client
      * @throws IOException
      */
-    public int authentification(String pseudo, String mdp) throws IOException {
+    public int authentification(String pseudo, String mdp, boolean nouveauJoueur) throws IOException {
         int code; // Retour
 
-        envoi(new Authentification(pseudo, mdp, true));
+        envoi(new Authentification(pseudo, mdp, nouveauJoueur));
         code = (int) reception();
 
         return code;

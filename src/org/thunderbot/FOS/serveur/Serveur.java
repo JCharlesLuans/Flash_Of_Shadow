@@ -30,6 +30,7 @@ public class Serveur extends Thread {
     private ArrayList<Socket> listeSocketClient;
     private Socket me;
     private static FosDAO accesBD;
+    private boolean isIdentifier;
 
     /**
      * Lancement du serveur
@@ -76,7 +77,12 @@ public class Serveur extends Thread {
             ObjectOutputStream sortie = new ObjectOutputStream(me.getOutputStream());
             ObjectInputStream entree = new ObjectInputStream(me.getInputStream());
 
-            connexion(entree, sortie);
+            while (!isIdentifier) {
+                connexion(entree, sortie);
+                System.out.println(me.getInetAddress() + " n'est pas identifier");
+            }
+
+            System.out.println(me.getInetAddress() + " est pas identifier");
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -112,6 +118,7 @@ public class Serveur extends Thread {
                 // Insertion en BD
                 accesBD.addJoueur(joueur);
                 code = 0;
+                isIdentifier = true;
             } else {
                 code = 1;
             }
@@ -120,10 +127,13 @@ public class Serveur extends Thread {
             // Verification cohérance pseudo + mdp
             if (joueur.isExistant() && joueur.getMdp().equals(mdp)) {
                 code = 0;
+                isIdentifier = true;
             } else {
                 code = 2;
             }
         }
+
+        System.out.println(code);
 
         sortie.writeObject(code);
         sortie.flush();

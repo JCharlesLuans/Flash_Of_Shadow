@@ -64,17 +64,19 @@ public class HelperBD {
      * @param sql la requetes a executer
      */
     public ResultSet executeRequete(String sql) {
-        Statement statement = null;
+        statement = null;
+        ResultSet rs = null;
 
         try {
             statement =  connection.createStatement();
-            return statement.executeQuery(sql);
+            rs = statement.executeQuery(sql);
+            statement.close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        return null;
+        return rs;
     }
 
 
