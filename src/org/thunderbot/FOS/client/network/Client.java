@@ -48,9 +48,13 @@ public class Client {
      * @param pseudo du client
      * @throws IOException
      */
-    public void authentification(String pseudo, String mdp) throws IOException {
+    public int authentification(String pseudo, String mdp) throws IOException {
+        int code; // Retour
+
         envoi(new Authentification(pseudo, mdp, true));
-        reception();
+        code = (int) reception();
+
+        return code;
     }
 
 //    /**

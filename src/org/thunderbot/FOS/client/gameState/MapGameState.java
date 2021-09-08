@@ -63,7 +63,7 @@ public class MapGameState extends BasicGameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
-        client.updateClient(this); // Création du thread qui recois les données
+        //client.updateClient(this); // Création du thread qui recois les données
         joueur.setPseudo(client.getPseudo());
     }
 
@@ -91,7 +91,7 @@ public class MapGameState extends BasicGameState {
         // UPDATTE DU JOUEUR
         joueur.update(carte, delta);
         camera.update(container, carte);
-        client.updateServeur(this); //Envoi des data au joueur
+        //client.updateServeur(this); //Envoi des data au joueur
 
     }
 

@@ -86,7 +86,7 @@ public class Serveur extends Thread {
 
     private void connexion(ObjectInputStream entree, ObjectOutputStream sortie) throws IOException, ClassNotFoundException {
 
-        int code;
+        int code = 0;
 
         Joueur joueur;
 
@@ -119,11 +119,14 @@ public class Serveur extends Thread {
         } else {
             // Verification cohérance pseudo + mdp
             if (joueur.isExistant() && joueur.getMdp().equals(mdp)) {
-                // Connexion ok
+                code = 0;
             } else {
                 code = 2;
             }
         }
+
+        sortie.writeObject(code);
+        sortie.flush();
 
     }
 }

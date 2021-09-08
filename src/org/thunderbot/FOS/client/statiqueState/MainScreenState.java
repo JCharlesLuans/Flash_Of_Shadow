@@ -12,6 +12,7 @@ import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.newdawn.slick.gui.TextField;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -79,10 +80,30 @@ public class MainScreenState extends BasicGameState {
      * Entrée dans la map game state et authentification au serveur multijoueur
      */
     private void connexionJeu() throws IOException {
+
+        int code;
+        JFrame jFrame = new JFrame();
+
         String pseudo = zoneSaisiePseudo.getText();
         String mdp = zoneSaisieMotDePasse.getText();
-        client.authentification(pseudo, mdp);
+        code = client.authentification(pseudo, mdp);
         client.setPseudo(pseudo);
-        game.enterState(MapGameState.ID);
+
+        switch (code) {
+            case 0:
+                game.enterState(MapGameState.ID);
+                JOptionPane.showMessageDialog(jFrame,
+                        "Connexion réussie ! ");
+                break;
+            case 1 :
+                JOptionPane.showMessageDialog(jFrame,
+                        "Ce pseudo est déjà utilisé !");
+                break;
+            case 2 :
+                JOptionPane.showMessageDialog(jFrame,
+                        "Pseudo ou mot de passe incorrect");
+                break;
+        }
+
     }
 }

@@ -17,28 +17,8 @@ import java.net.InetAddress;
  * @version 1.0
  */
 public class ClientConnecter {
-    private InetAddress address;
-    private ServPersonnage servPersonnage;
 
     public ClientConnecter(InetAddress address) {
-        this.address = address;
-        servPersonnage = new ServPersonnage();
-        servPersonnage.setNomCarte("");
-    }
 
-    public InetAddress getAddress() {
-        return address;
-    }
-
-    public void setAddress(InetAddress address) {
-        this.address = address;
-    }
-
-    public ServPersonnage getServPersonnage() {
-        return servPersonnage;
-    }
-
-    public void setServPersonnage(ServPersonnage servPersonnage) {
-        this.servPersonnage = servPersonnage;
     }
 }
