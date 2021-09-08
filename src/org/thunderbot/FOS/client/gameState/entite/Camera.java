@@ -84,11 +84,6 @@ public class Camera {
         float hauteurEnMoins;
         float hauteurEnTrop;
 
-        // TODO DEBUG
-        System.out.println(demiEcranLarg);
-        System.out.println(demiEcranHaut);
-        System.out.println(hauteurCarte);
-
         if (carte.getChangeCarte()) {
             /* Recadrage de la camera */
             // Déplacement du centre de la camera au coordonnée du joueur
