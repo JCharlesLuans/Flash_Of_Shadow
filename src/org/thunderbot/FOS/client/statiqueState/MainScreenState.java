@@ -25,6 +25,10 @@ import java.io.IOException;
 public class MainScreenState extends BasicGameState {
 
     public static final int ID = 1;
+
+    public static final boolean INSCRIPTION = true;
+    public static final boolean CONNEXION = false;
+
     private Image background;
     private StateBasedGame game;
 
@@ -76,25 +80,22 @@ public class MainScreenState extends BasicGameState {
     }
 
     @Override
-    public void keyReleased(int key, char c) {
-        if (key == Input.KEY_ENTER) {
-            try {
-                connexionJeu();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
-        super.mouseClicked(button, x, y, clickCount);
+        try {
+            if (boutonConnexion.isInBouton(x, y)) {
+                connexionJeu(CONNEXION);
+            } else if (boutonInscription.isInBouton(x, y)) {
+                connexionJeu(INSCRIPTION);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Entrée dans la map game state et authentification au serveur multijoueur
      */
-    private void connexionJeu() throws IOException {
+    private void connexionJeu(boolean nouveauJoueur) throws IOException {
 
         int code;
         JFrame jFrame = new JFrame();
