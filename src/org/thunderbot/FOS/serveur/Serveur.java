@@ -8,6 +8,7 @@ package org.thunderbot.FOS.serveur;
 import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.HelperBD;
 import org.thunderbot.FOS.database.beans.Joueur;
+import org.thunderbot.FOS.database.beans.Personnage;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class Serveur extends Thread {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             accesBD = new FosDAO();
+
             System.out.println("Lancement du serveur");
 
             while (true) {
@@ -97,6 +99,7 @@ public class Serveur extends Thread {
         int code = 0;
 
         Joueur joueur;
+        Personnage personnage = null;
 
         String pseudo;
         String mdp;
@@ -130,6 +133,10 @@ public class Serveur extends Thread {
             if (joueur.isExistant() && joueur.getMdp().equals(mdp)) {
                 code = 0;
                 isIdentifier = true;
+
+                // recherche du personnage de se joueur
+                personnage = accesBD.getPersonnageByJoueur(joueur);
+
             } else {
                 code = 2;
             }
@@ -139,6 +146,8 @@ public class Serveur extends Thread {
 
         sortie.writeObject(code);
         sortie.flush();
+
+        sortie.writeObject(personnage);
 
     }
 }

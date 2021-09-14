@@ -6,6 +6,8 @@
 package org.thunderbot.FOS.client.network;
 
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.database.beans.Joueur;
+import org.thunderbot.FOS.database.beans.Personnage;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.utils.XMLTools;
 
@@ -25,6 +27,8 @@ public class Client {
     public static final int PORT = 6700;
 
     private String pseudo;
+
+    private Personnage personnage;
 
     private Socket socket;
 
@@ -56,6 +60,8 @@ public class Client {
 
         envoi(new Authentification(pseudo, mdp, nouveauJoueur));
         code = (int) reception();
+        personnage = (Personnage) reception();
+        personnage.toString();
 
         return code;
     }

@@ -32,7 +32,7 @@ public class HelperBD {
     public static final String CLASSE_STAT_FORCE = "statForce";
     public static final String CLASSE_STAT_INTELLIGENCE = "statIntelligence";
     public static final String CLASSE_STAT_AGILITE = "statAgilite";
-    public static final String CLASSE_STAT_ENDURANCE = "statEndurence";
+    public static final String CLASSE_STAT_ENDURANCE = "statEndurance";
     public static final String CLASSE_STAT_SAGESSE = "statSagesse";
 
     private static final String CREATION_TABLE_CLASSE =
@@ -56,7 +56,7 @@ public class HelperBD {
     public static final String EFFET_STAT_FORCE = "statForce";
     public static final String EFFET_STAT_INTELLIGENCE = "statIntelligence";
     public static final String EFFET_STAT_AGILITE = "statAgilite";
-    public static final String EFFET_STAT_ENDURANCE = "statEndurence";
+    public static final String EFFET_STAT_ENDURANCE = "statEndurance";
     public static final String EFFET_STAT_SAGESSE = "statSagesse";
     public static final String EFFET_DPS = "dps";
     public static final String EFFET_DUREE = "duree";
@@ -120,7 +120,7 @@ public class HelperBD {
     public static final String OBJET_STAT_FORCE = "statForce";
     public static final String OBJET_STAT_INTELLIGENCE = "statIntelligence";
     public static final String OBJET_STAT_AGILITE = "statAgilite";
-    public static final String OBJET_STAT_ENDURANCE = "statEndurence";
+    public static final String OBJET_STAT_ENDURANCE = "statEndurance";
     public static final String OBJET_STAT_SAGESSE = "statSagesse";
     public static final String OBJET_DPS = "dps";
     public static final String OBJET_ID_IMAGE = "idImage";
@@ -235,7 +235,7 @@ public class HelperBD {
     public static final String PNJ_STAT_FORCE = "statForce";
     public static final String PNJ_STAT_INTELLIGENCE = "statIntelligence";
     public static final String PNJ_STAT_AGILITE = "statAgilite";
-    public static final String PNJ_STAT_ENDURANCE = "statEndurence";
+    public static final String PNJ_STAT_ENDURANCE = "statEndurance";
     public static final String PNJ_STAT_SAGESSE = "statSagesse";
     public static final String PNJ_CLE_MAP = "idMap";
     public static final String PNJ_CLE_FACTION = "idFaction";
@@ -335,22 +335,6 @@ public class HelperBD {
 
     public HelperBD(String nomBD) {
         open(nomBD);
-        executeUpdate(CREATION_TABLE_JOUEUR);
-        executeUpdate(CREATION_TABLE_CLASSE);
-        executeUpdate(CREATION_TABLE_EFFET);
-        executeUpdate(CREATION_TABLE_COMPETENCE);
-        executeUpdate(CREATION_TABLE_MAP);
-        executeUpdate(CREATION_TABLE_OBJET);
-        executeUpdate(CREATION_TABLE_FACTION);
-        executeUpdate(CREATION_TABLE_GUILDE);
-        executeUpdate(CREATION_TABLE_TITRE);
-        executeUpdate(CREATION_TABLE_PERSONNAGE);
-        executeUpdate(CREATION_TABLE_PNJ);
-        executeUpdate(CREATION_TABLE_LISTE_EFFET);
-        executeUpdate(CREATION_TABLE_LISTE_COMPETENCE);
-        executeUpdate(CREATION_TABLE_LISTE_COMPETENCE_PNJ);
-        executeUpdate(CREATION_TABLE_INVENTAIRE);
-        executeUpdate(CREATION_TABLE_LISTE_OBJET_LOOTABLE);
         //initDataJoueur();
     }
 
@@ -358,6 +342,7 @@ public class HelperBD {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + nomBD);
+            initTable();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
@@ -403,11 +388,55 @@ public class HelperBD {
         connection.close();
     }
 
+    private void initTable() throws SQLException {
+
+        DatabaseMetaData dbm = connection.getMetaData();
+        ResultSet tables = dbm.getTables(null, null, NOM_TABLE_JOUEUR, null);
+
+        if (!tables.next()) {
+            executeUpdate(CREATION_TABLE_JOUEUR);
+            executeUpdate(CREATION_TABLE_CLASSE);
+            executeUpdate(CREATION_TABLE_EFFET);
+            executeUpdate(CREATION_TABLE_COMPETENCE);
+            executeUpdate(CREATION_TABLE_MAP);
+            executeUpdate(CREATION_TABLE_OBJET);
+            executeUpdate(CREATION_TABLE_FACTION);
+            executeUpdate(CREATION_TABLE_GUILDE);
+            executeUpdate(CREATION_TABLE_TITRE);
+            executeUpdate(CREATION_TABLE_PERSONNAGE);
+            executeUpdate(CREATION_TABLE_PNJ);
+            executeUpdate(CREATION_TABLE_LISTE_EFFET);
+            executeUpdate(CREATION_TABLE_LISTE_COMPETENCE);
+            executeUpdate(CREATION_TABLE_LISTE_COMPETENCE_PNJ);
+            executeUpdate(CREATION_TABLE_INVENTAIRE);
+            executeUpdate(CREATION_TABLE_LISTE_OBJET_LOOTABLE);
+
+            System.out.println("Création des tables terminée !");
+
+            // INIT DATA
+            initDataJoueur();
+            initDataClasse();
+
+        }
+    }
+
     private void initDataJoueur() {
         executeUpdate(
                 "INSERT INTO JOUEUR (" + JOUEUR_PSEUDO + ","+ JOUEUR_MDP + ")"
-                + "VALUES           (    \"Jean Test\",           \"leserveur\"     );"
+                        + "VALUES           (    'Jean Test',           'leserveur'     );"
         );
+        System.out.println("Initialisation du joueur Test");
+    }
+
+    private void initDataClasse() {
+        executeUpdate(
+                "INSERT INTO " + NOM_TABLE_CLASSE
+                        + " ( " + CLASSE_NOM + ", " + CLASSE_STAT_AGILITE + ", " + CLASSE_STAT_ARMURE
+                        + ", " + CLASSE_STAT_ENDURANCE + ", " + CLASSE_STAT_FORCE + ", " + CLASSE_STAT_INTELLIGENCE
+                        + ", " + CLASSE_STAT_SAGESSE +  ")"
+                    + "VALUES ( 'Test', 1, 1, 1, 1, 1, 1) ");
+
+        System.out.println("Initialisation de la classe Test");
     }
 
 
