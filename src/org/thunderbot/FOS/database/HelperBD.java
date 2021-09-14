@@ -261,13 +261,30 @@ public class HelperBD {
     public static final String NOM_TABLE_LISTE_EFFET = "ListeEffet";
     public static final String LISTE_EFFET_CLE_EFFET = "idEffet";
     public static final String LISTE_EFFET_CLE_PERSO = "idPersonnage";
+    public static final String LISTE_EFFET_DUREE_RESTANTE = "dureeRestante";
 
     private static final String CREATION_TABLE_LISTE_EFFET =
             "CREATE TABLE " + NOM_TABLE_LISTE_EFFET + " ("
                 + LISTE_EFFET_CLE_EFFET + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_EFFET + " (" + EFFET_CLE + "),"
                 + LISTE_EFFET_CLE_PERSO + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_PERSONNAGE + " (" + PERSONNAGE_CLE + "),"
+                + LISTE_EFFET_DUREE_RESTANTE +  " INTEGER NOT NULL,"
                 + "PRIMARY KEY (" + LISTE_EFFET_CLE_EFFET + ", " + LISTE_EFFET_CLE_PERSO + ")"
             + ");";
+
+
+    ////// TABLE LISTE COMPETENCE ///////
+    public static final String NOM_TABLE_LISTE_COMPETENCE = "ListeCompetence";
+    public static final String LISTE_COMPETENCE_CLE_COMPETENCE = "idCompetence";
+    public static final String LISTE_COMPETENCE_CLE_PERSO = "idPersonnage";
+    public static final String LISTE_COMPETENCE_EXPERIENCE = "experience";
+
+    private static final String CREATION_TABLE_LISTE_COMPETENCE =
+            "CREATE TABLE " + NOM_TABLE_LISTE_COMPETENCE + " ("
+                    + LISTE_COMPETENCE_CLE_COMPETENCE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_COMPETENCE + " (" + COMPETENCE_CLE + "),"
+                    + LISTE_COMPETENCE_CLE_PERSO + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_PERSONNAGE + " (" + PERSONNAGE_CLE + "),"
+                    + LISTE_COMPETENCE_EXPERIENCE +  " INTEGER NOT NULL,"
+                    + "PRIMARY KEY (" + LISTE_COMPETENCE_CLE_COMPETENCE + ", " + LISTE_COMPETENCE_CLE_PERSO + ")"
+                    + ");";
 
     Connection connection;
     Statement statement;
@@ -286,6 +303,7 @@ public class HelperBD {
         executeUpdate(CREATION_TABLE_PERSONNAGE);
         executeUpdate(CREATION_TABLE_PNJ);
         executeUpdate(CREATION_TABLE_LISTE_EFFET);
+        executeUpdate(CREATION_TABLE_LISTE_COMPETENCE);
         //initDataJoueur();
     }
 
