@@ -181,6 +181,7 @@ public class HelperBD {
     public static final String NOM_TABLE_PERSONNAGE = "Personnage";
     public static final String PERSONNAGE_CLE = "_id";
     public static final String PERSONNAGE_NOM = "nom";
+    public static final String PERSONNAGE_SPRITE = "sprite";
     public static final String PERSONNAGE_CLE_JOUEUR = "idJoueur";
     public static final String PERSONNAGE_CLE_CLASSE = "idClasse";
     public static final String PERSONNAGE_CLE_MAP = "idMap";
@@ -198,6 +199,7 @@ public class HelperBD {
             "CREATE TABLE " + NOM_TABLE_PERSONNAGE + " ( "
                 + PERSONNAGE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + PERSONNAGE_NOM + " TEXT NOT NULL,"
+                + PERSONNAGE_SPRITE + " TEXT NOT NULL,"
                 + PERSONNAGE_CLE_JOUEUR + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_JOUEUR + " (" + JOUEUR_CLE + "),"
                 + PERSONNAGE_CLE_CLASSE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_CLASSE + " (" + CLASSE_CLE + "),"
                 + PERSONNAGE_CLE_MAP + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_MAP + " (" + MAP_CLE + "),"
@@ -211,6 +213,38 @@ public class HelperBD {
                 + PERSONNAGE_CLE_GUILDE  + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_GUILDE + " (" + GUILDE_CLE + "),"
                 + PERSONNAGE_CLE_TITRE   + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_TITRE + " (" + TITRE_CLE + ")"
             + ") ;";
+
+
+    ///////// TABLE Personnage Non Joueur ///////////////////
+    public static final String NOM_TABLE_PNJ = "PersonnageNonJoueur";
+    public static final String PNJ_CLE = "_id";
+    public static final String PNJ_NOM = "sprite";
+    public static final String PNJ_STAT_ARMURE = "statArmure";
+    public static final String PNJ_STAT_FORCE = "statForce";
+    public static final String PNJ_STAT_INTELLIGENCE = "statIntelligence";
+    public static final String PNJ_STAT_AGILITE = "statAgilite";
+    public static final String PNJ_STAT_ENDURANCE = "statEndurence";
+    public static final String PNJ_STAT_SAGESSE = "statSagesse";
+    public static final String PNJ_CLE_MAP = "idMap";
+    public static final String PNJ_CLE_FACTION = "idFaction";
+    public static final String PNJ_CLE_TITRE = "idTitre";
+    public static final String PNJ_QUETE = "idQuete";
+
+    private static final String CREATION_TABLE_PNJ =
+            "CREATE TABLE " + NOM_TABLE_PNJ + " ("
+                + PNJ_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + PNJ_NOM + " TEXT NOT NULL,"
+                + PNJ_STAT_ARMURE       + " INTEGER NOT NULL,"
+                + PNJ_STAT_FORCE        + " INTEGER NOT NULL,"
+                + PNJ_STAT_INTELLIGENCE + " INTEGER NOT NULL,"
+                + PNJ_STAT_AGILITE      + " INTEGER NOT NULL,"
+                + PNJ_STAT_ENDURANCE    + " INTEGER NOT NULL,"
+                + PNJ_STAT_SAGESSE      + " INTEGER NOT NULL,"
+                + PNJ_CLE_MAP + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_MAP + " (" + MAP_CLE + "),"
+                + PNJ_CLE_FACTION + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_FACTION + " (" + FACTION_CLE + "),"
+                + PNJ_CLE_TITRE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_TITRE + " (" + TITRE_CLE + ")"
+            + ");";
+
 
     Connection connection;
     Statement statement;
@@ -227,6 +261,7 @@ public class HelperBD {
         executeUpdate(CREATION_TABLE_GUILDE);
         executeUpdate(CREATION_TABLE_TITRE);
         executeUpdate(CREATION_TABLE_PERSONNAGE);
+        executeUpdate(CREATION_TABLE_PNJ);
         //initDataJoueur();
     }
 
