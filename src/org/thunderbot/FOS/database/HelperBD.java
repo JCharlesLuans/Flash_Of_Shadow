@@ -215,6 +215,16 @@ public class HelperBD {
             + ") ;";
 
 
+    ///////// ETAPES QUETES //////////////////
+    // TODO finir d'ecrire les table suivante : EtapeQuete
+
+    ///////// QUETES //////////////////
+    // TODO finir d'ecrire les table suivante : Quete
+
+    ///////// LISTE QUETES //////////////////
+    // TODO finir d'ecrire les table suivante : ListeQuete
+
+
     ///////// TABLE Personnage Non Joueur ///////////////////
     public static final String NOM_TABLE_PNJ = "PersonnageNonJoueur";
     public static final String PNJ_CLE = "_id";
@@ -243,8 +253,21 @@ public class HelperBD {
                 + PNJ_CLE_MAP + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_MAP + " (" + MAP_CLE + "),"
                 + PNJ_CLE_FACTION + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_FACTION + " (" + FACTION_CLE + "),"
                 + PNJ_CLE_TITRE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_TITRE + " (" + TITRE_CLE + ")"
+                    // TODO ajouter la FK pour les quetes
             + ");";
 
+
+    ////// TABLE LISTE EFFET ///////
+    public static final String NOM_TABLE_LISTE_EFFET = "ListeEffet";
+    public static final String LISTE_EFFET_CLE_EFFET = "idEffet";
+    public static final String LISTE_EFFET_CLE_PERSO = "idPersonnage";
+
+    private static final String CREATION_TABLE_LISTE_EFFET =
+            "CREATE TABLE " + NOM_TABLE_LISTE_EFFET + " ("
+                + LISTE_EFFET_CLE_EFFET + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_EFFET + " (" + EFFET_CLE + "),"
+                + LISTE_EFFET_CLE_PERSO + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_PERSONNAGE + " (" + PERSONNAGE_CLE + "),"
+                + "PRIMARY KEY (" + LISTE_EFFET_CLE_EFFET + ", " + LISTE_EFFET_CLE_PERSO + ")"
+            + ");";
 
     Connection connection;
     Statement statement;
@@ -262,6 +285,7 @@ public class HelperBD {
         executeUpdate(CREATION_TABLE_TITRE);
         executeUpdate(CREATION_TABLE_PERSONNAGE);
         executeUpdate(CREATION_TABLE_PNJ);
+        executeUpdate(CREATION_TABLE_LISTE_EFFET);
         //initDataJoueur();
     }
 
