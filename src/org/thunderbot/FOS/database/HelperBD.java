@@ -111,6 +111,72 @@ public class HelperBD {
             + ");";
 
 
+    ///// TABLE OBJET /////////////
+    public static final String NOM_TABLE_OBJET = "Objet";
+    public static final String OBJET_CLE = "_id";
+    public static final String OBJET_NOM = "nom";
+    public static final String OBJET_EMPLACEMENT = "emplacement";
+    public static final String OBJET_STAT_ARMURE = "statArmure";
+    public static final String OBJET_STAT_FORCE = "statForce";
+    public static final String OBJET_STAT_INTELLIGENCE = "statIntelligence";
+    public static final String OBJET_STAT_AGILITE = "statAgilite";
+    public static final String OBJET_STAT_ENDURANCE = "statEndurence";
+    public static final String OBJET_STAT_SAGESSE = "statSagesse";
+    public static final String OBJET_DPS = "dps";
+    public static final String OBJET_ID_IMAGE = "idImage";
+
+    private static final String CREATION_TABLE_OBJET =
+            "CREATE TABLE " + NOM_TABLE_OBJET + " ("
+                + OBJET_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + OBJET_NOM + " TEXT NOT NULL,"
+                + OBJET_EMPLACEMENT + " INTEGER NOT NULL,"
+                + OBJET_STAT_ARMURE       + " INTEGER NOT NULL,"
+                + OBJET_STAT_FORCE        + " INTEGER NOT NULL,"
+                + OBJET_STAT_INTELLIGENCE + " INTEGER NOT NULL,"
+                + OBJET_STAT_AGILITE      + " INTEGER NOT NULL,"
+                + OBJET_STAT_ENDURANCE    + " INTEGER NOT NULL,"
+                + OBJET_STAT_SAGESSE      + " INTEGER NOT NULL,"
+                + OBJET_DPS + " INTEGER NOT NULL,"
+                + OBJET_ID_IMAGE + " INTEGER NOT NULL"
+            + ");";
+
+
+    ///// TABLE FACTION    ////////
+    public static final String NOM_TABLE_FACTION = "Faction";
+    public static final String FACTION_CLE = "_id";
+    public static final String FACTION_NOM = "nom";
+
+    private static final String CREATION_TABLE_FACTION =
+            "CREATE TABLE " + NOM_TABLE_FACTION + " ( "
+                + FACTION_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + FACTION_NOM + " TEXT NOT NULL"
+            + ");";
+
+
+    ///// TABLE GUILDE    ////////
+    public static final String NOM_TABLE_GUILDE = "Guilde";
+    public static final String GUILDE_CLE = "_id";
+    public static final String GUILDE_NOM = "nom";
+
+    private static final String CREATION_TABLE_GUILDE =
+            "CREATE TABLE " + NOM_TABLE_GUILDE + " ( "
+                    + GUILDE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + GUILDE_NOM + " TEXT NOT NULL"
+                    + ");";
+
+
+    ///// TABLE TITRE   ////////
+    public static final String NOM_TABLE_TITRE = "Titre";
+    public static final String TITRE_CLE = "_id";
+    public static final String TITRE_NOM = "nom";
+
+    private static final String CREATION_TABLE_TITRE =
+            "CREATE TABLE " + NOM_TABLE_TITRE + " ( "
+                    + TITRE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + TITRE_NOM + " TEXT NOT NULL"
+                    + ");";
+
+
     ///// TABLE PERSONNAGE ///////
     public static final String NOM_TABLE_PERSONNAGE = "Personnage";
     public static final String PERSONNAGE_CLE = "_id";
@@ -134,7 +200,16 @@ public class HelperBD {
                 + PERSONNAGE_NOM + " TEXT NOT NULL,"
                 + PERSONNAGE_CLE_JOUEUR + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_JOUEUR + " (" + JOUEUR_CLE + "),"
                 + PERSONNAGE_CLE_CLASSE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_CLASSE + " (" + CLASSE_CLE + "),"
-                + PERSONNAGE_CLE_MAP + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_MAP + " (" + MAP_CLE + ")"
+                + PERSONNAGE_CLE_MAP + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_MAP + " (" + MAP_CLE + "),"
+                + PERSONNAGE_CLE_STUFF_TETE  + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_OBJET + " (" + OBJET_CLE + "),"
+                + PERSONNAGE_CLE_STUFF_TORSE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_OBJET + " (" + OBJET_CLE + "),"
+                + PERSONNAGE_CLE_STUFF_GANT  + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_OBJET + " (" + OBJET_CLE + "),"
+                + PERSONNAGE_CLE_STUFF_JAMBE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_OBJET + " (" + OBJET_CLE + "),"
+                + PERSONNAGE_CLE_STUFF_BOTTE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_OBJET + " (" + OBJET_CLE + "),"
+                + PERSONNAGE_CLE_STUFF_ARME  + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_OBJET + " (" + OBJET_CLE + "),"
+                + PERSONNAGE_CLE_FACTION + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_FACTION + " (" + FACTION_CLE + "),"
+                + PERSONNAGE_CLE_GUILDE  + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_GUILDE + " (" + GUILDE_CLE + "),"
+                + PERSONNAGE_CLE_TITRE   + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_TITRE + " (" + TITRE_CLE + ")"
             + ") ;";
 
     Connection connection;
@@ -147,6 +222,10 @@ public class HelperBD {
         executeUpdate(CREATION_TABLE_EFFET);
         executeUpdate(CREATION_TABLE_COMPETENCE);
         executeUpdate(CREATION_TABLE_MAP);
+        executeUpdate(CREATION_TABLE_OBJET);
+        executeUpdate(CREATION_TABLE_FACTION);
+        executeUpdate(CREATION_TABLE_GUILDE);
+        executeUpdate(CREATION_TABLE_TITRE);
         executeUpdate(CREATION_TABLE_PERSONNAGE);
         //initDataJoueur();
     }
