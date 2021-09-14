@@ -94,6 +94,23 @@ public class HelperBD {
                 + COMPETENCE_ID_IMAGE + "INTEGER NOT NULL"
             + ") ;";
 
+
+    ///// TABLE MAP //////////////
+    public static final String NOM_TABLE_MAP = "Map";
+    public static final String MAP_CLE = "_id";
+    public static final String MAP_NOM = "nom";
+    public static final String MAP_NIVEAU_PNJ = "niveauPNJ";
+    public static final String MAP_NOMBRE_MOB = "nombreMob";
+
+    private static final String CREATION_TABLE_MAP =
+            "CREATE TABLE " + NOM_TABLE_MAP + " ( "
+                + MAP_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + MAP_NOM + " TEXT NOT NULL,"
+                + MAP_NIVEAU_PNJ + " INTEGER NOT NULL,"
+                + MAP_NOMBRE_MOB + " INTEGER NOT NULL"
+            + ");";
+
+
     ///// TABLE PERSONNAGE ///////
     public static final String NOM_TABLE_PERSONNAGE = "Personnage";
     public static final String PERSONNAGE_CLE = "_id";
@@ -116,7 +133,8 @@ public class HelperBD {
                 + PERSONNAGE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + PERSONNAGE_NOM + " TEXT NOT NULL,"
                 + PERSONNAGE_CLE_JOUEUR + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_JOUEUR + " (" + JOUEUR_CLE + "),"
-                + PERSONNAGE_CLE_CLASSE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_CLASSE + " (" + CLASSE_CLE + ")"
+                + PERSONNAGE_CLE_CLASSE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_CLASSE + " (" + CLASSE_CLE + "),"
+                + PERSONNAGE_CLE_MAP + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_MAP + " (" + MAP_CLE + ")"
             + ") ;";
 
     Connection connection;
@@ -128,6 +146,7 @@ public class HelperBD {
         executeUpdate(CREATION_TABLE_CLASSE);
         executeUpdate(CREATION_TABLE_EFFET);
         executeUpdate(CREATION_TABLE_COMPETENCE);
+        executeUpdate(CREATION_TABLE_MAP);
         executeUpdate(CREATION_TABLE_PERSONNAGE);
         //initDataJoueur();
     }
