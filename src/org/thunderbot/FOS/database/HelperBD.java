@@ -228,7 +228,9 @@ public class HelperBD {
     ///////// TABLE Personnage Non Joueur ///////////////////
     public static final String NOM_TABLE_PNJ = "PersonnageNonJoueur";
     public static final String PNJ_CLE = "_id";
-    public static final String PNJ_NOM = "sprite";
+    public static final String PNJ_NOM = "nom";
+    public static final String PNJ_SPRITE = "sprite";
+    public static final String PNJ_AGRESSIF = "agressif";
     public static final String PNJ_STAT_ARMURE = "statArmure";
     public static final String PNJ_STAT_FORCE = "statForce";
     public static final String PNJ_STAT_INTELLIGENCE = "statIntelligence";
@@ -244,6 +246,8 @@ public class HelperBD {
             "CREATE TABLE " + NOM_TABLE_PNJ + " ("
                 + PNJ_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + PNJ_NOM + " TEXT NOT NULL,"
+                + PNJ_SPRITE + " TEXT NOT NULL,"
+                + PNJ_AGRESSIF + " INTEGER NOT NULL,"
                 + PNJ_STAT_ARMURE       + " INTEGER NOT NULL,"
                 + PNJ_STAT_FORCE        + " INTEGER NOT NULL,"
                 + PNJ_STAT_INTELLIGENCE + " INTEGER NOT NULL,"
@@ -286,6 +290,46 @@ public class HelperBD {
                     + "PRIMARY KEY (" + LISTE_COMPETENCE_CLE_COMPETENCE + ", " + LISTE_COMPETENCE_CLE_PERSO + ")"
                     + ");";
 
+
+    ////// TABLE LISTE COMPETENCE PNJ ///////
+    public static final String NOM_TABLE_LISTE_COMPETENCE_PNJ = "ListeCompetencePNJ";
+    public static final String LISTE_COMPETENCE_PNJ_CLE_COMPETENCE = "idCompetence";
+    public static final String LISTE_COMPETENCE_PNJ_CLE_PERSO = "idPersonnageNonJoueur";
+    public static final String LISTE_COMPETENCE_PNJ_EXPERIENCE = "experience";
+
+    private static final String CREATION_TABLE_LISTE_COMPETENCE_PNJ =
+            "CREATE TABLE " + NOM_TABLE_LISTE_COMPETENCE_PNJ + " ("
+                    + LISTE_COMPETENCE_PNJ_CLE_COMPETENCE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_COMPETENCE + " (" + COMPETENCE_CLE + "),"
+                    + LISTE_COMPETENCE_PNJ_CLE_PERSO + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_PERSONNAGE + " (" + PERSONNAGE_CLE + "),"
+                    + LISTE_COMPETENCE_PNJ_EXPERIENCE +  " INTEGER NOT NULL,"
+                    + "PRIMARY KEY (" + LISTE_COMPETENCE_PNJ_CLE_COMPETENCE + ", " + LISTE_COMPETENCE_PNJ_CLE_PERSO + ")"
+                    + ");";
+
+
+    ////// TABLE INVENTAIRE ///////
+    public static final String NOM_TABLE_INVENTAIRE = "Inventaire";
+    public static final String INVENTAIRE_CLE_PERSONNAGE = "idPersonnage";
+    public static final String INVENTAIRE_CLE_OBJET = "idObjet";
+
+    private static final String CREATION_TABLE_INVENTAIRE =
+            "CREATE TABLE " + NOM_TABLE_INVENTAIRE + " ("
+                    + INVENTAIRE_CLE_PERSONNAGE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_PERSONNAGE + " (" + PERSONNAGE_CLE + "),"
+                    + INVENTAIRE_CLE_OBJET + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_OBJET + " (" + OBJET_CLE + "),"
+                    + "PRIMARY KEY (" + INVENTAIRE_CLE_PERSONNAGE + ", " + INVENTAIRE_CLE_OBJET + ")"
+                    + ");";
+
+    ////// TABLE LISTE OBJET LOOTABLE ///////
+    public static final String NOM_TABLE_LISTE_OBJET_LOOTABLE = "ListeObjetLootable";
+    public static final String LISTE_OBJET_LOOTABLE_CLE_PNJ = "idPersonnageNonJoueur";
+    public static final String LISTE_OBJET_LOOTABLE_CLE_OBJET = "idObjet";
+
+    private static final String CREATION_TABLE_LISTE_OBJET_LOOTABLE =
+            "CREATE TABLE " + NOM_TABLE_LISTE_OBJET_LOOTABLE + " ("
+                    + LISTE_OBJET_LOOTABLE_CLE_PNJ + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_PNJ + " (" + PNJ_CLE + "),"
+                    + LISTE_OBJET_LOOTABLE_CLE_OBJET + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_OBJET + " (" + OBJET_CLE + "),"
+                    + "PRIMARY KEY (" + LISTE_OBJET_LOOTABLE_CLE_PNJ + ", " + LISTE_OBJET_LOOTABLE_CLE_OBJET + ")"
+                    + ");";
+
     Connection connection;
     Statement statement;
 
@@ -304,6 +348,9 @@ public class HelperBD {
         executeUpdate(CREATION_TABLE_PNJ);
         executeUpdate(CREATION_TABLE_LISTE_EFFET);
         executeUpdate(CREATION_TABLE_LISTE_COMPETENCE);
+        executeUpdate(CREATION_TABLE_LISTE_COMPETENCE_PNJ);
+        executeUpdate(CREATION_TABLE_INVENTAIRE);
+        executeUpdate(CREATION_TABLE_LISTE_OBJET_LOOTABLE);
         //initDataJoueur();
     }
 
