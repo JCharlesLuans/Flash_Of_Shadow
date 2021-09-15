@@ -23,6 +23,8 @@ public class FosDAO {
         gestionnaireBase = new HelperBD(NOM_BD);
     }
 
+
+
     public Joueur getJoueurByPseudo(String pseudo) {
         Joueur aRetourner = new Joueur();
 
@@ -56,6 +58,8 @@ public class FosDAO {
 
         gestionnaireBase.executeUpdate(requete);
     }
+
+
 
     public Personnage getPersonnageByJoueur(Joueur joueur) {
         Personnage aRetourner = new Personnage();
@@ -143,6 +147,8 @@ public class FosDAO {
         return aRetourner;
     }
 
+
+
     public Map getMapById(int id) {
         Map aRetourner = new Map();
 
@@ -163,6 +169,29 @@ public class FosDAO {
 
         return aRetourner;
     }
+
+    public Map getMapByName(String nom) {
+        Map aRetourner = new Map();
+
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_MAP + " WHERE " + MAP_NOM + " = " + nom;
+
+        try {
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            aRetourner.setId(rs.getInt(MAP_CLE));
+            aRetourner.setNom(rs.getString(MAP_NOM));
+            aRetourner.setNiveauPNJ(rs.getInt(MAP_NIVEAU_PNJ));
+            aRetourner.setNombreMob(rs.getInt(MAP_NOMBRE_MOB));
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
+
 
     public Objet getObjetById(int id) {
         Objet aRetourner = new Objet();
