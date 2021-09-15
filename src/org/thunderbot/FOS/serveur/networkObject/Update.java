@@ -6,6 +6,7 @@
 package org.thunderbot.FOS.serveur.networkObject;
 
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.database.beans.Personnage;
 
 import java.io.Serializable;
 
@@ -17,31 +18,21 @@ import java.io.Serializable;
  */
 public class Update implements Serializable {
 
-    private ServPersonnage servPersonnage;
-
-    private String map;
+    private Personnage personnage;
 
     public Update() {
-        servPersonnage = null;
+        personnage = null;
     }
 
-    public Update(ServPersonnage newServPersonnage) {
-        servPersonnage = newServPersonnage;
+    public Update(Personnage personnage) {
+        this.personnage = personnage;
     }
 
-    public ServPersonnage getServPersonnage() {
-        return servPersonnage;
+    public Personnage getPersonnage() {
+        return personnage;
     }
 
-    public void setServPersonnage(ServPersonnage servPersonnage) {
-        this.servPersonnage = servPersonnage;
-    }
-
-    public String getMap() {
-        return map;
-    }
-
-    public void setMap(String map) {
-        this.map = map;
+    public void setPersonnage(Personnage personnage) {
+        this.personnage = personnage;
     }
 }

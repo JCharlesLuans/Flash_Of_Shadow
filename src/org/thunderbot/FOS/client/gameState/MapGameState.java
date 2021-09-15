@@ -53,7 +53,7 @@ public class MapGameState extends BasicGameState {
         listeJoueur = new ArrayList<>();
 
         carte = new Carte();
-        joueur = new Personnage();
+        joueur = new Personnage(client);
         camera = new Camera(joueur);
         personnageController = new PersonnageController(joueur);
 
@@ -104,6 +104,16 @@ public class MapGameState extends BasicGameState {
     @Override
     public int getID() {
         return ID;
+    }
+
+    /**
+     * Met à jour les donnée que le client envoi selon cette instannce de MapGameSTate
+     */
+    public void updatePersonnage() {
+        org.thunderbot.FOS.database.beans.Personnage tmp = new org.thunderbot.FOS.database.beans.Personnage();
+        tmp.getMap().setNom(carte.getNomMap());
+        tmp.setX(joueur.getPositionX());
+        tmp.setY(joueur.getPositionY());
     }
 
     public Personnage getJoueur() {

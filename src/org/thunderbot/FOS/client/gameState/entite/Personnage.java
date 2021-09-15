@@ -10,6 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.thunderbot.FOS.client.gameState.world.Carte;
+import org.thunderbot.FOS.client.network.Client;
 
 /**
  * Personnage du client
@@ -18,6 +19,9 @@ import org.thunderbot.FOS.client.gameState.world.Carte;
  * @version 1.0
  */
 public class Personnage extends ServPersonnage {
+
+    /** Client pour la connection avec le serveur */
+    Client client;
 
     /** Annimations du personnages */
     private Animation[] animations = new Animation[8];
@@ -29,11 +33,13 @@ public class Personnage extends ServPersonnage {
     /**
      * Nouveau personnage joueur de ce client
      * @throws SlickException
-     * @param servPersonnage
+     * @param client de jeu pour la communication avec le serveur
      */
-    public Personnage() throws SlickException {
+    public Personnage(Client client) throws SlickException {
         super();
-        this.nomCarte = "map";
+
+        this.client = client;
+
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/personnage.png", 64, 64);
         this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
         this.animations[1] = loadAnimation(spriteSheet, 0, 1, 1);
@@ -83,6 +89,10 @@ public class Personnage extends ServPersonnage {
             }
 
         }
+
+        client.getPersonnage().setX(positionX);
+        client.getPersonnage().setY(positionY);
+
     }
 
     /**
@@ -105,7 +115,7 @@ public class Personnage extends ServPersonnage {
 
                     try {
                         nomCarte = newMap;
-                        carte.changeMap(newMap);
+                        carte.changeMap(newMap, client);
                         carte.setChangeCarte(true);
                     } catch (SlickException e) {
                         e.printStackTrace();

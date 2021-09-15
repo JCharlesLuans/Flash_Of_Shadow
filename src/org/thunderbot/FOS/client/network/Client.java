@@ -5,11 +5,15 @@
 
 package org.thunderbot.FOS.client.network;
 
+import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.database.beans.Joueur;
+import org.thunderbot.FOS.database.beans.Map;
 import org.thunderbot.FOS.database.beans.Personnage;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
+import org.thunderbot.FOS.serveur.networkObject.ChargementCarte;
 import org.thunderbot.FOS.serveur.networkObject.Stop;
+import org.thunderbot.FOS.serveur.networkObject.Update;
 import org.thunderbot.FOS.utils.XMLTools;
 
 import java.io.IOException;
@@ -92,11 +96,11 @@ public class Client {
      */
     public void deconnexion() throws IOException {
 
-        // TODO STUB
-        personnage.getMap().setId(2);
-        personnage.getMap().setNom("map_grotte.tmx");
-        personnage.getMap().setNombreMob(3);
-        personnage.getMap().setNiveauPNJ(1);
+//        // TODO STUB
+//        personnage.getMap().setId(2);
+//        personnage.getMap().setNom("map_grotte.tmx");
+//        personnage.getMap().setNombreMob(3);
+//        personnage.getMap().setNiveauPNJ(1);
 
         envoi(new Stop(personnage));
     }
@@ -199,19 +203,28 @@ public class Client {
 //        };
 //    }
 //
-//    /**
-//     * Renvoi les donnée actuelle du client au serveur pour actualiser les autres clients
-//     * @param mapGameState - State mise a jour
-//     */
-//    public void updateServeur(MapGameState mapGameState) {
-//        try {
-//            Update tmp = new Update(mapGameState.getJoueur());
-//            tmp.setMap(mapGameState.getJoueur().getNomCarte());
-//            envoi(XMLTools.encodeString(tmp));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    /**
+     * Renvoi les donnée actuelle du client au serveur pour actualiser les autres clients
+     */
+    public void updateServeur() {
+        try {
+            Update update = new Update(personnage);
+            envoi(update);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Map chargementCarte(String nom) {
+        Map aRetourner = new Map();
+        try {
+            envoi(new ChargementCarte(nom));
+            aRetourner = (Map) reception();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return aRetourner;
+    }
 
     public String getPseudo() {
         return pseudo;
@@ -228,4 +241,6 @@ public class Client {
     private String lectureIpServeur() {
         return XMLTools.readXMLElement("res/option.xml", "ipServeur");
     }
+
+
 }

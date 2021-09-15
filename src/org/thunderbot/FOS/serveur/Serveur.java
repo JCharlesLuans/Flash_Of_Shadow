@@ -8,9 +8,11 @@ package org.thunderbot.FOS.serveur;
 import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.HelperBD;
 import org.thunderbot.FOS.database.beans.Joueur;
+import org.thunderbot.FOS.database.beans.Map;
 import org.thunderbot.FOS.database.beans.Objet;
 import org.thunderbot.FOS.database.beans.Personnage;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
+import org.thunderbot.FOS.serveur.networkObject.ChargementCarte;
 import org.thunderbot.FOS.serveur.networkObject.Stop;
 import org.thunderbot.FOS.serveur.networkObject.Update;
 
@@ -105,6 +107,8 @@ public class Serveur extends Thread {
                     // TODO ed
                     System.out.println("UPDATE");
 
+                } else if (reception.getClass() == ChargementCarte.class) {
+                    chargementCarte(sortie, (ChargementCarte) reception);
                 } else if (reception.getClass() == Stop.class) {
                     // Gestion de la deconnection
                     // TODO ed
@@ -121,6 +125,8 @@ public class Serveur extends Thread {
         }
 
     }
+
+
 
     /**
      * Permet d'authentifier un joueur et de le connecter au serveur, permet
@@ -217,6 +223,20 @@ public class Serveur extends Thread {
         Personnage personnage = stop.getPersonnage();
         accesBD.updatePersonnage(personnage.getId(), personnage);
         System.out.println("Deconnexion de : " + me.getInetAddress());
+    }
+
+    private void chargementCarte(ObjectOutputStream sortie, ChargementCarte chargementCarte) throws IOException {
+        String nom;
+        Map map;
+        // Recupere le nom de la carte
+        nom = chargementCarte.getCarte().getNom();
+
+        // Recherche en BD la carte, ainsi que ses datas
+        map = accesBD.getMapByName(nom);
+
+        // Renvoi au client l'objet MAP
+        sortie.writeObject(map);
+        sortie.flush();
     }
 }
 

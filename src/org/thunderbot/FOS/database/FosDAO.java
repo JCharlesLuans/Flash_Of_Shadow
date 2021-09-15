@@ -174,7 +174,7 @@ public class FosDAO {
         Map aRetourner = new Map();
 
         String requete =
-                "SELECT * FROM " + NOM_TABLE_MAP + " WHERE " + MAP_NOM + " = " + nom;
+                "SELECT * FROM " + NOM_TABLE_MAP + " WHERE " + MAP_NOM + " = '" + nom + "';";
 
         try {
             ResultSet rs = gestionnaireBase.executeRequete(requete);

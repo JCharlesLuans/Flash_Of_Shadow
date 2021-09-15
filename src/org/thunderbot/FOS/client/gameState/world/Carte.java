@@ -4,6 +4,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
+import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.database.beans.Map;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,12 +14,12 @@ import java.util.Random;
 /**
  * Map et affichage de cette derniere
  */
-public class Carte {
+public class Carte extends Map {
 
     /** Taille d'une tuille */
     private final int TAILLE_TUILLE = 32;
 
-    private TiledMap map;
+    private TiledMap tiledMap;
 
     private String nomMap;
 
@@ -33,13 +35,13 @@ public class Carte {
      */
     public Carte() throws SlickException {
         initialiseMap("res/carte/map_campagne_ThunderSun.tmx");
-        map = new TiledMap("res/carte/map_campagne_ThunderSun.tmx");
+        tiledMap = new TiledMap("res/carte/map_campagne_ThunderSun.tmx");
         nomMap = "map_campagne_ThunderSun.tmx";
     }
 
     public Carte(String nom) throws SlickException {
         initialiseMap("src/Ressources/Map/" + nom);
-        map = new TiledMap("Ressources/Map/" + nom);
+        tiledMap = new TiledMap("Ressources/Map/" + nom);
         nomMap = nom;
     }
 
@@ -47,18 +49,18 @@ public class Carte {
      * Fait le rendu du foreground de la map
      */
     public void renderBackground() {
-        map.render(0 ,0, 0); // eau
-        map.render(0 ,0, 1); // sol
-        map.render(0 ,0, 2); // background
-        map.render(0 ,0, 3); // background 2
+        tiledMap.render(0 ,0, 0); // eau
+        tiledMap.render(0 ,0, 1); // sol
+        tiledMap.render(0 ,0, 2); // background
+        tiledMap.render(0 ,0, 3); // background 2
     }
 
     /**
      * Fait le rendu du foreground de la map
      */
     public void renderForeground() {
-        map.render(0,0,4); // overground
-        map.render(0,0,5); // overground 2
+        tiledMap.render(0,0,4); // overground
+        tiledMap.render(0,0,5); // overground 2
     }
 
     /**
@@ -126,13 +128,13 @@ public class Carte {
         Color color;
 
         /* On va chercher la tile qui se trouve au coordonnée future du personnage sur le calque logic */
-        tile = map.getTileImage((int) x / map.getTileWidth(),
-                (int) y / map.getTileHeight(),
-                map.getLayerIndex("logique"));
+        tile = tiledMap.getTileImage((int) x / tiledMap.getTileWidth(),
+                (int) y / tiledMap.getTileHeight(),
+                tiledMap.getLayerIndex("logique"));
 
         if (tile != null) {
             //Recupere la couleur
-            color = tile.getColor((int) x % map.getTileHeight(), (int) y % map.getTileHeight());
+            color = tile.getColor((int) x % tiledMap.getTileHeight(), (int) y % tiledMap.getTileHeight());
             return color.getAlpha() > 0;
         } else {
             return false;
@@ -144,10 +146,20 @@ public class Carte {
      * @param nom du fichier de la nouvelle carte
      * @throws SlickException
      */
+    public void changeMap(String nom, Client client) throws SlickException {
+        Map map = client.chargementCarte(nom);
+        System.out.println("Chargement de la carte depuis le serveur : " + map);
+
+        String chemin = "res/carte/" + nom;
+        initialiseMap(chemin);
+        tiledMap = new TiledMap(chemin);
+        nomMap = nom;
+    }
+
     public void changeMap(String nom) throws SlickException {
         String chemin = "res/carte/" + nom;
         initialiseMap(chemin);
-        map = new TiledMap(chemin);
+        tiledMap = new TiledMap(chemin);
         nomMap = nom;
     }
 
@@ -155,7 +167,7 @@ public class Carte {
      * Verifie si la position en X Y est dans un trigger dont l'id est ID
      * @param positionX position en X
      * @param positionY position en Y
-     * @param ID id de l'objet
+     * @param id id de l'objet
      * @return true si il y a un trigger
      */
     public boolean isInTrigger(float positionX, float positionY, int id) {
@@ -170,39 +182,39 @@ public class Carte {
     /*-- Getter et setters --*/
 
     public int getObjectCount() {
-        return map.getObjectCount(0);
+        return tiledMap.getObjectCount(0);
     }
 
     public String getObjectType(int objectID) {
-        return map.getObjectType(0, objectID);
+        return tiledMap.getObjectType(0, objectID);
     }
 
     public float getObjectX(int objectID) {
-        return map.getObjectX(0, objectID);
+        return tiledMap.getObjectX(0, objectID);
     }
 
     public float getObjectY(int objectID) {
-        return map.getObjectY(0, objectID);
+        return tiledMap.getObjectY(0, objectID);
     }
 
     public float getObjectWidth(int objectID) {
-        return map.getObjectWidth(0, objectID);
+        return tiledMap.getObjectWidth(0, objectID);
     }
 
     public float getObjectHeight(int objectID) {
-        return map.getObjectHeight(0, objectID);
+        return tiledMap.getObjectHeight(0, objectID);
     }
 
     public String getObjectProperty(int objectID, String propertyName, String def) {
-        return map.getObjectProperty(0, objectID, propertyName, def);
+        return tiledMap.getObjectProperty(0, objectID, propertyName, def);
     }
 
     public int getWidth() {
-        return map.getWidth();
+        return tiledMap.getWidth();
     }
 
     public int getHeight() {
-        return map.getHeight();
+        return tiledMap.getHeight();
     }
 
     public void setChangeCarte(boolean newEtat) {
