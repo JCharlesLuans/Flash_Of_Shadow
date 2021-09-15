@@ -4,15 +4,14 @@
  */
 package org.thunderbot.FOS.client.statiqueState;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
+
+import java.io.IOException;
 
 public class CreationPersonnageState extends BasicGameState {
 
@@ -44,6 +43,7 @@ public class CreationPersonnageState extends BasicGameState {
 
         //L'initialisation du TextField
         zoneSaisieNom = new TextField(gameContainer, gameContainer.getDefaultFont(), 110, 30, 480, 40);
+
         btnValider = new Bouton(100, 50, gameContainer.getWidth() - 150, gameContainer.getHeight() - 50, "Valider");
 
         // TODO chercher la liste des classe sur la BD du serveur
@@ -55,6 +55,7 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         background.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
+
         zoneSaisieNom.render(gameContainer, graphics);
         btnValider.render(graphics);
 
@@ -64,4 +65,12 @@ public class CreationPersonnageState extends BasicGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
 
     }
+
+    @Override
+    public void mouseClicked(int button, int x, int y, int clickCount) {
+        if (btnValider.isInBouton(x, y)) {
+            System.out.println("texte zone = " + zoneSaisieNom.getText());
+        }
+    }
+
 }

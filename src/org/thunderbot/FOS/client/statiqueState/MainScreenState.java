@@ -61,7 +61,7 @@ public class MainScreenState extends BasicGameState {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         background.draw(0, 0, container.getWidth(), container.getHeight());
-        g.drawString("Appuyer sur une touche", 300, 300);
+        //g.drawString("Appuyer sur une touche", 300, 300);
         zoneSaisiePseudo.render(container, g);
         zoneSaisieMotDePasse.render(container, g);
 

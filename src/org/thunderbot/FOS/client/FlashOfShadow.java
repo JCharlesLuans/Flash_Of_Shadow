@@ -27,13 +27,18 @@ import java.net.ConnectException;
  */
 public class FlashOfShadow extends StateBasedGame {
 
+    public static final int WIDTH   = 640;
+    public static final int HEIGHT  = 480;
+
     private Client client;
 
     /**
      * Lancement du jeu
      */
     public static void main(String[] args) throws SlickException, IOException {
-        new AppGameContainer(new FlashOfShadow(), 1240, 720, false).start();
+        AppGameContainer appGameContainer =  new AppGameContainer(new FlashOfShadow());
+        appGameContainer.setDisplayMode(WIDTH, HEIGHT, false);
+        appGameContainer.start();
     }
 
     public FlashOfShadow() throws IOException {
@@ -49,9 +54,9 @@ public class FlashOfShadow extends StateBasedGame {
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-        addState(new MainScreenState(client));
-        addState(new MapGameState(client));
-        addState(new CreationPersonnageState(client));
+        this.addState(new CreationPersonnageState(client));
+        this.addState(new MainScreenState(client));
+        this.addState(new MapGameState(client));
     }
 
     @Override
