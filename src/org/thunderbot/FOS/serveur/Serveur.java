@@ -99,7 +99,7 @@ public class Serveur extends Thread {
         int code = 0;
 
         Joueur joueur;
-        Personnage personnage = null;
+        Personnage personnage = new Personnage();
 
         String pseudo;
         String mdp;
