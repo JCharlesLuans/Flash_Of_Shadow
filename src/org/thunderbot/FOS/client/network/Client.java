@@ -70,12 +70,22 @@ public class Client {
         code = (int) reception();
 
         if (nouveauJoueur) {
+
             personnage = new Personnage();
-        } else {
+            Joueur tmp = (Joueur) reception();
+            personnage.setIdJoueur(tmp.getId());
+
+            // TODO ED
+            System.out.println("Création du nouveau joueur");
+            System.out.println(personnage.getIdJoueur());
+
+
+        } else if (code == 0) {
+            //TODO ed
+            System.out.println("Attente personnage");
             personnage = (Personnage) reception();
 
-            //TODO ed
-            System.out.println(personnage.toString());
+
 
         }
 

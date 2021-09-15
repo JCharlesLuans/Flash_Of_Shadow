@@ -103,16 +103,22 @@ public class MainScreenState extends BasicGameState {
         String pseudo = zoneSaisiePseudo.getText();
         String mdp = zoneSaisieMotDePasse.getText();
         code = client.authentification(pseudo, mdp, nouveauJoueur);
-        client.setPseudo(pseudo);
 
         // TODO debug
-        // System.out.println(code);
+         System.out.println(code);
 
         switch (code) {
             case 0:
-                game.enterState(MapGameState.ID);
                 JOptionPane.showMessageDialog(jFrame,
                         "Connexion réussie ! ");
+
+                if(nouveauJoueur) {
+                    game.enterState(CreationPersonnageState.ID);
+                } else {
+                    game.enterState(MapGameState.ID);
+                }
+
+
                 break;
             case 1 :
                 JOptionPane.showMessageDialog(jFrame,

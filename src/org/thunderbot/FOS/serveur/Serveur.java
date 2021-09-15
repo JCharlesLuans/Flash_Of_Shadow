@@ -170,11 +170,15 @@ public class Serveur extends Thread {
             if (!joueur.isExistant()) {
                 // Insertion en BD
                 accesBD.addJoueur(joueur);
+                joueur = accesBD.getJoueurByPseudo(joueur.getPseudo());
                 code = 0;
                 isIdentifier = true;
 
                 // TODO debug
                 System.out.println("Nouveau joueur créer");
+
+                // ATTENTE DU PERSONNAGE CREER
+                // entree.readObject();
 
             } else {
                 code = 1;
@@ -214,8 +218,14 @@ public class Serveur extends Thread {
         sortie.writeObject(code);
         sortie.flush();
 
-        sortie.writeObject(personnage);
-        sortie.flush();
+        if (code == 0 && !nouveauJoueur) {
+            sortie.writeObject(personnage);
+            sortie.flush();
+        } else if (code == 0 && nouveauJoueur) {
+            // Attente du nouveau joueur
+            sortie.writeObject(joueur);
+            sortie.flush();
+        }
 
     }
 

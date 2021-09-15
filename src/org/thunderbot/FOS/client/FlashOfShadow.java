@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.client.statiqueState.CreationPersonnageState;
 import org.thunderbot.FOS.client.statiqueState.MainScreenState;
 
 import javax.swing.*;
@@ -50,13 +51,15 @@ public class FlashOfShadow extends StateBasedGame {
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         addState(new MainScreenState(client));
         addState(new MapGameState(client));
+        addState(new CreationPersonnageState(client));
     }
 
     @Override
     public boolean closeRequested() {
         try {
-            System.out.printf("Leave");
             client.deconnexion();
+            JFrame jFrame = new JFrame();
+            JOptionPane.showMessageDialog(jFrame, "Déconnexion avec succés ! A bientot !");
         } catch (IOException e) {
            e.printStackTrace();
         }

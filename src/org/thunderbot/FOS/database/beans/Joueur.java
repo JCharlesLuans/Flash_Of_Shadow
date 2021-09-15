@@ -3,7 +3,9 @@
  */
 package org.thunderbot.FOS.database.beans;
 
-public class Joueur {
+import java.io.Serializable;
+
+public class Joueur implements Serializable {
 
     String pseudo;
     String mdp;
