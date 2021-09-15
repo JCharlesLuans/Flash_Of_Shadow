@@ -39,11 +39,11 @@ public class HelperBD {
             "CREATE TABLE " + NOM_TABLE_CLASSE + " ( "
             + CLASSE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + CLASSE_NOM + " TEXT NOT NULL,"
+            + CLASSE_STAT_AGILITE + " INTEGER NOT NULL,"
             + CLASSE_STAT_ARMURE + " INTEGER NOT NULL,"
+            + CLASSE_STAT_ENDURANCE + " INTEGER NOT NULL,"
             + CLASSE_STAT_FORCE + " INTEGER NOT NULL,"
             + CLASSE_STAT_INTELLIGENCE + " INTEGER NOT NULL,"
-            + CLASSE_STAT_AGILITE + " INTEGER NOT NULL,"
-            + CLASSE_STAT_ENDURANCE + "INTEGER NOT NULL,"
             + CLASSE_STAT_SAGESSE + " INTEGER NOT NULL"
             + ");";
 
@@ -423,7 +423,7 @@ public class HelperBD {
     private void initDataJoueur() {
         executeUpdate(
                 "INSERT INTO JOUEUR (" + JOUEUR_PSEUDO + ","+ JOUEUR_MDP + ")"
-                        + "VALUES           (    'Jean Test',           'leserveur'     );"
+                        + "VALUES           (    'JeanTest',           'leserveur'     );"
         );
         System.out.println("Initialisation du joueur Test");
     }
@@ -434,7 +434,7 @@ public class HelperBD {
                         + " ( " + CLASSE_NOM + ", " + CLASSE_STAT_AGILITE + ", " + CLASSE_STAT_ARMURE
                         + ", " + CLASSE_STAT_ENDURANCE + ", " + CLASSE_STAT_FORCE + ", " + CLASSE_STAT_INTELLIGENCE
                         + ", " + CLASSE_STAT_SAGESSE +  ")"
-                    + "VALUES ( 'Test', 1, 1, 1, 1, 1, 1) ");
+                    + "VALUES ( 'Test', 1, 1, 1, 1, 1, 1); ");
 
         System.out.println("Initialisation de la classe Test");
     }
