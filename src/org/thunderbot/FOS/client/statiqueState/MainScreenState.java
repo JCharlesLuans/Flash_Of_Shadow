@@ -106,7 +106,7 @@ public class MainScreenState extends BasicGameState {
         client.setPseudo(pseudo);
 
         // TODO debug
-        System.out.println(code);
+        // System.out.println(code);
 
         switch (code) {
             case 0:

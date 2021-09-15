@@ -213,6 +213,10 @@ public class Client {
         this.pseudo = pseudo;
     }
 
+    public Personnage getPersonnage() {
+        return personnage;
+    }
+
     private String lectureIpServeur() {
         return XMLTools.readXMLElement("res/option.xml", "ipServeur");
     }

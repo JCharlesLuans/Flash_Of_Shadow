@@ -62,8 +62,9 @@ public class MapGameState extends BasicGameState {
     }
 
     @Override
-    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         //client.updateClient(this); // Création du thread qui recois les données
+        carte.changeMap(client.getPersonnage().getMap());
         joueur.setPseudo(client.getPseudo());
     }
 
