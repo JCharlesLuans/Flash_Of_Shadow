@@ -9,6 +9,7 @@ import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.database.beans.Joueur;
 import org.thunderbot.FOS.database.beans.Map;
+import org.thunderbot.FOS.database.beans.Objet;
 import org.thunderbot.FOS.database.beans.Personnage;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.ChargementCarte;
@@ -95,13 +96,6 @@ public class Client {
      * @throws IOException
      */
     public void deconnexion() throws IOException {
-
-//        // TODO STUB
-//        personnage.getMap().setId(2);
-//        personnage.getMap().setNom("map_grotte.tmx");
-//        personnage.getMap().setNombreMob(3);
-//        personnage.getMap().setNiveauPNJ(1);
-
         envoi(new Stop(personnage));
     }
 
@@ -126,13 +120,14 @@ public class Client {
      * @return l'objets reçu
      */
     private Object reception() {
+        Object aRetourner = new Object();
         try {
-            return entree.readObject();
+            aRetourner = entree.readObject();
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return aRetourner;
     }
 
 //    /**
@@ -220,6 +215,7 @@ public class Client {
         try {
             envoi(new ChargementCarte(nom));
             aRetourner = (Map) reception();
+            personnage.setMap(aRetourner);
         } catch (IOException e) {
             e.printStackTrace();
         }
