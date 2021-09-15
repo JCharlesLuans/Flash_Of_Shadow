@@ -65,10 +65,15 @@ public class FosDAO {
 
         try {
             ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            aRetourner.setId(rs.getInt(PERSONNAGE_CLE));
             aRetourner.setNom(rs.getString(PERSONNAGE_NOM));
             aRetourner.setSprite(rs.getString(PERSONNAGE_SPRITE));
+
             aRetourner.setIdJoueur(joueur.getId());
+
             aRetourner.setClasse(getClasseById(rs.getInt(PERSONNAGE_CLE_CLASSE)));
+
             aRetourner.setMap(getMapById(rs.getInt(PERSONNAGE_CLE_MAP)).getNom());
 
             aRetourner.setStuffArme(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_ARME)));
@@ -91,6 +96,26 @@ public class FosDAO {
 
     public Classe getClasseById(int id) {
         Classe aRetourner = new Classe();
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_CLASSE + " WHERE " + CLASSE_CLE + " = " + id;
+
+        try {
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            aRetourner.setId(rs.getInt(CLASSE_CLE));
+            aRetourner.setNom(rs.getString(CLASSE_NOM));
+
+            aRetourner.setStatAgilite(rs.getInt(CLASSE_STAT_AGILITE));
+            aRetourner.setStatArmure(rs.getInt(CLASSE_STAT_ARMURE));
+            aRetourner.setStatEndurance(rs.getInt(CLASSE_STAT_ENDURANCE));
+            aRetourner.setStatForce(rs.getInt(CLASSE_STAT_FORCE));
+            aRetourner.setStatIntelligence(rs.getInt(CLASSE_STAT_INTELLIGENCE));
+            aRetourner.setStatSagesse(rs.getInt(CLASSE_STAT_SAGESSE));
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         return aRetourner;
     }
 
