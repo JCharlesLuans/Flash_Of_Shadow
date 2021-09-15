@@ -418,6 +418,7 @@ public class HelperBD {
             initDataJoueur();
             initDataClasse();
             initPersonnage();
+            initMap();
         }
     }
 
@@ -451,6 +452,15 @@ public class HelperBD {
                         + "VALUES ( 'TestPerso', 'image', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1); ");
 
         System.out.println("Initialisation du personnage");
+    }
+
+    private void initMap() {
+        executeUpdate(
+                "INSERT INTO " + NOM_TABLE_MAP
+                        + " ( " + MAP_NOM + ", " + MAP_NIVEAU_PNJ + ", " + MAP_NOMBRE_MOB +  ")"
+                        + "VALUES ( 'map_campagne_ThunderSun.tmx', 1, 3); ");
+
+        System.out.println("Initialisation de la carte");
     }
 
 

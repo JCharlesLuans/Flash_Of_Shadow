@@ -121,6 +121,22 @@ public class FosDAO {
 
     public Map getMapById(int id) {
         Map aRetourner = new Map();
+
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_MAP + " WHERE " + MAP_CLE + " = " + id;
+
+        try {
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            aRetourner.setId(rs.getInt(MAP_CLE));
+            aRetourner.setNom(rs.getString(MAP_NOM));
+            aRetourner.setNiveauPNJ(rs.getInt(MAP_NIVEAU_PNJ));
+            aRetourner.setNombreMob(rs.getInt(MAP_NOMBRE_MOB));
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         return aRetourner;
     }
 
