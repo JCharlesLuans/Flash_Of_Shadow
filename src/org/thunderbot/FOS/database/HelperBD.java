@@ -182,6 +182,8 @@ public class HelperBD {
     public static final String PERSONNAGE_CLE = "_id";
     public static final String PERSONNAGE_NOM = "nom";
     public static final String PERSONNAGE_SPRITE = "sprite";
+    public static final String PERSONNAGE_X = "x";
+    public static final String PERSONNAGE_Y = "y";
     public static final String PERSONNAGE_CLE_JOUEUR = "idJoueur";
     public static final String PERSONNAGE_CLE_CLASSE = "idClasse";
     public static final String PERSONNAGE_CLE_MAP = "idMap";
@@ -200,6 +202,8 @@ public class HelperBD {
                 + PERSONNAGE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + PERSONNAGE_NOM + " TEXT NOT NULL,"
                 + PERSONNAGE_SPRITE + " TEXT NOT NULL,"
+                + PERSONNAGE_X + " FLOAT NOT NULL,"
+                + PERSONNAGE_Y + " FLOAT NOT NULL,"
                 + PERSONNAGE_CLE_JOUEUR + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_JOUEUR + " (" + JOUEUR_CLE + "),"
                 + PERSONNAGE_CLE_CLASSE + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_CLASSE + " (" + CLASSE_CLE + "),"
                 + PERSONNAGE_CLE_MAP + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_MAP + " (" + MAP_CLE + "),"
@@ -445,12 +449,13 @@ public class HelperBD {
     private void initPersonnage() {
         executeUpdate(
                 "INSERT INTO " + NOM_TABLE_PERSONNAGE
-                        + " ( " + PERSONNAGE_NOM + ", " + PERSONNAGE_SPRITE + ", " + PERSONNAGE_CLE_JOUEUR
+                        + " ( " + PERSONNAGE_NOM + ", " + PERSONNAGE_SPRITE + ", " + PERSONNAGE_X
+                        + ", " + PERSONNAGE_Y + ", " + PERSONNAGE_CLE_JOUEUR
                         + ", " + PERSONNAGE_CLE_CLASSE + ", " + PERSONNAGE_CLE_MAP + ", " + PERSONNAGE_CLE_STUFF_TETE
                         + ", " + PERSONNAGE_CLE_STUFF_TORSE + ", " + PERSONNAGE_CLE_STUFF_GANT + ", " + PERSONNAGE_CLE_STUFF_JAMBE
                         + ", " + PERSONNAGE_CLE_STUFF_BOTTE + ", " + PERSONNAGE_CLE_STUFF_ARME + ", " + PERSONNAGE_CLE_FACTION
                         + ", " + PERSONNAGE_CLE_GUILDE + ", " + PERSONNAGE_CLE_TITRE +  ")"
-                        + "VALUES ( 'TestPerso', 'image', 1, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1); ");
+                        + "VALUES ( 'TestPerso', 'image', 650 ,400 ,1, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1); ");
 
         System.out.println("Initialisation du personnage");
     }
@@ -460,6 +465,12 @@ public class HelperBD {
                 "INSERT INTO " + NOM_TABLE_MAP
                         + " ( " + MAP_NOM + ", " + MAP_NIVEAU_PNJ + ", " + MAP_NOMBRE_MOB +  ")"
                         + "VALUES ( 'map_campagne_ThunderSun.tmx', 1, 3); "
+        );
+
+        executeUpdate(
+                "INSERT INTO " + NOM_TABLE_MAP
+                        + " ( " + MAP_NOM + ", " + MAP_NIVEAU_PNJ + ", " + MAP_NOMBRE_MOB +  ")"
+                        + "VALUES ( 'map_grotte.tmx', 1, 3); "
         );
 
         System.out.println("Initialisation de la carte");

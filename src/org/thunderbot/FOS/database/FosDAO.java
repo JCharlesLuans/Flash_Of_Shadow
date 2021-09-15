@@ -70,11 +70,14 @@ public class FosDAO {
             aRetourner.setNom(rs.getString(PERSONNAGE_NOM));
             aRetourner.setSprite(rs.getString(PERSONNAGE_SPRITE));
 
+            aRetourner.setX(rs.getFloat(PERSONNAGE_X));
+            aRetourner.setY(rs.getFloat(PERSONNAGE_Y));
+
             aRetourner.setIdJoueur(joueur.getId());
 
             aRetourner.setClasse(getClasseById(rs.getInt(PERSONNAGE_CLE_CLASSE)));
 
-            aRetourner.setMap(getMapById(rs.getInt(PERSONNAGE_CLE_MAP)).getNom());
+            aRetourner.setMap(getMapById(rs.getInt(PERSONNAGE_CLE_MAP)));
 
             aRetourner.setStuffArme(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_ARME)));
             aRetourner.setStuffBotte(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_BOTTE)));
@@ -83,9 +86,9 @@ public class FosDAO {
             aRetourner.setStuffTete(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_TETE)));
             aRetourner.setStuffTorse(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_TORSE)));
 
-            aRetourner.setFaction(getFactionById(rs.getInt(PERSONNAGE_CLE_FACTION)).getNom());
-            aRetourner.setGuilde(getGuildeById(rs.getInt(PERSONNAGE_CLE_GUILDE)).getNom());
-            aRetourner.setTitre(getTitreById(rs.getInt(PERSONNAGE_CLE_TITRE)).getNom());
+            aRetourner.setFaction(getFactionById(rs.getInt(PERSONNAGE_CLE_FACTION)));
+            aRetourner.setGuilde(getGuildeById(rs.getInt(PERSONNAGE_CLE_GUILDE)));
+            aRetourner.setTitre(getTitreById(rs.getInt(PERSONNAGE_CLE_TITRE)));
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -93,6 +96,27 @@ public class FosDAO {
 
         return aRetourner;
     }
+
+    public void updatePersonnage(int id, Personnage personnage) {
+        String requette =
+                "UPDATE " + NOM_TABLE_PERSONNAGE
+                + " SET " + PERSONNAGE_X + " = " + personnage.getX() + ','
+                          + PERSONNAGE_Y + " = " + personnage.getY() + ','
+                          + PERSONNAGE_CLE_MAP + " = " + personnage.getMap().getId() + ','
+                          + PERSONNAGE_CLE_STUFF_TETE + " = " + personnage.getStuffTete().getId() + ','
+                          + PERSONNAGE_CLE_STUFF_TORSE + " = " + personnage.getStuffTorse().getId() + ','
+                          + PERSONNAGE_CLE_STUFF_GANT + " = " + personnage.getStuffGant().getId() + ','
+                          + PERSONNAGE_CLE_STUFF_JAMBE + " = " + personnage.getStuffJambe().getId() + ','
+                          + PERSONNAGE_CLE_STUFF_BOTTE + " = " + personnage.getStuffBotte().getId() + ','
+                          + PERSONNAGE_CLE_STUFF_ARME + " = " + personnage.getStuffArme().getId() + ','
+                          + PERSONNAGE_CLE_GUILDE + " = " + personnage.getGuilde().getId() + ','
+                          + PERSONNAGE_CLE_TITRE + " = " + personnage.getTitre().getId()
+                + " WHERE " + PERSONNAGE_CLE + " = " + id;
+
+        gestionnaireBase.executeUpdate(requette);
+    }
+
+
 
     public Classe getClasseById(int id) {
         Classe aRetourner = new Classe();

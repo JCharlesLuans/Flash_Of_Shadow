@@ -54,11 +54,12 @@ public class FlashOfShadow extends StateBasedGame {
 
     @Override
     public boolean closeRequested() {
-//        try {
-//            client.deconnexion();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            System.out.printf("Leave");
+            client.deconnexion();
+        } catch (IOException e) {
+           e.printStackTrace();
+        }
         System.exit(0); // Use this if you want to quit the app.
         return false;
     }

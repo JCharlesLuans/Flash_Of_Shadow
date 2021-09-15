@@ -8,8 +8,11 @@ package org.thunderbot.FOS.serveur;
 import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.HelperBD;
 import org.thunderbot.FOS.database.beans.Joueur;
+import org.thunderbot.FOS.database.beans.Objet;
 import org.thunderbot.FOS.database.beans.Personnage;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
+import org.thunderbot.FOS.serveur.networkObject.Stop;
+import org.thunderbot.FOS.serveur.networkObject.Update;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,7 +34,9 @@ public class Serveur extends Thread {
     private ArrayList<Socket> listeSocketClient;
     private Socket me;
     private static FosDAO accesBD;
+
     private boolean isIdentifier;
+    private boolean isConnecter;
 
     /**
      * Lancement du serveur
@@ -66,6 +71,7 @@ public class Serveur extends Thread {
     public Serveur(ArrayList<Socket> listeSocketClient, Socket me) {
         this.listeSocketClient = listeSocketClient;
         this.me = me;
+        isConnecter = true;
     }
 
     public void run() {
@@ -80,11 +86,35 @@ public class Serveur extends Thread {
             ObjectInputStream entree = new ObjectInputStream(me.getInputStream());
 
             while (!isIdentifier) {
-                connexion(entree, sortie);
+
+                // TODO ED
                 System.out.println(me.getInetAddress() + " n'est pas identifier");
+
+                connexion(entree, sortie);
             }
 
+            // TODO ED
             System.out.println(me.getInetAddress() + " est identifier");
+
+            while (isConnecter) {
+                Object reception = entree.readObject();
+
+                if (reception.getClass() == Update.class) {
+                    // Gestion de l'updae
+
+                    // TODO ed
+                    System.out.println("UPDATE");
+
+                } else if (reception.getClass() == Stop.class) {
+                    // Gestion de la deconnection
+                    // TODO ed
+                    System.out.println("STOP");
+                    deconnexion((Stop) reception);
+                    isConnecter = false;
+                    me.close();
+                }
+
+            }
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -92,6 +122,14 @@ public class Serveur extends Thread {
 
     }
 
+    /**
+     * Permet d'authentifier un joueur et de le connecter au serveur, permet
+     * de lui envoyer les donnée relative a son personnage
+     * @param entree
+     * @param sortie
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void connexion(ObjectInputStream entree, ObjectOutputStream sortie) throws IOException, ClassNotFoundException {
 
         // TODO ECHAPER CHAR SPECIAUX SQL
@@ -173,6 +211,12 @@ public class Serveur extends Thread {
         sortie.writeObject(personnage);
         sortie.flush();
 
+    }
+
+    private void deconnexion(Stop stop) {
+        Personnage personnage = stop.getPersonnage();
+        accesBD.updatePersonnage(personnage.getId(), personnage);
+        System.out.println("Deconnexion de : " + me.getInetAddress());
     }
 }
 

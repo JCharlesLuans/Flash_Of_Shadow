@@ -5,12 +5,14 @@
 
 package org.thunderbot.FOS.database.beans;
 
+import java.io.Serializable;
+
 /**
  * TODO ecrire Java Doc
  *
  * @author Jean-Charles Luans
  */
-public class Guilde {
+public class Guilde implements Serializable {
 
     private int id;
     private String nom;

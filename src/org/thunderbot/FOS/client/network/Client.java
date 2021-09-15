@@ -9,6 +9,7 @@ import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.database.beans.Joueur;
 import org.thunderbot.FOS.database.beans.Personnage;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
+import org.thunderbot.FOS.serveur.networkObject.Stop;
 import org.thunderbot.FOS.utils.XMLTools;
 
 import java.io.IOException;
@@ -85,14 +86,21 @@ public class Client {
         return (ServPersonnage) reception();
     }
 
-//    /**
-//     * Dconnecte le client auprés du serveur
-//     * @throws IOException
-//     */
-//    public void deconnexion() throws IOException {
-//        envoi(XMLTools.encodeString(new Stop(pseudo)));
-//    }
-//
+    /**
+     * Dconnecte le client auprés du serveur
+     * @throws IOException
+     */
+    public void deconnexion() throws IOException {
+
+        // TODO STUB
+        personnage.getMap().setId(2);
+        personnage.getMap().setNom("map_grotte.tmx");
+        personnage.getMap().setNombreMob(3);
+        personnage.getMap().setNiveauPNJ(1);
+
+        envoi(new Stop(personnage));
+    }
+
 //    /**
 //     * Actualise les données du client
 //     * @param mapGameState

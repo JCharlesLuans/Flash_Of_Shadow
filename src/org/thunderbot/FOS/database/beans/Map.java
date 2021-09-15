@@ -5,12 +5,14 @@
 
 package org.thunderbot.FOS.database.beans;
 
+import java.io.Serializable;
+
 /**
  * Représentation de la donnée Map de la BD
  *
  * @author Jean-Charles Luans
  */
-public class Map {
+public class Map implements Serializable {
 
     private int id;
     private String nom;

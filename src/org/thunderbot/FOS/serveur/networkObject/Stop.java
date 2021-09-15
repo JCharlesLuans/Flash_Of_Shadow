@@ -5,28 +5,32 @@
 
 package org.thunderbot.FOS.serveur.networkObject;
 
+import org.thunderbot.FOS.database.beans.Personnage;
+
+import java.io.Serializable;
+
 /**
  * Classe de deconexion
  *
  * @author J-Charles Luans
  * @version 1.0
  */
-public class Stop {
-    private String pseudo;
+public class Stop implements Serializable {
+    private Personnage personnage;
 
     public Stop() {
-        pseudo = "";
+        personnage = null;
     }
 
-    public Stop(String newPseudo) {
-        pseudo = newPseudo;
+    public Stop(Personnage personnage) {
+        this.personnage = personnage;
     }
 
-    public String getPseudo() {
-        return pseudo;
+    public Personnage getPersonnage() {
+        return personnage;
     }
 
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public void setPersonnage(String pseudo) {
+        this.personnage = personnage;
     }
 }

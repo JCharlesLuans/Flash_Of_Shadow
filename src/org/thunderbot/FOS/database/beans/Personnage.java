@@ -11,36 +11,40 @@ public class Personnage implements Serializable {
     private int id;
     private String nom;
     private String sprite;
+    private float x;
+    private float y;
     private int idJoueur;
     private Classe classe;
-    private String map;
+    private Map map;
     private Objet stuffTete;
     private Objet stuffTorse;
     private Objet stuffGant;
     private Objet stuffJambe;
     private Objet stuffBotte;
     private Objet stuffArme;
-    private String faction;
-    private String guilde;
-    private String titre;
+    private Faction faction;
+    private Guilde guilde;
+    private Titre titre;
 
     public Personnage() {
         idJoueur = -1;
         classe = null;
-        map = "";
+        map = null;
         stuffArme = null;
         stuffBotte = null;
         stuffGant = null;
         stuffJambe = null;
         stuffTete = null;
         stuffTorse = null;
-        faction = "";
-        guilde = "";
-        titre = "";
+        faction = null;
+        guilde = null;
+        titre = null;
 
     }
 
-    public Personnage(int id, String nom, String sprite, int idJoueur, Classe classe, String map, Objet stuffTete, Objet stuffTorse, Objet stuffGant, Objet stuffJambe, Objet stuffBotte, Objet stuffArme, String faction, String guilde, String titre) {
+    public Personnage(int id, String nom, String sprite, int idJoueur, Classe classe, Map map, Objet stuffTete,
+                      Objet stuffTorse, Objet stuffGant, Objet stuffJambe, Objet stuffBotte, Objet stuffArme,
+                      Faction faction, Guilde guilde, Titre titre) {
         this.id = id;
         this.nom = nom;
         this.sprite = sprite;
@@ -82,6 +86,22 @@ public class Personnage implements Serializable {
         this.sprite = sprite;
     }
 
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getY() {
+        return y;
+    }
+
     public int getIdJoueur() {
         return idJoueur;
     }
@@ -98,11 +118,11 @@ public class Personnage implements Serializable {
         this.classe = classe;
     }
 
-    public String getMap() {
+    public Map getMap() {
         return map;
     }
 
-    public void setMap(String map) {
+    public void setMap(Map map) {
         this.map = map;
     }
 
@@ -154,27 +174,27 @@ public class Personnage implements Serializable {
         this.stuffArme = stuffArme;
     }
 
-    public String getFaction() {
+    public Faction getFaction() {
         return faction;
     }
 
-    public void setFaction(String faction) {
+    public void setFaction(Faction faction) {
         this.faction = faction;
     }
 
-    public String getGuilde() {
+    public Guilde getGuilde() {
         return guilde;
     }
 
-    public void setGuilde(String guilde) {
+    public void setGuilde(Guilde guilde) {
         this.guilde = guilde;
     }
 
-    public String getTitre() {
+    public Titre getTitre() {
         return titre;
     }
 
-    public void setTitre(String titre) {
+    public void setTitre(Titre titre) {
         this.titre = titre;
     }
 
@@ -198,4 +218,5 @@ public class Personnage implements Serializable {
                 ", titre='" + titre + '\'' +
                 '}';
     }
+
 }
