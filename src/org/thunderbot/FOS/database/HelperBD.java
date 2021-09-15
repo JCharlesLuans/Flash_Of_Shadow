@@ -413,10 +413,11 @@ public class HelperBD {
 
             System.out.println("Création des tables terminée !");
 
-            // INIT DATA
+            // INIT DATA TODO enlever
+            System.out.println("Création du joueur test");
             initDataJoueur();
             initDataClasse();
-
+            initPersonnage();
         }
     }
 
@@ -425,7 +426,7 @@ public class HelperBD {
                 "INSERT INTO JOUEUR (" + JOUEUR_PSEUDO + ","+ JOUEUR_MDP + ")"
                         + "VALUES           (    'JeanTest',           'leserveur'     );"
         );
-        System.out.println("Initialisation du joueur Test");
+        System.out.println("Initialisation du joueur");
     }
 
     private void initDataClasse() {
@@ -434,9 +435,22 @@ public class HelperBD {
                         + " ( " + CLASSE_NOM + ", " + CLASSE_STAT_AGILITE + ", " + CLASSE_STAT_ARMURE
                         + ", " + CLASSE_STAT_ENDURANCE + ", " + CLASSE_STAT_FORCE + ", " + CLASSE_STAT_INTELLIGENCE
                         + ", " + CLASSE_STAT_SAGESSE +  ")"
-                    + "VALUES ( 'Test', 1, 1, 1, 1, 1, 1); ");
+                    + "VALUES ( 'TestClassse', 1, 1, 1, 1, 1, 1); ");
 
-        System.out.println("Initialisation de la classe Test");
+        System.out.println("Initialisation de la classe");
+    }
+
+    private void initPersonnage() {
+        executeUpdate(
+                "INSERT INTO " + NOM_TABLE_PERSONNAGE
+                        + " ( " + PERSONNAGE_NOM + ", " + PERSONNAGE_SPRITE + ", " + PERSONNAGE_CLE_JOUEUR
+                        + ", " + PERSONNAGE_CLE_CLASSE + ", " + PERSONNAGE_CLE_MAP + ", " + PERSONNAGE_CLE_STUFF_TETE
+                        + ", " + PERSONNAGE_CLE_STUFF_TORSE + ", " + PERSONNAGE_CLE_STUFF_GANT + ", " + PERSONNAGE_CLE_STUFF_JAMBE
+                        + ", " + PERSONNAGE_CLE_STUFF_BOTTE + ", " + PERSONNAGE_CLE_STUFF_ARME + ", " + PERSONNAGE_CLE_FACTION
+                        + ", " + PERSONNAGE_CLE_GUILDE + ", " + PERSONNAGE_CLE_TITRE +  ")"
+                        + "VALUES ( 'TestPerso', 'image', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1); ");
+
+        System.out.println("Initialisation du personnage");
     }
 
 

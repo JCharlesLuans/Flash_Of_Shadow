@@ -84,7 +84,7 @@ public class Serveur extends Thread {
                 System.out.println(me.getInetAddress() + " n'est pas identifier");
             }
 
-            System.out.println(me.getInetAddress() + " est pas identifier");
+            System.out.println(me.getInetAddress() + " est identifier");
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -115,6 +115,10 @@ public class Serveur extends Thread {
         joueur = accesBD.getJoueurByPseudo(pseudo);
 
         if (nouveauJoueur) {
+
+            // TODO debug
+            System.out.println("Nouveau joueur");
+
             //si le joueur n'existe pas
             joueur.setPseudo(pseudo);
             joueur.setMdp(mdp);
@@ -124,30 +128,50 @@ public class Serveur extends Thread {
                 accesBD.addJoueur(joueur);
                 code = 0;
                 isIdentifier = true;
+
+                // TODO debug
+                System.out.println("Nouveau joueur créer");
+
             } else {
                 code = 1;
+
+                // TODO debug
+                System.out.println("Joueur existant");
             }
 
         } else {
             // Verification cohérance pseudo + mdp
             if (joueur.isExistant() && joueur.getMdp().equals(mdp)) {
+
+                // TODO debug
+                System.out.println("Joueur authentifier : " + joueur.getId());
+
                 code = 0;
                 isIdentifier = true;
 
                 // recherche du personnage de se joueur
                 personnage = accesBD.getPersonnageByJoueur(joueur);
 
+                // TODO ed
+                System.out.println(personnage.toString());
+
             } else {
+
+                // TODO debug
+                System.out.println("Echec auth car non trouver");
+
                 code = 2;
             }
         }
 
-        System.out.println(code);
+        // TODO DUBUG
+        // System.out.println(code);
 
         sortie.writeObject(code);
         sortie.flush();
 
         sortie.writeObject(personnage);
+        sortie.flush();
 
     }
 }

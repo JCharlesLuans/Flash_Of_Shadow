@@ -51,6 +51,8 @@ public class Client {
     /**
      * Authentification du client auprés du serveur
      * @param pseudo du client
+     * @param  mdp du client
+     * @param nouveauJoueur indique si le joueur est en train de s'inscrire ou de se connecter
      * @throws IOException
      */
     public int authentification(String pseudo, String mdp, boolean nouveauJoueur) throws IOException {
@@ -60,8 +62,17 @@ public class Client {
 
         envoi(new Authentification(pseudo, mdp, nouveauJoueur));
         code = (int) reception();
-        personnage = (Personnage) reception();
-        personnage.toString();
+
+        if (nouveauJoueur) {
+            personnage = new Personnage();
+        } else {
+            personnage = (Personnage) reception();
+
+            //TODO ed
+            System.out.println(personnage.toString());
+
+        }
+
 
         return code;
     }

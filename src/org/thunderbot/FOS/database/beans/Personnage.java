@@ -4,7 +4,9 @@
  */
 package org.thunderbot.FOS.database.beans;
 
-public class Personnage {
+import java.io.Serializable;
+
+public class Personnage implements Serializable {
 
     private int id;
     private String nom;
