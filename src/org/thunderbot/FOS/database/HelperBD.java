@@ -424,6 +424,129 @@ public class HelperBD {
             executeUpdate(CREATION_TABLE_LISTE_OBJET_LOOTABLE);
 
             System.out.println("Création des tables terminée !");
+
+            initDataJoueur();
+            initMap();
+            initPersonnage();
+            initObjet();
         }
+    }
+
+    private void initDataJoueur() {
+        executeUpdate(
+                "INSERT INTO JOUEUR (" + JOUEUR_PSEUDO + ","+ JOUEUR_MDP + ")"
+                        + "VALUES           (    'JeanTest',           'leserveur'     );"
+        );
+        System.out.println("Initialisation du joueur");
+    }
+
+
+    private void initPersonnage() {
+        executeUpdate(
+                "INSERT INTO " + NOM_TABLE_PERSONNAGE
+                        + " ( " + PERSONNAGE_NOM + ", " + PERSONNAGE_SPRITE + ", " + PERSONNAGE_X
+                        + ", " + PERSONNAGE_Y + ", " + PERSONNAGE_CLE_JOUEUR
+                        + ", " + PERSONNAGE_CLE_CLASSE + ", " + PERSONNAGE_CLE_MAP + ", " + PERSONNAGE_CLE_STUFF_TETE
+                        + ", " + PERSONNAGE_CLE_STUFF_TORSE + ", " + PERSONNAGE_CLE_STUFF_GANT + ", " + PERSONNAGE_CLE_STUFF_JAMBE
+                        + ", " + PERSONNAGE_CLE_STUFF_BOTTE + ", " + PERSONNAGE_CLE_STUFF_ARME + ", " + PERSONNAGE_CLE_FACTION
+                        + ", " + PERSONNAGE_CLE_GUILDE + ", " + PERSONNAGE_CLE_TITRE +  ")"
+                        + "VALUES ( 'TestPerso', 'image', 640, 400, 1, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1); ");
+
+        System.out.println("Initialisation du personnage");
+    }
+
+    private void initMap() {
+        executeUpdate(
+                "INSERT INTO " + NOM_TABLE_MAP
+                        + " ( " + MAP_NOM + ", " + MAP_NIVEAU_PNJ + ", " + MAP_NOMBRE_MOB +  ")"
+                        + "VALUES ( 'map_campagne_ThunderSun.tmx', 1, 3); "
+        );
+
+        executeUpdate(
+                "INSERT INTO " + NOM_TABLE_MAP
+                        + " ( " + MAP_NOM + ", " + MAP_NIVEAU_PNJ + ", " + MAP_NOMBRE_MOB +  ")"
+                        + "VALUES ( 'map_grotte.tmx', 1, 3); "
+        );
+
+        System.out.println("Initialisation de la carte");
+    }
+
+    private void initObjet() {
+
+        // Objet vide de l'inventaire
+        executeUpdate("" +
+                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
+                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
+                + OBJET_STAT_DEXTERITE + ", "
+                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
+                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
+                + "VALUES ( 'Vide', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'vide.png' ); "
+
+        );
+
+        // Casque
+        executeUpdate("" +
+                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
+                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
+                + OBJET_STAT_DEXTERITE + ", "
+                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
+                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
+                + "VALUES ( 'Casque', 1, 1, 1, 1, 1, 1, 1, 1, 0, 'casque.png' ); "
+
+        );
+
+        // Plastron
+        executeUpdate("" +
+                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
+                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
+                + OBJET_STAT_DEXTERITE + ", "
+                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
+                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
+                + "VALUES ( 'Plastron', 2, 1, 1, 1, 1, 1, 1, 1, 0, 'plastron.png' ); "
+
+        );
+
+        // Gant
+        executeUpdate("" +
+                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
+                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
+                + OBJET_STAT_DEXTERITE + ", "
+                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
+                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
+                + "VALUES ( 'Gant', 3, 1, 1, 1, 1, 1, 1, 1, 0, 'gant.png' ); "
+
+        );
+
+        // Jambiere
+        executeUpdate("" +
+                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
+                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
+                + OBJET_STAT_DEXTERITE + ", "
+                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
+                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
+                + "VALUES ( 'Jambiere', 4, 1, 1, 1, 1, 1, 1, 1, 0, 'jambiere.png' ); "
+        );
+
+        // Botte
+        executeUpdate("" +
+                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
+                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
+                + OBJET_STAT_DEXTERITE + ", "
+                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
+                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
+                + "VALUES ( 'Botte', 5, 1, 1, 1, 1, 1, 1, 1, 0, 'botte.png' ); "
+        );
+
+        // Hache
+        executeUpdate("" +
+                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
+                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
+                + OBJET_STAT_DEXTERITE + ", "
+                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
+                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
+                + "VALUES ( 'Hache', 6, 1, 1, 1, 1, 1, 1, 1, 2, 'hache.png' ); "
+        );
+
+        System.out.println("Initialisation des objets");
     }
 }

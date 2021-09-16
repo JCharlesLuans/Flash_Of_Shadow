@@ -10,9 +10,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
-import org.thunderbot.FOS.client.statiqueState.layout.BoutonCochable;
 import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
-import org.thunderbot.FOS.client.statiqueState.layout.GroupeCochable;
+import org.thunderbot.FOS.client.statiqueState.layout.ImageFlottante;
 import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Faction;
 
@@ -30,8 +29,6 @@ public class CreationPersonnageState extends BasicGameState {
     private static final int BTN_VALIDER_HAUTEUR  = 50;
     private static final int BTN_VALIDER_DELTA = 65;
 
-    private static final int BTN_CLASSE_LONGUEUR = 75;
-    private static final int BTN_CLASSE_HAUTEUR = 50;
     private static final int BTN_CLASSE_X_START = 100;
     private static final int BTN_CLASSE_Y_START = 50;
 
@@ -42,12 +39,21 @@ public class CreationPersonnageState extends BasicGameState {
     private Bouton btnValider;
     private TextField ztNom;
 
-    private BoutonImage btnArc;
+    private BoutonImage btnImg_archer;
+    private BoutonImage btnImg_mage;
+    private BoutonImage btnImg_pretre;
+    private BoutonImage btnImg_guerrier;
+    private BoutonImage btnImg_voleur;
+    private BoutonImage btnImg_pugilat;
 
-    private GroupeCochable groupeBtnCochableClasse;
-    private GroupeCochable groupeBtnCochableFaction;
+    private ImageFlottante desc_archer;
+    private ImageFlottante desc_mage;
+    private ImageFlottante desc_pretre;
+    private ImageFlottante desc_guerrier;
+    private ImageFlottante desc_voleur;
+    private ImageFlottante desc_pugilat;
 
-
+    private Sound click;
 
     public CreationPersonnageState(Client client) {
         this.client = client;
@@ -66,10 +72,28 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
-        groupeBtnCochableClasse = new GroupeCochable();
-        groupeBtnCochableFaction = new GroupeCochable();
+        click = new Sound("res/menuState/son/click.wav");
 
-        btnArc = new BoutonImage("res/menuState/creationJoueur/archer.png", gameContainer.getWidth() / 2,  gameContainer.getHeight() / 2);
+        desc_archer = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/archer.png");
+        desc_mage = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/mage.png");
+        desc_pretre = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/pretre.png");
+        desc_guerrier = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/guerrier.png");
+        desc_voleur = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/voleur.png");
+        desc_pugilat = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/pugilat.png");
+
+        int x = BTN_CLASSE_X_START;
+
+        btnImg_archer   = new BoutonImage("res/menuState/creationJoueur/archer.png", x,  BTN_CLASSE_Y_START);
+        x+= 128;
+        btnImg_mage     = new BoutonImage("res/menuState/creationJoueur/mage.png", x,  BTN_CLASSE_Y_START);
+        x+= 128;
+        btnImg_pretre   = new BoutonImage("res/menuState/creationJoueur/pretre.png", x,  BTN_CLASSE_Y_START);
+        x+= 128;
+        btnImg_guerrier = new BoutonImage("res/menuState/creationJoueur/guerrier.png", x,  BTN_CLASSE_Y_START);
+        x+= 128;
+        btnImg_voleur   = new BoutonImage("res/menuState/creationJoueur/voleur.png", x,  BTN_CLASSE_Y_START);
+        x+= 128;
+        btnImg_pugilat  = new BoutonImage("res/menuState/creationJoueur/pugilat.png", x,  BTN_CLASSE_Y_START);
 
         background = new Image("res/menuState/creationJoueur/backgroundCreationPerso.jpg");
 
@@ -84,17 +108,11 @@ public class CreationPersonnageState extends BasicGameState {
 
         // TODO chercher la liste des classe sur la BD du serveur
         ArrayList<Classe> listeClasse = client.chargementListeClasse();
-        for (int i = 0; i < listeClasse.size(); i++) {
-            groupeBtnCochableClasse.getListe().add(
-                    new BoutonCochable(BTN_CLASSE_X_START * (i + 1), BTN_CLASSE_Y_START, BTN_CLASSE_LONGUEUR, BTN_VALIDER_HAUTEUR, listeClasse.get(i).getNom()));
-        }
+
 
         // TODO chercher la liste des faction sur la BD du serveur
         ArrayList<Faction> listeFaction = client.chargementListeFaction();
-        for (int i = 0; i < listeFaction.size(); i++) {
-            groupeBtnCochableFaction.getListe().add(
-                    new BoutonCochable(BTN_CLASSE_X_START * (i + 1), BTN_CLASSE_Y_START + BTN_CLASSE_HAUTEUR + 50, BTN_CLASSE_LONGUEUR, BTN_VALIDER_HAUTEUR, listeFaction.get(i).getNom()));
-        }
+
     }
 
     @Override
@@ -103,12 +121,21 @@ public class CreationPersonnageState extends BasicGameState {
 
         btnValider.render(graphics);
 
-        groupeBtnCochableClasse.render(graphics);
-        groupeBtnCochableFaction.render(graphics);
-
         ztNom.render(gameContainer, graphics);
 
-        btnArc.render(graphics);
+        btnImg_archer.render(graphics);
+        btnImg_mage.render(graphics);
+        btnImg_pretre.render(graphics);
+        btnImg_guerrier.render(graphics);
+        btnImg_voleur.render(graphics);
+        btnImg_pugilat.render(graphics);
+
+        desc_archer.render(graphics);
+        desc_mage.render(graphics);
+        desc_pretre.render(graphics);
+        desc_guerrier.render(graphics);
+        desc_voleur.render(graphics);
+        desc_pugilat.render(graphics);
     }
 
     @Override
@@ -118,10 +145,123 @@ public class CreationPersonnageState extends BasicGameState {
 
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
-        if (btnValider.isInBouton(x, y)) {
 
+        if (btnValider.isInBouton(x, y)) {
+            click.play();
         }
-        btnArc.isInLayout(x, y);
+
+        gestionBoutonClasse(x, y);
+    }
+
+    public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+
+        desc_archer.setVisible(false);
+        desc_mage.setVisible(false);
+        desc_pretre.setVisible(false);
+        desc_guerrier.setVisible(false);
+        desc_voleur.setVisible(false);
+        desc_pugilat.setVisible(false);
+
+        if(btnImg_archer.isInLayout(newx, newy)) {
+            desc_archer.setX(newx);
+            desc_archer.setY(newy);
+            desc_archer.setVisible(true);
+        }
+
+        if(btnImg_mage.isInLayout(newx, newy)) {
+            desc_mage.setX(newx);
+            desc_mage.setY(newy);
+            desc_mage.setVisible(true);
+        }
+
+        if(btnImg_pretre.isInLayout(newx, newy)) {
+            desc_pretre.setX(newx);
+            desc_pretre.setY(newy);
+            desc_pretre.setVisible(true);
+        }
+
+        if(btnImg_guerrier.isInLayout(newx, newy)) {
+            desc_guerrier.setX(newx);
+            desc_guerrier.setY(newy);
+            desc_guerrier.setVisible(true);
+        }
+
+        if(btnImg_voleur.isInLayout(newx, newy)) {
+            desc_voleur.setX(newx);
+            desc_voleur.setY(newy);
+            desc_voleur.setVisible(true);
+        }
+
+        if(btnImg_pugilat.isInLayout(newx, newy)) {
+            desc_pugilat.setX(newx);
+            desc_pugilat.setY(newy);
+            desc_pugilat.setVisible(true);
+        }
+    }
+
+    public void gestionBoutonClasse(int x, int y) {
+        if (btnImg_archer.isInLayout(x, y)) {
+            btnImg_archer.setSelectionner(true);
+            btnImg_mage.setSelectionner(false);
+            btnImg_pretre.setSelectionner(false);
+            btnImg_guerrier.setSelectionner(false);
+            btnImg_voleur.setSelectionner(false);
+            btnImg_pugilat.setSelectionner(false);
+
+            click.play();
+        } else  if (btnImg_mage.isInLayout(x, y)) {
+            btnImg_archer.setSelectionner(false);
+            btnImg_mage.setSelectionner(true);
+            btnImg_pretre.setSelectionner(false);
+            btnImg_guerrier.setSelectionner(false);
+            btnImg_voleur.setSelectionner(false);
+            btnImg_pugilat.setSelectionner(false);
+
+            click.play();
+        } else  if (btnImg_pretre.isInLayout(x, y)) {
+            btnImg_archer.setSelectionner(false);
+            btnImg_mage.setSelectionner(false);
+            btnImg_pretre.setSelectionner(true);
+            btnImg_guerrier.setSelectionner(false);
+            btnImg_voleur.setSelectionner(false);
+            btnImg_pugilat.setSelectionner(false);
+
+            click.play();
+        } else  if (btnImg_guerrier.isInLayout(x, y)) {
+            btnImg_archer.setSelectionner(false);
+            btnImg_mage.setSelectionner(false);
+            btnImg_pretre.setSelectionner(false);
+            btnImg_guerrier.setSelectionner(true);
+            btnImg_voleur.setSelectionner(false);
+            btnImg_pugilat.setSelectionner(false);
+
+            click.play();
+        } else  if (btnImg_voleur.isInLayout(x, y)) {
+            btnImg_archer.setSelectionner(false);
+            btnImg_mage.setSelectionner(false);
+            btnImg_pretre.setSelectionner(false);
+            btnImg_guerrier.setSelectionner(false);
+            btnImg_voleur.setSelectionner(true);
+            btnImg_pugilat.setSelectionner(false);
+
+            click.play();
+        } else  if (btnImg_pugilat.isInLayout(x, y)) {
+            btnImg_archer.setSelectionner(false);
+            btnImg_mage.setSelectionner(false);
+            btnImg_pretre.setSelectionner(false);
+            btnImg_guerrier.setSelectionner(false);
+            btnImg_voleur.setSelectionner(false);
+            btnImg_pugilat.setSelectionner(true);
+
+            click.play();
+        } else {
+            btnImg_archer.setSelectionner(false);
+            btnImg_mage.setSelectionner(false);
+            btnImg_pretre.setSelectionner(false);
+            btnImg_guerrier.setSelectionner(false);
+            btnImg_voleur.setSelectionner(false);
+            btnImg_pugilat.setSelectionner(false);
+        }
     }
 
 }
