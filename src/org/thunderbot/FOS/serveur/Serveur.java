@@ -6,13 +6,12 @@
 package org.thunderbot.FOS.serveur;
 
 import org.thunderbot.FOS.database.FosDAO;
-import org.thunderbot.FOS.database.HelperBD;
+import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Joueur;
 import org.thunderbot.FOS.database.beans.Map;
-import org.thunderbot.FOS.database.beans.Objet;
 import org.thunderbot.FOS.database.beans.Personnage;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
-import org.thunderbot.FOS.serveur.networkObject.ChargementCarte;
+import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
 import org.thunderbot.FOS.serveur.networkObject.Stop;
 import org.thunderbot.FOS.serveur.networkObject.Update;
 
@@ -91,7 +90,6 @@ public class Serveur extends Thread {
 
                 // TODO ED
                 System.out.println(me.getInetAddress() + " n'est pas identifier");
-
                 connexion(entree, sortie);
             }
 
@@ -101,14 +99,15 @@ public class Serveur extends Thread {
             while (isConnecter) {
                 Object reception = entree.readObject();
 
+                //todo ED
+                System.out.println(reception.toString());
+
                 if (reception.getClass() == Update.class) {
                     // Gestion de l'updae
 
                     // TODO ed
                     System.out.println("UPDATE");
 
-                } else if (reception.getClass() == ChargementCarte.class) {
-                    chargementCarte(sortie, (ChargementCarte) reception);
                 } else if (reception.getClass() == Stop.class) {
                     // Gestion de la deconnection
                     // TODO ed
@@ -116,6 +115,8 @@ public class Serveur extends Thread {
                     deconnexion((Stop) reception);
                     isConnecter = false;
                     me.close();
+                } else if (reception.getClass() == RequeteServeur.class) {
+                    traitementRequeteServeur(entree, sortie, (RequeteServeur) reception);
                 }
 
             }
@@ -229,23 +230,45 @@ public class Serveur extends Thread {
 
     }
 
+    /**
+     * Permet de deconnecter un joueur et son client de maniere propre, puis dde sauvegarder ses donnée en DB
+     * @param stop
+     */
     private void deconnexion(Stop stop) {
         Personnage personnage = stop.getPersonnage();
         accesBD.updatePersonnage(personnage.getId(), personnage);
         System.out.println("Deconnexion de : " + me.getInetAddress());
     }
 
-    private void chargementCarte(ObjectOutputStream sortie, ChargementCarte chargementCarte) throws IOException {
-        String nom;
+    private void traitementRequeteServeur(ObjectInputStream entree, ObjectOutputStream sortie, RequeteServeur requeteServeur) throws IOException {
+        switch (requeteServeur.getMotif()) {
+            case RequeteServeur.CHARGEMENT:
+                switch (requeteServeur.getObjet()) {
+                    case RequeteServeur.MAP:
+                        chargementCarte(sortie, requeteServeur.getCle());
+                        break;
+                    case RequeteServeur.CLASSE:
+                        chargementListeClasse(sortie);
+                        break;
+                }
+            break;
+        }
+    }
+
+    private void chargementCarte(ObjectOutputStream sortie, String nom) throws IOException {
         Map map;
-        // Recupere le nom de la carte
-        nom = chargementCarte.getCarte().getNom();
 
         // Recherche en BD la carte, ainsi que ses datas
         map = accesBD.getMapByName(nom);
 
         // Renvoi au client l'objet MAP
         sortie.writeObject(map);
+        sortie.flush();
+    }
+
+    private void chargementListeClasse(ObjectOutputStream sortie) throws IOException {
+        ArrayList<Classe> listeClasse = accesBD.getClasseAll();
+        sortie.writeObject(listeClasse);
         sortie.flush();
     }
 }

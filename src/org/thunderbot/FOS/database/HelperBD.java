@@ -443,6 +443,13 @@ public class HelperBD {
                         + ", " + CLASSE_STAT_SAGESSE +  ")"
                     + "VALUES ( 'TestClassse', 1, 1, 1, 1, 1, 1); ");
 
+        executeUpdate(
+                "INSERT INTO " + NOM_TABLE_CLASSE
+                        + " ( " + CLASSE_NOM + ", " + CLASSE_STAT_AGILITE + ", " + CLASSE_STAT_ARMURE
+                        + ", " + CLASSE_STAT_ENDURANCE + ", " + CLASSE_STAT_FORCE + ", " + CLASSE_STAT_INTELLIGENCE
+                        + ", " + CLASSE_STAT_SAGESSE +  ")"
+                        + "VALUES ( 'TestClasse2', 2, 2, 2, 2, 2, 2); ");
+
         System.out.println("Initialisation de la classe");
     }
 

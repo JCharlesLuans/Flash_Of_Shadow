@@ -12,6 +12,7 @@ import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.newdawn.slick.gui.TextField;
 import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
+import org.thunderbot.FOS.client.statiqueState.layout.Layout;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -49,8 +50,8 @@ public class MainScreenState extends BasicGameState {
         this.game = stateBasedGame;
         background = new Image("res/menuState/background.png");
 
-        boutonInscription = new Bouton(120, 40, 680, 30, "Inscription");
-        boutonConnexion = new Bouton(120, 40, 680, 100, "Connexion");
+        boutonInscription = new Bouton(680, 30, 120, 40, "Inscription");
+        boutonConnexion = new Bouton(680, 100, 120, 40, "Connexion");
 
         //L'initialisation du TextField
         zoneSaisiePseudo     = new TextField(gameContainer, gameContainer.getDefaultFont(), 110, 30, 480, 40);

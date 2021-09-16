@@ -54,8 +54,8 @@ public class FlashOfShadow extends StateBasedGame {
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-        this.addState(new CreationPersonnageState(client));
         this.addState(new MainScreenState(client));
+        this.addState(new CreationPersonnageState(client));
         this.addState(new MapGameState(client));
     }
 

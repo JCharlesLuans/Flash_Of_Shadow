@@ -5,14 +5,10 @@
 
 package org.thunderbot.FOS.client.network;
 
-import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
-import org.thunderbot.FOS.database.beans.Joueur;
-import org.thunderbot.FOS.database.beans.Map;
-import org.thunderbot.FOS.database.beans.Objet;
-import org.thunderbot.FOS.database.beans.Personnage;
+import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
-import org.thunderbot.FOS.serveur.networkObject.ChargementCarte;
+import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
 import org.thunderbot.FOS.serveur.networkObject.Stop;
 import org.thunderbot.FOS.serveur.networkObject.Update;
 import org.thunderbot.FOS.utils.XMLTools;
@@ -21,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
+import java.util.ArrayList;
 
 /**
  * Communique avec le serveur pour tenir a jour le client
@@ -220,15 +217,36 @@ public class Client {
         }
     }
 
+    /**
+     * Envoi une demande au serveur pour charger les information relative
+     * à une carte dont le nom est passer en paramettre
+     * @param nom de la carte
+     * @return l'objet Map contenant les information
+     */
     public Map chargementCarte(String nom) {
+        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.MAP + ";" + nom + ';';
         Map aRetourner = new Map();
         try {
-            envoi(new ChargementCarte(nom));
+            envoi(new RequeteServeur(requete));
             aRetourner = (Map) reception();
             personnage.setMap(aRetourner);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return aRetourner;
+    }
+
+    public ArrayList<Classe> chargementListeClasse() {
+        ArrayList<Classe> aRetourner = null;
+        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.CLASSE + ";";
+
+        try {
+            envoi(new RequeteServeur(requete));
+            aRetourner = (ArrayList<Classe>) reception();
+         } catch (IOException err) {
+            err.printStackTrace();
+        }
+
         return aRetourner;
     }
 
@@ -247,6 +265,4 @@ public class Client {
     private String lectureIpServeur() {
         return XMLTools.readXMLElement("res/option.xml", "ipServeur");
     }
-
-
 }

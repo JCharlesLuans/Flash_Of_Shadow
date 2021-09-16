@@ -7,6 +7,7 @@ import org.thunderbot.FOS.database.beans.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.thunderbot.FOS.database.HelperBD.*;
 
@@ -139,6 +140,41 @@ public class FosDAO {
             aRetourner.setStatForce(rs.getInt(CLASSE_STAT_FORCE));
             aRetourner.setStatIntelligence(rs.getInt(CLASSE_STAT_INTELLIGENCE));
             aRetourner.setStatSagesse(rs.getInt(CLASSE_STAT_SAGESSE));
+
+            rs.close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
+    public ArrayList<Classe> getClasseAll() {
+        ArrayList<Classe> aRetourner = new ArrayList<>();
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_CLASSE;
+
+
+
+        try {
+
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            while (rs.next()) {
+                Classe tmp = new Classe();
+                tmp.setId(rs.getInt(CLASSE_CLE));
+                tmp.setNom(rs.getString(CLASSE_NOM));
+                tmp.setStatAgilite(rs.getInt(CLASSE_STAT_AGILITE));
+                tmp.setStatArmure(rs.getInt(CLASSE_STAT_ARMURE));
+                tmp.setStatEndurance(rs.getInt(CLASSE_STAT_ENDURANCE));
+                tmp.setStatForce(rs.getInt(CLASSE_STAT_FORCE));
+                tmp.setStatIntelligence(rs.getInt(CLASSE_STAT_INTELLIGENCE));
+                tmp.setStatSagesse(rs.getInt(CLASSE_STAT_SAGESSE));
+                aRetourner.add(tmp);
+            }
+
+            rs.close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
