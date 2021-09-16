@@ -10,6 +10,9 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
+import org.thunderbot.FOS.client.statiqueState.layout.BoutonCochable;
+import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
+import org.thunderbot.FOS.client.statiqueState.layout.GroupeCochable;
 import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Faction;
 
@@ -39,8 +42,10 @@ public class CreationPersonnageState extends BasicGameState {
     private Bouton btnValider;
     private TextField ztNom;
 
-    private ArrayList<Bouton> listBtnClasse;
-    private ArrayList<Bouton> listBtnFaction;
+    private BoutonImage btnArc;
+
+    private GroupeCochable groupeBtnCochableClasse;
+    private GroupeCochable groupeBtnCochableFaction;
 
 
 
@@ -61,10 +66,12 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
-        listBtnClasse = new ArrayList<>();
-        listBtnFaction = new ArrayList<>();
+        groupeBtnCochableClasse = new GroupeCochable();
+        groupeBtnCochableFaction = new GroupeCochable();
 
-        background = new Image("res/menuState/backgroundCreationPerso.jpg");
+        btnArc = new BoutonImage("res/menuState/creationJoueur/archer.png", gameContainer.getWidth() / 2,  gameContainer.getHeight() / 2);
+
+        background = new Image("res/menuState/creationJoueur/backgroundCreationPerso.jpg");
 
         btnValider = new Bouton(gameContainer.getWidth() / 2 - BTN_VALIDER_LONGUEUR / 2,
                 gameContainer.getHeight() - BTN_VALIDER_DELTA,
@@ -78,14 +85,15 @@ public class CreationPersonnageState extends BasicGameState {
         // TODO chercher la liste des classe sur la BD du serveur
         ArrayList<Classe> listeClasse = client.chargementListeClasse();
         for (int i = 0; i < listeClasse.size(); i++) {
-            System.out.println(listeClasse.get(i).toString());
-            listBtnClasse.add(new Bouton(BTN_CLASSE_X_START * (i + 1), BTN_CLASSE_Y_START, BTN_CLASSE_LONGUEUR, BTN_VALIDER_HAUTEUR, listeClasse.get(i).getNom()));
+            groupeBtnCochableClasse.getListe().add(
+                    new BoutonCochable(BTN_CLASSE_X_START * (i + 1), BTN_CLASSE_Y_START, BTN_CLASSE_LONGUEUR, BTN_VALIDER_HAUTEUR, listeClasse.get(i).getNom()));
         }
 
         // TODO chercher la liste des faction sur la BD du serveur
         ArrayList<Faction> listeFaction = client.chargementListeFaction();
         for (int i = 0; i < listeFaction.size(); i++) {
-            listBtnFaction.add(new Bouton(BTN_CLASSE_X_START * (i + 1), BTN_CLASSE_Y_START + BTN_CLASSE_HAUTEUR + 50, BTN_CLASSE_LONGUEUR, BTN_VALIDER_HAUTEUR, listeFaction.get(i).getNom()));
+            groupeBtnCochableFaction.getListe().add(
+                    new BoutonCochable(BTN_CLASSE_X_START * (i + 1), BTN_CLASSE_Y_START + BTN_CLASSE_HAUTEUR + 50, BTN_CLASSE_LONGUEUR, BTN_VALIDER_HAUTEUR, listeFaction.get(i).getNom()));
         }
     }
 
@@ -94,15 +102,13 @@ public class CreationPersonnageState extends BasicGameState {
         background.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
 
         btnValider.render(graphics);
+
+        groupeBtnCochableClasse.render(graphics);
+        groupeBtnCochableFaction.render(graphics);
+
         ztNom.render(gameContainer, graphics);
 
-        for (int i = 0; i < listBtnClasse.size(); i++) {
-            listBtnClasse.get(i).render(graphics);
-        }
-
-        for (int i = 0; i < listBtnFaction.size(); i++) {
-            listBtnFaction.get(i).render(graphics);
-        }
+        btnArc.render(graphics);
     }
 
     @Override
@@ -115,6 +121,7 @@ public class CreationPersonnageState extends BasicGameState {
         if (btnValider.isInBouton(x, y)) {
 
         }
+        btnArc.isInLayout(x, y);
     }
 
 }
