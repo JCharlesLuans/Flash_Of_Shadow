@@ -27,8 +27,8 @@ import java.net.ConnectException;
  */
 public class FlashOfShadow extends StateBasedGame {
 
-    public static final int WIDTH   = 640;
-    public static final int HEIGHT  = 480;
+    public static final int WIDTH   = 1240;
+    public static final int HEIGHT  = 720;
 
     private Client client;
 
