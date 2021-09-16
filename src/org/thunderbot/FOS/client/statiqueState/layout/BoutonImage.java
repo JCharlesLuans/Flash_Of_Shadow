@@ -37,7 +37,7 @@ public class BoutonImage {
     public boolean isInLayout(float x, float y) {
 
         selectionner = true;
-             
+
         return this.x < x && x < this.x + this.imageSelect.getWidth()
                 && this.y < y && y < this.y + imageSelect.getHeight();
     }
