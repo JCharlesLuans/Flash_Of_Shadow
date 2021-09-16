@@ -12,6 +12,7 @@ public class Classe implements Serializable {
     private String nom;
     private int statAgilite;
     private int statArmure;
+    private int statDexterite;
     private int statEndurance;
     private int statForce;
     private int statIntelligence;
@@ -22,17 +23,19 @@ public class Classe implements Serializable {
         nom = "";
         statAgilite = -1;
         statArmure = -1;
+        statDexterite = -1;
         statEndurance = -1;
         statForce = -1;
         statIntelligence = -1;
         statSagesse = -1;
     }
 
-    public Classe(int id, String nom, int statAgilite, int statArmure, int statEndurance, int statForce, int statIntelligence, int statSagesse) {
+    public Classe(int id, String nom, int statAgilite, int statArmure, int statDexterite, int statEndurance, int statForce, int statIntelligence, int statSagesse) {
         this.id = id;
         this.nom = nom;
         this.statAgilite = statAgilite;
         this.statArmure = statArmure;
+        this.statDexterite = statDexterite;
         this.statEndurance = statEndurance;
         this.statForce = statForce;
         this.statIntelligence = statIntelligence;
@@ -75,6 +78,14 @@ public class Classe implements Serializable {
         return statEndurance;
     }
 
+    public int getStatDexterite() {
+        return statDexterite;
+    }
+
+    public void setStatDexterite(int statDexterite) {
+        this.statDexterite = statDexterite;
+    }
+
     public void setStatEndurance(int statEndurance) {
         this.statEndurance = statEndurance;
     }
@@ -110,6 +121,7 @@ public class Classe implements Serializable {
                 ", nom='" + nom + '\'' +
                 ", statAgilite=" + statAgilite +
                 ", statArmure=" + statArmure +
+                ", statDexterite=" + statDexterite +
                 ", statEndurance=" + statEndurance +
                 ", statForce=" + statForce +
                 ", statIntelligence=" + statIntelligence +

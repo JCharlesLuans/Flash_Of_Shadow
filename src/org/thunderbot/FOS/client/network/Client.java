@@ -250,6 +250,20 @@ public class Client {
         return aRetourner;
     }
 
+    public ArrayList<Faction> chargementListeFaction() {
+        ArrayList<Faction> aRetourner = null;
+        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.FACTION + ";";
+
+        try {
+            envoi(new RequeteServeur(requete));
+            aRetourner = (ArrayList<Faction>) reception();
+        } catch (IOException err) {
+            err.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
     public String getPseudo() {
         return pseudo;
     }

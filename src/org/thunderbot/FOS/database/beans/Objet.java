@@ -19,6 +19,7 @@ public class Objet implements Serializable {
     private int emplacement;
     private int statAgilite;
     private int statArmure;
+    private int statDexterite;
     private int statEndurance;
     private int statForce;
     private int statIntelligence;
@@ -32,6 +33,7 @@ public class Objet implements Serializable {
         emplacement = -1;
         statAgilite = -1;
         statArmure = -1;
+        statDexterite = -1;
         statEndurance = -1;
         statForce = -1;
         statIntelligence = -1;
@@ -40,12 +42,13 @@ public class Objet implements Serializable {
         image = "";
     }
 
-    public Objet(int id, String nom, int emplacement, int statAgilite, int statArmure, int statEndurance, int statForce, int statIntelligence, int statSagesse, int dps, String image) {
+    public Objet(int id, String nom, int emplacement, int statAgilite, int statArmure, int statDexterite,int statEndurance, int statForce, int statIntelligence, int statSagesse, int dps, String image) {
         this.id = id;
         this.nom = nom;
         this.emplacement = emplacement;
         this.statAgilite = statAgilite;
         this.statArmure = statArmure;
+        this.statDexterite = statDexterite;
         this.statEndurance = statEndurance;
         this.statForce = statForce;
         this.statIntelligence = statIntelligence;
@@ -92,6 +95,14 @@ public class Objet implements Serializable {
 
     public void setStatArmure(int statArmure) {
         this.statArmure = statArmure;
+    }
+
+    public int getStatDexterite() {
+        return statDexterite;
+    }
+
+    public void setStatDexterite(int statDexterite) {
+        this.statDexterite = statDexterite;
     }
 
     public int getStatEndurance() {
@@ -150,6 +161,7 @@ public class Objet implements Serializable {
                 ", emplacement=" + emplacement +
                 ", statAgilite=" + statAgilite +
                 ", statArmure=" + statArmure +
+                ", statDexterite=" + statDexterite +
                 ", statEndurance=" + statEndurance +
                 ", statForce=" + statForce +
                 ", statIntelligence=" + statIntelligence +

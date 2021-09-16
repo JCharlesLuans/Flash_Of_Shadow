@@ -8,6 +8,7 @@ public class RequeteServeur implements Serializable {
 
     public static final String MAP ="map";
     public static final String CLASSE ="classe";
+    public static final String FACTION = "faction";
 
     private String requete;
 

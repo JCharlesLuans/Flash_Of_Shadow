@@ -6,10 +6,7 @@
 package org.thunderbot.FOS.serveur;
 
 import org.thunderbot.FOS.database.FosDAO;
-import org.thunderbot.FOS.database.beans.Classe;
-import org.thunderbot.FOS.database.beans.Joueur;
-import org.thunderbot.FOS.database.beans.Map;
-import org.thunderbot.FOS.database.beans.Personnage;
+import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
 import org.thunderbot.FOS.serveur.networkObject.Stop;
@@ -98,9 +95,6 @@ public class Serveur extends Thread {
 
             while (isConnecter) {
                 Object reception = entree.readObject();
-
-                //todo ED
-                System.out.println(reception.toString());
 
                 if (reception.getClass() == Update.class) {
                     // Gestion de l'updae
@@ -250,6 +244,8 @@ public class Serveur extends Thread {
                     case RequeteServeur.CLASSE:
                         chargementListeClasse(sortie);
                         break;
+                    case RequeteServeur.FACTION:
+                        chargementListeFaction(sortie);
                 }
             break;
         }
@@ -269,6 +265,12 @@ public class Serveur extends Thread {
     private void chargementListeClasse(ObjectOutputStream sortie) throws IOException {
         ArrayList<Classe> listeClasse = accesBD.getClasseAll();
         sortie.writeObject(listeClasse);
+        sortie.flush();
+    }
+
+    private void chargementListeFaction(ObjectOutputStream sortie) throws IOException {
+        ArrayList<Faction> listeFaction = accesBD.getFactionAll();
+        sortie.writeObject(listeFaction);
         sortie.flush();
     }
 }

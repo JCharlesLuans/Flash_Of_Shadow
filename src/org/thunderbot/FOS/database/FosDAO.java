@@ -136,6 +136,7 @@ public class FosDAO {
 
             aRetourner.setStatAgilite(rs.getInt(CLASSE_STAT_AGILITE));
             aRetourner.setStatArmure(rs.getInt(CLASSE_STAT_ARMURE));
+            aRetourner.setStatDexterite(rs.getInt(CLASSE_STAT_DEXTERITE));
             aRetourner.setStatEndurance(rs.getInt(CLASSE_STAT_ENDURANCE));
             aRetourner.setStatForce(rs.getInt(CLASSE_STAT_FORCE));
             aRetourner.setStatIntelligence(rs.getInt(CLASSE_STAT_INTELLIGENCE));
@@ -155,25 +156,22 @@ public class FosDAO {
         String requete =
                 "SELECT * FROM " + NOM_TABLE_CLASSE;
 
-
-
         try {
 
             ResultSet rs = gestionnaireBase.executeRequete(requete);
-
             while (rs.next()) {
                 Classe tmp = new Classe();
                 tmp.setId(rs.getInt(CLASSE_CLE));
                 tmp.setNom(rs.getString(CLASSE_NOM));
                 tmp.setStatAgilite(rs.getInt(CLASSE_STAT_AGILITE));
                 tmp.setStatArmure(rs.getInt(CLASSE_STAT_ARMURE));
+                tmp.setStatDexterite(rs.getInt(CLASSE_STAT_DEXTERITE));
                 tmp.setStatEndurance(rs.getInt(CLASSE_STAT_ENDURANCE));
                 tmp.setStatForce(rs.getInt(CLASSE_STAT_FORCE));
                 tmp.setStatIntelligence(rs.getInt(CLASSE_STAT_INTELLIGENCE));
                 tmp.setStatSagesse(rs.getInt(CLASSE_STAT_SAGESSE));
                 aRetourner.add(tmp);
             }
-
             rs.close();
 
         } catch (SQLException throwables) {
@@ -243,6 +241,7 @@ public class FosDAO {
           aRetourner.setEmplacement(rs.getInt(OBJET_EMPLACEMENT));
           aRetourner.setStatAgilite(rs.getInt(OBJET_STAT_AGILITE));
           aRetourner.setStatArmure(rs.getInt(OBJET_STAT_ARMURE));
+          aRetourner.setStatDexterite(rs.getInt(OBJET_STAT_DEXTERITE));
           aRetourner.setStatEndurance(rs.getInt(OBJET_STAT_ENDURANCE));
           aRetourner.setStatForce(rs.getInt(OBJET_STAT_FORCE));
           aRetourner.setStatIntelligence(rs.getInt(OBJET_STAT_INTELLIGENCE));
@@ -257,10 +256,37 @@ public class FosDAO {
         return aRetourner;
     }
 
+
+
     public Faction getFactionById(int id) {
         Faction aRetourner = new Faction();
         return aRetourner;
     }
+
+    public ArrayList<Faction> getFactionAll() {
+        ArrayList<Faction> aRetourner = new ArrayList<>();
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_FACTION;
+
+        try {
+
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+            while (rs.next()) {
+                Faction tmp = new Faction();
+                tmp.setId(rs.getInt(FACTION_CLE));
+                tmp.setNom(rs.getString(FACTION_NOM));
+                aRetourner.add(tmp);
+            }
+            rs.close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
+
 
     public Titre getTitreById(int id) {
         Titre aRetourner = new Titre();
@@ -271,5 +297,6 @@ public class FosDAO {
         Guilde aRetourner = new Guilde();
         return aRetourner;
     }
+
 
 }

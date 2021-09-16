@@ -29,6 +29,7 @@ public class HelperBD {
     public static final String CLASSE_CLE = "_id";
     public static final String CLASSE_NOM = "nom";
     public static final String CLASSE_STAT_ARMURE = "statArmure";
+    public static final String CLASSE_STAT_DEXTERITE = "statDexterite";
     public static final String CLASSE_STAT_FORCE = "statForce";
     public static final String CLASSE_STAT_INTELLIGENCE = "statIntelligence";
     public static final String CLASSE_STAT_AGILITE = "statAgilite";
@@ -41,6 +42,7 @@ public class HelperBD {
             + CLASSE_NOM + " TEXT NOT NULL,"
             + CLASSE_STAT_AGILITE + " INTEGER NOT NULL,"
             + CLASSE_STAT_ARMURE + " INTEGER NOT NULL,"
+            + CLASSE_STAT_DEXTERITE    + " INTEGER NOT NULL,"
             + CLASSE_STAT_ENDURANCE + " INTEGER NOT NULL,"
             + CLASSE_STAT_FORCE + " INTEGER NOT NULL,"
             + CLASSE_STAT_INTELLIGENCE + " INTEGER NOT NULL,"
@@ -53,6 +55,7 @@ public class HelperBD {
     public static final String EFFET_CLE = "_id";
     public static final String EFFET_NOM = "nom";
     public static final String EFFET_STAT_ARMURE = "statArmure";
+    public static final String EFFET_STAT_DEXTERITE = "statDexterite";
     public static final String EFFET_STAT_FORCE = "statForce";
     public static final String EFFET_STAT_INTELLIGENCE = "statIntelligence";
     public static final String EFFET_STAT_AGILITE = "statAgilite";
@@ -67,6 +70,7 @@ public class HelperBD {
                 + EFFET_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + EFFET_NOM + " TEXT NOT NULL,"
                 + EFFET_STAT_ARMURE       + " INTEGER NOT NULL,"
+                + EFFET_STAT_DEXTERITE    + " INTEGER NOT NULL,"
                 + EFFET_STAT_FORCE        + " INTEGER NOT NULL,"
                 + EFFET_STAT_INTELLIGENCE + " INTEGER NOT NULL,"
                 + EFFET_STAT_AGILITE      + " INTEGER NOT NULL,"
@@ -117,6 +121,7 @@ public class HelperBD {
     public static final String OBJET_NOM = "nom";
     public static final String OBJET_EMPLACEMENT = "emplacement";
     public static final String OBJET_STAT_ARMURE = "statArmure";
+    public static final String OBJET_STAT_DEXTERITE = "statDexterite";
     public static final String OBJET_STAT_FORCE = "statForce";
     public static final String OBJET_STAT_INTELLIGENCE = "statIntelligence";
     public static final String OBJET_STAT_AGILITE = "statAgilite";
@@ -131,6 +136,7 @@ public class HelperBD {
                 + OBJET_NOM + " TEXT NOT NULL,"
                 + OBJET_EMPLACEMENT + " INTEGER NOT NULL,"
                 + OBJET_STAT_ARMURE       + " INTEGER NOT NULL,"
+                + OBJET_STAT_DEXTERITE    + " INTEGER NOT NULL,"
                 + OBJET_STAT_FORCE        + " INTEGER NOT NULL,"
                 + OBJET_STAT_INTELLIGENCE + " INTEGER NOT NULL,"
                 + OBJET_STAT_AGILITE      + " INTEGER NOT NULL,"
@@ -236,6 +242,7 @@ public class HelperBD {
     public static final String PNJ_SPRITE = "sprite";
     public static final String PNJ_AGRESSIF = "agressif";
     public static final String PNJ_STAT_ARMURE = "statArmure";
+    public static final String PNJ_STAT_DEXTERITE = "statDexterite";
     public static final String PNJ_STAT_FORCE = "statForce";
     public static final String PNJ_STAT_INTELLIGENCE = "statIntelligence";
     public static final String PNJ_STAT_AGILITE = "statAgilite";
@@ -253,6 +260,7 @@ public class HelperBD {
                 + PNJ_SPRITE + " TEXT NOT NULL,"
                 + PNJ_AGRESSIF + " INTEGER NOT NULL,"
                 + PNJ_STAT_ARMURE       + " INTEGER NOT NULL,"
+                + PNJ_STAT_DEXTERITE    + " INTEGER NOT NULL,"
                 + PNJ_STAT_FORCE        + " INTEGER NOT NULL,"
                 + PNJ_STAT_INTELLIGENCE + " INTEGER NOT NULL,"
                 + PNJ_STAT_AGILITE      + " INTEGER NOT NULL,"
@@ -416,144 +424,6 @@ public class HelperBD {
             executeUpdate(CREATION_TABLE_LISTE_OBJET_LOOTABLE);
 
             System.out.println("Création des tables terminée !");
-
-            // INIT DATA TODO enlever
-            System.out.println("Création du joueur test");
-            initDataJoueur();
-            initDataClasse();
-            initPersonnage();
-            initMap();
-            initObjet();
         }
     }
-
-    private void initDataJoueur() {
-        executeUpdate(
-                "INSERT INTO JOUEUR (" + JOUEUR_PSEUDO + ","+ JOUEUR_MDP + ")"
-                        + "VALUES           (    'JeanTest',           'leserveur'     );"
-        );
-        System.out.println("Initialisation du joueur");
-    }
-
-    private void initDataClasse() {
-        executeUpdate(
-                "INSERT INTO " + NOM_TABLE_CLASSE
-                        + " ( " + CLASSE_NOM + ", " + CLASSE_STAT_AGILITE + ", " + CLASSE_STAT_ARMURE
-                        + ", " + CLASSE_STAT_ENDURANCE + ", " + CLASSE_STAT_FORCE + ", " + CLASSE_STAT_INTELLIGENCE
-                        + ", " + CLASSE_STAT_SAGESSE +  ")"
-                    + "VALUES ( 'TestClassse', 1, 1, 1, 1, 1, 1); ");
-
-        executeUpdate(
-                "INSERT INTO " + NOM_TABLE_CLASSE
-                        + " ( " + CLASSE_NOM + ", " + CLASSE_STAT_AGILITE + ", " + CLASSE_STAT_ARMURE
-                        + ", " + CLASSE_STAT_ENDURANCE + ", " + CLASSE_STAT_FORCE + ", " + CLASSE_STAT_INTELLIGENCE
-                        + ", " + CLASSE_STAT_SAGESSE +  ")"
-                        + "VALUES ( 'TestClasse2', 2, 2, 2, 2, 2, 2); ");
-
-        System.out.println("Initialisation de la classe");
-    }
-
-    private void initPersonnage() {
-        executeUpdate(
-                "INSERT INTO " + NOM_TABLE_PERSONNAGE
-                        + " ( " + PERSONNAGE_NOM + ", " + PERSONNAGE_SPRITE + ", " + PERSONNAGE_X
-                        + ", " + PERSONNAGE_Y + ", " + PERSONNAGE_CLE_JOUEUR
-                        + ", " + PERSONNAGE_CLE_CLASSE + ", " + PERSONNAGE_CLE_MAP + ", " + PERSONNAGE_CLE_STUFF_TETE
-                        + ", " + PERSONNAGE_CLE_STUFF_TORSE + ", " + PERSONNAGE_CLE_STUFF_GANT + ", " + PERSONNAGE_CLE_STUFF_JAMBE
-                        + ", " + PERSONNAGE_CLE_STUFF_BOTTE + ", " + PERSONNAGE_CLE_STUFF_ARME + ", " + PERSONNAGE_CLE_FACTION
-                        + ", " + PERSONNAGE_CLE_GUILDE + ", " + PERSONNAGE_CLE_TITRE +  ")"
-                        + "VALUES ( 'TestPerso', 'image', 650 ,400 ,1, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1); ");
-
-        System.out.println("Initialisation du personnage");
-    }
-
-    private void initMap() {
-        executeUpdate(
-                "INSERT INTO " + NOM_TABLE_MAP
-                        + " ( " + MAP_NOM + ", " + MAP_NIVEAU_PNJ + ", " + MAP_NOMBRE_MOB +  ")"
-                        + "VALUES ( 'map_campagne_ThunderSun.tmx', 1, 3); "
-        );
-
-        executeUpdate(
-                "INSERT INTO " + NOM_TABLE_MAP
-                        + " ( " + MAP_NOM + ", " + MAP_NIVEAU_PNJ + ", " + MAP_NOMBRE_MOB +  ")"
-                        + "VALUES ( 'map_grotte.tmx', 1, 3); "
-        );
-
-        System.out.println("Initialisation de la carte");
-    }
-
-    private void initObjet() {
-
-        // Objet vide de l'inventaire
-        executeUpdate("" +
-                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-                + "VALUES ( 'Vide', 0, 0, 0, 0, 0, 0, 0, 0, 'vide.png' ); "
-
-        );
-
-        // Casque
-        executeUpdate("" +
-                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-                + "VALUES ( 'Casque', 1, 1, 1, 1, 1, 1, 1, 0, 'casque.png' ); "
-
-        );
-
-        // Plastron
-        executeUpdate("" +
-                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-                + "VALUES ( 'Plastron', 2, 1, 1, 1, 1, 1, 1, 0, 'plastron.png' ); "
-
-        );
-
-        // Gant
-        executeUpdate("" +
-                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-                + "VALUES ( 'Gant', 3, 1, 1, 1, 1, 1, 1, 0, 'gant.png' ); "
-
-        );
-
-        // Jambiere
-        executeUpdate("" +
-                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-                + "VALUES ( 'Jambiere', 4, 1, 1, 1, 1, 1, 1, 0, 'jambiere.png' ); "
-        );
-
-        // Botte
-        executeUpdate("" +
-                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-                + "VALUES ( 'Botte', 5, 1, 1, 1, 1, 1, 1, 0, 'botte.png' ); "
-        );
-
-        // Hache
-        executeUpdate("" +
-                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-                + "VALUES ( 'Hache', 6, 1, 1, 1, 1, 1, 1, 2, 'hache.png' ); "
-        );
-
-        System.out.println("Initialisation des objets");
-    }
-
-
 }
