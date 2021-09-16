@@ -236,13 +236,13 @@ public class Client {
         return aRetourner;
     }
 
-    public ArrayList<Classe> chargementListeClasse() {
-        ArrayList<Classe> aRetourner = null;
-        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.CLASSE + ";";
+    public Classe chargementListeClasse(String nomClasse) {
+        Classe aRetourner = null;
+        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.CLASSE + ";" + nomClasse + ';';
 
         try {
             envoi(new RequeteServeur(requete));
-            aRetourner = (ArrayList<Classe>) reception();
+            aRetourner = (Classe) reception();
          } catch (IOException err) {
             err.printStackTrace();
         }

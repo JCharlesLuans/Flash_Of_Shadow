@@ -242,7 +242,7 @@ public class Serveur extends Thread {
                         chargementCarte(sortie, requeteServeur.getCle());
                         break;
                     case RequeteServeur.CLASSE:
-                        chargementListeClasse(sortie);
+                        chargementClasse(sortie, requeteServeur.getCle());
                         break;
                     case RequeteServeur.FACTION:
                         chargementListeFaction(sortie);
@@ -262,9 +262,9 @@ public class Serveur extends Thread {
         sortie.flush();
     }
 
-    private void chargementListeClasse(ObjectOutputStream sortie) throws IOException {
-        ArrayList<Classe> listeClasse = accesBD.getClasseAll();
-        sortie.writeObject(listeClasse);
+    private void chargementClasse(ObjectOutputStream sortie, String nom) throws IOException {
+        Classe classe = accesBD.getClasseByName(nom);
+        sortie.writeObject(classe);
         sortie.flush();
     }
 

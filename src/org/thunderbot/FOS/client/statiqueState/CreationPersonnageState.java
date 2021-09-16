@@ -53,6 +53,8 @@ public class CreationPersonnageState extends BasicGameState {
     private ImageFlottante desc_voleur;
     private ImageFlottante desc_pugilat;
 
+    private Classe classeSelectionner;
+
     private Sound click;
 
     public CreationPersonnageState(Client client) {
@@ -83,17 +85,17 @@ public class CreationPersonnageState extends BasicGameState {
 
         int x = BTN_CLASSE_X_START;
 
-        btnImg_archer   = new BoutonImage("res/menuState/creationJoueur/archer.png", x,  BTN_CLASSE_Y_START);
+        btnImg_archer   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/archer.png", x,  BTN_CLASSE_Y_START);
         x+= 128;
-        btnImg_mage     = new BoutonImage("res/menuState/creationJoueur/mage.png", x,  BTN_CLASSE_Y_START);
+        btnImg_mage     = new BoutonImage("res/menuState/creationJoueur/boutonClasse/mage.png", x,  BTN_CLASSE_Y_START);
         x+= 128;
-        btnImg_pretre   = new BoutonImage("res/menuState/creationJoueur/pretre.png", x,  BTN_CLASSE_Y_START);
+        btnImg_pretre   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pretre.png", x,  BTN_CLASSE_Y_START);
         x+= 128;
-        btnImg_guerrier = new BoutonImage("res/menuState/creationJoueur/guerrier.png", x,  BTN_CLASSE_Y_START);
+        btnImg_guerrier = new BoutonImage("res/menuState/creationJoueur/boutonClasse/guerrier.png", x,  BTN_CLASSE_Y_START);
         x+= 128;
-        btnImg_voleur   = new BoutonImage("res/menuState/creationJoueur/voleur.png", x,  BTN_CLASSE_Y_START);
+        btnImg_voleur   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/voleur.png", x,  BTN_CLASSE_Y_START);
         x+= 128;
-        btnImg_pugilat  = new BoutonImage("res/menuState/creationJoueur/pugilat.png", x,  BTN_CLASSE_Y_START);
+        btnImg_pugilat  = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pugilat.png", x,  BTN_CLASSE_Y_START);
 
         background = new Image("res/menuState/creationJoueur/backgroundCreationPerso.jpg");
 
@@ -105,14 +107,6 @@ public class CreationPersonnageState extends BasicGameState {
                 gameContainer.getWidth() / 2 - ZT_NOM_WIDTH / 2,
                 gameContainer.getHeight() - ZT_NOM_DELTA_HEIGHT,
                 ZT_NOM_WIDTH, ZT_NOM_HEIGHT);
-
-        // TODO chercher la liste des classe sur la BD du serveur
-        ArrayList<Classe> listeClasse = client.chargementListeClasse();
-
-
-        // TODO chercher la liste des faction sur la BD du serveur
-        ArrayList<Faction> listeFaction = client.chargementListeFaction();
-
     }
 
     @Override
@@ -209,6 +203,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
+            classeSelectionner = client.chargementListeClasse("Archer");
         } else  if (btnImg_mage.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(true);
@@ -218,6 +213,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
+            classeSelectionner = client.chargementListeClasse("Mage");
         } else  if (btnImg_pretre.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(false);
@@ -227,6 +223,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
+            classeSelectionner = client.chargementListeClasse("Pretre");
         } else  if (btnImg_guerrier.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(false);
@@ -236,6 +233,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
+            classeSelectionner = client.chargementListeClasse("Guerrier");
         } else  if (btnImg_voleur.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(false);
@@ -245,6 +243,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
+            classeSelectionner = client.chargementListeClasse("Voleur");
         } else  if (btnImg_pugilat.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(false);
@@ -254,6 +253,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(true);
 
             click.play();
+            classeSelectionner = client.chargementListeClasse("Pugilat");
         } else {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(false);

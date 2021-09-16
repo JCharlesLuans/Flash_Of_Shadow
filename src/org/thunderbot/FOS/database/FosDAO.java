@@ -181,6 +181,35 @@ public class FosDAO {
         return aRetourner;
     }
 
+    public Classe getClasseByName(String nom) {
+        Classe aRetourner = new Classe();
+
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_CLASSE + " WHERE " + CLASSE_NOM + " = '" + nom + "';";
+
+        try {
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            aRetourner.setId(rs.getInt(CLASSE_CLE));
+            aRetourner.setNom(rs.getString(CLASSE_NOM));
+
+            aRetourner.setStatAgilite(rs.getInt(CLASSE_STAT_AGILITE));
+            aRetourner.setStatArmure(rs.getInt(CLASSE_STAT_ARMURE));
+            aRetourner.setStatDexterite(rs.getInt(CLASSE_STAT_DEXTERITE));
+            aRetourner.setStatEndurance(rs.getInt(CLASSE_STAT_ENDURANCE));
+            aRetourner.setStatForce(rs.getInt(CLASSE_STAT_FORCE));
+            aRetourner.setStatIntelligence(rs.getInt(CLASSE_STAT_INTELLIGENCE));
+            aRetourner.setStatSagesse(rs.getInt(CLASSE_STAT_SAGESSE));
+
+            rs.close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
 
 
     public Map getMapById(int id) {
@@ -297,6 +326,4 @@ public class FosDAO {
         Guilde aRetourner = new Guilde();
         return aRetourner;
     }
-
-
 }
