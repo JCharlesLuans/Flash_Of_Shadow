@@ -7,12 +7,14 @@ public class RequeteServeur implements Serializable {
     public static final String CHARGEMENT = "chargement";
     public static final String CREATE = "creation";
     public static final String DECONNEXION = "deconnexion";
+    public static final String UPDATE = "update";
 
     public static final String MAP ="map";
     public static final String CLASSE ="classe";
     public static final String FACTION = "faction";
     public static final String PERSONNAGE = "personnage";
     public static final String STUFF_BASE = "stuffDefaut";
+    public static final String MOUVEMENT = "moove";
 
 
     private String requete;

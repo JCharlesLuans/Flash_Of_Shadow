@@ -209,10 +209,11 @@ public class Client {
     /**
      * Renvoi les donnée actuelle du client au serveur pour actualiser les autres clients
      */
-    public void updateServeur() {
+    public void updateServeurMouvement() {
         try {
-            Update update = new Update(personnage);
-            envoi(update);
+            String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
+            envoi(new RequeteServeur(requete));
+            envoi(personnage);
         } catch (IOException e) {
             e.printStackTrace();
         }

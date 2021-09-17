@@ -94,7 +94,7 @@ public class MapGameState extends BasicGameState {
         // UPDATTE DU JOUEUR
         joueur.update(carte, delta);
         camera.update(container, carte);
-        //client.updateServeur(this); //Envoi des data au joueur
+        client.updateServeurMouvement(); //Envoi des data au joueur
 
     }
 
