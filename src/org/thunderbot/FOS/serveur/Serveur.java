@@ -245,7 +245,7 @@ public class Serveur extends Thread {
                         chargementClasse(sortie, requeteServeur.getCle());
                         break;
                     case RequeteServeur.FACTION:
-                        chargementListeFaction(sortie);
+                        chargementFaction(sortie, requeteServeur.getCle());
                 }
             break;
         }
@@ -268,9 +268,9 @@ public class Serveur extends Thread {
         sortie.flush();
     }
 
-    private void chargementListeFaction(ObjectOutputStream sortie) throws IOException {
-        ArrayList<Faction> listeFaction = accesBD.getFactionAll();
-        sortie.writeObject(listeFaction);
+    private void chargementFaction(ObjectOutputStream sortie, String nom) throws IOException {
+        Faction faction = accesBD.getFactionByName(nom);
+        sortie.writeObject(faction);
         sortie.flush();
     }
 }

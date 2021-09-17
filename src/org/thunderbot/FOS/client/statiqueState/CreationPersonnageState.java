@@ -178,6 +178,8 @@ public class CreationPersonnageState extends BasicGameState {
 
         if (btnValider.isInBouton(x, y)) {
             click.play();
+            System.out.println("Classe : " + classeSelectionner.toString());
+            System.out.println("Faction : " + factionSelectionner.toString());
         }
 
         gestionBoutonClasse(x, y);

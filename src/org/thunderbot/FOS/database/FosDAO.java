@@ -315,6 +315,25 @@ public class FosDAO {
         return aRetourner;
     }
 
+    public Faction getFactionByName(String nom) {
+        Faction aRetourner = new Faction();
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_FACTION + " WHERE " + FACTION_NOM + " = '" + nom + "';";
+
+        try {
+            ResultSet resultSet = gestionnaireBase.executeRequete(requete);
+
+            aRetourner.setId(resultSet.getInt(FACTION_CLE));
+            aRetourner.setNom(resultSet.getString(FACTION_NOM));
+
+            resultSet.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
 
 
     public Titre getTitreById(int id) {
@@ -322,8 +341,12 @@ public class FosDAO {
         return aRetourner;
     }
 
+
+
     public Guilde getGuildeById(int id) {
         Guilde aRetourner = new Guilde();
         return aRetourner;
     }
+
+
 }
