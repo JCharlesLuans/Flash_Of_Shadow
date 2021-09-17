@@ -236,7 +236,7 @@ public class Client {
         return aRetourner;
     }
 
-    public Classe chargementListeClasse(String nomClasse) {
+    public Classe chargementClasse(String nomClasse) {
         Classe aRetourner = null;
         String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.CLASSE + ";" + nomClasse + ';';
 
@@ -250,13 +250,13 @@ public class Client {
         return aRetourner;
     }
 
-    public ArrayList<Faction> chargementListeFaction() {
-        ArrayList<Faction> aRetourner = null;
-        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.FACTION + ";";
+    public Faction chargementFaction(String nom) {
+        Faction aRetourner = null;
+        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.FACTION + ";" + nom + ';';
 
         try {
             envoi(new RequeteServeur(requete));
-            aRetourner = (ArrayList<Faction>) reception();
+            aRetourner = (Faction) reception();
         } catch (IOException err) {
             err.printStackTrace();
         }

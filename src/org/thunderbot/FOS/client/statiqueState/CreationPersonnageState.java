@@ -15,22 +15,30 @@ import org.thunderbot.FOS.client.statiqueState.layout.ImageFlottante;
 import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Faction;
 
-import java.util.ArrayList;
-
 public class CreationPersonnageState extends BasicGameState {
 
     public static final int ID = 3;
 
+    /** Position de la zone texte */
     private static final int ZT_NOM_WIDTH = 480;
     private static final int ZT_NOM_HEIGHT = 40;
     private static final int ZT_NOM_DELTA_HEIGHT = 120;
 
+    /** Position du bouton valider */
     private static final int BTN_VALIDER_LONGUEUR = 100;
     private static final int BTN_VALIDER_HAUTEUR  = 50;
     private static final int BTN_VALIDER_DELTA = 65;
 
+    /** Position des bouton classes */
     private static final int BTN_CLASSE_X_START = 100;
     private static final int BTN_CLASSE_Y_START = 50;
+
+    /** Position des bouton faction */
+    private static final int BTN_FACTION_X_START = 100;
+    private static final int BTN_FACTION_Y_START = 178;
+
+    /** Espace entre les bouton sur l'axe X */
+    private static final int DELTA_ESPACE_BOUTON = 64;
 
     private Client client;
 
@@ -53,7 +61,12 @@ public class CreationPersonnageState extends BasicGameState {
     private ImageFlottante desc_voleur;
     private ImageFlottante desc_pugilat;
 
+    private BoutonImage btnImg_idenia;
+    private BoutonImage btnImg_umbra;
+    private BoutonImage btnImg_ethernia;
+
     private Classe classeSelectionner;
+    private Faction factionSelectionner;
 
     private Sound click;
 
@@ -74,8 +87,12 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
+        int x;
+
+        // Init du son
         click = new Sound("res/menuState/son/click.wav");
 
+        // Init des image flottante des classes
         desc_archer = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/archer.png");
         desc_mage = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/mage.png");
         desc_pretre = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/pretre.png");
@@ -83,26 +100,39 @@ public class CreationPersonnageState extends BasicGameState {
         desc_voleur = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/voleur.png");
         desc_pugilat = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/pugilat.png");
 
-        int x = BTN_CLASSE_X_START;
-
+        // Init des bouton pour gerer les classes
+        x = BTN_CLASSE_X_START;
         btnImg_archer   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/archer.png", x,  BTN_CLASSE_Y_START);
-        x+= 128;
+        x+= btnImg_archer.getWidth() + DELTA_ESPACE_BOUTON;
         btnImg_mage     = new BoutonImage("res/menuState/creationJoueur/boutonClasse/mage.png", x,  BTN_CLASSE_Y_START);
-        x+= 128;
+        x+= btnImg_mage.getWidth() + DELTA_ESPACE_BOUTON;
         btnImg_pretre   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pretre.png", x,  BTN_CLASSE_Y_START);
-        x+= 128;
+        x+= btnImg_pretre.getWidth() + DELTA_ESPACE_BOUTON;
         btnImg_guerrier = new BoutonImage("res/menuState/creationJoueur/boutonClasse/guerrier.png", x,  BTN_CLASSE_Y_START);
-        x+= 128;
+        x+= btnImg_guerrier.getWidth() + DELTA_ESPACE_BOUTON;
         btnImg_voleur   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/voleur.png", x,  BTN_CLASSE_Y_START);
-        x+= 128;
+        x+= btnImg_voleur.getWidth() + DELTA_ESPACE_BOUTON;
         btnImg_pugilat  = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pugilat.png", x,  BTN_CLASSE_Y_START);
 
+        // Init des images flottante des factions
+        // Init des bouton pour gerer les factions
+        x = BTN_FACTION_X_START;
+        btnImg_idenia = new BoutonImage("res/menuState/creationJoueur/boutonFaction/idenia.png", x, BTN_FACTION_Y_START);
+        x += btnImg_idenia.getWidth() + DELTA_ESPACE_BOUTON;
+        btnImg_umbra = new BoutonImage("res/menuState/creationJoueur/boutonFaction/umbra.png", x, BTN_FACTION_Y_START);
+        x += btnImg_umbra.getWidth() + DELTA_ESPACE_BOUTON;
+        btnImg_ethernia = new BoutonImage("res/menuState/creationJoueur/boutonFaction/ethernia.png", x, BTN_FACTION_Y_START);
+
+
+        // Init du background
         background = new Image("res/menuState/creationJoueur/backgroundCreationPerso.jpg");
 
+        // Init du bouton valider
         btnValider = new Bouton(gameContainer.getWidth() / 2 - BTN_VALIDER_LONGUEUR / 2,
                 gameContainer.getHeight() - BTN_VALIDER_DELTA,
                 BTN_VALIDER_LONGUEUR, BTN_VALIDER_HAUTEUR, "Valider");
 
+        // Init de la zone texte
         ztNom = new TextField(gameContainer, gameContainer.getDefaultFont(),
                 gameContainer.getWidth() / 2 - ZT_NOM_WIDTH / 2,
                 gameContainer.getHeight() - ZT_NOM_DELTA_HEIGHT,
@@ -124,12 +154,18 @@ public class CreationPersonnageState extends BasicGameState {
         btnImg_voleur.render(graphics);
         btnImg_pugilat.render(graphics);
 
+        btnImg_idenia.render(graphics);
+        btnImg_umbra.render(graphics);
+        btnImg_ethernia.render(graphics);
+
         desc_archer.render(graphics);
         desc_mage.render(graphics);
         desc_pretre.render(graphics);
         desc_guerrier.render(graphics);
         desc_voleur.render(graphics);
         desc_pugilat.render(graphics);
+
+
     }
 
     @Override
@@ -145,6 +181,7 @@ public class CreationPersonnageState extends BasicGameState {
         }
 
         gestionBoutonClasse(x, y);
+        gestionBoutonFaction(x, y);
     }
 
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
@@ -193,6 +230,12 @@ public class CreationPersonnageState extends BasicGameState {
         }
     }
 
+    /**
+     * Gestion des actions lors d'un click sur les bouton des classe.
+     * Va permettre de cocher un bouton si l'on lick dessus, et de décocher tout les autre.
+     * @param x position en X de la souris
+     * @param y position en Y de la souris
+     */
     public void gestionBoutonClasse(int x, int y) {
         if (btnImg_archer.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(true);
@@ -203,7 +246,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
-            classeSelectionner = client.chargementListeClasse("Archer");
+            classeSelectionner = client.chargementClasse("Archer");
         } else  if (btnImg_mage.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(true);
@@ -213,7 +256,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
-            classeSelectionner = client.chargementListeClasse("Mage");
+            classeSelectionner = client.chargementClasse("Mage");
         } else  if (btnImg_pretre.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(false);
@@ -223,7 +266,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
-            classeSelectionner = client.chargementListeClasse("Pretre");
+            classeSelectionner = client.chargementClasse("Pretre");
         } else  if (btnImg_guerrier.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(false);
@@ -233,7 +276,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
-            classeSelectionner = client.chargementListeClasse("Guerrier");
+            classeSelectionner = client.chargementClasse("Guerrier");
         } else  if (btnImg_voleur.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(false);
@@ -243,7 +286,7 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(false);
 
             click.play();
-            classeSelectionner = client.chargementListeClasse("Voleur");
+            classeSelectionner = client.chargementClasse("Voleur");
         } else  if (btnImg_pugilat.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(false);
             btnImg_mage.setSelectionner(false);
@@ -253,15 +296,32 @@ public class CreationPersonnageState extends BasicGameState {
             btnImg_pugilat.setSelectionner(true);
 
             click.play();
-            classeSelectionner = client.chargementListeClasse("Pugilat");
-        } else {
-            btnImg_archer.setSelectionner(false);
-            btnImg_mage.setSelectionner(false);
-            btnImg_pretre.setSelectionner(false);
-            btnImg_guerrier.setSelectionner(false);
-            btnImg_voleur.setSelectionner(false);
-            btnImg_pugilat.setSelectionner(false);
+            classeSelectionner = client.chargementClasse("Pugilat");
         }
     }
 
+    public void gestionBoutonFaction(int x, int y) {
+        if (btnImg_idenia.isInLayout(x, y)) {
+            btnImg_idenia.setSelectionner(true);
+            btnImg_ethernia.setSelectionner(false);
+            btnImg_umbra.setSelectionner(false);
+
+            click.play();
+            factionSelectionner = client.chargementFaction("Idenia");
+        } else if (btnImg_umbra.isInLayout(x, y)) {
+            btnImg_idenia.setSelectionner(false);
+            btnImg_ethernia.setSelectionner(false);
+            btnImg_umbra.setSelectionner(true);
+
+            click.play();
+            factionSelectionner = client.chargementFaction("Umbra");
+        } else if (btnImg_ethernia.isInLayout(x, y)) {
+            btnImg_idenia.setSelectionner(false);
+            btnImg_ethernia.setSelectionner(true);
+            btnImg_umbra.setSelectionner(false);
+
+            click.play();
+            factionSelectionner = client.chargementFaction("Ethernia");
+        }
+    }
 }

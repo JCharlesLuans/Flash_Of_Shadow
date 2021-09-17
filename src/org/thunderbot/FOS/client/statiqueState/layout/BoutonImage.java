@@ -47,4 +47,12 @@ public class BoutonImage {
     public boolean isSelectionner() {
         return selectionner;
     }
+
+    public int getWidth() {
+        return imageSelect.getWidth();
+    }
+
+    public int getHeight() {
+        return imageSelect.getHeight();
+    }
 }
