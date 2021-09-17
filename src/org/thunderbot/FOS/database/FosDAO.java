@@ -60,6 +60,11 @@ public class FosDAO {
         gestionnaireBase.executeUpdate(requete);
     }
 
+    public void deleteJoueur(int idJoueur) {
+        String requete = "DELETE FROM " + NOM_TABLE_JOUEUR + " WHERE " + JOUEUR_CLE + " = " + idJoueur;
+        gestionnaireBase.executeUpdate(requete);
+    }
+
 
 
     public Personnage getPersonnageByJoueur(Joueur joueur) {
@@ -119,6 +124,57 @@ public class FosDAO {
                 + " WHERE " + PERSONNAGE_CLE + " = " + id;
 
         gestionnaireBase.executeUpdate(requette);
+    }
+
+    public int addPersonnage(Personnage personnage)  {
+        int aRetourner = 0;
+
+        String requete =
+                "INSERT INTO " + NOM_TABLE_PERSONNAGE
+                        + " ( " + PERSONNAGE_NOM + ", "
+                        + PERSONNAGE_SPRITE + ", "
+                        + PERSONNAGE_X + ", "
+                        + PERSONNAGE_Y + ", "
+                        + PERSONNAGE_CLE_JOUEUR + ", "
+                        + PERSONNAGE_CLE_CLASSE + ", "
+                        + PERSONNAGE_CLE_MAP + ", "
+                        + PERSONNAGE_CLE_STUFF_TETE + ", "
+                        + PERSONNAGE_CLE_STUFF_TORSE + ", "
+                        + PERSONNAGE_CLE_STUFF_GANT + ", "
+                        + PERSONNAGE_CLE_STUFF_JAMBE + ", "
+                        + PERSONNAGE_CLE_STUFF_BOTTE + ", "
+                        + PERSONNAGE_CLE_STUFF_ARME + ", "
+                        + PERSONNAGE_CLE_FACTION + ", "
+                        + PERSONNAGE_CLE_GUILDE + ", "
+                        + PERSONNAGE_CLE_TITRE +  ")"
+                + "VALUES ( '"
+                        + personnage.getNom() + "', '"
+                        + personnage.getSprite() + "', "
+                        + personnage.getX() + ", "
+                        + personnage.getY() + ", "
+                        + personnage.getIdJoueur() + ", "
+                        + personnage.getClasse().getId() + ", "
+                        + personnage.getMap().getId() + ", "
+                        + personnage.getStuffTete().getId() + ", "
+                        + personnage.getStuffTorse().getId() + ", "
+                        + personnage.getStuffGant().getId() + ", "
+                        + personnage.getStuffJambe().getId() + ", "
+                        + personnage.getStuffBotte().getId() + ", "
+                        + personnage.getStuffArme().getId() + ", "
+                        + personnage.getFaction().getId() + ", "
+                        + personnage.getGuilde().getId() + ", "
+                        + personnage.getTitre().getId() + "); ";
+
+
+        gestionnaireBase.executeUpdate(requete);
+        try {
+            ResultSet resultSet = gestionnaireBase.executeRequete("SELECT COUNT(*) FROM " + NOM_TABLE_PERSONNAGE);
+            aRetourner = resultSet.getInt(1);
+            resultSet.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return aRetourner;
     }
 
 
@@ -278,6 +334,8 @@ public class FosDAO {
           aRetourner.setDps(rs.getInt(OBJET_DPS));
           aRetourner.setImage(rs.getString(OBJET_IMAGE));
 
+          rs.close();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -325,6 +383,7 @@ public class FosDAO {
 
             aRetourner.setId(resultSet.getInt(FACTION_CLE));
             aRetourner.setNom(resultSet.getString(FACTION_NOM));
+            aRetourner.setMapStart(getMapById(resultSet.getInt(FACTION_CLE_MAP_START)));
 
             resultSet.close();
         } catch (SQLException throwables) {
@@ -348,5 +407,40 @@ public class FosDAO {
         return aRetourner;
     }
 
+    public ArrayList<Objet> getListeStuffBase() {
+        ArrayList<Objet> list = new ArrayList<>();
 
+        String requete = "SELECT * FROM " + NOM_TABLE_OBJET + " WHERE " + OBJET_CLE + " <= 7 AND " + OBJET_CLE + " > 1";
+        ResultSet resultSet = gestionnaireBase.executeRequete(requete);
+
+        try {
+            while (resultSet.next()) {
+
+                Objet aRetourner  = new Objet();
+
+                ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+                aRetourner.setId(rs.getInt(OBJET_CLE));
+                aRetourner.setNom(rs.getString(OBJET_NOM));
+                aRetourner.setEmplacement(rs.getInt(OBJET_EMPLACEMENT));
+                aRetourner.setStatAgilite(rs.getInt(OBJET_STAT_AGILITE));
+                aRetourner.setStatArmure(rs.getInt(OBJET_STAT_ARMURE));
+                aRetourner.setStatDexterite(rs.getInt(OBJET_STAT_DEXTERITE));
+                aRetourner.setStatEndurance(rs.getInt(OBJET_STAT_ENDURANCE));
+                aRetourner.setStatForce(rs.getInt(OBJET_STAT_FORCE));
+                aRetourner.setStatIntelligence(rs.getInt(OBJET_STAT_INTELLIGENCE));
+                aRetourner.setStatSagesse(rs.getInt(OBJET_STAT_SAGESSE));
+                aRetourner.setDps(rs.getInt(OBJET_DPS));
+                aRetourner.setImage(rs.getString(OBJET_IMAGE));
+
+                list.add(aRetourner);
+            }
+
+            resultSet.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
+    }
 }

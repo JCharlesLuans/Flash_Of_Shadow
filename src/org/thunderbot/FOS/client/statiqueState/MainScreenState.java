@@ -12,7 +12,6 @@ import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.newdawn.slick.gui.TextField;
 import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
-import org.thunderbot.FOS.client.statiqueState.layout.Layout;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class MainScreenState extends BasicGameState {
     public static final boolean CONNEXION = false;
 
     private Image background;
-    private StateBasedGame game;
+    private StateBasedGame stateBasedGame;
 
     private TextField zoneSaisiePseudo;
     private TextField zoneSaisieMotDePasse;
@@ -47,7 +46,7 @@ public class MainScreenState extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        this.game = stateBasedGame;
+        this.stateBasedGame = stateBasedGame;
         background = new Image("res/menuState/background.png");
 
         boutonInscription = new Bouton(680, 30, 120, 40, "Inscription");
@@ -114,9 +113,9 @@ public class MainScreenState extends BasicGameState {
                         "Connexion réussie ! ");
 
                 if(nouveauJoueur) {
-                    game.enterState(CreationPersonnageState.ID);
+                    stateBasedGame.enterState(CreationPersonnageState.ID);
                 } else {
-                    game.enterState(MapGameState.ID);
+                    stateBasedGame.enterState(MapGameState.ID);
                 }
 
 

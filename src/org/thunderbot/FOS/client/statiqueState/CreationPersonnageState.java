@@ -8,12 +8,16 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
 import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
 import org.thunderbot.FOS.client.statiqueState.layout.ImageFlottante;
 import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Faction;
+import org.thunderbot.FOS.database.beans.Map;
+
+import javax.swing.*;
 
 public class CreationPersonnageState extends BasicGameState {
 
@@ -40,7 +44,17 @@ public class CreationPersonnageState extends BasicGameState {
     /** Espace entre les bouton sur l'axe X */
     private static final int DELTA_ESPACE_BOUTON = 64;
 
+    private static final int ZT_CHAR_MAX = 15;
+    private static final int ZT_CHAR_MIN = 3;
+
+    private static final String ERR_CLASSE_NULL = "Veuillez selectionner une classe !";
+    private static final String ERR_FACTION_NULL = "Veuillez selectionner une faction !";
+    private static final String ERR_PSEUDO =
+            "Veuillez saisir un pseudo valide entre " + ZT_CHAR_MIN + " et " + ZT_CHAR_MAX +  " caractère !";
+
     private Client client;
+
+    private StateBasedGame stateBasedGame;
 
     private Image background;
 
@@ -65,6 +79,10 @@ public class CreationPersonnageState extends BasicGameState {
     private BoutonImage btnImg_umbra;
     private BoutonImage btnImg_ethernia;
 
+    private ImageFlottante desc_idenia;
+    private ImageFlottante desc_umbra;
+    private ImageFlottante desc_ethernia;
+
     private Classe classeSelectionner;
     private Faction factionSelectionner;
 
@@ -86,6 +104,8 @@ public class CreationPersonnageState extends BasicGameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+
+        this.stateBasedGame = stateBasedGame;
 
         int x;
 
@@ -115,6 +135,10 @@ public class CreationPersonnageState extends BasicGameState {
         btnImg_pugilat  = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pugilat.png", x,  BTN_CLASSE_Y_START);
 
         // Init des images flottante des factions
+        desc_idenia = new ImageFlottante("res/menuState/creationJoueur/descriptionFaction/idenia.png");
+        desc_umbra = new ImageFlottante("res/menuState/creationJoueur/descriptionFaction/umbra.png");
+        desc_ethernia = new ImageFlottante("res/menuState/creationJoueur/descriptionFaction/ethernia.png");
+
         // Init des bouton pour gerer les factions
         x = BTN_FACTION_X_START;
         btnImg_idenia = new BoutonImage("res/menuState/creationJoueur/boutonFaction/idenia.png", x, BTN_FACTION_Y_START);
@@ -165,6 +189,10 @@ public class CreationPersonnageState extends BasicGameState {
         desc_voleur.render(graphics);
         desc_pugilat.render(graphics);
 
+        desc_idenia.render(graphics);
+        desc_umbra.render(graphics);
+        desc_ethernia.render(graphics);
+
 
     }
 
@@ -176,69 +204,24 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
 
-        if (btnValider.isInBouton(x, y)) {
-            click.play();
-            System.out.println("Classe : " + classeSelectionner.toString());
-            System.out.println("Faction : " + factionSelectionner.toString());
-        }
-
+        gestionBoutonValider(x, y);
         gestionBoutonClasse(x, y);
         gestionBoutonFaction(x, y);
     }
 
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-
-        desc_archer.setVisible(false);
-        desc_mage.setVisible(false);
-        desc_pretre.setVisible(false);
-        desc_guerrier.setVisible(false);
-        desc_voleur.setVisible(false);
-        desc_pugilat.setVisible(false);
-
-        if(btnImg_archer.isInLayout(newx, newy)) {
-            desc_archer.setX(newx);
-            desc_archer.setY(newy);
-            desc_archer.setVisible(true);
-        }
-
-        if(btnImg_mage.isInLayout(newx, newy)) {
-            desc_mage.setX(newx);
-            desc_mage.setY(newy);
-            desc_mage.setVisible(true);
-        }
-
-        if(btnImg_pretre.isInLayout(newx, newy)) {
-            desc_pretre.setX(newx);
-            desc_pretre.setY(newy);
-            desc_pretre.setVisible(true);
-        }
-
-        if(btnImg_guerrier.isInLayout(newx, newy)) {
-            desc_guerrier.setX(newx);
-            desc_guerrier.setY(newy);
-            desc_guerrier.setVisible(true);
-        }
-
-        if(btnImg_voleur.isInLayout(newx, newy)) {
-            desc_voleur.setX(newx);
-            desc_voleur.setY(newy);
-            desc_voleur.setVisible(true);
-        }
-
-        if(btnImg_pugilat.isInLayout(newx, newy)) {
-            desc_pugilat.setX(newx);
-            desc_pugilat.setY(newy);
-            desc_pugilat.setVisible(true);
-        }
+        gestionDescriptionClasse(newx, newy);
+        gestionDescriptionFaction(newx, newy);
     }
 
     /**
      * Gestion des actions lors d'un click sur les bouton des classe.
-     * Va permettre de cocher un bouton si l'on lick dessus, et de décocher tout les autre.
+     * Va permettre de cocher un bouton si l'on click dessus, et de décocher tout les autres.
+     * Si un bouton est cocher, alors classeSelectionner prend la valeur de la classe choisie
      * @param x position en X de la souris
      * @param y position en Y de la souris
      */
-    public void gestionBoutonClasse(int x, int y) {
+    private void gestionBoutonClasse(int x, int y) {
         if (btnImg_archer.isInLayout(x, y)) {
             btnImg_archer.setSelectionner(true);
             btnImg_mage.setSelectionner(false);
@@ -302,7 +285,7 @@ public class CreationPersonnageState extends BasicGameState {
         }
     }
 
-    public void gestionBoutonFaction(int x, int y) {
+    private void gestionBoutonFaction(int x, int y) {
         if (btnImg_idenia.isInLayout(x, y)) {
             btnImg_idenia.setSelectionner(true);
             btnImg_ethernia.setSelectionner(false);
@@ -324,6 +307,114 @@ public class CreationPersonnageState extends BasicGameState {
 
             click.play();
             factionSelectionner = client.chargementFaction("Ethernia");
+        }
+    }
+
+    private void gestionDescriptionClasse(int x, int y) {
+        desc_archer.setVisible(false);
+        desc_mage.setVisible(false);
+        desc_pretre.setVisible(false);
+        desc_guerrier.setVisible(false);
+        desc_voleur.setVisible(false);
+        desc_pugilat.setVisible(false);
+
+        if(btnImg_archer.isInLayout(x, y)) {
+            desc_archer.setX(x);
+            desc_archer.setY(y);
+            desc_archer.setVisible(true);
+        }
+
+        if(btnImg_mage.isInLayout(x, y)) {
+            desc_mage.setX(x);
+            desc_mage.setY(y);
+            desc_mage.setVisible(true);
+        }
+
+        if(btnImg_pretre.isInLayout(x, y)) {
+            desc_pretre.setX(x);
+            desc_pretre.setY(y);
+            desc_pretre.setVisible(true);
+        }
+
+        if(btnImg_guerrier.isInLayout(x, y)) {
+            desc_guerrier.setX(x);
+            desc_guerrier.setY(y);
+            desc_guerrier.setVisible(true);
+        }
+
+        if(btnImg_voleur.isInLayout(x, y)) {
+            desc_voleur.setX(x);
+            desc_voleur.setY(y);
+            desc_voleur.setVisible(true);
+        }
+
+        if(btnImg_pugilat.isInLayout(x, y)) {
+            desc_pugilat.setX(x);
+            desc_pugilat.setY(y);
+            desc_pugilat.setVisible(true);
+        }
+    }
+
+    private void gestionDescriptionFaction(int x, int y) {
+        desc_idenia.setVisible(false);
+        desc_umbra.setVisible(false);
+        desc_ethernia.setVisible(false);
+
+        if (btnImg_idenia.isInLayout(x, y)) {
+            desc_idenia.setX(x);
+            desc_idenia.setY(y);
+            desc_idenia.setVisible(true);
+        }
+
+        if (btnImg_umbra.isInLayout(x, y)) {
+            desc_umbra.setX(x);
+            desc_umbra.setY(y);
+            desc_umbra.setVisible(true);
+        }
+
+        if (btnImg_ethernia.isInLayout(x, y)) {
+            desc_ethernia.setX(x);
+            desc_ethernia.setY(y);
+            desc_ethernia.setVisible(true);
+        }
+    }
+
+    private void gestionBoutonValider(int x, int y) {
+        if (btnValider.isInBouton(x, y)) {
+            JFrame jFrame = new JFrame();
+
+            click.play();
+
+            System.out.println(ztNom.getText().length());
+
+            // Gestion erruer
+            if (classeSelectionner == null) {
+                JOptionPane.showMessageDialog(jFrame, ERR_CLASSE_NULL);
+            } else if (factionSelectionner == null) {
+                JOptionPane.showMessageDialog(jFrame, ERR_FACTION_NULL);
+            } else if (ZT_CHAR_MIN > ztNom.getText().length() ||  ztNom.getText().length() > ZT_CHAR_MAX ) {
+                JOptionPane.showMessageDialog(jFrame, ERR_PSEUDO);
+            } else {
+                String recap = "Nom : " + ztNom.getText() + '\n';
+                recap += "Classe : " + classeSelectionner.getNom() + '\n';
+                recap += "Faction : " + factionSelectionner.getNom() + '\n';
+
+                JOptionPane.showMessageDialog(jFrame, recap);
+
+                client.getPersonnage().setNom(ztNom.getText());
+                client.getPersonnage().setClasse(classeSelectionner);
+                client.getPersonnage().setFaction(factionSelectionner);
+                client.getPersonnage().setMap(factionSelectionner.getMapStart());
+                client.getPersonnage().setX(Map.POSITION_X_DEFAUT);
+                client.getPersonnage().setY(Map.POSITION_Y_DEFAUT);
+                client.chargementStuffBase();
+
+                client.createPersonnage();
+
+                stateBasedGame.enterState(MapGameState.ID);
+            }
+
+
         }
     }
 }

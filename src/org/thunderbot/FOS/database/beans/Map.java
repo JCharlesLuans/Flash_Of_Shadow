@@ -14,6 +14,9 @@ import java.io.Serializable;
  */
 public class Map implements Serializable {
 
+    public static final float POSITION_X_DEFAUT = 640;
+    public static final float POSITION_Y_DEFAUT = 400;
+
     private int id;
     private String nom;
     private int niveauPNJ;

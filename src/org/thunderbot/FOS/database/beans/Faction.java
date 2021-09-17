@@ -16,6 +16,7 @@ public class Faction implements Serializable {
 
     private int id;
     private String nom;
+    private Map mapStart;
 
     public Faction() {
 
@@ -24,6 +25,7 @@ public class Faction implements Serializable {
     public Faction(int id, String nom) {
         this.id = id;
         this.nom = nom;
+        this.mapStart = null;
     }
 
     public String getNom() {
@@ -40,5 +42,13 @@ public class Faction implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public Map getMapStart() {
+        return this.mapStart;
+    }
+
+    public void setMapStart(Map mapStart) {
+        this.mapStart = mapStart;
     }
 }

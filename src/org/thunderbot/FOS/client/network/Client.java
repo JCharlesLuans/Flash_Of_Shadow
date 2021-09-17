@@ -66,7 +66,7 @@ public class Client {
         envoi(new Authentification(pseudo, mdp, nouveauJoueur));
         code = (int) reception();
 
-        if (nouveauJoueur) {
+        if (nouveauJoueur && code == 0) {
 
             personnage = new Personnage();
             Joueur tmp = (Joueur) reception();
@@ -81,9 +81,6 @@ public class Client {
             //TODO ed
             System.out.println("Attente personnage");
             personnage = (Personnage) reception();
-
-
-
         }
 
 
@@ -103,7 +100,11 @@ public class Client {
      * @throws IOException
      */
     public void deconnexion() throws IOException {
-        envoi(new Stop(personnage));
+        String requete = RequeteServeur.DECONNEXION + ";" ;
+        envoi(new RequeteServeur(requete));
+        System.out.println(personnage);
+        envoi(personnage.getId());
+        envoi(personnage);
     }
 
 //    /**
@@ -278,5 +279,40 @@ public class Client {
 
     private String lectureIpServeur() {
         return XMLTools.readXMLElement("res/option.xml", "ipServeur");
+    }
+
+    public void createPersonnage() {
+        String requete = RequeteServeur.CREATE + ";" + RequeteServeur.PERSONNAGE + ";";
+
+        try {
+            envoi(new RequeteServeur(requete));
+            envoi(personnage);
+
+            personnage.setId((int) reception());
+
+            // TODO ED
+            System.out.println(personnage);
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void chargementStuffBase() {
+        ArrayList<Objet> aRetourner;
+        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.STUFF_BASE + ";";
+        try {
+            envoi(new RequeteServeur(requete));
+            aRetourner = (ArrayList) reception();
+
+            personnage.setStuffTete(aRetourner.get(0));
+            personnage.setStuffTorse(aRetourner.get(1));
+            personnage.setStuffGant(aRetourner.get(2));
+            personnage.setStuffJambe(aRetourner.get(3));
+            personnage.setStuffBotte(aRetourner.get(4));
+            personnage.setStuffArme(aRetourner.get(5));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

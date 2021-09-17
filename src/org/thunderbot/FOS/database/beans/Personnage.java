@@ -27,18 +27,21 @@ public class Personnage implements Serializable {
     private Titre titre;
 
     public Personnage() {
+        id = -1;
         idJoueur = -1;
-        classe = null;
-        map = null;
-        stuffArme = null;
-        stuffBotte = null;
-        stuffGant = null;
-        stuffJambe = null;
-        stuffTete = null;
-        stuffTorse = null;
-        faction = null;
-        guilde = null;
-        titre = null;
+        nom = "";
+        sprite = "";
+        classe = new Classe();
+        map = new Map();
+        stuffArme = new Objet();
+        stuffBotte = new Objet();
+        stuffGant = new Objet();
+        stuffJambe = new Objet();
+        stuffTete = new Objet();
+        stuffTorse = new Objet();
+        faction = new Faction();
+        guilde = new Guilde();
+        titre = new Titre();
 
     }
 

@@ -34,8 +34,8 @@ public class Carte extends Map {
      * @throws SlickException
      */
     public Carte() throws SlickException {
-        initialiseMap("res/carte/map_campagne_ThunderSun.tmx");
-        tiledMap = new TiledMap("res/carte/map_campagne_ThunderSun.tmx");
+        initialiseMap("res/carte/map_start_umbra.tmx");
+        tiledMap = new TiledMap("res/carte/map_start_umbra.tmx");
         nomMap = "map_campagne_ThunderSun.tmx";
     }
 

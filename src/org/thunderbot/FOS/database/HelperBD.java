@@ -151,11 +151,13 @@ public class HelperBD {
     public static final String NOM_TABLE_FACTION = "Faction";
     public static final String FACTION_CLE = "_id";
     public static final String FACTION_NOM = "nom";
+    public static final String FACTION_CLE_MAP_START = "idMap";
 
     private static final String CREATION_TABLE_FACTION =
             "CREATE TABLE " + NOM_TABLE_FACTION + " ( "
                 + FACTION_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + FACTION_NOM + " TEXT NOT NULL"
+                + FACTION_NOM + " TEXT NOT NULL,"
+                + FACTION_CLE_MAP_START + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_MAP + " (" + MAP_CLE + ")"
             + ");";
 
 
@@ -426,9 +428,9 @@ public class HelperBD {
             System.out.println("Création des tables terminée !");
 
             initDataJoueur();
-            initMap();
+            //initMap();
             initPersonnage();
-            initObjet();
+            //initObjet();
         }
     }
 
@@ -492,7 +494,6 @@ public class HelperBD {
                 + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
                 + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
                 + "VALUES ( 'Casque', 1, 1, 1, 1, 1, 1, 1, 1, 0, 'casque.png' ); "
-
         );
 
         // Plastron

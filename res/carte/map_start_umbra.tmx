@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="6">
+ <tileset firstgid="1" source="tile_base_out_atlas.tsx"/>
+ <tileset firstgid="1025" source="tile_colision.tsx"/>
+ <tileset firstgid="1050" source="tile_terrain_atlas.tsx"/>
+ <layer id="2" name="eau" width="40" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3DMQ0AAAwDoE5/TVfGHkjoJVVVVVVfD3shm7ugDwAA
+  </data>
+ </layer>
+ <layer id="1" name="sol" width="40" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu2UWw7CIBBF8TUsxd24DN1X6UpM2oWUwjqEeCdMiR/qB6MJHyeUR8PJBcaTMV5wOxUuuyee3keuP5vP/m3B9QedOp3Of+LAiHao+nXb2o99BsEIBjHvxHhrv8wd/SlxssZQYhb9ScFN+sVEQBvhFeGWWbFO4w7mfRf4zBjL+XkqGWr5cX4LXNgrYj5nFxT9HPYlW86X759ct5Le++X8eIzs9o3I/Fo7cs3IfhOV+8ew50ql5rQ+X0fl/gXavl2Zn6zVrTPcJ5cD6lzAeBB5Hq1ujeazc9W3bEfS8avPm9/MK38tr07nGx6+q77CoA8AAA==
+  </data>
+ </layer>
+ <layer id="3" name="background" width="40" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu2WSwrCMBCGE2ipK72Cu+70CLoSV15Bd6V6CF2p1ZOot1DQe+hCj+GEJjQGB5s+4gj+8NFp+vpIk5C7x9iIp0Q+Y20vQ7Xr1z8RsKzO+wzGAxyGcFTpwXnfwDYhUhfJwH/1G4PPxMDWzaRKvzn4LAy+GdNPZAdOe+BQsO8irS1C7i3jVyTC4wicGF2/K3CT9Upimxj+2VQy86rzW2r1usR7EnDaSLZv/M5QXyrwrcvv2/n7lQt1P7X2qvXXtZ/t/KPWf2ao+MXamqyHil+izQk9VPywPQkVPyy/6oeNV9fB/LDx6jrCLwCaPKXF0/Y8e2gXex3h1+EZXV7v92xj+om+DAnRAJ4iAzwVoA8AAA==
+  </data>
+ </layer>
+ <layer id="4" name="background 2" width="40" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgQAB5FgYGBSgGAQUW0rEbUN8iIF4MxB5YzFBkYSAb2KPpdWAhHacB9R0C4sNAnIHFDEcK3IcMnMhwGww/Aup/DMQdJLrvGxsDw3c2/O66ApS/CsRJFLgPH0Z232sywu0L0G1fgTgeaE4CkVgTqE8dirUY8KtNxBN+UqzEu7MeaE4DkRg9T+BT20il9EeK+0B54jaQvsMCyRP0cN98oDkLSMC/gfgPELcz4Fe3kEruG44AlvcHK4DlfVJBDRPlduMrO8kpx8gB9LIHFyA3/EcBdQA10vFwAAOdDwYboFe6GA334QHoWY4T0+cYBeQDAOch0SCgDwAA
+  </data>
+ </layer>
+ <layer id="5" name="overground" width="40" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3VwQkAIRBD0SBo0bL1aEPajy2MrBIP/1WQw0wiIWoUaRZ3CmBfTe4EUstSz+4UcLjZnd8Dtx3h3g/+DwD+ifT4qa51bwa8FiTJBg+gDwAA
+  </data>
+ </layer>
+ <layer id="6" name="overground 2" width="40" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3BMQEAAADCoPVPbQwfoAAAAIC3Ab6TizqgDwAA
+  </data>
+ </layer>
+ <layer id="7" name="logique" width="40" height="25" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACuWX2wqAIAxAM+2h2///bvkwkjEvM3WjDgxDlh7TURk3TUZ5AHNwXYsfw7qnxVB9MSg/ypvDcd93uqfl+OF5e/jlsGj+FJQH9GHXVKzBGFsm983+hnD8fLg7loI8KT+oiVF+/nzvjICaKMmr9etZFzVo88G09pMcL5Xbaw+o8yeJdD1w5/tbfbRGqx84afUDvuY3ei1fe36jif0rlXi3WlvuvUn5aYHzfSwVF9TdFTegDwAA
+  </data>
+ </layer>
+ <objectgroup id="8" name="trigger" width="1" height="1" >
+  <object id="1" type="changementMap" x="586" y="172" width="50" height="69">
+   <properties>
+    <property name="destiMap" value="map_grotte.tmx"/>
+    <property name="destiX" type="int" value="40"/>
+    <property name="destiY" type="int" value="736"/>
+   </properties>
+  </object>
+  <object id="5" type="changementMap" x="680" y="15" width="50" height="69">
+   <properties>
+    <property name="destiMap" value="map_grotte.tmx"/>
+    <property name="destiX" type="int" value="40"/>
+    <property name="destiY" type="int" value="736"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

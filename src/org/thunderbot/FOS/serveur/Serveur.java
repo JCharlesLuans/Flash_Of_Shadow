@@ -102,13 +102,6 @@ public class Serveur extends Thread {
                     // TODO ed
                     System.out.println("UPDATE");
 
-                } else if (reception.getClass() == Stop.class) {
-                    // Gestion de la deconnection
-                    // TODO ed
-                    System.out.println("STOP");
-                    deconnexion((Stop) reception);
-                    isConnecter = false;
-                    me.close();
                 } else if (reception.getClass() == RequeteServeur.class) {
                     traitementRequeteServeur(entree, sortie, (RequeteServeur) reception);
                 }
@@ -172,9 +165,6 @@ public class Serveur extends Thread {
                 // TODO debug
                 System.out.println("Nouveau joueur créer");
 
-                // ATTENTE DU PERSONNAGE CREER
-                // entree.readObject();
-
             } else {
                 code = 1;
 
@@ -228,14 +218,43 @@ public class Serveur extends Thread {
      * Permet de deconnecter un joueur et son client de maniere propre, puis dde sauvegarder ses donnée en DB
      * @param stop
      */
-    private void deconnexion(Stop stop) {
-        Personnage personnage = stop.getPersonnage();
-        accesBD.updatePersonnage(personnage.getId(), personnage);
+    private void deconnexion(ObjectInputStream entree, ObjectOutputStream sortie) {
+
+        int id = 666;
+        Personnage personnage = new Personnage();
+
+        try {
+            id = (int) entree.readObject();
+            personnage = (Personnage) entree.readObject();
+
+            personnage.setId(id);
+            me.close();
+        }  catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // TODO ED
+        System.out.println("Debug deco : " + id);
+        System.out.println("Debug deco : " + personnage);
+
+        if (personnage.getId() == -1) {
+            // Suppression du joeueur car il n'a pas créer son personnage
+            accesBD.deleteJoueur(personnage.getIdJoueur());
+        } else {
+            accesBD.updatePersonnage(personnage.getId(), personnage);
+        }
+
         System.out.println("Deconnexion de : " + me.getInetAddress());
+
+        isConnecter = false;
+
     }
 
-    private void traitementRequeteServeur(ObjectInputStream entree, ObjectOutputStream sortie, RequeteServeur requeteServeur) throws IOException {
+    private void traitementRequeteServeur(ObjectInputStream entree, ObjectOutputStream sortie, RequeteServeur requeteServeur) throws IOException, ClassNotFoundException {
         switch (requeteServeur.getMotif()) {
+
             case RequeteServeur.CHARGEMENT:
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.MAP:
@@ -246,8 +265,34 @@ public class Serveur extends Thread {
                         break;
                     case RequeteServeur.FACTION:
                         chargementFaction(sortie, requeteServeur.getCle());
+                        break;
+                    case RequeteServeur.STUFF_BASE:
+                        chargementStuffBase(sortie);
+                        break;
                 }
-            break;
+                break;
+
+            case  RequeteServeur.CREATE:
+                switch (requeteServeur.getObjet()) {
+                    case RequeteServeur.PERSONNAGE:
+                        sortie.writeObject(accesBD.addPersonnage((Personnage) entree.readObject()));
+                        sortie.flush();
+                }
+                break;
+
+            case RequeteServeur.DECONNEXION:
+                deconnexion(entree, sortie);
+        }
+    }
+
+    private void chargementStuffBase(ObjectOutputStream sortie) {
+        ArrayList<Objet> aRetourner;
+        aRetourner = accesBD.getListeStuffBase();
+        try {
+            sortie.writeObject(aRetourner);
+            sortie.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
