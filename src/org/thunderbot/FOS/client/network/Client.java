@@ -216,11 +216,13 @@ public class Client {
     public ArrayList<Personnage> updateServeurMouvement() {
         String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
         String stringReception;
+        String stringEnvoi;
         ArrayList<Personnage> listePersonnageAJour = new ArrayList<>();
 
         try {
             envoi(new RequeteServeur(requete));
-            envoiPersonnage();
+            stringReception = XMLTools.encodeString(personnage);
+            envoi(stringReception);
             System.out.println(personnage);
             stringReception = (String) reception(); // Attente reception update
             listePersonnageAJour = (ArrayList<Personnage>) XMLTools.decodeString(stringReception);

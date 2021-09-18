@@ -339,13 +339,9 @@ public class Serveur extends Thread {
     }
 
     private void updateMouvement() {
+        me.setPersonnage((Personnage) receptionXML());
+        envoiXML(listePersonnageConnecter(me.getPersonnage().getMap().getId()));
 
-        try {
-            me.setPersonnage(receptionPersonnage());
-            envoiXML(listePersonnageConnecter(me.getPersonnage().getMap().getId()));
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     private ArrayList<Personnage> listePersonnageConnecter(int idMap) {
@@ -396,6 +392,19 @@ public class Serveur extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Object receptionXML() {
+        String strReception = null;
+        try {
+            strReception = (String) entree.readObject();
+            return XMLTools.decodeString(strReception);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return XMLTools.decodeString(strReception);
     }
 }
 
