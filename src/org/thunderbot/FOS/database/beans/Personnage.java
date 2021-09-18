@@ -48,6 +48,9 @@ public class Personnage implements Serializable {
         guilde = new Guilde();
         titre = new Titre();
 
+         direction = 0;
+         moving = false;
+
     }
 
     public Personnage(int id, String nom, String sprite, int idJoueur, Classe classe, Map map, Objet stuffTete,
@@ -226,6 +229,8 @@ public class Personnage implements Serializable {
                 ", faction='" + faction + '\'' +
                 ", guilde='" + guilde + '\'' +
                 ", titre='" + titre + '\'' +
+                ", direction='" + direction + '\'' +
+                ", moving='" + moving + '\'' +
                 '}';
     }
 

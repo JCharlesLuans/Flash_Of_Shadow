@@ -354,7 +354,7 @@ public class Serveur extends Thread {
         for (int i = 0; i < listeSocketClient.size(); i++) {
             if (listeSocketClient.get(i).isConnecter() &&
                     !listeSocketClient.get(i).equals(me) &&
-            listeSocketClient.get(i).getPersonnage().getMap().getId() == idMap
+                    listeSocketClient.get(i).getPersonnage().getMap().getId() == idMap
                     ) {
                 aRetourner.add(listeSocketClient.get(i).getPersonnage());
             }

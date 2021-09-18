@@ -221,6 +221,7 @@ public class Client {
         try {
             envoi(new RequeteServeur(requete));
             envoiPersonnage();
+            System.out.println(personnage);
             stringReception = (String) reception(); // Attente reception update
             listePersonnageAJour = (ArrayList<Personnage>) XMLTools.decodeString(stringReception);
         } catch (IOException e) {

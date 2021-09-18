@@ -115,9 +115,8 @@ public class MapGameState extends BasicGameState {
     public void updateListeJoueur(ArrayList<org.thunderbot.FOS.database.beans.Personnage> listeDistante) throws SlickException {
         listeJoueur = new ArrayList<>();
         for (int i = 0; i < listeDistante.size(); i++) {
-            PersonnageJoueur tmp = new PersonnageJoueur(listeDistante.get(i).getNom(), 0, listeDistante.get(i).getX(), listeDistante.get(i).getY());
+            PersonnageJoueur tmp = new PersonnageJoueur(listeDistante.get(i).getNom(), listeDistante.get(i).getDirection(), listeDistante.get(i).getX(), listeDistante.get(i).getY());
             tmp.setMoving(listeDistante.get(i).isMoving());
-            tmp.setDirection(listeDistante.get(i).getDirection());
             listeJoueur.add(tmp);
         }
     }
