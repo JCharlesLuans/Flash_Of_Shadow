@@ -190,6 +190,7 @@ public class Serveur extends Thread {
                 personnage = accesBD.getPersonnageByJoueur(joueur);
 
                 me.setPersonnage(personnage);
+                me.setConnecter(true);
 
             } else {
 
@@ -267,6 +268,7 @@ public class Serveur extends Thread {
     private void traitementRequeteServeur(ObjectInputStream entree, ObjectOutputStream sortie, RequeteServeur requeteServeur) throws IOException, ClassNotFoundException {
         switch (requeteServeur.getMotif()) {
 
+            // Gere les demande de chargement d'objet du jeu, stocker en BD
             case RequeteServeur.CHARGEMENT:
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.MAP:
@@ -284,6 +286,7 @@ public class Serveur extends Thread {
                 }
                 break;
 
+            // Gere les demande de création d'objet du jeu, stocker en BD
             case  RequeteServeur.CREATE:
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.PERSONNAGE:
@@ -294,6 +297,7 @@ public class Serveur extends Thread {
                 }
                 break;
 
+            // Gere les mise a jour des clients
             case RequeteServeur.UPDATE:
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.MOUVEMENT:
@@ -301,6 +305,7 @@ public class Serveur extends Thread {
                 }
                 break;
 
+            // Gere la deconnexion
             case RequeteServeur.DECONNEXION:
                 deconnexion(entree, sortie);
                 break;
@@ -345,7 +350,7 @@ public class Serveur extends Thread {
 
         try {
             for (int i = 0; i < listeSocketClient.size(); i++) {
-                if (!listeSocketClient.get(i).equals(me)) {
+                if (!listeSocketClient.get(i).equals(me) && listeSocketClient.get(i).isConnecter()) {
                     listeSocketClient.get(i).getSortie().writeObject(me.getPersonnage());
                 }
             }

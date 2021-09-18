@@ -30,6 +30,8 @@ public class ClientConnecter {
     private ObjectInputStream entree;
     private ObjectOutputStream sortie;
 
+    private boolean connecter;
+
     /**
      * Thread
      */
@@ -57,5 +59,13 @@ public class ClientConnecter {
 
     public void setPersonnage(Personnage personnage) {
         this.personnage = personnage;
+    }
+
+    public boolean isConnecter() {
+        return connecter;
+    }
+
+    public void setConnecter(boolean connecter) {
+        this.connecter = connecter;
     }
 }

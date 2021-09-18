@@ -33,7 +33,7 @@ public class Client {
 
     private Personnage personnage;
 
-    private Socket socket;
+    private final Socket socket;
 
     private ObjectOutputStream sortie; // Sortie du socket
 
