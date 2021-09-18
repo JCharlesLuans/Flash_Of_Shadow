@@ -69,4 +69,11 @@ public class ClientConnecter {
     public void setConnecter(boolean connecter) {
         this.connecter = connecter;
     }
+
+    @Override
+    public String toString() {
+        return "ClientConnecter{" +
+                "personnage=" + personnage +
+                '}';
+    }
 }

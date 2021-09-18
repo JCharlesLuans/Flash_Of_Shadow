@@ -11,6 +11,7 @@ import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
 import org.thunderbot.FOS.serveur.networkObject.Stop;
 import org.thunderbot.FOS.serveur.networkObject.Update;
+import org.thunderbot.FOS.utils.XMLTools;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -341,7 +342,7 @@ public class Serveur extends Thread {
 
         try {
             me.setPersonnage(receptionPersonnage());
-            sortie.writeObject(listePersonnageConnecter(me.getPersonnage().getMap().getId()));
+            envoiXML(listePersonnageConnecter(me.getPersonnage().getMap().getId()));
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -383,9 +384,18 @@ public class Serveur extends Thread {
         personnageAReconstruire.setY(y);
         personnageAReconstruire.setMap(tmpMap);
 
-        System.out.println(personnageAReconstruire);
-
         return personnageAReconstruire;
+    }
+
+    public void envoiXML(Object object) {
+        try {
+            String strEnvoi;
+            strEnvoi = XMLTools.encodeString(object);
+            sortie.writeObject(strEnvoi);
+            sortie.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

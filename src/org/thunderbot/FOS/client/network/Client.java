@@ -215,13 +215,14 @@ public class Client {
      */
     public ArrayList<Personnage> updateServeurMouvement() {
         String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
+        String stringReception;
         ArrayList<Personnage> listePersonnageAJour = new ArrayList<>();
 
         try {
             envoi(new RequeteServeur(requete));
             envoiPersonnage();
-            listePersonnageAJour = (ArrayList<Personnage>) reception(); // Attente reception update
-            System.out.println(listePersonnageAJour);
+            stringReception = (String) reception(); // Attente reception update
+            listePersonnageAJour = (ArrayList<Personnage>) XMLTools.decodeString(stringReception);
         } catch (IOException e) {
             e.printStackTrace();
         }
