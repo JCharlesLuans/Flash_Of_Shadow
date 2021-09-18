@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class Personnage implements Serializable {
 
+    // Attribu de l'objet en BD
     private int id;
     private String nom;
     private String sprite;
@@ -25,6 +26,10 @@ public class Personnage implements Serializable {
     private Faction faction;
     private Guilde guilde;
     private Titre titre;
+
+    //Autre
+    private int direction;
+    private boolean moving;
 
     public Personnage() {
         id = -1;
@@ -224,4 +229,19 @@ public class Personnage implements Serializable {
                 '}';
     }
 
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
 }

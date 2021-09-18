@@ -92,6 +92,8 @@ public class Personnage extends PersonnageJoueur {
 
         client.getPersonnage().setX(positionX);
         client.getPersonnage().setY(positionY);
+        client.getPersonnage().setDirection(direction);
+        client.getPersonnage().setMoving(moving);
 
     }
 
