@@ -29,12 +29,15 @@ public class Serveur extends Thread {
 
     public static final int PORT = 6700;
 
-    private ArrayList<Socket> listeSocketClient;
-    private Socket me;
+    private ArrayList<ClientConnecter> listeSocketClient;
+    private ClientConnecter me;
     private static FosDAO accesBD;
 
     private boolean isIdentifier;
     private boolean isConnecter;
+
+    private ObjectInputStream entree;
+    private ObjectOutputStream sortie;
 
     /**
      * Lancement du serveur
@@ -42,7 +45,7 @@ public class Serveur extends Thread {
      */
     public static void main(String[] args) {
 
-        ArrayList<Socket> listeSocketClient = new ArrayList<>(); // Liste des sockets des clients connectés
+        ArrayList<ClientConnecter> listeClientConnecter = new ArrayList<>(); // Liste des sockets des clients connectés
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
@@ -52,8 +55,9 @@ public class Serveur extends Thread {
 
             while (true) {
                 Socket newClient = serverSocket.accept();
-                listeSocketClient.add(newClient);
-                Serveur thread = new Serveur(listeSocketClient, newClient);
+                ClientConnecter clientConnecter = new ClientConnecter(newClient);
+                listeClientConnecter.add(clientConnecter);
+                Serveur thread = new Serveur(listeClientConnecter, clientConnecter);
                 thread.start();
             }
 
@@ -66,7 +70,7 @@ public class Serveur extends Thread {
     /**
      * Thread
      */
-    public Serveur(ArrayList<Socket> listeSocketClient, Socket me) {
+    public Serveur(ArrayList<ClientConnecter> listeSocketClient, ClientConnecter me) {
         this.listeSocketClient = listeSocketClient;
         this.me = me;
         isConnecter = true;
@@ -77,21 +81,21 @@ public class Serveur extends Thread {
     }
 
     private void traitement() {
-        System.out.println("Connection de : " + me.getInetAddress());
+        System.out.println("Connection de : " + me.getSocket().getInetAddress());
 
         try {
-            ObjectOutputStream sortie = new ObjectOutputStream(me.getOutputStream());
-            ObjectInputStream entree = new ObjectInputStream(me.getInputStream());
+            sortie = me.getSortie();
+            entree = me.getEntree();
 
             while (!isIdentifier) {
 
                 // TODO ED
-                System.out.println(me.getInetAddress() + " n'est pas identifier");
+                System.out.println(me.getSocket().getInetAddress() + " n'est pas identifier");
                 connexion(entree, sortie);
             }
 
             // TODO ED
-            System.out.println(me.getInetAddress() + " est identifier");
+            System.out.println(me.getSocket().getInetAddress() + " est identifier");
 
             while (isConnecter) {
                 Object reception = entree.readObject();
@@ -182,11 +186,10 @@ public class Serveur extends Thread {
                 code = 0;
                 isIdentifier = true;
 
-                // recherche du personnage de se joueur
+                // recherche du personnage de ce joueur
                 personnage = accesBD.getPersonnageByJoueur(joueur);
 
-                // TODO ed
-                System.out.println(personnage.toString());
+                me.setPersonnage(personnage);
 
             } else {
 
@@ -196,9 +199,6 @@ public class Serveur extends Thread {
                 code = 2;
             }
         }
-
-        // TODO DUBUG
-        // System.out.println(code);
 
         sortie.writeObject(code);
         sortie.flush();
@@ -216,37 +216,49 @@ public class Serveur extends Thread {
 
     /**
      * Permet de deconnecter un joueur et son client de maniere propre, puis dde sauvegarder ses donnée en DB
-     * @param stop
      */
     private void deconnexion(ObjectInputStream entree, ObjectOutputStream sortie) {
 
-        int id = 666;
-        Personnage personnage = new Personnage();
+        // Objet permettant de reconstruire le personnage a enregistrer
+        int id = -1;
+        float x = -1f;
+        float y = -1f;
+        Map tmpMap = null;
+        Personnage personnageAReconstruire = null;
+
 
         try {
-            id = (int) entree.readObject();
-            personnage = (Personnage) entree.readObject();
 
-            personnage.setId(id);
-            me.close();
+            // Reception des valeurs pour la reconstruction
+            id = (int) entree.readObject();
+            x = (float) entree.readObject();
+            y = (float) entree.readObject();
+            tmpMap = (Map) entree.readObject();
+            personnageAReconstruire = (Personnage) entree.readObject();
+
+            // Reconstruction de l'objet personnage à enregistrer
+            personnageAReconstruire.setId(id);
+            personnageAReconstruire.setX(x);
+            personnageAReconstruire.setY(y);
+            personnageAReconstruire.setMap(tmpMap);
+
+            me.getSocket().close();
+            listeSocketClient.remove(me);
         }  catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
-        // TODO ED
-        System.out.println("Debug deco : " + id);
-        System.out.println("Debug deco : " + personnage);
-
-        if (personnage.getId() == -1) {
+        // Sauvegarde
+        if (personnageAReconstruire.getId() == -1) {
             // Suppression du joeueur car il n'a pas créer son personnage
-            accesBD.deleteJoueur(personnage.getIdJoueur());
+            accesBD.deleteJoueur(personnageAReconstruire.getIdJoueur());
         } else {
-            accesBD.updatePersonnage(personnage.getId(), personnage);
+            accesBD.updatePersonnage(personnageAReconstruire.getId(), personnageAReconstruire);
         }
 
-        System.out.println("Deconnexion de : " + me.getInetAddress());
+        System.out.println("Deconnexion de : " + me.getSocket().getInetAddress());
 
         isConnecter = false;
 
@@ -275,13 +287,23 @@ public class Serveur extends Thread {
             case  RequeteServeur.CREATE:
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.PERSONNAGE:
-                        sortie.writeObject(accesBD.addPersonnage((Personnage) entree.readObject()));
+                        Personnage personnage = (Personnage) entree.readObject();
+                        me.setPersonnage(personnage);
+                        sortie.writeObject(accesBD.addPersonnage(personnage));
                         sortie.flush();
+                }
+                break;
+
+            case RequeteServeur.UPDATE:
+                switch (requeteServeur.getObjet()) {
+                    case RequeteServeur.MOUVEMENT:
+                        updateMouvement();
                 }
                 break;
 
             case RequeteServeur.DECONNEXION:
                 deconnexion(entree, sortie);
+                break;
         }
     }
 
@@ -317,6 +339,19 @@ public class Serveur extends Thread {
         Faction faction = accesBD.getFactionByName(nom);
         sortie.writeObject(faction);
         sortie.flush();
+    }
+
+    private void updateMouvement() {
+
+        try {
+            for (int i = 0; i < listeSocketClient.size(); i++) {
+                if (!listeSocketClient.get(i).equals(me)) {
+                    listeSocketClient.get(i).getSortie().writeObject(me.getPersonnage());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

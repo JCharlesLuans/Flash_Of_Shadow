@@ -207,6 +207,8 @@ public class Personnage implements Serializable {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", sprite='" + sprite + '\'' +
+                ", x='" + x + '\'' +
+                ", y='" + y + '\'' +
                 ", idJoueur=" + idJoueur + '\n' +
                 ", classe=" + classe + '\n' +
                 ", map='" + map + '\'' + '\n' +

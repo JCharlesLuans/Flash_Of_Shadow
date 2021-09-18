@@ -102,9 +102,15 @@ public class Client {
     public void deconnexion() throws IOException {
         String requete = RequeteServeur.DECONNEXION + ";" ;
         envoi(new RequeteServeur(requete));
-        System.out.println(personnage);
+
+        // Decomposition de l'element personnage pour l'envoyer objet par objet
+        // Pour le sauvegarder coter serveur.
         envoi(personnage.getId());
+        envoi(personnage.getX());
+        envoi(personnage.getY());
+        envoi(personnage.getMap());
         envoi(personnage);
+
     }
 
 //    /**
@@ -290,9 +296,6 @@ public class Client {
             envoi(personnage);
 
             personnage.setId((int) reception());
-
-            // TODO ED
-            System.out.println(personnage);
         }  catch (IOException e) {
             e.printStackTrace();
         }
