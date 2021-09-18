@@ -12,7 +12,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.entite.Camera;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
-import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
@@ -32,7 +32,7 @@ public class MapGameState extends BasicGameState {
 
     /** Client pour la communication multijoueur et liste des joueurs connecter */
     Client client;
-    ArrayList<ServPersonnage> listeJoueur;
+    ArrayList<PersonnageJoueur> listeJoueur;
 
     /** Personnage */
     Personnage joueur;
@@ -94,7 +94,7 @@ public class MapGameState extends BasicGameState {
         // UPDATTE DU JOUEUR
         joueur.update(carte, delta);
         camera.update(container, carte);
-        client.updateServeurMouvement(); //Envoi des data au joueur
+        updateListeJoueur(client.updateServeurMouvement()); //Envoi des data au joueur
 
     }
 
@@ -108,21 +108,14 @@ public class MapGameState extends BasicGameState {
         return ID;
     }
 
-    /**
-     * Met à jour les donnée que le client envoi selon cette instannce de MapGameSTate
-     */
-    public void updatePersonnage() {
-        org.thunderbot.FOS.database.beans.Personnage tmp = new org.thunderbot.FOS.database.beans.Personnage();
-        tmp.getMap().setNom(carte.getNomMap());
-        tmp.setX(joueur.getPositionX());
-        tmp.setY(joueur.getPositionY());
-    }
-
     public Personnage getJoueur() {
         return joueur;
     }
 
-    public ArrayList<ServPersonnage> getListeJoueur() {
-        return listeJoueur;
+    public void updateListeJoueur(ArrayList<org.thunderbot.FOS.database.beans.Personnage> listeDistante) throws SlickException {
+        listeJoueur = new ArrayList<>();
+        for (int i = 0; i < listeDistante.size(); i++) {
+            listeJoueur.add(new PersonnageJoueur(listeDistante.get(i).getNom(), 0, listeDistante.get(i).getX(), listeDistante.get(i).getY()));
+        }
     }
 }

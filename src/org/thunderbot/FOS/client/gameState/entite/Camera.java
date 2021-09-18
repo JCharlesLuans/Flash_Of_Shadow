@@ -55,10 +55,10 @@ public class Camera {
 
             if (positionX > demiEcranLarg) {
                 positionX = personnage.getPositionX();
-            } else if (personnage.getDirection() == ServPersonnage.DROITE && personnage.getPositionX() > demiEcranLarg) {
+            } else if (personnage.getDirection() == PersonnageJoueur.DROITE && personnage.getPositionX() > demiEcranLarg) {
                 positionX = personnage.getPositionX();
             }
-        } else if (personnage.getDirection() == ServPersonnage.GAUCHE && personnage.getPositionX() < largeurCarte - demiEcranLarg) {
+        } else if (personnage.getDirection() == PersonnageJoueur.GAUCHE && personnage.getPositionX() < largeurCarte - demiEcranLarg) {
             positionX = personnage.getPositionX();
         }
 
@@ -66,10 +66,10 @@ public class Camera {
 
             if (positionY > demiEcranHaut) {
                 positionY = personnage.getPositionY();
-            } else if (personnage.getDirection() == ServPersonnage.BAS && personnage.getPositionY() > demiEcranHaut) {
+            } else if (personnage.getDirection() == PersonnageJoueur.BAS && personnage.getPositionY() > demiEcranHaut) {
                 positionY = personnage.getPositionY();
             }
-        } else if (personnage.getDirection() == ServPersonnage.HAUT && personnage.getPositionY() < hauteurCarte - demiEcranHaut) {
+        } else if (personnage.getDirection() == PersonnageJoueur.HAUT && personnage.getPositionY() < hauteurCarte - demiEcranHaut) {
             positionY = personnage.getPositionY();
         }
     }

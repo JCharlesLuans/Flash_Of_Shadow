@@ -39,6 +39,7 @@ public class ClientConnecter {
         this.socket = socket;
         sortie = new ObjectOutputStream(socket.getOutputStream());
         entree = new ObjectInputStream(socket.getInputStream());
+        personnage = new Personnage();
     }
 
     public Socket getSocket() {

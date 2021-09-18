@@ -18,7 +18,7 @@ import org.thunderbot.FOS.client.network.Client;
  * @author J-Charles Luans
  * @version 1.0
  */
-public class Personnage extends ServPersonnage {
+public class Personnage extends PersonnageJoueur {
 
     /** Client pour la connection avec le serveur */
     Client client;

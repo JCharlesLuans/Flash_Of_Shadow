@@ -5,12 +5,10 @@
 
 package org.thunderbot.FOS.client.network;
 
-import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
-import org.thunderbot.FOS.serveur.networkObject.Stop;
-import org.thunderbot.FOS.serveur.networkObject.Update;
 import org.thunderbot.FOS.utils.XMLTools;
 
 import java.io.IOException;
@@ -91,8 +89,8 @@ public class Client {
      * Charge un personnage suite a une connexion
      * @return
      */
-    public ServPersonnage loadJoueur() {
-        return (ServPersonnage) reception();
+    public PersonnageJoueur loadJoueur() {
+        return (PersonnageJoueur) reception();
     }
 
     /**
@@ -215,18 +213,32 @@ public class Client {
     /**
      * Envoi une demande de update au serveur, ainsi que sa propre update
      */
-    public void updateServeurMouvement() {
+    public ArrayList<Personnage> updateServeurMouvement() {
         String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
-        ArrayList<Personnage> listePersonnageAJour;
+        ArrayList<Personnage> listePersonnageAJour = new ArrayList<>();
 
         try {
             envoi(new RequeteServeur(requete));
-            envoi(personnage);
+            envoiPersonnage();
             listePersonnageAJour = (ArrayList<Personnage>) reception(); // Attente reception update
             System.out.println(listePersonnageAJour);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return listePersonnageAJour;
+    }
+
+    /**
+     * Permet d'envoyer le personnage au serveur
+     * @throws IOException
+     */
+    private void envoiPersonnage() throws IOException {
+        envoi(personnage.getId());
+        envoi(personnage.getX());
+        envoi(personnage.getY());
+        envoi(personnage.getMap());
+        envoi(personnage);
     }
 
     /**

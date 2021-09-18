@@ -152,6 +152,8 @@ public class Serveur extends Thread {
 
         if (nouveauJoueur) {
 
+            me.setConnecter(false);
+
             // TODO debug
             System.out.println("Nouveau joueur");
 
@@ -220,28 +222,12 @@ public class Serveur extends Thread {
      */
     private void deconnexion(ObjectInputStream entree, ObjectOutputStream sortie) {
 
-        // Objet permettant de reconstruire le personnage a enregistrer
-        int id = -1;
-        float x = -1f;
-        float y = -1f;
-        Map tmpMap = null;
-        Personnage personnageAReconstruire = null;
+        Personnage personnageAReconstruire = new Personnage();
 
 
         try {
 
-            // Reception des valeurs pour la reconstruction
-            id = (int) entree.readObject();
-            x = (float) entree.readObject();
-            y = (float) entree.readObject();
-            tmpMap = (Map) entree.readObject();
-            personnageAReconstruire = (Personnage) entree.readObject();
-
-            // Reconstruction de l'objet personnage à enregistrer
-            personnageAReconstruire.setId(id);
-            personnageAReconstruire.setX(x);
-            personnageAReconstruire.setY(y);
-            personnageAReconstruire.setMap(tmpMap);
+            personnageAReconstruire = receptionPersonnage();
 
             me.getSocket().close();
             listeSocketClient.remove(me);
@@ -295,8 +281,10 @@ public class Serveur extends Thread {
                         Personnage personnage = (Personnage) entree.readObject();
                         sortie.writeObject(accesBD.addPersonnage(personnage));
                         sortie.flush();
+
+                        //TODO ED
+                        System.out.println(personnage);
                         me.setPersonnage(personnage);
-                        me.setConnecter(true);
                 }
                 break;
 
@@ -352,7 +340,7 @@ public class Serveur extends Thread {
     private void updateMouvement() {
 
         try {
-            me.setPersonnage((Personnage) entree.readObject());
+            me.setPersonnage(receptionPersonnage());
             sortie.writeObject(listePersonnageConnecter(me.getPersonnage().getMap().getId()));
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -363,13 +351,41 @@ public class Serveur extends Thread {
         ArrayList<Personnage> aRetourner = new ArrayList<>();
 
         for (int i = 0; i < listeSocketClient.size(); i++) {
-            if (listeSocketClient.get(i).getPersonnage().getMap().getId() == idMap &&
-                    !listeSocketClient.get(i).equals(me) ) {
+            if (listeSocketClient.get(i).isConnecter() &&
+                    !listeSocketClient.get(i).equals(me) &&
+            listeSocketClient.get(i).getPersonnage().getMap().getId() == idMap
+                    ) {
                 aRetourner.add(listeSocketClient.get(i).getPersonnage());
             }
         }
 
         return aRetourner;
+    }
+
+    private Personnage receptionPersonnage() throws IOException, ClassNotFoundException {
+        // Objet permettant de reconstruire le personnage a enregistrer
+        int id = -1;
+        float x = -1f;
+        float y = -1f;
+        Map tmpMap = null;
+        Personnage personnageAReconstruire = null;
+
+        // Reception des valeurs pour la reconstruction
+        id = (int) entree.readObject();
+        x = (float) entree.readObject();
+        y = (float) entree.readObject();
+        tmpMap = (Map) entree.readObject();
+        personnageAReconstruire = (Personnage) entree.readObject();
+
+        // Reconstruction de l'objet personnage à enregistrer
+        personnageAReconstruire.setId(id);
+        personnageAReconstruire.setX(x);
+        personnageAReconstruire.setY(y);
+        personnageAReconstruire.setMap(tmpMap);
+
+        System.out.println(personnageAReconstruire);
+
+        return personnageAReconstruire;
     }
 }
 

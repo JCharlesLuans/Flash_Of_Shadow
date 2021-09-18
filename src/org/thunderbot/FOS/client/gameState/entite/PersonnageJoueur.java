@@ -9,7 +9,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.thunderbot.FOS.client.gameState.world.Carte;
 
 import java.io.Serializable;
 
@@ -20,7 +19,7 @@ import java.io.Serializable;
  * @author J-Charles Luans
  * @version 1.0
  */
-public class ServPersonnage implements Serializable {
+public class PersonnageJoueur implements Serializable {
 
     public static final int HAUT = 0,
                    GAUCHE = 1,
@@ -39,14 +38,14 @@ public class ServPersonnage implements Serializable {
 
     private transient Animation[] animations = new Animation[8];
 
-    public ServPersonnage() {
+    public PersonnageJoueur() {
         positionX = 650;
         positionY = 400;
         direction = 0;
         pseudo = "";
     }
 
-    public ServPersonnage(String pseudo, int direction, float x, float y) throws SlickException {
+    public PersonnageJoueur(String pseudo, int direction, float x, float y) throws SlickException {
         this.pseudo = pseudo;
         this.direction = direction;
         this.positionX = x;
@@ -63,12 +62,12 @@ public class ServPersonnage implements Serializable {
         this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
     }
 
-    public ServPersonnage(ServPersonnage servPersonnage) throws SlickException {
-        this.pseudo = servPersonnage.pseudo;
-        this.direction = servPersonnage.direction;
-        this.positionX = servPersonnage.positionX;
-        this.positionY =servPersonnage.positionY;
-        this.moving = servPersonnage.moving;
+    public PersonnageJoueur(PersonnageJoueur personnageJoueur) throws SlickException {
+        this.pseudo = personnageJoueur.pseudo;
+        this.direction = personnageJoueur.direction;
+        this.positionX = personnageJoueur.positionX;
+        this.positionY = personnageJoueur.positionY;
+        this.moving = personnageJoueur.moving;
 
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/personnage.png", 64, 64);
         this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
@@ -111,14 +110,14 @@ public class ServPersonnage implements Serializable {
 
     /**
      * Mise a jour réseaux
-     * @param servPersonnage
+     * @param personnageJoueur
      */
-    public void miseAJour(ServPersonnage servPersonnage) {
-        this.positionX = servPersonnage.positionX;
-        this.positionY = servPersonnage.positionY;
-        this.direction = servPersonnage.direction;
-        this.moving = servPersonnage.moving;
-        this.nomCarte = servPersonnage.nomCarte;
+    public void miseAJour(PersonnageJoueur personnageJoueur) {
+        this.positionX = personnageJoueur.positionX;
+        this.positionY = personnageJoueur.positionY;
+        this.direction = personnageJoueur.direction;
+        this.moving = personnageJoueur.moving;
+        this.nomCarte = personnageJoueur.nomCarte;
     }
 
     public String getPseudo() {

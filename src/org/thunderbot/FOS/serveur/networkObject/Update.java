@@ -5,7 +5,6 @@
 
 package org.thunderbot.FOS.serveur.networkObject;
 
-import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
 import org.thunderbot.FOS.database.beans.Personnage;
 
 import java.io.Serializable;

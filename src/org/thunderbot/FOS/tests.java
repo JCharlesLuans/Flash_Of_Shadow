@@ -6,7 +6,7 @@
 package org.thunderbot.FOS;
 
 import org.newdawn.slick.SlickException;
-import org.thunderbot.FOS.client.gameState.entite.ServPersonnage;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
 import org.thunderbot.FOS.utils.XMLTools;
 import org.xml.sax.SAXException;
 
@@ -34,7 +34,7 @@ public class tests {
     }
 
     public static void testSerialisation() throws SlickException {
-        ServPersonnage aSerialiser = new ServPersonnage("JS", 7, 300f, 300f);
+        PersonnageJoueur aSerialiser = new PersonnageJoueur("JS", 7, 300f, 300f);
 
         String xml = XMLTools.encodeString(aSerialiser);
         System.out.println(xml);

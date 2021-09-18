@@ -41,7 +41,7 @@
  <objectgroup id="8" name="trigger" width="1" height="1" >
   <object id="1" type="changementMap" x="34" y="778" width="56" height="19">
    <properties>
-    <property name="destiMap" value="map_campagne_ThunderSun.tmx"/>
+    <property name="destiMap" value="map_start_idenia.tmx"/>
     <property name="destiX" type="int" value="708"/>
     <property name="destiY" type="int" value="220"/>
    </properties>
