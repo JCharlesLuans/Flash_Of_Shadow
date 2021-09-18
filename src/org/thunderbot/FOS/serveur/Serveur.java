@@ -270,6 +270,7 @@ public class Serveur extends Thread {
 
             // Gere les demande de chargement d'objet du jeu, stocker en BD
             case RequeteServeur.CHARGEMENT:
+                me.setConnecter(false);
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.MAP:
                         chargementCarte(sortie, requeteServeur.getCle());
@@ -284,6 +285,7 @@ public class Serveur extends Thread {
                         chargementStuffBase(sortie);
                         break;
                 }
+                me.setConnecter(true);
                 break;
 
             // Gere les demande de création d'objet du jeu, stocker en BD
@@ -291,9 +293,10 @@ public class Serveur extends Thread {
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.PERSONNAGE:
                         Personnage personnage = (Personnage) entree.readObject();
-                        me.setPersonnage(personnage);
                         sortie.writeObject(accesBD.addPersonnage(personnage));
                         sortie.flush();
+                        me.setPersonnage(personnage);
+                        me.setConnecter(true);
                 }
                 break;
 
@@ -349,14 +352,24 @@ public class Serveur extends Thread {
     private void updateMouvement() {
 
         try {
-            for (int i = 0; i < listeSocketClient.size(); i++) {
-                if (!listeSocketClient.get(i).equals(me) && listeSocketClient.get(i).isConnecter()) {
-                    listeSocketClient.get(i).getSortie().writeObject(me.getPersonnage());
-                }
-            }
-        } catch (IOException e) {
+            me.setPersonnage((Personnage) entree.readObject());
+            sortie.writeObject(listePersonnageConnecter(me.getPersonnage().getMap().getId()));
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private ArrayList<Personnage> listePersonnageConnecter(int idMap) {
+        ArrayList<Personnage> aRetourner = new ArrayList<>();
+
+        for (int i = 0; i < listeSocketClient.size(); i++) {
+            if (listeSocketClient.get(i).getPersonnage().getMap().getId() == idMap &&
+                    !listeSocketClient.get(i).equals(me) ) {
+                aRetourner.add(listeSocketClient.get(i).getPersonnage());
+            }
+        }
+
+        return aRetourner;
     }
 }
 

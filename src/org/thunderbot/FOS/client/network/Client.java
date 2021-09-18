@@ -213,13 +213,17 @@ public class Client {
 //    }
 //
     /**
-     * Renvoi les donnée actuelle du client au serveur pour actualiser les autres clients
+     * Envoi une demande de update au serveur, ainsi que sa propre update
      */
     public void updateServeurMouvement() {
+        String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
+        ArrayList<Personnage> listePersonnageAJour;
+
         try {
-            String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
             envoi(new RequeteServeur(requete));
             envoi(personnage);
+            listePersonnageAJour = (ArrayList<Personnage>) reception(); // Attente reception update
+            System.out.println(listePersonnageAJour);
         } catch (IOException e) {
             e.printStackTrace();
         }
