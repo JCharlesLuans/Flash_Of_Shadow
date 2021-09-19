@@ -26,7 +26,7 @@ import java.net.ConnectException;
  */
 public class ChaosRevolt extends StateBasedGame {
 
-    public static final int WIDTH   = 1240;
+    public static final int WIDTH   = 1280;
     public static final int HEIGHT  = 720;
 
     private static final String TITRE = "Chaos Revolt";
@@ -39,7 +39,7 @@ public class ChaosRevolt extends StateBasedGame {
      */
     public static void main(String[] args) throws SlickException, IOException {
         AppGameContainer appGameContainer =  new AppGameContainer(new ChaosRevolt());
-        appGameContainer.setDisplayMode(WIDTH, HEIGHT, false);
+        appGameContainer.setDisplayMode(WIDTH, HEIGHT, true);
         appGameContainer.start();
     }
 
