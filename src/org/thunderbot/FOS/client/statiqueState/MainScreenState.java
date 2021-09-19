@@ -6,12 +6,14 @@
 package org.thunderbot.FOS.client.statiqueState;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.newdawn.slick.gui.TextField;
 import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
+import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUp;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -28,6 +30,10 @@ public class MainScreenState extends BasicGameState {
 
     public static final boolean INSCRIPTION = true;
     public static final boolean CONNEXION = false;
+
+    private static final String ERR_PSEUDO_UTILISER =  "Ce pseudo est déjà \nutilisé !";
+    private static final String ERR_PSEUDO_INEXISTANT =  "Pseudo ou mot de \npasse incorrect";
+    private static final String INF_CONNEXION_OK =  "Connexion réussie ! ";
 
     private static final int ZONE_SAISIE_LONGUEUR = 480;
     private static final int ZONE_SAISIE_HAUTEUR = 40;
@@ -50,12 +56,20 @@ public class MainScreenState extends BasicGameState {
     private BoutonImage boutonInscription;
     private BoutonImage boutonConnexion;
 
+    private FenetrePopUp fenetrePopUp;
+
+    private UnicodeFont font;
+
     public MainScreenState(Client client) {
         this.client = client;
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+
+        initFont();
+
+        fenetrePopUp = new FenetrePopUp(gameContainer, "");
 
         gameContainer.setMouseCursor("res/menuState/gui/cursor.png", 0, 0);
 
@@ -91,6 +105,9 @@ public class MainScreenState extends BasicGameState {
 
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+
+        g.setFont(font);
+
         imgBackground.draw(0, 0, container.getWidth(), container.getHeight());
         g.drawImage(imgTitre, container.getWidth() / 2 - imgTitre.getWidth() / 2, 15);
         g.drawImage(imgSousTitreCompte, zoneSaisiePseudo.getX() - imgSousTitreCompte.getWidth(), zoneSaisiePseudo.getY());
@@ -101,6 +118,8 @@ public class MainScreenState extends BasicGameState {
 
         boutonInscription.render(g);
         boutonConnexion.render(g);
+
+        fenetrePopUp.render(g);
     }
 
     @Override
@@ -120,6 +139,10 @@ public class MainScreenState extends BasicGameState {
 
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
+        if (fenetrePopUp.isShow()) {
+            fenetrePopUp.mouseClicked(button, x, y, clickCount);
+        }
+
         try {
             if (boutonConnexion.isInLayout(x, y)) {
                 sonClick.play();
@@ -141,7 +164,6 @@ public class MainScreenState extends BasicGameState {
     private void entreeJeu(boolean nouveauJoueur) throws IOException {
 
         int code;
-        JFrame jFrame = new JFrame();
 
         String pseudo = zoneSaisiePseudo.getText();
         String mdp = zoneSaisieMotDePasse.getText();
@@ -149,8 +171,10 @@ public class MainScreenState extends BasicGameState {
 
         switch (code) {
             case 0:
-                JOptionPane.showMessageDialog(jFrame,
-                        "Connexion réussie ! ");
+                fenetrePopUp.setMessage(INF_CONNEXION_OK);
+                fenetrePopUp.setShow(true);
+
+                // TODO faire une action blocante
 
                 if(nouveauJoueur) {
                     stateBasedGame.enterState(CreationPersonnageState.ID);
@@ -161,18 +185,28 @@ public class MainScreenState extends BasicGameState {
 
                 break;
             case 1 :
-                JOptionPane.showMessageDialog(jFrame,
-                        "Ce pseudo est déjà utilisé !");
+                fenetrePopUp.setMessage(ERR_PSEUDO_UTILISER);
+                fenetrePopUp.setShow(true);
                 boutonConnexion.setSelectionner(false);
                 boutonInscription.setSelectionner(false);
                 break;
             case 2 :
-                JOptionPane.showMessageDialog(jFrame,
-                        "Pseudo ou mot de passe incorrect");
+                fenetrePopUp.setMessage(ERR_PSEUDO_INEXISTANT);
+                fenetrePopUp.setShow(true);
                 boutonConnexion.setSelectionner(false);
                 boutonInscription.setSelectionner(false);
                 break;
 
         }
     }
+
+    // Charge la police du jeu
+    private void initFont() throws SlickException {
+        font = new UnicodeFont("res/menuState/gui/police/MedievalSharp-Regular.ttf", 55, false, false);
+        font.addAsciiGlyphs();
+        font.addGlyphs(400,600);
+        font.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
+        font.loadGlyphs();
+    }
+
 }

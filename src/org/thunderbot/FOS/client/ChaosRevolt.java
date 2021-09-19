@@ -39,7 +39,8 @@ public class ChaosRevolt extends StateBasedGame {
      */
     public static void main(String[] args) throws SlickException, IOException {
         AppGameContainer appGameContainer =  new AppGameContainer(new ChaosRevolt());
-        appGameContainer.setDisplayMode(WIDTH, HEIGHT, true);
+        appGameContainer.setDisplayMode(WIDTH, HEIGHT, false);
+        appGameContainer.setShowFPS(false);
         appGameContainer.start();
     }
 
