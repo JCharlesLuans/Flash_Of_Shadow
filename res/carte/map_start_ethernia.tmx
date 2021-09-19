@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="5">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="6">
  <tileset firstgid="1" source="tile_base_out_atlas.tsx"/>
  <tileset firstgid="1025" source="tile_colision.tsx"/>
  <tileset firstgid="1050" source="tile_terrain_atlas.tsx"/>
  <layer id="2" name="eau" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3BMQEAAADCoPVPbQwfoAAAAIC3Ab6TizqgDwAA
+   H4sIAAAAAAAAClvIysCwEIgfAnEeOwNDEZVwIQV4CSsC+7NB3AfCwYMEY3PbYHTfEmi84nPfFDLtmEwl9y1ECkd6hA0x/kV332CL3wA21LiF0dSMI0rSAjXDjxZ+oHf6I9UPtE5/5OZ5dPcFIpV/oDCkVvxRw33+bAOTf4nx72AvX8ipf8mJZ0rcF8iGO//S0y3Y0iq14xeXf8j1Jzb34cq/A4Fhddtwyh/UwkOp/TKZgPsC8bSf0fXiMguXOCVhS6/8Qa7bh0L/KBCt/gW1WXEBkB56AfTwu4CEBwMAuWkDEgYAeUkwJKAPAAA=
   </data>
  </layer>
  <layer id="1" name="sol" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACuWXawoDIQyE9593tXuS1pNYD1kLG5gdEis0sQsdGFAs+NU8dHPattx9694Xj611nN8PP7rL4rG1jvN6+NndFo+tdZz/kzBv9gv+d8lt5px1tCS3mbEcZu5C9mLEfVCS28iJPFiXJZ3Prjky8t6sapwV1iXyFGL8VrK/MHA83+L4NjByFuU3HsI84546Ux8ao2fPwzzjnjqqATQzevfkqrCN4srWcjJayNfSOQ9kzbrvonvgqDczp/iXfKMakbrS6iRKWl/mmsgGGzJGCe8PLZbYi7guVr2pcjr3HjbXu1bHkZKzq4YxjhjzVXz8Ppgxxzta/I755JVsGueMr/K9odWG99vFQ7P37gt9oi/GoA8AAA==
+   H4sIAAAAAAAACu3QQQqAIBCF4dmYm04XHSSqc0QnqQ7WoiOkSBBRTfDQRpgfHoJuPiQKVYZE1Fii+sbifYNN77k2Mr7VnWWR3nXE+bwthm8zYagvVtJ9X1MflvqwcvZJKOf/Ux+f+rDUh6U+LPVhvfkm9zb/vOXB17q7Tsj6k28HoYDs06APAAA=
   </data>
  </layer>
  <layer id="3" name="background" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3BMQEAAADCoPVPbQwfoAAAAIC3Ab6TizqgDwAA
+   H4sIAAAAAAAACmNgGAUjGWxjp445n1kYGL6wUMcsYsBLVgaGV6zEqxcGqhXBoZ6DSmEwCsgHb+iYdgYanAGmw7MkpF1amzOcgQYbBGuyUW7WaRqFtQfQbZ5UcN9QAZwk+PXFMAyX4VrfsA9Tfw12QOt6gHsY5cEXVA4nXxqGzWh+GgUAqYP4AKAPAAA=
   </data>
  </layer>
  <layer id="4" name="background 2" width="40" height="25">
@@ -25,27 +25,26 @@
  </layer>
  <layer id="5" name="overground" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3SQQkAAAgAMTG2GN4UIsiW4B4XAXxXeV0AO9rbAMAjAzgfblOgDwAA
+   H4sIAAAAAAAACmNgGAUDAVayMjCsYh1oV+AGJ4FuOzWI3TcKSANVTAPtAvqBNcB0u5YKaZda5owC4sBqMsO6ZgSlbWqDE2wD7YJRQE2wYpCXVyeGoPsoqQfeEKHvNQlmUzv8zlHZPGq7T3e0fBo2YB07A8P6AcYb2Ac6FEgDAEpF1AegDwAA
   </data>
  </layer>
  <layer id="6" name="overground 2" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3BMQEAAADCoPVPbQwfoAAAAIC3Ab6TizqgDwAA
+   H4sIAAAAAAAACu3OQQkAMAwEsPt0zL/OiaiJQSkkCpLw0z3Jq+kFAAAA2zQE0QusoA8AAA==
   </data>
  </layer>
- <layer id="7" name="logique" width="40" height="25">
+ <layer id="7" name="logique" width="40" height="25" visible="0">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3BMQEAAADCoPVPbQwfoAAAAIC3Ab6TizqgDwAA
+   H4sIAAAAAAAACu3V0QkAIAgEUIVo/5HbIDvSTkPBv7DXBaVDRAs1u7I7Wb7TuV6uqPVZ77V9//h2eyE+RqYZ8kN83rM9ZlTKL8KHvtuvfTfVvvaxTFE+z3Ox87P2QH39/2K+SW7Ll60XmX8AmqAPAAA=
   </data>
  </layer>
- <objectgroup id="8" name="trigger" visible="0" width="1" height="1" >
-  <object id="1" type="changementMap" x="677" y="145" width="50" height="69">
+ <objectgroup id="8" name="trigger" width="1" height="1" >
+  <object id="5" type="changementMap" x="3" y="351" width="36" height="33">
    <properties>
-    <property name="destiMap" value="map_grotte.tmx"/>
-    <property name="destiX" type="int" value="40"/>
-    <property name="destiY" type="int" value="736"/>
+    <property name="destiMap" value="map_desert.tmx"/>
+    <property name="destiX" type="int" value="1200"/>
+    <property name="destiY" type="int" value="320"/>
    </properties>
   </object>
-  <object id="2" type="escalierGauche" x="720" y="37" width="133" height="165"/>
  </objectgroup>
 </map>

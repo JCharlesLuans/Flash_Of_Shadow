@@ -63,6 +63,7 @@ public class CreationPersonnageState extends BasicGameState {
     private Image imgTitre;
     private Image imgClasse;
     private Image imgFaction;
+    private Image imgNom;
 
     private Bouton btnValider;
     private TextField ztNom;
@@ -120,6 +121,7 @@ public class CreationPersonnageState extends BasicGameState {
         imgTitre = new Image("res/menuState/creationJoueur/titre.png");
         imgClasse = new Image("res/menuState/creationJoueur/sousTitre_classe.png");
         imgFaction = new Image("res/menuState/creationJoueur/sousTitre_faction.png");
+        imgNom = new Image("res/menuState/creationJoueur/sousTitre_nom.png");
 
         // Init du son
         click = new Sound("res/menuState/son/click.wav");
@@ -189,6 +191,7 @@ public class CreationPersonnageState extends BasicGameState {
         graphics.drawImage(imgTitre, gameContainer.getWidth() / 2 - imgTitre.getWidth() / 2, START_TITRE_Y);
         graphics.drawImage(imgClasse,  gameContainer.getWidth() / 2 - imgTitre.getWidth() / 2 - imgClasse.getWidth() , BTN_CLASSE_Y_START);
         graphics.drawImage(imgFaction, gameContainer.getWidth() / 2 - imgTitre.getWidth() / 2 - imgFaction.getWidth(), BTN_FACTION_Y_START);
+        graphics.drawImage(imgNom, ztNom.getX() - imgNom.getWidth(), ztNom.getY());
 
         btnValider.render(graphics);
 
