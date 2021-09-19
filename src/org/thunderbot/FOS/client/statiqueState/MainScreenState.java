@@ -35,6 +35,8 @@ public class MainScreenState extends BasicGameState {
 
     private Image imgBackground;
     private Image imgTitre;
+    private Image imgSousTitreCompte;
+    private Image imgSousTitreMDP;
     private StateBasedGame stateBasedGame;
 
     private Sound sonClick;
@@ -55,6 +57,8 @@ public class MainScreenState extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
+        gameContainer.setMouseCursor("res/menuState/gui/cursor.png", 0, 0);
+
         int middleX = gameContainer.getWidth() / 2;
         int middleY = gameContainer.getHeight() / 2;
 
@@ -64,6 +68,8 @@ public class MainScreenState extends BasicGameState {
 
         imgBackground = new Image("res/menuState/menuPrincipal/background.png");
         imgTitre = new Image("res/menuState/menuPrincipal/titre.png");
+        imgSousTitreCompte = new Image("res/menuState/menuPrincipal/sousTitre_compte.png");
+        imgSousTitreMDP = new Image("res/menuState/menuPrincipal/sousTitre_motDePasse.png");
 
         sonClick = new Sound("res/menuState/son/click.wav");
 
@@ -87,6 +93,8 @@ public class MainScreenState extends BasicGameState {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         imgBackground.draw(0, 0, container.getWidth(), container.getHeight());
         g.drawImage(imgTitre, container.getWidth() / 2 - imgTitre.getWidth() / 2, 15);
+        g.drawImage(imgSousTitreCompte, zoneSaisiePseudo.getX() - imgSousTitreCompte.getWidth(), zoneSaisiePseudo.getY());
+        g.drawImage(imgSousTitreMDP, zoneSaisieMotDePasse.getX() - imgSousTitreMDP.getWidth(), zoneSaisieMotDePasse.getY());
 
         zoneSaisiePseudo.render(container, g);
         zoneSaisieMotDePasse.render(container, g);
