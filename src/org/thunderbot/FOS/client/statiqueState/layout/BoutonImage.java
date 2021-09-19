@@ -59,4 +59,8 @@ public class BoutonImage {
     public void setX(int newX) {
         x = newX;
     }
+
+    public float getX() {
+        return x;
+    }
 }
