@@ -55,4 +55,8 @@ public class BoutonImage {
     public int getHeight() {
         return imageSelect.getHeight();
     }
+
+    public void setX(int newX) {
+        x = newX;
+    }
 }
