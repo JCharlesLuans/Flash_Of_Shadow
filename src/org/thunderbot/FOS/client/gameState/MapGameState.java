@@ -10,6 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.client.gameState.GUI.Gui;
 import org.thunderbot.FOS.client.gameState.entite.Camera;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
@@ -53,7 +54,10 @@ public class MapGameState extends BasicGameState {
         listeJoueur = new ArrayList<>();
 
         carte = new Carte();
+
         joueur = new Personnage(client);
+        joueur.setGui(new Gui(container));
+
         camera = new Camera(joueur);
         personnageController = new PersonnageController(joueur);
 
@@ -81,11 +85,11 @@ public class MapGameState extends BasicGameState {
         if (listeJoueur.size() > 0) {
             for (int i = 0; i < listeJoueur.size(); i++) {
                 listeJoueur.get(i).render(graphics);
-                //TODO prendre en compte la carte
             }
         }
 
         carte.renderForeground();
+        joueur.getGui().render(graphics);
     }
 
     @Override

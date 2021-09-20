@@ -42,6 +42,12 @@ public class PersonnageController implements KeyListener, ControllerListener {
                 personnage.setDirection(DROITE);
                 personnage.setMoving(true);
                 break;
+            case Input.KEY_ESCAPE:
+                if (personnage.getGui().getMenu().isActive()) {
+                    personnage.getGui().getMenu().setActive(false);
+                } else {
+                    personnage.getGui().getMenu().setActive(true);
+                }
         }
     }
 

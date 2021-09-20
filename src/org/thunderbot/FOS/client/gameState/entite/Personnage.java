@@ -9,6 +9,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.thunderbot.FOS.client.gameState.GUI.Gui;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 
@@ -22,6 +23,8 @@ public class Personnage extends PersonnageJoueur {
 
     /** Client pour la connection avec le serveur */
     Client client;
+
+    private Gui gui;
 
     /** Annimations du personnages */
     private Animation[] animations = new Animation[8];
@@ -72,7 +75,7 @@ public class Personnage extends PersonnageJoueur {
     public void update(Carte carte, int delta) {
 
         float futurX,
-              futurY;
+                futurY;
 
         updateTrigger(carte);
 
@@ -194,5 +197,13 @@ public class Personnage extends PersonnageJoueur {
      */
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+
+    public void setGui(Gui gui) {
+        this.gui = gui;
+    }
+
+    public Gui getGui() {
+        return gui;
     }
 }
