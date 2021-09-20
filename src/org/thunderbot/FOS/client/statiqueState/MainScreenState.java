@@ -98,7 +98,12 @@ public class MainScreenState extends BasicGameState {
     }
 
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+
         musicBackground.play();
+        connexion = false;
+        fenetrePopUp.setShow(false);
+        boutonInscription.setSelectionner(false);
+        boutonConnexion.setSelectionner(false);
     }
 
     @Override
@@ -138,7 +143,7 @@ public class MainScreenState extends BasicGameState {
 
     @Override
     public int getID() {
-        return 0;
+        return ID;
     }
 
     @Override

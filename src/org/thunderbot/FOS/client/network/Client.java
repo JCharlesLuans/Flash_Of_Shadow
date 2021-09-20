@@ -104,6 +104,8 @@ public class Client {
         envoi(personnage.getMap());
         envoi(personnage);
 
+        socket.close();
+
     }
 
 //    /**
@@ -336,5 +338,13 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean socketIsClosed() {
+        return socket.isClosed();
+    }
+
+    public void connectionServeur() {
+// TODO rectonnection serveur
     }
 }

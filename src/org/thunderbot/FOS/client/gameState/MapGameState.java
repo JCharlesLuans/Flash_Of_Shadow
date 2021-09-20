@@ -56,7 +56,7 @@ public class MapGameState extends BasicGameState {
         carte = new Carte();
 
         joueur = new Personnage(client);
-        joueur.setGui(new Gui(container));
+        joueur.setGui(new Gui(container, client, game));
 
         camera = new Camera(joueur);
         personnageController = new PersonnageController(joueur);
@@ -97,9 +97,11 @@ public class MapGameState extends BasicGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 
         // UPDATTE DU JOUEUR
-        joueur.update(carte, delta);
-        camera.update(container, carte);
-        updateListeJoueur(client.updateServeurMouvement()); //Envoi des data au joueur
+        if (!client.socketIsClosed()) {
+            joueur.update(carte, delta);
+            camera.update(container, carte);
+            updateListeJoueur(client.updateServeurMouvement()); //Envoi des data au joueur
+        }
 
     }
 

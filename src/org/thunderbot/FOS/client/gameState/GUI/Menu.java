@@ -1,7 +1,12 @@
 package org.thunderbot.FOS.client.gameState.GUI;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.ChaosRevolt;
+import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.client.statiqueState.MainScreenState;
+
+import java.io.IOException;
 
 /**
  * Menu qui permet au joueur les action suivante :
@@ -58,12 +63,17 @@ public class Menu {
 
     private int code;
 
-    public Menu(GameContainer gameContainer) throws SlickException {
+    private Client client;
+    private StateBasedGame stateBasedGame;
+
+    public Menu(GameContainer gameContainer, Client client, StateBasedGame stateBasedGame) throws SlickException {
         imgFond = new Image("res/menuState/gui/menu.png");
         sonPage = new Sound("res/menuState/son/ouvertureFenetre.wav");
         x = gameContainer.getWidth() / 2 - imgFond.getWidth() / 2;
         y = gameContainer.getHeight() / 2 - imgFond.getHeight() / 2;
         positionYBarre = 0;
+        this.client = client;
+        this.stateBasedGame = stateBasedGame;
     }
 
     public void render(Graphics graphics) {
@@ -108,7 +118,12 @@ public class Menu {
                 System.out.println("Option");
                 break;
             case DECONNEXION:
-                System.out.println("Deconnexion");
+                try {
+                    client.deconnexion();
+                    stateBasedGame.enterState(MainScreenState.ID);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }

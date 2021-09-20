@@ -3,6 +3,8 @@ package org.thunderbot.FOS.client.gameState.GUI;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.client.network.Client;
 
 public class Gui {
 
@@ -11,8 +13,8 @@ public class Gui {
     private int x;
     private int y;
 
-    public Gui(GameContainer gameContainer) throws SlickException {
-        menu = new Menu(gameContainer);
+    public Gui(GameContainer gameContainer, Client client, StateBasedGame stateBasedGame) throws SlickException {
+        menu = new Menu(gameContainer, client, stateBasedGame);
     }
 
     public Menu getMenu() {
