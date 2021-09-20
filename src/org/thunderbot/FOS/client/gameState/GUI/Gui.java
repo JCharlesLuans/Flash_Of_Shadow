@@ -8,6 +8,9 @@ public class Gui {
 
     private Menu menu;
 
+    private int x;
+    private int y;
+
     public Gui(GameContainer gameContainer) throws SlickException {
         menu = new Menu(gameContainer);
     }
@@ -18,5 +21,23 @@ public class Gui {
 
     public void render(Graphics graphics) {
         menu.render(graphics);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+        menu.setCentreX(x);
+    }
+
+    public void setY(int y) {
+        this.y = y;
+        menu.setCentreY(y);
     }
 }

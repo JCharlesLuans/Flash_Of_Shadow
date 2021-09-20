@@ -63,6 +63,7 @@ public class MapGameState extends BasicGameState {
 
         container.getInput().addKeyListener(personnageController);
         container.getInput().addControllerListener(personnageController);
+        container.getInput().addMouseListener(personnageController);
     }
 
     @Override

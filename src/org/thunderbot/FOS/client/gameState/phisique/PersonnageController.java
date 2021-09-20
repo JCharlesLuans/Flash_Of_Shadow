@@ -3,12 +3,13 @@ package org.thunderbot.FOS.client.gameState.phisique;
 import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
+import org.newdawn.slick.MouseListener;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 
 /**
  * Objet de controle d'un personnage
  */
-public class PersonnageController implements KeyListener, ControllerListener {
+public class PersonnageController implements KeyListener, ControllerListener, MouseListener {
 
     /* Indique les position */
     private static final int HAUT = 0,
@@ -118,6 +119,38 @@ public class PersonnageController implements KeyListener, ControllerListener {
 
     @Override
     public void inputStarted() {
+
+    }
+
+    @Override
+    public void mouseWheelMoved(int i) {
+
+    }
+
+    @Override
+    public void mouseClicked(int button, int x, int y, int nbClick) {
+        if (personnage.getGui().getMenu().isActive())
+            personnage.getGui().getMenu().mouseClicked();
+    }
+
+    @Override
+    public void mousePressed(int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void mouseReleased(int i, int x, int y) {
+
+    }
+
+    @Override
+    public void mouseMoved(int i, int x, int y, int i3) {
+        if (personnage.getGui().getMenu().isActive())
+            personnage.getGui().getMenu().mouseMouved(x, y);
+    }
+
+    @Override
+    public void mouseDragged(int i, int i1, int i2, int i3) {
 
     }
 }

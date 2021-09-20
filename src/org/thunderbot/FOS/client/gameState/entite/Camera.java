@@ -72,6 +72,9 @@ public class Camera {
         } else if (personnage.getDirection() == PersonnageJoueur.HAUT && personnage.getPositionY() < hauteurCarte - demiEcranHaut) {
             positionY = personnage.getPositionY();
         }
+
+        personnage.getGui().setX((int) positionX);
+        personnage.getGui().setY((int) positionY);
     }
 
     private void updateChangementCarte(Carte carte, int demiEcranLarg, int demiEcranHaut) {
