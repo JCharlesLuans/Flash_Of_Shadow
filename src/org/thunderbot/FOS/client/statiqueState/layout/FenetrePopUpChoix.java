@@ -37,9 +37,6 @@ public class FenetrePopUpChoix extends FenetrePopUp{
     }
 
     private void clickOui(int x, int y) {
-
-        System.out.println(x + ":" + y);
-
         if (OUI_X < x && x < OUI_X_FIN && OUI_Y < y && y < OUI_Y_FIN) {
             setShow(false);
             oui = true;

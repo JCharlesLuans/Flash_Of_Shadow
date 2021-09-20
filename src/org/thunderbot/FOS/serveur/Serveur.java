@@ -89,25 +89,16 @@ public class Serveur extends Thread {
             entree = me.getEntree();
 
             while (!isIdentifier) {
-
-                // TODO ED
-                System.out.println(me.getSocket().getInetAddress() + " n'est pas identifier");
                 connexion(entree, sortie);
             }
 
-            // TODO ED
+            // LOG
             System.out.println(me.getSocket().getInetAddress() + " est identifier");
 
             while (isConnecter) {
                 Object reception = entree.readObject();
 
-                if (reception.getClass() == Update.class) {
-                    // Gestion de l'updae
-
-                    // TODO ed
-                    System.out.println("UPDATE");
-
-                } else if (reception.getClass() == RequeteServeur.class) {
+                if (reception.getClass() == RequeteServeur.class) {
                     traitementRequeteServeur(entree, sortie, (RequeteServeur) reception);
                 }
 
@@ -282,9 +273,7 @@ public class Serveur extends Thread {
                         Personnage personnage = (Personnage) entree.readObject();
                         sortie.writeObject(accesBD.addPersonnage(personnage));
                         sortie.flush();
-
-                        //TODO ED
-                        System.out.println(personnage);
+                        
                         me.setPersonnage(personnage);
                 }
                 break;
@@ -307,12 +296,7 @@ public class Serveur extends Thread {
     private void chargementStuffBase(ObjectOutputStream sortie) {
         ArrayList<Objet> aRetourner;
         aRetourner = accesBD.getListeStuffBase();
-        try {
-            sortie.writeObject(aRetourner);
-            sortie.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        envoiXML(aRetourner);
     }
 
     private void chargementCarte(ObjectOutputStream sortie, String nom) throws IOException {

@@ -320,8 +320,12 @@ public class Client {
         String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.STUFF_BASE + ";";
         try {
             envoi(new RequeteServeur(requete));
-            aRetourner = (ArrayList) reception();
+            aRetourner = (ArrayList<Objet>) XMLTools.decodeString((String) reception());
 
+            for (int i = 0; i < aRetourner.size(); i++) {
+                System.out.println(aRetourner.get(i).toString());
+            }
+            
             personnage.setStuffTete(aRetourner.get(0));
             personnage.setStuffTorse(aRetourner.get(1));
             personnage.setStuffGant(aRetourner.get(2));

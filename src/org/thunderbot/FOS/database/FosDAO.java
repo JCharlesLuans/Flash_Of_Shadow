@@ -418,20 +418,18 @@ public class FosDAO {
 
                 Objet aRetourner  = new Objet();
 
-                ResultSet rs = gestionnaireBase.executeRequete(requete);
-
-                aRetourner.setId(rs.getInt(OBJET_CLE));
-                aRetourner.setNom(rs.getString(OBJET_NOM));
-                aRetourner.setEmplacement(rs.getInt(OBJET_EMPLACEMENT));
-                aRetourner.setStatAgilite(rs.getInt(OBJET_STAT_AGILITE));
-                aRetourner.setStatArmure(rs.getInt(OBJET_STAT_ARMURE));
-                aRetourner.setStatDexterite(rs.getInt(OBJET_STAT_DEXTERITE));
-                aRetourner.setStatEndurance(rs.getInt(OBJET_STAT_ENDURANCE));
-                aRetourner.setStatForce(rs.getInt(OBJET_STAT_FORCE));
-                aRetourner.setStatIntelligence(rs.getInt(OBJET_STAT_INTELLIGENCE));
-                aRetourner.setStatSagesse(rs.getInt(OBJET_STAT_SAGESSE));
-                aRetourner.setDps(rs.getInt(OBJET_DPS));
-                aRetourner.setImage(rs.getString(OBJET_IMAGE));
+                aRetourner.setId(resultSet.getInt(OBJET_CLE));
+                aRetourner.setNom(resultSet.getString(OBJET_NOM));
+                aRetourner.setEmplacement(resultSet.getInt(OBJET_EMPLACEMENT));
+                aRetourner.setStatAgilite(resultSet.getInt(OBJET_STAT_AGILITE));
+                aRetourner.setStatArmure(resultSet.getInt(OBJET_STAT_ARMURE));
+                aRetourner.setStatDexterite(resultSet.getInt(OBJET_STAT_DEXTERITE));
+                aRetourner.setStatEndurance(resultSet.getInt(OBJET_STAT_ENDURANCE));
+                aRetourner.setStatForce(resultSet.getInt(OBJET_STAT_FORCE));
+                aRetourner.setStatIntelligence(resultSet.getInt(OBJET_STAT_INTELLIGENCE));
+                aRetourner.setStatSagesse(resultSet.getInt(OBJET_STAT_SAGESSE));
+                aRetourner.setDps(resultSet.getInt(OBJET_DPS));
+                aRetourner.setImage(resultSet.getString(OBJET_IMAGE));
 
                 list.add(aRetourner);
             }

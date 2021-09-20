@@ -237,6 +237,15 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         if (valide && !fenetreConfirmation.isShow() && fenetreConfirmation.isOui()) {
+            client.getPersonnage().setNom(ztNom.getText());
+            client.getPersonnage().setClasse(classeSelectionner);
+            client.getPersonnage().setFaction(factionSelectionner);
+            client.getPersonnage().setMap(factionSelectionner.getMapStart());
+            client.getPersonnage().setX(Map.POSITION_X_DEFAUT);
+            client.getPersonnage().setY(Map.POSITION_Y_DEFAUT);
+            client.chargementStuffBase();
+
+            client.createPersonnage();
             stateBasedGame.enterState(MapGameState.ID);
         }
     }
@@ -446,16 +455,6 @@ public class CreationPersonnageState extends BasicGameState {
                 recap += "Nom : " + ztNom.getText() + '\n';
                 recap += "Classe : " + classeSelectionner.getNom() + '\n';
                 recap += "Faction : " + factionSelectionner.getNom() + '\n';
-
-                client.getPersonnage().setNom(ztNom.getText());
-                client.getPersonnage().setClasse(classeSelectionner);
-                client.getPersonnage().setFaction(factionSelectionner);
-                client.getPersonnage().setMap(factionSelectionner.getMapStart());
-                client.getPersonnage().setX(Map.POSITION_X_DEFAUT);
-                client.getPersonnage().setY(Map.POSITION_Y_DEFAUT);
-                client.chargementStuffBase();
-
-                client.createPersonnage();
 
                 fenetreConfirmation.setMessage(recap);
                 fenetreConfirmation.setShow(true);
