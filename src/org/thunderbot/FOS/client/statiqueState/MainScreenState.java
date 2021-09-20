@@ -15,7 +15,6 @@ import org.newdawn.slick.gui.TextField;
 import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
 import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUp;
 
-import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -59,6 +58,8 @@ public class MainScreenState extends BasicGameState {
     private FenetrePopUp fenetrePopUp;
 
     private UnicodeFont font;
+    private boolean connexion;
+    private boolean nouveauJoueur;
 
     public MainScreenState(Client client) {
         this.client = client;
@@ -130,6 +131,14 @@ public class MainScreenState extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
 
+        // verifie que l'on a bien fait l'étape d'authantification, puis que l'on ferme la fenetre pop up.
+        if (connexion && !fenetrePopUp.isShow()) {
+            if (nouveauJoueur) {
+                stateBasedGame.enterState(CreationPersonnageState.ID);
+            } else {
+                stateBasedGame.enterState(MapGameState.ID);
+            }
+        }
     }
 
     @Override
@@ -173,17 +182,10 @@ public class MainScreenState extends BasicGameState {
             case 0:
                 fenetrePopUp.setMessage(INF_CONNEXION_OK);
                 fenetrePopUp.setShow(true);
-
-                // TODO faire une action blocante
-
-                if(nouveauJoueur) {
-                    stateBasedGame.enterState(CreationPersonnageState.ID);
-                } else {
-                    stateBasedGame.enterState(MapGameState.ID);
-                }
-
-
+                connexion = true;
+                this.nouveauJoueur = nouveauJoueur;
                 break;
+
             case 1 :
                 fenetrePopUp.setMessage(ERR_PSEUDO_UTILISER);
                 fenetrePopUp.setShow(true);

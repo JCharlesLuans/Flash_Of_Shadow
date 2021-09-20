@@ -65,19 +65,14 @@ public class Client {
         code = (int) reception();
 
         if (nouveauJoueur && code == 0) {
-
+            /* Inscription */
             personnage = new Personnage();
             Joueur tmp = (Joueur) reception();
             personnage.setIdJoueur(tmp.getId());
 
-            // TODO ED
-            System.out.println("Création du nouveau joueur");
-            System.out.println(personnage.getIdJoueur());
-
 
         } else if (code == 0) {
-            //TODO ed
-            System.out.println("Attente personnage");
+            /* Connexion */
             personnage = (Personnage) reception();
         }
 

@@ -16,6 +16,10 @@ import java.util.ArrayList;
  */
 public class FenetrePopUp {
 
+    public static final int CODE_RETOUR_DEFAUT = -1;
+    public static final int CODE_RETOUR_FERMETURE = 0;
+    public static final int CODEE_RETOUR_OK = 1;
+
     private static final int CROIX_X = 597;
     private static final int CROIX_X_FIN = 624;
     private static final int CROIX_Y = 14;
@@ -64,17 +68,23 @@ public class FenetrePopUp {
         this.message = message;
     }
 
-    public void mouseClicked(int button, int x, int y, int clickCount) {
+    public int mouseClicked(int button, int x, int y, int clickCount) {
+
+        int codeRetour = CODE_RETOUR_DEFAUT;
 
         x -= this.x;
         y -= this.y;
 
-        fermeture(x, y);
+        codeRetour = fermeture(x, y) == CODE_RETOUR_DEFAUT ? CODE_RETOUR_DEFAUT : fermeture(x, y);
+        return codeRetour;
     }
 
-    private void fermeture(int x, int y) {
+    private int fermeture(int x, int y) {
+        int codeRetour = CODE_RETOUR_DEFAUT;
         if (CROIX_X < x && x < CROIX_X_FIN && CROIX_Y < y && y < CROIX_Y_FIN) {
             setShow(false);
+            codeRetour = CODE_RETOUR_FERMETURE;
         }
+        return codeRetour;
     }
 }
