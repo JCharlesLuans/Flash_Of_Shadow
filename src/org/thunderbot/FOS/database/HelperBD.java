@@ -120,6 +120,7 @@ public class HelperBD {
     public static final String OBJET_CLE = "_id";
     public static final String OBJET_NOM = "nom";
     public static final String OBJET_EMPLACEMENT = "emplacement";
+    public static final String OBJET_ID_CLASSE = "equipableParClasse";
     public static final String OBJET_STAT_ARMURE = "statArmure";
     public static final String OBJET_STAT_DEXTERITE = "statDexterite";
     public static final String OBJET_STAT_FORCE = "statForce";
@@ -135,6 +136,7 @@ public class HelperBD {
                 + OBJET_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + OBJET_NOM + " TEXT NOT NULL,"
                 + OBJET_EMPLACEMENT + " INTEGER NOT NULL,"
+                + OBJET_ID_CLASSE  + " INTEGER NOT NULL,"
                 + OBJET_STAT_ARMURE       + " INTEGER NOT NULL,"
                 + OBJET_STAT_DEXTERITE    + " INTEGER NOT NULL,"
                 + OBJET_STAT_FORCE        + " INTEGER NOT NULL,"

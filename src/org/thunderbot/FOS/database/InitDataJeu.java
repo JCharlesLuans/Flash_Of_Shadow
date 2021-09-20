@@ -43,18 +43,18 @@ public class InitDataJeu {
 
     private static String CREATION_OBJET =
             "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-                    + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-                    + OBJET_STAT_DEXTERITE + ", "
+                    + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", "    + OBJET_ID_CLASSE + ", "
+                    + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", " + OBJET_STAT_DEXTERITE + ", "
                     + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
                     + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
             + "VALUES "
-                    + "( 'Livre d''histoire', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'casque.png'), "
-                    + "( 'Casque De Base', 1, 1, 1, 1, 1, 1, 1, 1, 0, 'casque.png'), "
-                    + "( 'Torse De Base', 1, 1, 1, 1, 1, 1, 1, 1, 0, 'torse.png'), "
-                    + "( 'Gant De Base', 1, 1, 1, 1, 1, 1, 1, 1, 0, 'torse.png'), "
-                    + "( 'Pantalon De Base', 1, 1, 1, 1, 1, 1, 1, 1, 0, 'torse.png'), "
-                    + "( 'Botte De Base', 1, 1, 1, 1, 1, 1, 1, 1, 0, 'torse.png'), "
-                    + "( 'Baton De Base', 1, 1, 1, 1, 1, 1, 1, 1, 1, 'torse.png');";
+                    + "( 'Livre d''histoire', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'livre.png'), "
+                    + "( 'Casque De Base'   , 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'casque.png'), "
+                    + "( 'Torse De Base'    , 2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'torse.png'), "
+                    + "( 'Gant De Base'     , 3, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'gant.png'), "
+                    + "( 'Pantalon De Base' , 4, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'jambiere.png'), "
+                    + "( 'Botte De Base'    , 5, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'botte.png'), "
+                    + "( 'Baton De Base'    , 6, 0, 1, 1, 1, 1, 1, 1, 1, 1, 'baton.png');";
 
     public static void main(String[] args) {
         HelperBD helperBD = new HelperBD(FosDAO.NOM_BD);
@@ -63,77 +63,4 @@ public class InitDataJeu {
         helperBD.executeUpdate(CREATION_MAP);
         helperBD.executeUpdate(CREATION_OBJET);
     }
-
-
-//    private void initObjet() {
-//
-//        // Objet vide de l'inventaire
-//        executeUpdate("" +
-//                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-//                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-//                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-//                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-//                + "VALUES ( 'Vide', 0, 0, 0, 0, 0, 0, 0, 0, 'vide.png' ); "
-//
-//        );
-//
-//        // Casque
-//        executeUpdate("" +
-//                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-//                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-//                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-//                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-//                + "VALUES ( 'Casque', 1, 1, 1, 1, 1, 1, 1, 0, 'casque.png' ); "
-//
-//        );
-//
-//        // Plastron
-//        executeUpdate("" +
-//                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-//                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-//                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-//                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-//                + "VALUES ( 'Plastron', 2, 1, 1, 1, 1, 1, 1, 0, 'plastron.png' ); "
-//
-//        );
-//
-//        // Gant
-//        executeUpdate("" +
-//                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-//                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-//                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-//                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-//                + "VALUES ( 'Gant', 3, 1, 1, 1, 1, 1, 1, 0, 'gant.png' ); "
-//
-//        );
-//
-//        // Jambiere
-//        executeUpdate("" +
-//                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-//                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-//                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-//                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-//                + "VALUES ( 'Jambiere', 4, 1, 1, 1, 1, 1, 1, 0, 'jambiere.png' ); "
-//        );
-//
-//        // Botte
-//        executeUpdate("" +
-//                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-//                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-//                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-//                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-//                + "VALUES ( 'Botte', 5, 1, 1, 1, 1, 1, 1, 0, 'botte.png' ); "
-//        );
-//
-//        // Hache
-//        executeUpdate("" +
-//                "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-//                + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", " + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", "
-//                + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
-//                + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
-//                + "VALUES ( 'Hache', 6, 1, 1, 1, 1, 1, 1, 2, 'hache.png' ); "
-//        );
-//
-//        System.out.println("Initialisation des objets");
-
 }
