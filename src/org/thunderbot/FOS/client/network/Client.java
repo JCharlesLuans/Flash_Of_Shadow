@@ -218,7 +218,6 @@ public class Client {
             envoi(new RequeteServeur(requete));
             stringReception = XMLTools.encodeString(personnage);
             envoi(stringReception);
-            System.out.println(personnage);
             stringReception = (String) reception(); // Attente reception update
             listePersonnageAJour = (ArrayList<Personnage>) XMLTools.decodeString(stringReception);
         } catch (IOException e) {

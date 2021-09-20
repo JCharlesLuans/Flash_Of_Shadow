@@ -10,14 +10,10 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.network.Client;
-import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
-import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
-import org.thunderbot.FOS.client.statiqueState.layout.ImageFlottante;
+import org.thunderbot.FOS.client.statiqueState.layout.*;
 import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Faction;
 import org.thunderbot.FOS.database.beans.Map;
-
-import javax.swing.*;
 
 public class CreationPersonnageState extends BasicGameState {
 
@@ -49,13 +45,17 @@ public class CreationPersonnageState extends BasicGameState {
     private static final int ZT_CHAR_MAX = 15;
     private static final int ZT_CHAR_MIN = 3;
 
-    private static final String ERR_CLASSE_NULL = "Veuillez selectionner une classe !";
-    private static final String ERR_FACTION_NULL = "Veuillez selectionner une faction !";
+    private static final String ERR_CLASSE_NULL = "Veuillez selectionner \nune classe !";
+    private static final String ERR_FACTION_NULL = "Veuillez selectionner \nune faction !";
     private static final String ERR_PSEUDO =
-            "Veuillez saisir un pseudo valide entre " + ZT_CHAR_MIN + " et " + ZT_CHAR_MAX +  " caractère !";
+            "Veuillez saisir un \npseudo valide entre \n" + ZT_CHAR_MIN + " et " + ZT_CHAR_MAX +  " caractères !";
+
+    private static final String INF_CONFIRMATION = "Etes-vous sûr de vouloir créer\n ce personnage ?";
 
 
     private Client client;
+
+    private boolean valide;
 
     private StateBasedGame stateBasedGame;
 
@@ -65,7 +65,7 @@ public class CreationPersonnageState extends BasicGameState {
     private Image imgFaction;
     private Image imgNom;
 
-    private Bouton btnValider;
+    private BoutonImage btnValider;
     private TextField ztNom;
 
     private BoutonImage btnImg_archer;
@@ -95,6 +95,9 @@ public class CreationPersonnageState extends BasicGameState {
 
     private Sound click;
 
+    private FenetrePopUpChoix fenetreConfirmation;
+    private FenetrePopUp fenetreErreur;
+
     public CreationPersonnageState(Client client) {
         this.client = client;
     }
@@ -112,9 +115,15 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
+        valide = false;
+
         this.stateBasedGame = stateBasedGame;
 
         int x = gameContainer.getWidth() / 2;
+
+        // Init fenetree popup
+        fenetreConfirmation = new FenetrePopUpChoix(gameContainer, "", 35);
+        fenetreErreur = new FenetrePopUp(gameContainer, "", 55);
 
         // Init du background
         imgBackground = new Image("res/menuState/creationJoueur/background.png");
@@ -135,7 +144,6 @@ public class CreationPersonnageState extends BasicGameState {
         desc_pugilat = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/pugilat.png");
 
         // Init des bouton pour gerer les classes
-
         btnImg_archer   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/archer.png", 0,  BTN_CLASSE_Y_START);
         btnImg_mage     = new BoutonImage("res/menuState/creationJoueur/boutonClasse/mage.png", 0,  BTN_CLASSE_Y_START);
         btnImg_pretre   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pretre.png", 0,  BTN_CLASSE_Y_START);
@@ -143,6 +151,7 @@ public class CreationPersonnageState extends BasicGameState {
         btnImg_voleur   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/voleur.png", 0,  BTN_CLASSE_Y_START);
         btnImg_pugilat  = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pugilat.png", 0,  BTN_CLASSE_Y_START);
 
+        // Gestion de la position des bouton
         x -= 3 * btnImg_archer.getWidth() + 3 * DELTA_ESPACE_BOUTON;
         btnImg_archer.setX(x);
         x += btnImg_archer.getWidth() + DELTA_ESPACE_BOUTON;
@@ -166,6 +175,7 @@ public class CreationPersonnageState extends BasicGameState {
         btnImg_umbra = new BoutonImage("res/menuState/creationJoueur/boutonFaction/umbra.png", 0, BTN_FACTION_Y_START);
         btnImg_ethernia = new BoutonImage("res/menuState/creationJoueur/boutonFaction/ethernia.png", 0, BTN_FACTION_Y_START);
 
+        // Gestion de la position des bouton
         x = gameContainer.getWidth() / 2 - btnImg_umbra.getWidth() / 2;
         btnImg_umbra.setX(x);
         btnImg_idenia.setX((int) btnImg_umbra.getX() + btnImg_umbra.getWidth() + DELTA_ESPACE_BOUTON);
@@ -174,9 +184,8 @@ public class CreationPersonnageState extends BasicGameState {
 
 
         // Init du bouton valider
-        btnValider = new Bouton(gameContainer.getWidth() / 2 - BTN_VALIDER_LONGUEUR / 2,
-                gameContainer.getHeight() - BTN_VALIDER_DELTA,
-                BTN_VALIDER_LONGUEUR, BTN_VALIDER_HAUTEUR, "Valider");
+        btnValider = new BoutonImage("res/menuState/creationJoueur/valider.png", gameContainer.getWidth() / 2 - BTN_VALIDER_LONGUEUR / 2,
+                gameContainer.getHeight() - BTN_VALIDER_DELTA);
 
         // Init de la zone texte
         ztNom = new TextField(gameContainer, gameContainer.getDefaultFont(),
@@ -187,7 +196,9 @@ public class CreationPersonnageState extends BasicGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+
         imgBackground.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
+
         graphics.drawImage(imgTitre, gameContainer.getWidth() / 2 - imgTitre.getWidth() / 2, START_TITRE_Y);
         graphics.drawImage(imgClasse,  gameContainer.getWidth() / 2 - imgTitre.getWidth() / 2 - imgClasse.getWidth() , BTN_CLASSE_Y_START);
         graphics.drawImage(imgFaction, gameContainer.getWidth() / 2 - imgTitre.getWidth() / 2 - imgFaction.getWidth(), BTN_FACTION_Y_START);
@@ -219,24 +230,35 @@ public class CreationPersonnageState extends BasicGameState {
         desc_umbra.render(graphics);
         desc_ethernia.render(graphics);
 
+        fenetreConfirmation.render(graphics);
+        fenetreErreur.render(graphics);
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-
+        if (valide && !fenetreConfirmation.isShow() && fenetreConfirmation.isOui()) {
+            stateBasedGame.enterState(MapGameState.ID);
+        }
     }
 
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
-
-        gestionBoutonValider(x, y);
-        gestionBoutonClasse(x, y);
-        gestionBoutonFaction(x, y);
+        if (fenetreConfirmation.isShow()) {
+            fenetreConfirmation.mouseClicked(button, x, y, clickCount);
+        } else if (fenetreErreur.isShow()) {
+            fenetreErreur.mouseClicked(button,x,y,clickCount);
+        } else {
+            gestionBoutonValider(x, y);
+            gestionBoutonClasse(x, y);
+            gestionBoutonFaction(x, y);
+        }
     }
 
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-        gestionDescriptionClasse(newx, newy);
-        gestionDescriptionFaction(newx, newy);
+        if (!fenetreConfirmation.isShow() && !fenetreErreur.isShow()) {
+            gestionDescriptionClasse(newx, newy);
+            gestionDescriptionFaction(newx, newy);
+        }
     }
 
     /**
@@ -405,26 +427,25 @@ public class CreationPersonnageState extends BasicGameState {
     }
 
     private void gestionBoutonValider(int x, int y) {
-        if (btnValider.isInBouton(x, y)) {
-            JFrame jFrame = new JFrame();
+        if (btnValider.isInLayout(x, y)) {
 
             click.play();
 
-            System.out.println(ztNom.getText().length());
-
-            // Gestion erruer
+            // Gestion erreur
             if (classeSelectionner == null) {
-                JOptionPane.showMessageDialog(jFrame, ERR_CLASSE_NULL);
+                fenetreErreur.setMessage(ERR_CLASSE_NULL);
+                fenetreErreur.setShow(true);
             } else if (factionSelectionner == null) {
-                JOptionPane.showMessageDialog(jFrame, ERR_FACTION_NULL);
+                fenetreErreur.setMessage(ERR_FACTION_NULL);
+                fenetreErreur.setShow(true);
             } else if (ZT_CHAR_MIN > ztNom.getText().length() ||  ztNom.getText().length() > ZT_CHAR_MAX ) {
-                JOptionPane.showMessageDialog(jFrame, ERR_PSEUDO);
+                fenetreErreur.setMessage(ERR_PSEUDO);
+                fenetreErreur.setShow(true);
             } else {
-                String recap = "Nom : " + ztNom.getText() + '\n';
+                String recap = INF_CONFIRMATION+ '\n' + '\n';
+                recap += "Nom : " + ztNom.getText() + '\n';
                 recap += "Classe : " + classeSelectionner.getNom() + '\n';
                 recap += "Faction : " + factionSelectionner.getNom() + '\n';
-
-                JOptionPane.showMessageDialog(jFrame, recap);
 
                 client.getPersonnage().setNom(ztNom.getText());
                 client.getPersonnage().setClasse(classeSelectionner);
@@ -436,7 +457,9 @@ public class CreationPersonnageState extends BasicGameState {
 
                 client.createPersonnage();
 
-                stateBasedGame.enterState(MapGameState.ID);
+                fenetreConfirmation.setMessage(recap);
+                fenetreConfirmation.setShow(true);
+                valide = true;
             }
 
 
