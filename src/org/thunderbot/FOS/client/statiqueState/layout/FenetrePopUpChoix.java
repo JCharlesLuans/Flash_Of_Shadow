@@ -2,8 +2,12 @@ package org.thunderbot.FOS.client.statiqueState.layout;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
+import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 
 public class FenetrePopUpChoix extends FenetrePopUp{
+
+    private final static int TAILLE_POLICE = 35;
 
     private final static int OUI_X = 250;
     private final static int OUI_X_FIN = 310;
@@ -18,8 +22,9 @@ public class FenetrePopUpChoix extends FenetrePopUp{
     private boolean oui;
     private boolean non;
 
-    public FenetrePopUpChoix(GameContainer gameContainer, String message, int fontSize) throws SlickException {
-        super(gameContainer, message, "res/menuState/gui/fenetrePopUpChoix.png", fontSize);
+    public FenetrePopUpChoix(GameContainer gameContainer, String message, MedievalSharp font) throws SlickException {
+        super(gameContainer, message, "res/menuState/gui/fenetrePopUpChoix.png", font);
+        super.getFont().setSize(TAILLE_POLICE);
     }
 
 

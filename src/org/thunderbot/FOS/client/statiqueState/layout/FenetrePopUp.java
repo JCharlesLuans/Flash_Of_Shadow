@@ -7,6 +7,7 @@ package org.thunderbot.FOS.client.statiqueState.layout;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 
 /**
  * Affiche un message d'avertissement
@@ -18,7 +19,6 @@ public class FenetrePopUp {
     public static final int CODE_RETOUR_DEFAUT = -1;
     public static final int CODE_RETOUR_FERMETURE = 0;
     public static final int CODE_RETOUR_OK = 1;
-    public static final int CODE_RETOUR_NON = 2;
 
     private static final int OK_X = 305;
     private static final int OK_X_FIN = 665;
@@ -32,7 +32,7 @@ public class FenetrePopUp {
 
     private static final int DELTA_START_MESSAGE = 50;
 
-
+    private MedievalSharp font;
 
     private int y;
     private int x;
@@ -45,24 +45,21 @@ public class FenetrePopUp {
 
     private Sound son;
 
-    private UnicodeFont font;
-
-    public FenetrePopUp(GameContainer gameContainer, String message, int fontSize) throws SlickException {
+    public FenetrePopUp(GameContainer gameContainer, String message, MedievalSharp font) throws SlickException {
         imageFond = new Image("res/menuState/gui/fenetrePopUp.png");
-        initFenetre(gameContainer, message, fontSize);
+        initFenetre(gameContainer, message, font);
     }
 
-    public FenetrePopUp(GameContainer gameContainer, String message, String srcImage, int fontSize) throws SlickException {
+    public FenetrePopUp(GameContainer gameContainer, String message, String srcImage, MedievalSharp font) throws SlickException {
         imageFond = new Image(srcImage);
-        initFenetre(gameContainer, message, fontSize);
+        initFenetre(gameContainer, message, font);
     }
 
     public void render(Graphics graphics) {
-        graphics.setFont(font);
         if (show) {
+            graphics.setFont(font.getFont());
             graphics.drawImage(imageFond, x, y);
             graphics.drawString(message, x + DELTA_START_MESSAGE, y + DELTA_START_MESSAGE);
-
         }
     }
 
@@ -109,24 +106,15 @@ public class FenetrePopUp {
         return codeRetour;
     }
 
-    private void initFenetre(GameContainer gameContainer, String message, int fontSize) throws SlickException {
+    private void initFenetre(GameContainer gameContainer, String message, MedievalSharp font) throws SlickException {
         son = new Sound("res/menuState/son/ouvertureFenetre.wav");
 
         this.message = message;
+        this.font = font;
         show = false;
 
         x = gameContainer.getWidth() / 2 - imageFond.getWidth() / 2;
         y = gameContainer.getHeight() / 2 - imageFond.getHeight() / 2;
-
-        font = new UnicodeFont("res/menuState/gui/police/MedievalSharp-Regular.ttf", fontSize, false, false);
-        font.addAsciiGlyphs();
-        font.addGlyphs(400,600);
-        font.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
-        font.loadGlyphs();
-    }
-
-    public UnicodeFont getFont() {
-        return font;
     }
 
     int getX() {
@@ -135,5 +123,9 @@ public class FenetrePopUp {
 
     int getY() {
         return y;
+    }
+
+    protected MedievalSharp getFont() {
+        return font;
     }
 }

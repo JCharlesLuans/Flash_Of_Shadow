@@ -5,9 +5,8 @@
 
 package org.thunderbot.FOS.client;
 
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.network.Client;
@@ -39,11 +38,11 @@ public class ChaosRevolt extends StateBasedGame {
     public static void main(String[] args) throws SlickException, IOException {
         AppGameContainer appGameContainer =  new AppGameContainer(new ChaosRevolt());
         appGameContainer.setDisplayMode(WIDTH, HEIGHT, false);
-        appGameContainer.setShowFPS(false);
+        appGameContainer.setShowFPS(true);
         appGameContainer.start();
     }
 
-    public ChaosRevolt() throws IOException {
+    public ChaosRevolt() throws IOException, SlickException {
         super(TITRE);
         client = new Client();
     }

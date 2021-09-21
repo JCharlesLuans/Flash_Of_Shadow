@@ -6,7 +6,8 @@
 package org.thunderbot.FOS.client.statiqueState;
 
 import org.newdawn.slick.*;
-import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.network.Client;
@@ -14,7 +15,10 @@ import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.newdawn.slick.gui.TextField;
 import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
 import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUp;
+import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 
+import java.awt.*;
+import java.awt.Font;
 import java.io.IOException;
 
 /**
@@ -52,6 +56,7 @@ public class MainScreenState extends BasicGameState {
     private TextField zoneSaisieMotDePasse;
 
     private Client client;
+    private MedievalSharp font;
 
     private BoutonImage boutonInscription;
     private BoutonImage boutonConnexion;
@@ -72,7 +77,9 @@ public class MainScreenState extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
-        fenetrePopUp = new FenetrePopUp(gameContainer, "", 55);
+        font = new MedievalSharp(55);
+
+        fenetrePopUp = new FenetrePopUp(gameContainer, "", font);
 
         gameContainer.setMouseCursor("res/menuState/gui/cursor.png", 0, 0);
 
@@ -124,6 +131,8 @@ public class MainScreenState extends BasicGameState {
 
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+
+        g.setFont(font.getFont());
 
         imgBackground.draw(0, 0, container.getWidth(), container.getHeight());
         g.drawImage(imgTitre, container.getWidth() / 2 - imgTitre.getWidth() / 2, 15);

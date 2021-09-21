@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.layout.*;
+import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Faction;
 import org.thunderbot.FOS.database.beans.Map;
@@ -115,6 +116,8 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
+        MedievalSharp font = new MedievalSharp(55);
+
         valide = false;
 
         this.stateBasedGame = stateBasedGame;
@@ -122,8 +125,8 @@ public class CreationPersonnageState extends BasicGameState {
         int x = gameContainer.getWidth() / 2;
 
         // Init fenetree popup
-        fenetreConfirmation = new FenetrePopUpChoix(gameContainer, "", 35);
-        fenetreErreur = new FenetrePopUp(gameContainer, "", 55);
+        fenetreConfirmation = new FenetrePopUpChoix(gameContainer, "", font);
+        fenetreErreur = new FenetrePopUp(gameContainer, "", font);
 
         // Init du background
         imgBackground = new Image("res/menuState/creationJoueur/background.png");
