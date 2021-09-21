@@ -148,6 +148,8 @@ public class MainScreenState extends BasicGameState {
 
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
+
+        // Gestion de la fenetre PopUp qui souvre pour afficheer des information
         if (fenetrePopUp.isShow()) {
             fenetrePopUp.mouseClicked(button, x, y, clickCount);
         }
@@ -173,6 +175,8 @@ public class MainScreenState extends BasicGameState {
     private void entreeJeu(boolean nouveauJoueur) throws IOException {
 
         int code;
+
+        client.connectionServeur();
 
         String pseudo = zoneSaisiePseudo.getText();
         String mdp = zoneSaisieMotDePasse.getText();

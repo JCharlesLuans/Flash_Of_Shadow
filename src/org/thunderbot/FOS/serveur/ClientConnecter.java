@@ -42,6 +42,15 @@ public class ClientConnecter {
         personnage = new Personnage();
     }
 
+    public void clientClose() {
+        try {
+            sortie.close();
+            entree.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Socket getSocket() {
         return socket;
     }

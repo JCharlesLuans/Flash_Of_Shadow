@@ -46,13 +46,7 @@ public class ChaosRevolt extends StateBasedGame {
 
     public ChaosRevolt() throws IOException {
         super(TITRE);
-        try {
-            client = new Client();
-        } catch (ConnectException e) {
-            JFrame jFrame = new JFrame();
-            JOptionPane.showMessageDialog(jFrame, ERR_CONNEXION);
-            System.exit(1);
-        }
+        client = new Client();
     }
 
     @Override

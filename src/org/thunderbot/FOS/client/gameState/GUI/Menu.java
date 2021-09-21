@@ -119,6 +119,7 @@ public class Menu {
                 break;
             case DECONNEXION:
                 try {
+                    active = false;
                     client.deconnexion();
                     stateBasedGame.enterState(MainScreenState.ID);
                 } catch (IOException e) {

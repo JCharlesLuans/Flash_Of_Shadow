@@ -31,7 +31,7 @@ public class Client {
 
     private Personnage personnage;
 
-    private final Socket socket;
+    private Socket socket;
 
     private ObjectOutputStream sortie; // Sortie du socket
 
@@ -41,12 +41,8 @@ public class Client {
     /**
      * Création de l'objet client, encapsulation de la socket, gestion de la connection avec le serveur
      */
-    public Client() throws IOException {
-        InetAddress adresseServeur = InetAddress.getByName(lectureIpServeur());
-        socket = new Socket(adresseServeur, PORT);
-
-        entree = new ObjectInputStream(socket.getInputStream());
-        sortie = new ObjectOutputStream(socket.getOutputStream());
+    public Client() {
+        connectionServeur();
     }
 
     /**
@@ -345,6 +341,16 @@ public class Client {
     }
 
     public void connectionServeur() {
-// TODO rectonnection serveur
+        InetAddress adresseServeur = null;
+        try {
+            adresseServeur = InetAddress.getByName(lectureIpServeur());
+            socket = new Socket(adresseServeur, PORT);
+            entree = new ObjectInputStream(socket.getInputStream());
+            sortie = new ObjectOutputStream(socket.getOutputStream());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

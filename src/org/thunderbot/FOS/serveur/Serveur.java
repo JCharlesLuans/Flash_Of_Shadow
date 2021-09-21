@@ -220,7 +220,7 @@ public class Serveur extends Thread {
         try {
 
             personnageAReconstruire = receptionPersonnage();
-
+            me.clientClose();
             me.getSocket().close();
             listeSocketClient.remove(me);
         }  catch (IOException e) {
@@ -367,6 +367,11 @@ public class Serveur extends Thread {
         return personnageAReconstruire;
     }
 
+
+    /**
+     * Envoi d'un String contenant un objet serialiser en XML. L'objet va etre serialiser puis envoyer
+     * @param object a sérialiser puis a envoyer
+     */
     public void envoiXML(Object object) {
         try {
             String strEnvoi;
@@ -378,6 +383,10 @@ public class Serveur extends Thread {
         }
     }
 
+    /**
+     * Reception d'un String contenant un objet serialiser en XML. L'objet va etre desserialiser puis retourner
+     * @return l'objet déserialiser
+     */
     private Object receptionXML() {
         String strReception = null;
         try {
