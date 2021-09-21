@@ -36,13 +36,13 @@ public class ImageFlottante {
     public void render(Graphics graphics) {
         if (visible) {
             graphics.drawImage(image, x, y);
-            graphics.drawString(texte, x - 50, y - 50);
+            graphics.drawString(texte, x + 15, y + 10);
             // TODO regler l'affichae du texte
         }
     }
 
     public void setTexte(String texte) {
-        this.texte = texte;
+        this.texte = recoupeString(texte);
     }
 
     public boolean isVisible() {
@@ -67,5 +67,53 @@ public class ImageFlottante {
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    /**
+     * Redécoupe une string pour l'adapter a la taille de la fenetre
+     * @param texte la string a découper
+     * @return la sring découper
+     */
+    public String recoupeString(String texte) {
+        String[] decoupeEspace;
+        String[] decoupeSautLigne;
+        String tmp;
+        String aRetourner = "";
+
+        decoupeSautLigne = texte.split("\\n");
+
+        // Pour toute les ligne potentielle
+        for (int i = 0; i < decoupeSautLigne.length; i++) {
+            // on verifie qu'elles rentre dans la feuille
+            if (font.getFont().getWidth(decoupeSautLigne[i]) < image.getWidth()) {
+                // Si c'est le cas on peux concatener avec le reste
+                aRetourner += decoupeSautLigne[i] + "\n";
+            } else {
+                // On reinitialise la string de travail
+                tmp = "";
+                // On redecoupe la string qui ne va pas
+                decoupeEspace = decoupeSautLigne[i].split(" ");
+                for (int j = 0; j < decoupeEspace.length; j++) {
+                    // On verifie que l'on peux concatener
+                    if (font.getFont().getWidth(decoupeEspace[j] + " " + tmp) < image.getWidth()) {
+                        //Si on peux on concatene
+                        tmp += decoupeEspace[j] + " ";
+                    } else {
+                        // Sinon on returne a la ligne, et on concatene le reste du tableau
+                        tmp += '\n';
+                        for (int k = j; k < decoupeEspace.length; k++) {
+                            tmp += decoupeEspace[k] + " ";
+                        }
+                        // On rapelle la fonction pour redecouper
+                        tmp = recoupeString(tmp);
+                        // On sort de la boucle
+                        break;
+                    }
+                }
+                aRetourner += tmp;
+            }
+        }
+
+        return aRetourner;
     }
 }
