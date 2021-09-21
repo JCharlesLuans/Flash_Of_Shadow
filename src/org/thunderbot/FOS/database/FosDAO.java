@@ -420,6 +420,7 @@ public class FosDAO {
 
                 aRetourner.setId(resultSet.getInt(OBJET_CLE));
                 aRetourner.setNom(resultSet.getString(OBJET_NOM));
+                aRetourner.setDesc(resultSet.getString(OBJET_DESC));
                 aRetourner.setEmplacement(resultSet.getInt(OBJET_EMPLACEMENT));
                 aRetourner.setStatAgilite(resultSet.getInt(OBJET_STAT_AGILITE));
                 aRetourner.setStatArmure(resultSet.getInt(OBJET_STAT_ARMURE));

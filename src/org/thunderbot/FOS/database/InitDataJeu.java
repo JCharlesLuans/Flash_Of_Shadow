@@ -43,18 +43,18 @@ public class InitDataJeu {
 
     private static String CREATION_OBJET =
             "INSERT INTO " + NOM_TABLE_OBJET + " ( "
-                    + OBJET_NOM + ", " + OBJET_EMPLACEMENT + ", "    + OBJET_ID_CLASSE + ", "
+                    + OBJET_NOM + ", " + OBJET_DESC + ", " + OBJET_EMPLACEMENT + ", "    + OBJET_ID_CLASSE + ", "
                     + OBJET_STAT_AGILITE + ", " +  OBJET_STAT_ARMURE + ", " + OBJET_STAT_DEXTERITE + ", "
                     + OBJET_STAT_ENDURANCE + ", " + OBJET_STAT_FORCE + ", " + OBJET_STAT_INTELLIGENCE + ", " + OBJET_STAT_SAGESSE + ", "
                     + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
             + "VALUES "
-                    + "( 'Livre d''histoire', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'livre.png'), "
-                    + "( 'Casque De Base'   , 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'casque.png'), "
-                    + "( 'Torse De Base'    , 2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'torse.png'), "
-                    + "( 'Gant De Base'     , 3, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'gant.png'), "
-                    + "( 'Pantalon De Base' , 4, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'jambiere.png'), "
-                    + "( 'Botte De Base'    , 5, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'botte.png'), "
-                    + "( 'Baton De Base'    , 6, 0, 1, 1, 1, 1, 1, 1, 1, 1, 'baton.png');";
+                    + "( 'Livre d''histoire', 'Un livre racontant l''Histoire du Bellum Deorum', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'livre.png'), "
+                    + "( 'Casque De Base'   , 'Un vieux casque usé par le temps'               ,1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'casque.png'), "
+                    + "( 'Plastron De Base' , 'Un vieux plastron usé par le temps'             ,2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'torse.png'), "
+                    + "( 'Gant De Base'     , 'Deux vieux gants usé par le temps'              ,3, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'gant.png'), "
+                    + "( 'Pantalon De Base' , 'Un vieux pantalon usé par le temps'             ,4, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'jambiere.png'), "
+                    + "( 'Botte De Base'    , 'Deux villes bottes usé par le temps'            ,5, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'botte.png'), "
+                    + "( 'Baton De Base'    , 'Un vieux baton usé par le temps'                ,6, 0, 1, 1, 1, 1, 1, 1, 1, 1, 'baton.png');";
 
     public static void main(String[] args) {
         HelperBD helperBD = new HelperBD(FosDAO.NOM_BD);
