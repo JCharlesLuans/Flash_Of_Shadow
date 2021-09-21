@@ -60,7 +60,15 @@ public class BoutonImage {
         x = newX;
     }
 
+    public void setY(float y) {
+        this.y = y;
+    }
+
     public float getX() {
         return x;
+    }
+
+    public float getY() {
+        return y;
     }
 }

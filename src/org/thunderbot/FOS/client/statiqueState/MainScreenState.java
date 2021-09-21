@@ -55,10 +55,14 @@ public class MainScreenState extends BasicGameState {
 
     private BoutonImage boutonInscription;
     private BoutonImage boutonConnexion;
+    private BoutonImage boutonQuitter;
 
     private FenetrePopUp fenetrePopUp;
 
     private boolean connexion;
+    private boolean connexionServeur;
+    private boolean quitter;
+
     private boolean nouveauJoueur;
 
     public MainScreenState(Client client) {
@@ -88,6 +92,9 @@ public class MainScreenState extends BasicGameState {
 
         boutonInscription = new BoutonImage("res/menuState/menuPrincipal/inscription.png", 680, middleY + ZONE_SAISIE_HAUTEUR * 2 + BOUTON_DELDA_SEPARATION);
         boutonConnexion = new BoutonImage("res/menuState/menuPrincipal/connexion.png", 680, middleY + ZONE_SAISIE_HAUTEUR * 2 + BOUTON_DELDA_SEPARATION);
+        boutonQuitter = new BoutonImage("res/menuState/menuPrincipal/quitter.png", 0, boutonConnexion.getY() + BOUTON_DELDA_SEPARATION);
+
+
 
         //L'initialisation du TextField
         zoneSaisiePseudo     = new TextField(gameContainer, gameContainer.getDefaultFont(), middleX - ZONE_SAISIE_LONGUEUR / 2, middleY, ZONE_SAISIE_LONGUEUR, ZONE_SAISIE_HAUTEUR);
@@ -95,6 +102,7 @@ public class MainScreenState extends BasicGameState {
 
         boutonInscription.setX(middleX - boutonInscription.getWidth() -  BOUTON_DELDA_SEPARATION);
         boutonConnexion.setX(middleX + BOUTON_DELDA_SEPARATION);
+        boutonQuitter.setX(middleX - boutonQuitter.getWidth() / 2);
 
     }
 
@@ -106,9 +114,11 @@ public class MainScreenState extends BasicGameState {
         // Connexion au serveur
         try {
             client.connectionServeur();
+            connexionServeur = true;
         } catch (IOException e) {
             fenetrePopUp.setMessage(ERR_SERVEUR);
             fenetrePopUp.setShow(true);
+            connexionServeur = false;
         }
     }
 
@@ -125,6 +135,7 @@ public class MainScreenState extends BasicGameState {
 
         boutonInscription.render(g);
         boutonConnexion.render(g);
+        boutonQuitter.render(g);
 
         fenetrePopUp.render(g);
     }
@@ -148,6 +159,8 @@ public class MainScreenState extends BasicGameState {
             } else {
                 stateBasedGame.enterState(MapGameState.ID);
             }
+        } else if (quitter && !fenetrePopUp.isShow()) {
+            System.exit(0);
         }
     }
 
@@ -173,6 +186,12 @@ public class MainScreenState extends BasicGameState {
                 sonClick.play();
                 boutonInscription.setSelectionner(true);
                 entreeJeu(INSCRIPTION);
+            } else if (boutonQuitter.isInLayout(x, y)) {
+                sonClick.play();
+                boutonQuitter.setSelectionner(true);
+                fenetrePopUp.setMessage("A bientôt");
+                fenetrePopUp.setShow(true);
+                quitter = true;
             }
         } catch (IOException e) {
             e.printStackTrace();
