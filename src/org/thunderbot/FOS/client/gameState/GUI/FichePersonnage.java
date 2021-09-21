@@ -22,7 +22,7 @@ public class FichePersonnage extends FenetreEnJeu{
     private static final int NOMBRE_EQUIPEMENT = 6;
 
     private static final int EMPLACEMENT_X = 46;
-    private static final int EMPLACEMENT_Y = 75;
+    private static final int EMPLACEMENT_Y = 70;
     private static final int EMPLACEMENT_HAUTEUR = 92;
     private static final int EMPLACEMENT_LONGUEUR = 92;
 
@@ -88,7 +88,11 @@ public class FichePersonnage extends FenetreEnJeu{
     @Override
     public void ouvrir() {
         super.ouvrir();
-        initEquipementContainer();
+        try {
+            initEquipementContainer();
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
 
 
         // Chargement du stuff du personnage
@@ -104,7 +108,7 @@ public class FichePersonnage extends FenetreEnJeu{
         }
     }
 
-    private void initEquipementContainer() {
+    private void initEquipementContainer() throws SlickException {
 
         int centreX = this.centreX -= imgFond.getWidth() / 2;
         int centreY = this.centreY -= imgFond.getHeight() / 2;
