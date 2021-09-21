@@ -15,12 +15,16 @@ public class Gui {
     private int y;
 
     public Gui(GameContainer gameContainer, Client client, StateBasedGame stateBasedGame) throws SlickException {
-        menu = new Menu(gameContainer, client, stateBasedGame);
-        fichePersonnage = new FichePersonnage(gameContainer);
+        menu = new Menu(this, client,gameContainer, stateBasedGame);
+        fichePersonnage = new FichePersonnage(this, client, gameContainer, stateBasedGame);
     }
 
     public Menu getMenu() {
         return menu;
+    }
+
+    public FichePersonnage getFichePersonnage() {
+        return fichePersonnage;
     }
 
     public void render(Graphics graphics) {
@@ -46,5 +50,10 @@ public class Gui {
         this.y = y;
         menu.setCentreY(y);
         fichePersonnage.setCentreY(y);
+    }
+
+    public void mouseClicked(int x, int y) {
+        menu.mouseClicked(x, y);
+        fichePersonnage.mouseClicked(x, y);
     }
 }

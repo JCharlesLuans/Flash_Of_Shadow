@@ -129,8 +129,7 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
 
     @Override
     public void mouseClicked(int button, int x, int y, int nbClick) {
-        if (personnage.getGui().getMenu().isActive())
-            personnage.getGui().getMenu().mouseClicked();
+        personnage.getGui().mouseClicked(x, y);
     }
 
     @Override

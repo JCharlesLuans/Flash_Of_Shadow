@@ -13,7 +13,7 @@ import java.io.IOException;
  * Ouvrir son inventaire, ouvrir sa fiche de personnage, ouvrir la carte monde, ouvrir les compétances, ouvrir les quetes
  * ouvrir la page de la guilde, les options, et se deconnecter
  */
-public class Menu {
+public class Menu extends FenetreEnJeu {
 
     private static final int Y_INVENTAIRE = 195;
     private static final int Y_PERSONNAGE = 235;
@@ -45,37 +45,19 @@ public class Menu {
     private static final int LONGUEUR_BARRE = 75;
     private static final int HAUTEUR_BARRE = 1;
 
-    private Image imgFond;
-
-    private boolean active;
-
-    private Sound sonPage;
-    private Sound sonClick;
-
-    private int x;
-    private int y;
-
-    private int centreX;
-    private int centreY;
-
     private boolean barreVisible;
     private int positionYBarre;
 
     private int code;
 
-    private Client client;
-    private StateBasedGame stateBasedGame;
-
-    public Menu(GameContainer gameContainer, Client client, StateBasedGame stateBasedGame) throws SlickException {
+    public Menu(Gui gui, Client client, GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        super(gui, client, gameContainer, stateBasedGame);
         imgFond = new Image("res/menuState/gui/menu.png");
-        sonPage = new Sound("res/menuState/son/ouvertureFenetre.wav");
-        x = gameContainer.getWidth() / 2 - imgFond.getWidth() / 2;
-        y = gameContainer.getHeight() / 2 - imgFond.getHeight() / 2;
+        initPosition(gameContainer);
         positionYBarre = 0;
-        this.client = client;
-        this.stateBasedGame = stateBasedGame;
     }
 
+    @Override
     public void render(Graphics graphics) {
         if (active) {
             graphics.drawImage(imgFond, centreX - imgFond.getWidth() / 2, centreY - imgFond.getHeight() / 2);
@@ -85,22 +67,16 @@ public class Menu {
         }
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-        sonPage.play();
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void mouseClicked() {
-        switch (code) {
+    @Override
+    public void mouseClicked(int x, int y) {
+        if (active)
+            switch (code) {
             case INVENTAIRE:
                 System.out.println("Inventaire");
                 break;
             case PERSONNAGE:
-                System.out.println("Personnage");
+                active = false;
+                gui.getFichePersonnage().setActive(true);
                 break;
             case CARTE:
                 System.out.println("Carte");
@@ -129,14 +105,7 @@ public class Menu {
         }
     }
 
-    public void setCentreX(int centreX) {
-        this.centreX = centreX;
-    }
-
-    public void setCentreY(int centreY) {
-        this.centreY = centreY;
-    }
-
+    @Override
     public void mouseMouved(int y, int x) {
         x -= this.x;
         y -= this.y;
