@@ -90,6 +90,7 @@ public class PersonnageJoueur implements Serializable {
         float positionAnimationY = positionY-60;
 
         graphics.drawAnimation(animations[direction + (moving ? 4 : 0)],positionAnimationX , positionAnimationY);
+        graphics.drawString(pseudo, positionX - graphics.getFont().getWidth(pseudo) / 2, positionY - 65);
     }
 
     /**
