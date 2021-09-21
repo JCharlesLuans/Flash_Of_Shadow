@@ -11,6 +11,8 @@ public class FichePersonnage extends FenetreEnJeu{
 
     private static final String TITRE = "Personnage";
 
+    private static final int DELTA_TITRE = 10;
+
     private static final int X_FERMER = 375;
     private static final int Y_FERMER = 5;
     private static final int LONGUEUR_FERMER = 30;
@@ -25,9 +27,10 @@ public class FichePersonnage extends FenetreEnJeu{
     }
 
     public void render(Graphics graphics) {
+        graphics.setFont(font.getFont());
         if (active) {
-            graphics.drawString(TITRE, centreX - graphics.getFont().getWidth(TITRE) / 2, imgFond.getHeight() / 2);
             graphics.drawImage(imgFond, centreX - imgFond.getWidth() / 2, centreY - imgFond.getHeight() / 2);
+            graphics.drawString(TITRE, centreX - graphics.getFont().getWidth(TITRE) / 2, centreY - imgFond.getHeight() / 2 + DELTA_TITRE);
         }
     }
 

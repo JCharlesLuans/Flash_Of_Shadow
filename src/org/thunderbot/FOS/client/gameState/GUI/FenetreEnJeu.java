@@ -3,6 +3,7 @@ package org.thunderbot.FOS.client.gameState.GUI;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 
 public abstract class FenetreEnJeu {
 
@@ -35,7 +36,13 @@ public abstract class FenetreEnJeu {
     protected int centreX;
     protected int centreY;
 
+    /** Police pour afficher les string */
+    protected MedievalSharp font;
+
     public FenetreEnJeu(Gui gui, Client client, GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+
+        font = new MedievalSharp(35);
+
         sonPage = new Sound("res/menuState/son/ouvertureFenetre.wav");
         sonClick = new Sound("res/menuState/son/click.wav");
 
