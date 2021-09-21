@@ -1,6 +1,7 @@
 package org.thunderbot.FOS.client.gameState.GUI;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.thunderbot.FOS.client.statiqueState.layout.ImageFlottante;
 import org.thunderbot.FOS.database.beans.Objet;
@@ -17,6 +18,7 @@ public class ObjetContainer {
     private int hauteur;
 
     private Objet objet; /** Objet contenu dans le conteuneur */
+    private Image image;
 
     private ImageFlottante imageFlottante;
 
@@ -29,14 +31,20 @@ public class ObjetContainer {
     }
 
     public void render(Graphics graphics) {
-        graphics.drawRect(x, y, longueur, hauteur);
+        //graphics.drawRect(x, y, longueur, hauteur);
         imageFlottante.render(graphics);
+        graphics.drawImage(image, x , y);
     }
 
     /** Attribut un objet au container */
     public void setObjet(Objet objet) {
         this.objet = objet;
         imageFlottante.setTexte(objet.getNom() + " :\n" + objet.getDesc());
+        try {
+            image = new Image("res/texture/objet/" + objet.getImage());
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
     }
 
     public void mouseMouved(int y, int x) {

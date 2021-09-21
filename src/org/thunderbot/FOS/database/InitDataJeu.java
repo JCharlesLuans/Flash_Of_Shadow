@@ -49,12 +49,12 @@ public class InitDataJeu {
                     + OBJET_DPS + ", " + OBJET_IMAGE + " ) "
             + "VALUES "
                     + "( 'Livre d''histoire', 'Un livre racontant l''Histoire du Bellum Deorum', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'livre.png'), "
-                    + "( 'Casque De Base'   , 'Un vieux casque usé par le temps'               ,1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'casque.png'), "
-                    + "( 'Plastron De Base' , 'Un vieux plastron usé par le temps'             ,2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'torse.png'), "
-                    + "( 'Gant De Base'     , 'Deux vieux gants usé par le temps'              ,3, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'gant.png'), "
-                    + "( 'Pantalon De Base' , 'Un vieux pantalon usé par le temps'             ,4, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'jambiere.png'), "
-                    + "( 'Botte De Base'    , 'Deux villes bottes usé par le temps'            ,5, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'botte.png'), "
-                    + "( 'Baton De Base'    , 'Un vieux baton usé par le temps'                ,6, 0, 1, 1, 1, 1, 1, 1, 1, 1, 'baton.png');";
+                    + "( 'Casque De Base'   , 'Un vieux casque usé par le temps'               ,1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'chapeau.png'), "
+                    + "( 'Plastron De Base' , 'Un vieux plastron usé par le temps'             ,2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'chemise.png'), "
+                    + "( 'Gant De Base'     , 'Deux vieux gants usé par le temps'              ,3, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'mitaine.png'), "
+                    + "( 'Pantalon De Base' , 'Un vieux pantalon usé par le temps'             ,4, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'pantalon.png'), "
+                    + "( 'Botte De Base'    , 'Deux villes bottes usé par le temps'            ,5, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'tong.png'), "
+                    + "( 'Baton De Base'    , 'Un vieux baton usé par le temps'                ,6, 0, 1, 1, 1, 1, 1, 1, 1, 1, 'robe_haut.png');";
 
     public static void main(String[] args) {
         HelperBD helperBD = new HelperBD(FosDAO.NOM_BD);
