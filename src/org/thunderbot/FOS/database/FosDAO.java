@@ -323,6 +323,8 @@ public class FosDAO {
 
           aRetourner.setId(rs.getInt(OBJET_CLE));
           aRetourner.setNom(rs.getString(OBJET_NOM));
+          aRetourner.setDesc(rs.getString(OBJET_DESC));
+          aRetourner.setEquipableParClasse(rs.getInt(OBJET_ID_CLASSE));
           aRetourner.setEmplacement(rs.getInt(OBJET_EMPLACEMENT));
           aRetourner.setStatAgilite(rs.getInt(OBJET_STAT_AGILITE));
           aRetourner.setStatArmure(rs.getInt(OBJET_STAT_ARMURE));
@@ -405,41 +407,5 @@ public class FosDAO {
     public Guilde getGuildeById(int id) {
         Guilde aRetourner = new Guilde();
         return aRetourner;
-    }
-
-    public ArrayList<Objet> getListeStuffBase() {
-        ArrayList<Objet> list = new ArrayList<>();
-
-        String requete = "SELECT * FROM " + NOM_TABLE_OBJET + " WHERE " + OBJET_CLE + " <= 7 AND " + OBJET_CLE + " > 1";
-        ResultSet resultSet = gestionnaireBase.executeRequete(requete);
-
-        try {
-            while (resultSet.next()) {
-
-                Objet aRetourner  = new Objet();
-
-                aRetourner.setId(resultSet.getInt(OBJET_CLE));
-                aRetourner.setNom(resultSet.getString(OBJET_NOM));
-                aRetourner.setDesc(resultSet.getString(OBJET_DESC));
-                aRetourner.setEmplacement(resultSet.getInt(OBJET_EMPLACEMENT));
-                aRetourner.setStatAgilite(resultSet.getInt(OBJET_STAT_AGILITE));
-                aRetourner.setStatArmure(resultSet.getInt(OBJET_STAT_ARMURE));
-                aRetourner.setStatDexterite(resultSet.getInt(OBJET_STAT_DEXTERITE));
-                aRetourner.setStatEndurance(resultSet.getInt(OBJET_STAT_ENDURANCE));
-                aRetourner.setStatForce(resultSet.getInt(OBJET_STAT_FORCE));
-                aRetourner.setStatIntelligence(resultSet.getInt(OBJET_STAT_INTELLIGENCE));
-                aRetourner.setStatSagesse(resultSet.getInt(OBJET_STAT_SAGESSE));
-                aRetourner.setDps(resultSet.getInt(OBJET_DPS));
-                aRetourner.setImage(resultSet.getString(OBJET_IMAGE));
-
-                list.add(aRetourner);
-            }
-
-            resultSet.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return list;
     }
 }

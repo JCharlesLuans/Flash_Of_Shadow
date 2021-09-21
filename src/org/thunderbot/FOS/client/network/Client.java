@@ -313,23 +313,16 @@ public class Client {
     }
 
     public void chargementStuffBase() {
-        ArrayList<Objet> aRetourner;
         String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.STUFF_BASE + ";";
+
         try {
             envoi(new RequeteServeur(requete));
-            aRetourner = (ArrayList<Objet>) XMLTools.decodeString((String) reception());
-
-            for (int i = 0; i < aRetourner.size(); i++) {
-                System.out.println(aRetourner.get(i).toString());
-            }
-            
-            personnage.setStuffTete(aRetourner.get(0));
-            personnage.setStuffTorse(aRetourner.get(1));
-            personnage.setStuffGant(aRetourner.get(2));
-            personnage.setStuffJambe(aRetourner.get(3));
-            personnage.setStuffBotte(aRetourner.get(4));
-            personnage.setStuffArme(aRetourner.get(5));
-
+            personnage.setStuffTete((Objet) XMLTools.decodeString((String) reception()));
+            personnage.setStuffTorse((Objet) XMLTools.decodeString((String) reception()));
+            personnage.setStuffGant((Objet) XMLTools.decodeString((String) reception()));
+            personnage.setStuffJambe((Objet) XMLTools.decodeString((String) reception()));
+            personnage.setStuffBotte((Objet) XMLTools.decodeString((String) reception()));
+            personnage.setStuffArme((Objet) XMLTools.decodeString((String) reception()));
         } catch (IOException e) {
             e.printStackTrace();
         }

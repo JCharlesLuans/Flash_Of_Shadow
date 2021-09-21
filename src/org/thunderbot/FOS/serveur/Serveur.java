@@ -260,7 +260,7 @@ public class Serveur extends Thread {
                         chargementFaction(sortie, requeteServeur.getCle());
                         break;
                     case RequeteServeur.STUFF_BASE:
-                        chargementStuffBase(sortie);
+                        chargementStuffBase();
                         break;
                 }
                 me.setConnecter(true);
@@ -293,10 +293,10 @@ public class Serveur extends Thread {
         }
     }
 
-    private void chargementStuffBase(ObjectOutputStream sortie) {
-        ArrayList<Objet> aRetourner;
-        aRetourner = accesBD.getListeStuffBase();
-        envoiXML(aRetourner);
+    private void chargementStuffBase() {
+        for (int i = 2; i < 8; i++) {
+            envoiXML(accesBD.getObjetById(i));
+        }
     }
 
     private void chargementCarte(ObjectOutputStream sortie, String nom) throws IOException {
