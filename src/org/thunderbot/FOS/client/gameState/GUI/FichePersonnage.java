@@ -22,7 +22,7 @@ public class FichePersonnage extends FenetreEnJeu{
     private static final int NOMBRE_EQUIPEMENT = 6;
 
     private static final int EMPLACEMENT_X = 46;
-    private static final int EMPLACEMENT_Y = 70;
+    private static final int EMPLACEMENT_Y = 80;
     private static final int EMPLACEMENT_HAUTEUR = 92;
     private static final int EMPLACEMENT_LONGUEUR = 92;
 
@@ -71,6 +71,9 @@ public class FichePersonnage extends FenetreEnJeu{
     public void mouseMouved(int y, int x) {
         if (active) {
 
+            x += EMPLACEMENT_X/4;
+            y += EMPLACEMENT_Y;
+
             for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
                 listeEmplacement[i].mouseMouved(y, x);
             }
@@ -79,8 +82,6 @@ public class FichePersonnage extends FenetreEnJeu{
 
     @Override
     public void mouseClicked(int x, int y) {
-        x -= this.x;
-        y -= this.y;
         if (active)
             fermer(x, y, X_FERMER, Y_FERMER, LONGUEUR_FERMER, HAUTEUR_FERMER);
     }
@@ -93,7 +94,6 @@ public class FichePersonnage extends FenetreEnJeu{
         } catch (SlickException e) {
             e.printStackTrace();
         }
-
 
         // Chargement du stuff du personnage
         equipement[0] = client.getPersonnage().getStuffTete();
