@@ -45,9 +45,9 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
                 break;
             case Input.KEY_ESCAPE:
                 if (personnage.getGui().getMenu().isActive()) {
-                    personnage.getGui().getMenu().setActive(false);
+                    personnage.getGui().getMenu().fermer();
                 } else {
-                    personnage.getGui().getMenu().setActive(true);
+                    personnage.getGui().getMenu().ouvrir();
                 }
         }
     }
@@ -146,6 +146,8 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
     public void mouseMoved(int i, int x, int y, int i3) {
         if (personnage.getGui().getMenu().isActive())
             personnage.getGui().getMenu().mouseMouved(x, y);
+
+        personnage.getGui().getFichePersonnage().mouseMouved(x, y);
     }
 
     @Override

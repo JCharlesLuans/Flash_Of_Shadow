@@ -55,7 +55,11 @@ public abstract class FenetreEnJeu {
 
     public abstract void render(Graphics graphics);
 
-    public void setActive(boolean active) {
+    public void ouvrir() {
+        setActive(true);
+    }
+
+    private void setActive(boolean active) {
         this.active = active;
         sonPage.play();
     }
@@ -86,5 +90,9 @@ public abstract class FenetreEnJeu {
             && positionBoutonY < y && y < positionBoutonY + hauteurBouton) {
             setActive(false);
         }
+    }
+
+    public void fermer() {
+        setActive(false);
     }
 }

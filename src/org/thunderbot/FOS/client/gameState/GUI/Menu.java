@@ -76,7 +76,7 @@ public class Menu extends FenetreEnJeu {
                 break;
             case PERSONNAGE:
                 active = false;
-                gui.getFichePersonnage().setActive(true);
+                gui.getFichePersonnage().ouvrir();
                 break;
             case CARTE:
                 System.out.println("Carte");
