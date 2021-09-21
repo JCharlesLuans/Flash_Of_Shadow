@@ -60,10 +60,6 @@ public class MapGameState extends BasicGameState {
 
         camera = new Camera(joueur);
         personnageController = new PersonnageController(joueur);
-
-        container.getInput().addKeyListener(personnageController);
-        container.getInput().addControllerListener(personnageController);
-        container.getInput().addMouseListener(personnageController);
     }
 
     @Override
@@ -72,6 +68,15 @@ public class MapGameState extends BasicGameState {
         carte.changeMap(client.getPersonnage().getMap().getNom());
         joueur.setPositionX(client.getPersonnage().getX());
         joueur.setPositionY(client.getPersonnage().getY());
+
+        gameContainer.getInput().addKeyListener(personnageController);
+        gameContainer.getInput().addControllerListener(personnageController);
+        gameContainer.getInput().addMouseListener(personnageController);
+    }
+
+    @Override
+    public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        gameContainer.getInput().removeAllControllerListeners();
     }
 
     @Override

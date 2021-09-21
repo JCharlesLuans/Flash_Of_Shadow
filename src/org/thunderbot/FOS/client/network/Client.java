@@ -42,7 +42,6 @@ public class Client {
      * Création de l'objet client, encapsulation de la socket, gestion de la connection avec le serveur
      */
     public Client() {
-        connectionServeur();
     }
 
     /**
@@ -340,17 +339,11 @@ public class Client {
         return socket.isClosed();
     }
 
-    public void connectionServeur() {
+    public void connectionServeur() throws IOException {
         InetAddress adresseServeur = null;
-        try {
             adresseServeur = InetAddress.getByName(lectureIpServeur());
             socket = new Socket(adresseServeur, PORT);
             entree = new ObjectInputStream(socket.getInputStream());
             sortie = new ObjectOutputStream(socket.getOutputStream());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

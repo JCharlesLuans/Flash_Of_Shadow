@@ -30,7 +30,6 @@ public class ChaosRevolt extends StateBasedGame {
     public static final int HEIGHT  = 720;
 
     private static final String TITRE = "Chaos Revolt";
-    private static final String ERR_CONNEXION = "Erreur lors de la connection au serveur ! Verifier votre connection, puis relancer le jeu";
 
     private Client client;
 

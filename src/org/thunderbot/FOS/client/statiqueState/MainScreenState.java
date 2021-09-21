@@ -30,6 +30,7 @@ public class MainScreenState extends BasicGameState {
     public static final boolean INSCRIPTION = true;
     public static final boolean CONNEXION = false;
 
+    private static final String ERR_SERVEUR = "Erreur lors de la \nconnection au serveur \n! Verifier votre \nconnexion, puis \nrelancer le jeu";
     private static final String ERR_PSEUDO_UTILISER =  "Ce pseudo est déjà \nutilisé !";
     private static final String ERR_PSEUDO_INEXISTANT =  "Pseudo ou mot de \npasse incorrect";
     private static final String INF_CONNEXION_OK =  "Connexion réussie ! ";
@@ -99,11 +100,16 @@ public class MainScreenState extends BasicGameState {
 
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) {
 
+        // Lancement de la musique
         musicBackground.play();
-        connexion = false;
-        fenetrePopUp.setShow(false);
-        boutonInscription.setSelectionner(false);
-        boutonConnexion.setSelectionner(false);
+
+        // Connexion au serveur
+        try {
+            client.connectionServeur();
+        } catch (IOException e) {
+            fenetrePopUp.setMessage(ERR_SERVEUR);
+            fenetrePopUp.setShow(true);
+        }
     }
 
     @Override
@@ -126,6 +132,10 @@ public class MainScreenState extends BasicGameState {
     @Override
     public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         musicBackground.stop();
+        connexion = false;
+        fenetrePopUp.setShow(false);
+        boutonInscription.setSelectionner(false);
+        boutonConnexion.setSelectionner(false);
     }
 
     @Override
@@ -175,8 +185,6 @@ public class MainScreenState extends BasicGameState {
     private void entreeJeu(boolean nouveauJoueur) throws IOException {
 
         int code;
-
-        client.connectionServeur();
 
         String pseudo = zoneSaisiePseudo.getText();
         String mdp = zoneSaisieMotDePasse.getText();
