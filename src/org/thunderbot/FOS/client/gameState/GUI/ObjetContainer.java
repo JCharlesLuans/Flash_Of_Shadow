@@ -31,9 +31,11 @@ public class ObjetContainer {
     }
 
     public void render(Graphics graphics) {
-        //graphics.drawRect(x, y, longueur, hauteur);
+        int x = this.x + this.longueur / 2 - image.getWidth() / 2;
+        int y = this.y + this.hauteur / 2 - image.getHeight() / 2;
+
+        graphics.drawImage(image, x, y);
         imageFlottante.render(graphics);
-        graphics.drawImage(image, x , y);
     }
 
     /** Attribut un objet au container */

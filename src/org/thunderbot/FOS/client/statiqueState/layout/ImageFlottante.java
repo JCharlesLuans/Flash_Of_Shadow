@@ -37,7 +37,6 @@ public class ImageFlottante {
         if (visible) {
             graphics.drawImage(image, x, y);
             graphics.drawString(texte, x + 15, y + 10);
-            // TODO regler l'affichae du texte
         }
     }
 

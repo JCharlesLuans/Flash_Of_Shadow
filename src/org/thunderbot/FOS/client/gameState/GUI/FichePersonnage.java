@@ -52,7 +52,7 @@ public class FichePersonnage extends FenetreEnJeu{
             graphics.drawImage(imgFond, centreX - imgFond.getWidth() / 2, centreY - imgFond.getHeight() / 2);
             graphics.drawString(TITRE, centreX - graphics.getFont().getWidth(TITRE) / 2, centreY - imgFond.getHeight() / 2 + DELTA_TITRE);
 
-            for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
+            for (int i = NOMBRE_EQUIPEMENT - 1; i >= 0; i--) {
                 listeEmplacement[i].render(graphics);
             }
 
