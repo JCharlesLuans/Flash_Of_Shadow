@@ -59,6 +59,11 @@ public class FichePersonnage extends FenetreEnJeu{
             graphics.drawImage(imgFondStat, centreX + imgFond.getWidth() / 2, centreY - imgFond.getHeight() / 2);
             graphics.drawString(TITRE, centreX - graphics.getFont().getWidth(TITRE) / 2, centreY - imgFond.getHeight() / 2 + DELTA_TITRE);
 
+            // AFFICHAGE DES STATS
+            font.setSize(28);
+            graphics.setFont(font.getFont());
+            graphics.drawString(recapitulatif, centreX + imgFond.getWidth() / 2 + DELTA_TITRE, centreY - imgFond.getHeight() / 2 + DELTA_TITRE );
+
             // Affichage des images des objets
             for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
                 listeEmplacement[i].render(graphics);
@@ -68,11 +73,6 @@ public class FichePersonnage extends FenetreEnJeu{
             for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
                 listeEmplacement[i].getImageFlottante().render(graphics);
             }
-
-            // AFFICHAGE DES STATS
-            font.setSize(28);
-            graphics.setFont(font.getFont());
-            graphics.drawString(recapitulatif, centreX + imgFond.getWidth() / 2 + DELTA_TITRE, centreY - imgFond.getHeight() / 2 + DELTA_TITRE );
         }
     }
 
