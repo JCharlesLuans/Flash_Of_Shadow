@@ -1,11 +1,9 @@
 package org.thunderbot.FOS.client.gameState.GUI;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 import org.thunderbot.FOS.database.beans.Objet;
 
 public class FichePersonnage extends FenetreEnJeu{
@@ -26,6 +24,12 @@ public class FichePersonnage extends FenetreEnJeu{
     private static final int EMPLACEMENT_HAUTEUR = 92;
     private static final int EMPLACEMENT_LONGUEUR = 92;
 
+    private String recapitulatif;
+
+    private MedievalSharp font;
+
+    private Image imgFondStat;
+
     private Objet[] equipement;
     private ObjetContainer[] listeEmplacement;
 
@@ -33,29 +37,42 @@ public class FichePersonnage extends FenetreEnJeu{
         super(gui, client, gameContainer, stateBasedGame);
 
         // Init de l'image de fond
-        imgFond = new Image("res/menuState/gui/personnage.png");
+        imgFond = new Image("res/menuState/gui/fichePersonnage.png");
+        imgFondStat = new Image("res/menuState/gui/fichePersonnageStat.png");
 
         // Initialise la position de la fenetre
         initPosition(gameContainer);
 
         equipement = new Objet[NOMBRE_EQUIPEMENT];
         listeEmplacement = new ObjetContainer[NOMBRE_EQUIPEMENT];
+
+        recapitulatif = "";
+        font = new MedievalSharp(40);
     }
 
     public void render(Graphics graphics) {
-        graphics.setFont(font.getFont());
         if (active) {
+            graphics.setFont(font.getFont());
+
+            // Dessin e la fenetre + titre
             graphics.drawImage(imgFond, centreX - imgFond.getWidth() / 2, centreY - imgFond.getHeight() / 2);
+            graphics.drawImage(imgFondStat, centreX + imgFond.getWidth() / 2, centreY - imgFond.getHeight() / 2);
             graphics.drawString(TITRE, centreX - graphics.getFont().getWidth(TITRE) / 2, centreY - imgFond.getHeight() / 2 + DELTA_TITRE);
 
-
+            // Affichage des images des objets
             for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
                 listeEmplacement[i].render(graphics);
             }
 
+            // Affichaege des description des objets
             for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
                 listeEmplacement[i].getImageFlottante().render(graphics);
             }
+
+            // AFFICHAGE DES STATS
+            font.setSize(28);
+            graphics.setFont(font.getFont());
+            //graphics.drawString(recapitulatif, centreX );
         }
     }
 
