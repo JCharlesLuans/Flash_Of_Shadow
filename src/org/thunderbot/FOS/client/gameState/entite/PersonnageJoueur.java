@@ -94,14 +94,14 @@ public class PersonnageJoueur implements Serializable {
     }
 
     /**
-     * Charge une animations a partir d'une sprite sheet, en indiquant les début e l'annimation et la fin
+     * Charge une animations a partir d'une sprite sheet, en indiquant les début de l'annimation et la fin
      * @param spriteSheet
      * @param startX
      * @param endX
      * @param y
      * @return
      */
-    protected Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
+    public static Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
         Animation animation = new Animation();
         for (int x = startX; x < endX; x++) {
             animation.addFrame(spriteSheet.getSprite(x, y), 100);

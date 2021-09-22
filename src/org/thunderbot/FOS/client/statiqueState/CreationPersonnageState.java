@@ -9,12 +9,14 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.MapGameState;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.layout.*;
 import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Faction;
 import org.thunderbot.FOS.database.beans.Map;
+import org.thunderbot.FOS.database.beans.Personnage;
 
 public class CreationPersonnageState extends BasicGameState {
 
@@ -32,13 +34,16 @@ public class CreationPersonnageState extends BasicGameState {
     private static final int BTN_VALIDER_HAUTEUR  = 50;
     private static final int BTN_VALIDER_DELTA = 65;
 
-    /** Position des bouton classes */
+    /** Position des boutons classes */
     private static final int BTN_CLASSE_X_START = 100;
     private static final int BTN_CLASSE_Y_START = START_TITRE_Y + 128;
 
-    /** Position des bouton faction */
+    /** Position des boutons faction */
     private static final int BTN_FACTION_X_START = 100;
     private static final int BTN_FACTION_Y_START = BTN_CLASSE_Y_START + 128;
+
+    /**Position des boutons sprite */
+    private static final int BTN_SPRITE_Y = BTN_FACTION_Y_START + 128;
 
     /** Espace entre les bouton sur l'axe X */
     private static final int DELTA_ESPACE_BOUTON = 64;
@@ -52,6 +57,9 @@ public class CreationPersonnageState extends BasicGameState {
             "Veuillez saisir un \npseudo valide entre \n" + ZT_CHAR_MIN + " et " + ZT_CHAR_MAX +  " caractères !";
 
     private static final String INF_CONFIRMATION = "Etes-vous sûr de vouloir créer\n ce personnage ?";
+
+    // Gestion du nombre de sprite
+    private static final int NOMBRE_SPRITE_MAX = 2;
 
 
     private Client client;
@@ -87,6 +95,10 @@ public class CreationPersonnageState extends BasicGameState {
     private BoutonImage btnImg_umbra;
     private BoutonImage btnImg_ethernia;
 
+    private BoutonImage btnImg_droite;
+    private BoutonImage btnImg_gauche;
+    private Image cadreSprite;
+
     private ImageFlottante desc_idenia;
     private ImageFlottante desc_umbra;
     private ImageFlottante desc_ethernia;
@@ -98,6 +110,10 @@ public class CreationPersonnageState extends BasicGameState {
 
     private FenetrePopUpChoix fenetreConfirmation;
     private FenetrePopUp fenetreErreur;
+
+    private SpriteSheet spriteAfficher;
+    private int numeroSprite;
+    private Animation animation;
 
     public CreationPersonnageState(Client client) {
         this.client = client;
@@ -184,7 +200,11 @@ public class CreationPersonnageState extends BasicGameState {
         btnImg_idenia.setX((int) btnImg_umbra.getX() + btnImg_umbra.getWidth() + DELTA_ESPACE_BOUTON);
         btnImg_ethernia.setX((int) btnImg_umbra.getX() - btnImg_umbra.getWidth() - DELTA_ESPACE_BOUTON);
 
-
+        // Init des bouton pour le sprite
+        cadreSprite = new Image("res/menuState/creationJoueur/cadreSprite.png");
+        x = gameContainer.getWidth() / 2 - cadreSprite.getWidth() / 2; // Centre de l'image
+        btnImg_droite = new BoutonImage("res/menuState/creationJoueur/droite.png", x + DELTA_ESPACE_BOUTON + cadreSprite.getWidth(), BTN_SPRITE_Y + cadreSprite.getHeight() / 8);
+        btnImg_gauche = new BoutonImage("res/menuState/creationJoueur/gauche.png", x - DELTA_ESPACE_BOUTON - cadreSprite.getWidth() / 2, BTN_SPRITE_Y + cadreSprite.getHeight() / 8);
 
         // Init du bouton valider
         btnValider = new BoutonImage("res/menuState/creationJoueur/valider.png", gameContainer.getWidth() / 2 - BTN_VALIDER_LONGUEUR / 2,
@@ -195,6 +215,10 @@ public class CreationPersonnageState extends BasicGameState {
                 gameContainer.getWidth() / 2 - ZT_NOM_WIDTH / 2,
                 gameContainer.getHeight() - ZT_NOM_DELTA_HEIGHT,
                 ZT_NOM_WIDTH, ZT_NOM_HEIGHT);
+
+        // Init du sprite
+        numeroSprite = 1;
+        gestionSprite();
     }
 
     @Override
@@ -222,6 +246,12 @@ public class CreationPersonnageState extends BasicGameState {
         btnImg_umbra.render(graphics);
         btnImg_ethernia.render(graphics);
 
+        btnImg_droite.render(graphics);
+        btnImg_gauche.render(graphics);
+        graphics.drawImage(cadreSprite, gameContainer.getWidth() / 2 - cadreSprite.getWidth() / 2, BTN_SPRITE_Y);
+        graphics.drawAnimation(animation, gameContainer.getWidth() / 2 - animation.getWidth() / 2, BTN_SPRITE_Y);
+
+        // Affichage des description en dernier pour qu'lles s'affiche au dessus de tout
         desc_archer.render(graphics);
         desc_mage.render(graphics);
         desc_pretre.render(graphics);
@@ -246,7 +276,7 @@ public class CreationPersonnageState extends BasicGameState {
             client.getPersonnage().setMap(factionSelectionner.getMapStart());
             client.getPersonnage().setX(Map.POSITION_X_DEFAUT);
             client.getPersonnage().setY(Map.POSITION_Y_DEFAUT);
-            client.getPersonnage().setSprite("sprite1.png");
+            client.getPersonnage().setSprite("sprite" + numeroSprite + ".png");
             client.chargementStuffBase();
 
             client.createPersonnage();
@@ -264,6 +294,7 @@ public class CreationPersonnageState extends BasicGameState {
             gestionBoutonValider(x, y);
             gestionBoutonClasse(x, y);
             gestionBoutonFaction(x, y);
+            gestionBoutonSprite(x, y);
         }
     }
 
@@ -370,6 +401,35 @@ public class CreationPersonnageState extends BasicGameState {
         }
     }
 
+    private void gestionBoutonSprite(int x, int y) {
+        if (btnImg_gauche.isInLayout(x, y)) {
+            numeroSprite--;
+            if (numeroSprite <= 0) {
+                numeroSprite = NOMBRE_SPRITE_MAX;
+            }
+            gestionSprite();
+            click.play();
+        }
+
+        if (btnImg_droite.isInLayout(x, y)) {
+            numeroSprite++;
+            if (numeroSprite > NOMBRE_SPRITE_MAX) {
+                numeroSprite = 1;
+            }
+            gestionSprite();
+            click.play();
+        }
+    }
+
+    private void gestionSprite() {
+        try {
+            spriteAfficher = new SpriteSheet("res/texture/sprite/joueur/sprite" + numeroSprite + ".png", 64, 64);
+            animation = PersonnageJoueur.loadAnimation(spriteAfficher, 1, 9, 2);
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void gestionDescriptionClasse(int x, int y) {
         desc_archer.setVisible(false);
         desc_mage.setVisible(false);
@@ -459,6 +519,7 @@ public class CreationPersonnageState extends BasicGameState {
                 recap += "Nom : " + ztNom.getText() + '\n';
                 recap += "Classe : " + classeSelectionner.getNom() + '\n';
                 recap += "Faction : " + factionSelectionner.getNom() + '\n';
+                recap += "Sprite : " + numeroSprite;
 
                 fenetreConfirmation.setMessage(recap);
                 fenetreConfirmation.setShow(true);
