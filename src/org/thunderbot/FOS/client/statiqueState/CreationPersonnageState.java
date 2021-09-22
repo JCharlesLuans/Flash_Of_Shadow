@@ -59,7 +59,7 @@ public class CreationPersonnageState extends BasicGameState {
     private static final String INF_CONFIRMATION = "Etes-vous sûr de vouloir créer\n ce personnage ?";
 
     // Gestion du nombre de sprite
-    private static final int NOMBRE_SPRITE_MAX = 2;
+    private static final int NOMBRE_SPRITE_MAX = 4;
 
 
     private Client client;
