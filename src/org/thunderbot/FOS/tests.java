@@ -33,17 +33,6 @@ public class tests {
         }
     }
 
-    public static void testSerialisation() throws SlickException {
-        PersonnageJoueur aSerialiser = new PersonnageJoueur("JS", 7, 300f, 300f);
-
-        String xml = Tools.encodeString(aSerialiser);
-        System.out.println(xml);
-
-        Object aAfficher = Tools.decodeString(xml);
-
-        System.out.println(aAfficher.getClass());
-    }
-
     public static void testLectureFichierXML() throws ParserConfigurationException, IOException, SAXException {
         System.out.println(Tools.readXMLElement("ipServeur", "res/option.xml"));
     }

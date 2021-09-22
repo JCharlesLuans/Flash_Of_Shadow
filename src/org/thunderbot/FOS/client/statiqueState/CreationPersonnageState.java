@@ -246,6 +246,7 @@ public class CreationPersonnageState extends BasicGameState {
             client.getPersonnage().setMap(factionSelectionner.getMapStart());
             client.getPersonnage().setX(Map.POSITION_X_DEFAUT);
             client.getPersonnage().setY(Map.POSITION_Y_DEFAUT);
+            client.getPersonnage().setSprite("sprite1.png");
             client.chargementStuffBase();
 
             client.createPersonnage();

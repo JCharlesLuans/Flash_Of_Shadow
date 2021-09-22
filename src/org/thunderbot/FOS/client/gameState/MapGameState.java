@@ -50,20 +50,21 @@ public class MapGameState extends BasicGameState {
     }
 
     @Override
-    public void init(GameContainer container, StateBasedGame game) throws SlickException {
+    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         listeJoueur = new ArrayList<>();
 
         carte = new Carte();
 
-        joueur = new Personnage(client);
-        joueur.setGui(new Gui(container, client, game));
 
-        camera = new Camera(joueur);
-        personnageController = new PersonnageController(joueur);
     }
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        joueur = new Personnage(client);
+        joueur.setGui(new Gui(gameContainer, client, stateBasedGame));
+        camera = new Camera(joueur);
+        personnageController = new PersonnageController(joueur);
+
         carte.setChangeCarte(true);
         carte.changeMap(client.getPersonnage().getMap().getNom());
         joueur.setPositionX(client.getPersonnage().getX());
@@ -126,7 +127,7 @@ public class MapGameState extends BasicGameState {
     public void updateListeJoueur(ArrayList<org.thunderbot.FOS.database.beans.Personnage> listeDistante) throws SlickException {
         listeJoueur = new ArrayList<>();
         for (int i = 0; i < listeDistante.size(); i++) {
-            PersonnageJoueur tmp = new PersonnageJoueur(listeDistante.get(i).getNom(), listeDistante.get(i).getDirection(), listeDistante.get(i).getX(), listeDistante.get(i).getY());
+            PersonnageJoueur tmp = new PersonnageJoueur(listeDistante.get(i).getNom(), listeDistante.get(i).getDirection(), listeDistante.get(i).getX(), listeDistante.get(i).getY(), listeDistante.get(i).getSprite());
             tmp.setMoving(listeDistante.get(i).isMoving());
             listeJoueur.add(tmp);
         }

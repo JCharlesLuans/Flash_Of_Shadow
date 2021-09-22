@@ -456,7 +456,7 @@ public class HelperBD {
                         + ", " + PERSONNAGE_CLE_STUFF_TORSE + ", " + PERSONNAGE_CLE_STUFF_GANT + ", " + PERSONNAGE_CLE_STUFF_JAMBE
                         + ", " + PERSONNAGE_CLE_STUFF_BOTTE + ", " + PERSONNAGE_CLE_STUFF_ARME + ", " + PERSONNAGE_CLE_FACTION
                         + ", " + PERSONNAGE_CLE_GUILDE + ", " + PERSONNAGE_CLE_TITRE +  ")"
-                        + "VALUES ( 'TestPerso', 'image', 640, 400, 1, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1); ");
+                        + "VALUES ( 'TestPerso', 'sprite2.png', 640, 400, 1, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1); ");
 
         System.out.println("Initialisation du personnage");
     }
