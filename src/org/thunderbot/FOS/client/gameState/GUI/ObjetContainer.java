@@ -35,7 +35,6 @@ public class ObjetContainer {
         int y = this.y + this.hauteur / 2 - image.getHeight() / 2;
 
         graphics.drawImage(image, x, y);
-        imageFlottante.render(graphics);
     }
 
     /** Attribut un objet au container */
@@ -49,14 +48,24 @@ public class ObjetContainer {
         }
     }
 
-    public void mouseMouved(int y, int x) {
+    public void mouseMouved(int y, int x, int height) {
+
+        // Si c'est dans la feneetre alors on affiche la page d'information
         if (this.x < x && x < this.x + this.longueur
         && this.y < y && y < this.y + this.hauteur) {
+
             imageFlottante.setVisible(true);
             imageFlottante.setX(x);
+            if (y + imageFlottante.getHeight() > height) {
+                y -= y + imageFlottante.getHeight() - height;
+            }
             imageFlottante.setY(y);
         } else {
             imageFlottante.setVisible(false);
         }
+    }
+
+    public ImageFlottante getImageFlottante() {
+        return imageFlottante;
     }
 }

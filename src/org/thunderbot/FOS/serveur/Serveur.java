@@ -9,9 +9,7 @@ import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
-import org.thunderbot.FOS.serveur.networkObject.Stop;
-import org.thunderbot.FOS.serveur.networkObject.Update;
-import org.thunderbot.FOS.utils.XMLTools;
+import org.thunderbot.FOS.utils.Tools;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -375,7 +373,7 @@ public class Serveur extends Thread {
     public void envoiXML(Object object) {
         try {
             String strEnvoi;
-            strEnvoi = XMLTools.encodeString(object);
+            strEnvoi = Tools.encodeString(object);
             sortie.writeObject(strEnvoi);
             sortie.flush();
         } catch (IOException e) {
@@ -391,13 +389,13 @@ public class Serveur extends Thread {
         String strReception = null;
         try {
             strReception = (String) entree.readObject();
-            return XMLTools.decodeString(strReception);
+            return Tools.decodeString(strReception);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return XMLTools.decodeString(strReception);
+        return Tools.decodeString(strReception);
     }
 }
 

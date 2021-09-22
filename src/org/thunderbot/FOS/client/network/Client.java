@@ -9,7 +9,7 @@ import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
-import org.thunderbot.FOS.utils.XMLTools;
+import org.thunderbot.FOS.utils.Tools;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -213,10 +213,10 @@ public class Client {
 
         try {
             envoi(new RequeteServeur(requete));
-            stringReception = XMLTools.encodeString(personnage);
+            stringReception = Tools.encodeString(personnage);
             envoi(stringReception);
             stringReception = (String) reception(); // Attente reception update
-            listePersonnageAJour = (ArrayList<Personnage>) XMLTools.decodeString(stringReception);
+            listePersonnageAJour = (ArrayList<Personnage>) Tools.decodeString(stringReception);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -296,7 +296,7 @@ public class Client {
     }
 
     private String lectureIpServeur() {
-        return XMLTools.readXMLElement("res/option.xml", "ipServeur");
+        return Tools.readXMLElement("res/option.xml", "ipServeur");
     }
 
     public void createPersonnage() {
@@ -317,12 +317,12 @@ public class Client {
 
         try {
             envoi(new RequeteServeur(requete));
-            personnage.setStuffTete((Objet) XMLTools.decodeString((String) reception()));
-            personnage.setStuffTorse((Objet) XMLTools.decodeString((String) reception()));
-            personnage.setStuffGant((Objet) XMLTools.decodeString((String) reception()));
-            personnage.setStuffJambe((Objet) XMLTools.decodeString((String) reception()));
-            personnage.setStuffBotte((Objet) XMLTools.decodeString((String) reception()));
-            personnage.setStuffArme((Objet) XMLTools.decodeString((String) reception()));
+            personnage.setStuffTete((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffTorse((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffGant((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffJambe((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffBotte((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffArme((Objet) Tools.decodeString((String) reception()));
         } catch (IOException e) {
             e.printStackTrace();
         }

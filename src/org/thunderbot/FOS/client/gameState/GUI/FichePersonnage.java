@@ -14,9 +14,9 @@ public class FichePersonnage extends FenetreEnJeu{
 
     private static final int DELTA_TITRE = 10;
 
-    private static final int X_FERMER = 375;
-    private static final int Y_FERMER = 5;
-    private static final int LONGUEUR_FERMER = 30;
+    private static final int X_FERMER = 370;
+    private static final int Y_FERMER = 10;
+    private static final int LONGUEUR_FERMER = 20;
     private static final int HAUTEUR_FERMER = 25;
 
     private static final int NOMBRE_EQUIPEMENT = 6;
@@ -40,10 +40,6 @@ public class FichePersonnage extends FenetreEnJeu{
 
         equipement = new Objet[NOMBRE_EQUIPEMENT];
         listeEmplacement = new ObjetContainer[NOMBRE_EQUIPEMENT];
-
-
-
-
     }
 
     public void render(Graphics graphics) {
@@ -52,10 +48,14 @@ public class FichePersonnage extends FenetreEnJeu{
             graphics.drawImage(imgFond, centreX - imgFond.getWidth() / 2, centreY - imgFond.getHeight() / 2);
             graphics.drawString(TITRE, centreX - graphics.getFont().getWidth(TITRE) / 2, centreY - imgFond.getHeight() / 2 + DELTA_TITRE);
 
-            for (int i = NOMBRE_EQUIPEMENT - 1; i >= 0; i--) {
+
+            for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
                 listeEmplacement[i].render(graphics);
             }
 
+            for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
+                listeEmplacement[i].getImageFlottante().render(graphics);
+            }
         }
     }
 
@@ -73,15 +73,16 @@ public class FichePersonnage extends FenetreEnJeu{
 
             x += EMPLACEMENT_X/4;
             y += EMPLACEMENT_Y;
-
             for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
-                listeEmplacement[i].mouseMouved(y, x);
+                listeEmplacement[i].mouseMouved(y, x, imgFond.getHeight());
             }
         }
     }
 
     @Override
     public void mouseClicked(int x, int y) {
+        x -= this.x;
+        y -= this.y;
         if (active)
             fermer(x, y, X_FERMER, Y_FERMER, LONGUEUR_FERMER, HAUTEUR_FERMER);
     }

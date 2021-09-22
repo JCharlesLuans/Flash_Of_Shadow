@@ -115,4 +115,8 @@ public class ImageFlottante {
 
         return aRetourner;
     }
+
+    public int getHeight() {
+        return image.getHeight();
+    }
 }

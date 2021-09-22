@@ -24,7 +24,7 @@ import java.io.*;
  * @author Jean-Charles Luans
  * @verison 1.0
  */
-public class XMLTools {
+public class Tools {
 
     /**
      * Serialisation d'un objet dans un fichier
