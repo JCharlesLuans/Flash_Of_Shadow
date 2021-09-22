@@ -50,10 +50,10 @@ public class InitDataJeu {
             + "VALUES "
                     + "( 'Livre d''histoire', 'Un livre racontant l''Histoire du Bellum Deorum', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'livre.png'), "
                     + "( 'Chapeau'          , 'Un vieux chapeau usé par le temps'                     ,1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'chapeau.png'), "
-                    + "( 'Chemise'          , 'Une vielle chemise usé par le temps'             ,2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'chemise.png'), "
-                    + "( 'Mitaine'          , 'Deux vielles mitaines usé par le temps'              ,3, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'mitaine.png'), "
+                    + "( 'Chemise'          , 'Une vieille chemise usé par le temps'             ,2, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'chemise.png'), "
+                    + "( 'Mitaine'          , 'Deux vieilles mitaines usés par le temps'              ,3, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'mitaine.png'), "
                     + "( 'Pantalon'         , 'Un vieux pantalon usé par le temps'             ,4, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'pantalon.png'), "
-                    + "( 'Tong'             , 'Deux villes tongs usé par le temps'            ,5, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'tong.png'), "
+                    + "( 'Tong'             , 'Deux vieilles tongs usés par le temps'            ,5, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'tong.png'), "
                     + "( 'Baton De Base'    , 'Un vieux baton usé par le temps'                ,6, 0, 1, 1, 1, 1, 1, 1, 1, 1, 'robe_haut.png');";
 
     public static void main(String[] args) {
