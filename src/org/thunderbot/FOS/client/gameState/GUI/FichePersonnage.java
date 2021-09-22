@@ -72,7 +72,7 @@ public class FichePersonnage extends FenetreEnJeu{
             // AFFICHAGE DES STATS
             font.setSize(28);
             graphics.setFont(font.getFont());
-            //graphics.drawString(recapitulatif, centreX );
+            graphics.drawString(recapitulatif, centreX + imgFond.getWidth() / 2 + DELTA_TITRE, centreY - imgFond.getHeight() / 2 + DELTA_TITRE );
         }
     }
 
@@ -107,6 +107,15 @@ public class FichePersonnage extends FenetreEnJeu{
     @Override
     public void ouvrir() {
         super.ouvrir();
+
+        int statAgilite = 0;
+        int statArmure = 0;
+        int statDexterite = 0;
+        int statEndurance = 0;
+        int statForce = 0;
+        int statInteligence = 0;
+        int statSagesse = 0;
+
         try {
             initEquipementContainer();
         } catch (SlickException e) {
@@ -124,6 +133,35 @@ public class FichePersonnage extends FenetreEnJeu{
         for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
             listeEmplacement[i].setObjet(equipement[i]);
         }
+
+        // Calcul des stats
+        for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
+            statAgilite += equipement[i].getStatAgilite();
+            statArmure += equipement[i].getStatArmure();
+            statDexterite += equipement[i].getStatDexterite();
+            statEndurance += equipement[i].getStatEndurance();
+            statForce += equipement[i].getStatForce();
+            statInteligence += equipement[i].getStatIntelligence();
+            statSagesse += equipement[i].getStatSagesse();
+        }
+
+        statAgilite *= client.getPersonnage().getClasse().getStatAgilite();
+        statArmure *= client.getPersonnage().getClasse().getStatArmure();
+        statDexterite *= client.getPersonnage().getClasse().getStatDexterite();
+        statEndurance *= client.getPersonnage().getClasse().getStatEndurance();
+        statForce *= client.getPersonnage().getClasse().getStatForce();
+        statInteligence *= client.getPersonnage().getClasse().getStatIntelligence();
+        statSagesse *= client.getPersonnage().getClasse().getStatSagesse();
+
+        recapitulatif = "Statistique :\n";
+        recapitulatif += "Agilité : " + statAgilite +'\n';
+        recapitulatif += "Armure : " + statArmure  +'\n';
+        recapitulatif += "Dextérité : " + statDexterite +'\n';
+        recapitulatif += "Endurance : " + statEndurance +'\n';
+        recapitulatif += "Force : " + statForce +'\n';
+        recapitulatif += "Inteligence : " + statInteligence +'\n';
+        recapitulatif += "Sagesse : " + statSagesse +'\n';
+
     }
 
     private void initEquipementContainer() throws SlickException {

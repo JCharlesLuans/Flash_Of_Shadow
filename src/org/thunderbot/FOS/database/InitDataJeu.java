@@ -18,7 +18,7 @@ public class InitDataJeu {
                 + "( 'Pretre'  , 3, 2, 3, 2, 1, 4, 5),"
                 + "( 'Guerrier', 2, 4, 2, 4, 4, 1, 1),"
                 + "( 'Voleur'  , 4, 3, 4, 2, 4, 2, 1),"
-                + "( 'Pugila'  , 4, 2, 3, 2, 5, 1, 1);"
+                + "( 'Pugilat'  , 4, 2, 3, 2, 5, 1, 1);"
     ;
 
     private static final String CREATION_FACTION =

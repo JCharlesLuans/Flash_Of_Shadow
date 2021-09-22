@@ -144,9 +144,6 @@ public class Serveur extends Thread {
 
             me.setConnecter(false);
 
-            // TODO debug
-            System.out.println("Nouveau joueur");
-
             //si le joueur n'existe pas
             joueur.setPseudo(pseudo);
             joueur.setMdp(mdp);
@@ -157,38 +154,21 @@ public class Serveur extends Thread {
                 joueur = accesBD.getJoueurByPseudo(joueur.getPseudo());
                 code = 0;
                 isIdentifier = true;
-
-                // TODO debug
-                System.out.println("Nouveau joueur créer");
-
             } else {
                 code = 1;
-
-                // TODO debug
-                System.out.println("Joueur existant");
             }
 
         } else {
             // Verification cohérance pseudo + mdp
             if (joueur.isExistant() && joueur.getMdp().equals(mdp)) {
-
-                // TODO debug
-                System.out.println("Joueur authentifier : " + joueur.getId());
-
                 code = 0;
                 isIdentifier = true;
 
                 // recherche du personnage de ce joueur
                 personnage = accesBD.getPersonnageByJoueur(joueur);
-
                 me.setPersonnage(personnage);
                 me.setConnecter(true);
-
             } else {
-
-                // TODO debug
-                System.out.println("Echec auth car non trouver");
-
                 code = 2;
             }
         }
@@ -210,7 +190,7 @@ public class Serveur extends Thread {
     /**
      * Permet de deconnecter un joueur et son client de maniere propre, puis dde sauvegarder ses donnée en DB
      */
-    private void deconnexion(ObjectInputStream entree, ObjectOutputStream sortie) {
+    private void deconnexion() {
 
         Personnage personnageAReconstruire = new Personnage();
 
@@ -252,7 +232,7 @@ public class Serveur extends Thread {
                         chargementCarte(sortie, requeteServeur.getCle());
                         break;
                     case RequeteServeur.CLASSE:
-                        chargementClasse(sortie, requeteServeur.getCle());
+                        chargementClasse(requeteServeur.getCle());
                         break;
                     case RequeteServeur.FACTION:
                         chargementFaction(sortie, requeteServeur.getCle());
@@ -286,7 +266,7 @@ public class Serveur extends Thread {
 
             // Gere la deconnexion
             case RequeteServeur.DECONNEXION:
-                deconnexion(entree, sortie);
+                deconnexion();
                 break;
         }
     }
@@ -308,7 +288,7 @@ public class Serveur extends Thread {
         sortie.flush();
     }
 
-    private void chargementClasse(ObjectOutputStream sortie, String nom) throws IOException {
+    private void chargementClasse(String nom) throws IOException {
         Classe classe = accesBD.getClasseByName(nom);
         sortie.writeObject(classe);
         sortie.flush();

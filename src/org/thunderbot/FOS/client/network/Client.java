@@ -65,7 +65,6 @@ public class Client {
             Joueur tmp = (Joueur) reception();
             personnage.setIdJoueur(tmp.getId());
 
-
         } else if (code == 0) {
             /* Connexion */
             personnage = (Personnage) reception();
@@ -73,14 +72,6 @@ public class Client {
 
 
         return code;
-    }
-
-    /**
-     * Charge un personnage suite a une connexion
-     * @return
-     */
-    public PersonnageJoueur loadJoueur() {
-        return (PersonnageJoueur) reception();
     }
 
     /**
@@ -102,14 +93,6 @@ public class Client {
         socket.close();
 
     }
-
-//    /**
-//     * Actualise les données du client
-//     * @param mapGameState
-//     */
-//    public void updateClient(MapGameState mapGameState) {
-//        new Thread(actualisationDonneeDistante(mapGameState.getListeJoueur())).start();
-//    }
 
     /**
      * @param objet a envoyer
@@ -134,81 +117,12 @@ public class Client {
         return aRetourner;
     }
 
-//    /**
-//     * Reception et actualisation des donnée sur le client de jeu
-//     * @param listeJoueur liste des joueur a actualiser
-//     * @return un thread
-//     */
-//    private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
-//        return () -> {
-//
-//
-//            // Joueur a actualiser existe ou pas
-//            boolean existe;
-//
-//            while (true) {
-//
-//                existe = false;
-//
-//                try {
-//
-//                    String reception = reception();
-//
-//                    Object objReception = XMLTools.decodeString(reception);
-//
-//                    // Update
-//                    if (objReception.getClass() == Update.class) {
-//                        Update update = (Update) objReception;
-//                        ServPersonnage tmp = update.getServPersonnage();
-//
-//                        // Mise a jour des joueur qui existe
-//                        for (int i = 0; i < listeJoueur.size(); i++) {
-//
-//                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
-//
-//                                existe = true;
-//
-//                                // Mise à jours du joueur
-//                                listeJoueur.get(i).miseAJour(tmp);
-//                            }
-//                        }
-//
-//                        // Ajout du nouveau joueur a la liste
-//                        if (!existe) {
-//                            listeJoueur.add(new ServPersonnage(tmp));
-//                        }
-//
-//                    } else if (objReception.getClass() == Stop.class) {
-//
-//                        // Deconnexion
-//                        Stop tmp = (Stop) objReception;
-//
-//                        // Recherche du joueur a remove
-//                        for (int i = 0; i < listeJoueur.size(); i++) {
-//
-//                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
-//
-//                                // Suppression de l'ancien puis remplacement
-//                                listeJoueur.remove(i);
-//                                System.out.println("Deconexion de " + tmp.getPseudo());
-//                            }
-//                        }
-//                    }
-//
-//                } catch(IOException | SlickException err){
-//                    err.printStackTrace();
-//                }
-//            }
-//        };
-//    }
-//
     /**
      * Envoi une demande de update au serveur, ainsi que sa propre update
      */
     public ArrayList<Personnage> updateServeurMouvement() {
         String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
         String stringReception;
-        String stringEnvoi;
         ArrayList<Personnage> listePersonnageAJour = new ArrayList<>();
 
         try {
@@ -222,18 +136,6 @@ public class Client {
         }
 
         return listePersonnageAJour;
-    }
-
-    /**
-     * Permet d'envoyer le personnage au serveur
-     * @throws IOException
-     */
-    private void envoiPersonnage() throws IOException {
-        envoi(personnage.getId());
-        envoi(personnage.getX());
-        envoi(personnage.getY());
-        envoi(personnage.getMap());
-        envoi(personnage);
     }
 
     /**
