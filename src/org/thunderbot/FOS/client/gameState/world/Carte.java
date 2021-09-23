@@ -1,6 +1,7 @@
 package org.thunderbot.FOS.client.gameState.world;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -25,7 +26,7 @@ public class Carte extends Map {
 
     private String nomMap;
 
-    private ArrayList<PersonnageNonJoueur> listPnj;
+    private ArrayList<PersonnageNonJoueur> listePnj;
 
     private boolean changeCarte; // Indique si la map change
 
@@ -49,6 +50,12 @@ public class Carte extends Map {
         tiledMap.render(0 ,0, 1); // sol
         tiledMap.render(0 ,0, 2); // background
         tiledMap.render(0 ,0, 3); // background 2
+    }
+
+    public void renderMob(Graphics graphics) {
+        for (int i = 0; i < listePnj.size(); i++) {
+            listePnj.get(i).render(graphics);
+        }
     }
 
     /**
@@ -144,12 +151,14 @@ public class Carte extends Map {
      */
     public void changeMap(String nom, Client client) throws SlickException {
 
-        listPnj = new ArrayList<>();
+        listePnj = new ArrayList<>();
         Map map = client.chargementCarte(nom);
         ArrayList<PNJ> listeDataPnj = client.chargementPnjOnMap(map.getId());
         System.out.println("Chargement de la carte depuis le serveur : " + map);
 
-
+        for (int i = 0; i < listeDataPnj.size(); i++) {
+            listePnj.add(new PersonnageNonJoueur(listeDataPnj.get(i)));
+        }
 
 
         String chemin = "res/carte/" + nom;

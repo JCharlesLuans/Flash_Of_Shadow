@@ -88,6 +88,8 @@ public class MapGameState extends BasicGameState {
         carte.renderBackground();
         joueur.render(graphics);
 
+        carte.renderMob(graphics);
+
         // Affichage des autres joueur
         if (listeJoueur.size() > 0) {
             for (int i = 0; i < listeJoueur.size(); i++) {

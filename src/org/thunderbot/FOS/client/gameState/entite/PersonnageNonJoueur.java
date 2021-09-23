@@ -18,6 +18,9 @@ import org.thunderbot.FOS.database.beans.PNJ;
 public class PersonnageNonJoueur extends Personnage{
 
     public PersonnageNonJoueur(PNJ pnj) throws SlickException {
+        this.positionX = 640;
+        this.positionY = 400;
+        this.pseudo = pnj.getNom();
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/pnj/" + pnj.getSprite(), 64, 64 );
         loadAnimation(spriteSheet);
     }
@@ -25,5 +28,11 @@ public class PersonnageNonJoueur extends Personnage{
     @Override
     public void render(Graphics graphics) {
         super.render(graphics);
+        // Application d'un delta pour les collisions
+        float positionAnimationX = positionX - 32;
+        float positionAnimationY = positionY - 60;
+
+        graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionAnimationX, positionAnimationY);
+        graphics.drawString(pseudo, positionX - graphics.getFont().getWidth(pseudo) / 2, positionY - 65);
     }
 }
