@@ -4,7 +4,7 @@ import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
-import org.thunderbot.FOS.client.gameState.entite.Personnage;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 
 /**
  * Objet de controle d'un personnage
@@ -17,10 +17,10 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
             BAS = 2,
             DROITE = 3;
 
-    Personnage personnage; // Personnage a faire bouger
+    PersonnageJoueurClient personnageJoueurClient; // Personnage a faire bouger
 
-    public PersonnageController(Personnage personnage) {
-        this.personnage = personnage;
+    public PersonnageController(PersonnageJoueurClient personnageJoueurClient) {
+        this.personnageJoueurClient = personnageJoueurClient;
     }
 
 
@@ -28,67 +28,67 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
     public void keyPressed(int key, char c) {
         switch (key) {
             case Input.KEY_Z:
-                personnage.setDirection(HAUT);
-                personnage.setMoving(true);
+                personnageJoueurClient.setDirection(HAUT);
+                personnageJoueurClient.setMoving(true);
                 break;
             case Input.KEY_Q:
-                personnage.setDirection(GAUCHE);
-                personnage.setMoving(true);
+                personnageJoueurClient.setDirection(GAUCHE);
+                personnageJoueurClient.setMoving(true);
                 break;
             case Input.KEY_S:
-                personnage.setDirection(BAS);
-                personnage.setMoving(true);
+                personnageJoueurClient.setDirection(BAS);
+                personnageJoueurClient.setMoving(true);
                 break;
             case Input.KEY_D:
-                personnage.setDirection(DROITE);
-                personnage.setMoving(true);
+                personnageJoueurClient.setDirection(DROITE);
+                personnageJoueurClient.setMoving(true);
                 break;
             case Input.KEY_ESCAPE:
-                if (personnage.getGui().getMenu().isActive()) {
-                    personnage.getGui().getMenu().fermer();
+                if (personnageJoueurClient.getGui().getMenu().isActive()) {
+                    personnageJoueurClient.getGui().getMenu().fermer();
                 } else {
-                    personnage.getGui().getMenu().ouvrir();
+                    personnageJoueurClient.getGui().getMenu().ouvrir();
                 }
         }
     }
 
     @Override
     public void keyReleased(int key, char c) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
 
 
     public void controllerLeftPressed(int controller) {
-        personnage.setDirection(GAUCHE);
-        personnage.setMoving(true);
+        personnageJoueurClient.setDirection(GAUCHE);
+        personnageJoueurClient.setMoving(true);
     }
     public void controllerLeftReleased(int controller) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
     public void controllerRightPressed(int controller) {
-        personnage.setDirection(DROITE);
-        personnage.setMoving(true);
+        personnageJoueurClient.setDirection(DROITE);
+        personnageJoueurClient.setMoving(true);
     }
     public void controllerRightReleased(int controller) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
     public void controllerUpPressed(int controller) {
-        personnage.setDirection(HAUT);
-        personnage.setMoving(true);
+        personnageJoueurClient.setDirection(HAUT);
+        personnageJoueurClient.setMoving(true);
     }
     public void controllerUpReleased(int controller) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
     public void controllerDownPressed(int controller) {
-        personnage.setDirection(BAS);
-        personnage.setMoving(true);
+        personnageJoueurClient.setDirection(BAS);
+        personnageJoueurClient.setMoving(true);
     }
     public void controllerDownReleased(int controller) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
 
     @Override
     public void mouseClicked(int button, int x, int y, int nbClick) {
-        personnage.getGui().mouseClicked(x, y);
+        personnageJoueurClient.getGui().mouseClicked(x, y);
     }
 
     @Override
@@ -144,10 +144,10 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
 
     @Override
     public void mouseMoved(int i, int x, int y, int i3) {
-        if (personnage.getGui().getMenu().isActive())
-            personnage.getGui().getMenu().mouseMouved(x, y);
+        if (personnageJoueurClient.getGui().getMenu().isActive())
+            personnageJoueurClient.getGui().getMenu().mouseMouved(x, y);
 
-        personnage.getGui().getFichePersonnage().mouseMouved(x, y);
+        personnageJoueurClient.getGui().getFichePersonnage().mouseMouved(x, y);
     }
 
     @Override

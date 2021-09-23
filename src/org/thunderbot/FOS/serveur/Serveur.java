@@ -97,7 +97,7 @@ public class Serveur extends Thread {
                 Object reception = entree.readObject();
 
                 if (reception.getClass() == RequeteServeur.class) {
-                    traitementRequeteServeur(entree, sortie, (RequeteServeur) reception);
+                    traitementRequeteServeur((RequeteServeur) reception);
                 }
 
             }
@@ -221,7 +221,10 @@ public class Serveur extends Thread {
 
     }
 
-    private void traitementRequeteServeur(ObjectInputStream entree, ObjectOutputStream sortie, RequeteServeur requeteServeur) throws IOException, ClassNotFoundException {
+    private void traitementRequeteServeur(RequeteServeur requeteServeur) throws IOException, ClassNotFoundException {
+
+        System.out.println(requeteServeur.toString());
+
         switch (requeteServeur.getMotif()) {
 
             // Gere les demande de chargement d'objet du jeu, stocker en BD
@@ -229,7 +232,7 @@ public class Serveur extends Thread {
                 me.setConnecter(false);
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.MAP:
-                        chargementCarte(sortie, requeteServeur.getCle());
+                        chargementCarte(requeteServeur.getCle());
                         break;
                     case RequeteServeur.CLASSE:
                         chargementClasse(requeteServeur.getCle());
@@ -239,6 +242,9 @@ public class Serveur extends Thread {
                         break;
                     case RequeteServeur.STUFF_BASE:
                         chargementStuffBase();
+                        break;
+                    case RequeteServeur.PNJ:
+                        chargementPNJ(requeteServeur.getCle());
                         break;
                 }
                 me.setConnecter(true);
@@ -271,13 +277,32 @@ public class Serveur extends Thread {
         }
     }
 
+
+    private void chargementPNJ(String resteRequete) {
+
+        System.out.println(resteRequete);
+
+        ArrayList<PNJ> aRenvoyer = new ArrayList<>();
+        String table = resteRequete.split(":")[0];
+        String id = resteRequete.split(":")[1];
+
+        switch (table) {
+            case "Map":
+                aRenvoyer = accesBD.getPnjByIdmap(id);
+                break;
+        }
+
+        System.out.println(aRenvoyer);
+        envoiXML(aRenvoyer);
+    }
+
     private void chargementStuffBase() {
         for (int i = 2; i < 8; i++) {
             envoiXML(accesBD.getObjetById(i));
         }
     }
 
-    private void chargementCarte(ObjectOutputStream sortie, String nom) throws IOException {
+    private void chargementCarte(String nom) throws IOException {
         Map map;
 
         // Recherche en BD la carte, ainsi que ses datas

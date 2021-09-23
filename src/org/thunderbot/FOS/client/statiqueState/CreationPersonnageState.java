@@ -9,14 +9,13 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.MapGameState;
-import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
+import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.layout.*;
 import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Faction;
 import org.thunderbot.FOS.database.beans.Map;
-import org.thunderbot.FOS.database.beans.Personnage;
 
 public class CreationPersonnageState extends BasicGameState {
 
@@ -424,7 +423,7 @@ public class CreationPersonnageState extends BasicGameState {
     private void gestionSprite() {
         try {
             spriteAfficher = new SpriteSheet("res/texture/sprite/joueur/sprite" + numeroSprite + ".png", 64, 64);
-            animation = PersonnageJoueur.loadAnimation(spriteAfficher, 1, 9, 2);
+            animation = Personnage.loadAnimation(spriteAfficher, 1, 9, 2);
         } catch (SlickException e) {
             e.printStackTrace();
         }

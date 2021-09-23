@@ -4,8 +4,10 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.Map;
+import org.thunderbot.FOS.database.beans.PNJ;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class Carte extends Map {
 
     private String nomMap;
 
-    private int niveau;
+    private ArrayList<PersonnageNonJoueur> listPnj;
 
     private boolean changeCarte; // Indique si la map change
 
@@ -37,12 +39,6 @@ public class Carte extends Map {
         initialiseMap("res/carte/map_start_umbra.tmx");
         tiledMap = new TiledMap("res/carte/map_start_umbra.tmx");
         nomMap = "map_campagne_ThunderSun.tmx";
-    }
-
-    public Carte(String nom) throws SlickException {
-        initialiseMap("src/Ressources/Map/" + nom);
-        tiledMap = new TiledMap("Ressources/Map/" + nom);
-        nomMap = nom;
     }
 
     /**
@@ -65,7 +61,7 @@ public class Carte extends Map {
 
     /**
      * Réecrit le fichier de map pour qu'il sois lisible par Slick
-     * (ajoute a l'attribut objectgroup une auteur et une largeur)
+     * (ajoute a l'attribut objectgroup une hauteur et une largeur)
      * @param cheminMap : chemin du fichier map a réécrire
      */
     static void initialiseMap(String cheminMap) {
@@ -147,16 +143,15 @@ public class Carte extends Map {
      * @throws SlickException
      */
     public void changeMap(String nom, Client client) throws SlickException {
+
+        listPnj = new ArrayList<>();
         Map map = client.chargementCarte(nom);
+        ArrayList<PNJ> listeDataPnj = client.chargementPnjOnMap(map.getId());
         System.out.println("Chargement de la carte depuis le serveur : " + map);
 
-        String chemin = "res/carte/" + nom;
-        initialiseMap(chemin);
-        tiledMap = new TiledMap(chemin);
-        nomMap = nom;
-    }
 
-    public void changeMap(String nom) throws SlickException {
+
+
         String chemin = "res/carte/" + nom;
         initialiseMap(chemin);
         tiledMap = new TiledMap(chemin);
@@ -230,5 +225,4 @@ public class Carte extends Map {
         return nomMap;
     }
 
-    public int getNiveau() {return niveau;}
 }
