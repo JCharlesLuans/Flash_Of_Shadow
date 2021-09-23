@@ -2,7 +2,9 @@ package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.thunderbot.FOS.client.gameState.world.Carte;
 
 /**
  * Représente un personnage, qu'il soit joueur ou non joueur.
@@ -36,12 +38,16 @@ public class Personnage {
     /**
      * Carte sur laquelle se situe le personnage
      */
-    protected String pseudo;
+    protected String nom;
 
     /**
      * Animation générer a partir du sprite du personnage
      */
     protected Animation[] animations = new Animation[8];
+
+    /**  Inidique si le personnage est sur un escalier ou pas */
+    private boolean escalierDroite,
+                    escalierGauche;
 
     /**
      * Charge une animations a partir d'une sprite sheet, en indiquant les début de l'annimation et la fin
@@ -50,7 +56,7 @@ public class Personnage {
      * @param startX
      * @param endX
      * @param y
-     * @return
+     * @return l'annimation
      */
     public static Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
         Animation animation = new Animation();
@@ -71,6 +77,43 @@ public class Personnage {
         this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
     }
 
+    public void update(Carte carte, int delta) {
+        float futurX,
+                futurY;
+
+        updateTrigger(carte);
+
+        if (this.moving) {
+
+            // Calcul des de la futur position
+            futurX = getFuturX(delta);
+            futurY = getFuturY(delta);
+
+            // Gestion des collisions avec un mur
+            if (!carte.isCollision(futurX, futurY)) {
+                positionX = futurX;
+                positionY = futurY;
+            }
+
+        }
+    }
+
+    /**
+     * Gere les updates de triggerr
+     */
+    private void updateTrigger(Carte carte) {
+
+        escalierDroite = escalierGauche = false;
+
+        for (int objectID = 0; objectID < carte.getObjectCount(); objectID++) {
+
+            if (carte.isInTrigger(positionX, positionY, objectID)) {
+                escalierGauche = "escalierGauche".equals(carte.getObjectType(objectID));
+                escalierDroite = "escalierDroite".equals(carte.getObjectType(objectID));
+            }
+        }
+    }
+
     /**
      * Affichage du personnage sur le graphics passer en parametre
      *
@@ -82,7 +125,65 @@ public class Personnage {
         float positionAnimationY = positionY - 60;
 
         graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionAnimationX, positionAnimationY);
-        graphics.drawString(pseudo, positionX - graphics.getFont().getWidth(pseudo) / 2, positionY - 65);
+        graphics.drawString(nom, positionX - graphics.getFont().getWidth(nom) / 2, positionY - 65);
+    }
+
+    /**
+     * @param delta
+     * @return la position en X aprés déplacement
+     */
+    private float getFuturX(int delta) {
+
+        float futurX = positionX;
+
+        switch (this.direction) {
+            case DROITE :
+                futurX += .1f * delta;
+                break;
+            case GAUCHE :
+                futurX -= .1f * delta;
+                break;
+        }
+
+        return futurX;
+    }
+
+    /**
+     * @param delta
+     * @return la position en Y aprés déplacement
+     */
+    private float getFuturY(int delta) {
+
+        float futurY = positionY;
+
+        switch (this.direction) {
+            case BAS :
+                futurY += .1f * delta;
+                break;
+            case HAUT :
+                futurY -= .1f * delta;
+                break;
+
+            case GAUCHE:
+                if (escalierDroite) {
+                    futurY = positionY + .1f * delta;
+                }
+                if (escalierGauche) {
+                    futurY = positionY - .1f * delta;
+                }
+                break;
+
+            case 3:
+                if (escalierGauche) {
+                    futurY = positionY + .1f * delta;
+                }
+                if (escalierDroite) {
+                    futurY = positionY - .1f * delta;
+                }
+                break;
+        }
+
+        return futurY;
     }
 
     public float getPositionX() {
@@ -109,6 +210,14 @@ public class Personnage {
         this.direction = direction;
     }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     public boolean isMoving() {
         return moving;
     }
@@ -118,6 +227,6 @@ public class Personnage {
     }
 
     public String toString() {
-        return "ServPersonnage(" + pseudo + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
+        return "ServPersonnage(" + nom + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
     }
 }

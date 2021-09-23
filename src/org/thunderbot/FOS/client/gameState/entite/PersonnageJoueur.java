@@ -8,8 +8,6 @@ package org.thunderbot.FOS.client.gameState.entite;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
-import java.io.Serializable;
-
 /**
  * Personnage jouer par différent joueur, qu'ils soient se client la ou des joueur distants
  *
@@ -26,11 +24,11 @@ public class PersonnageJoueur extends Personnage {
         positionX = 650;
         positionY = 400;
         direction = 0;
-        pseudo = "";
+        nom = "";
     }
 
     public PersonnageJoueur(String pseudo, int direction, float x, float y, String sprite) throws SlickException {
-        this.pseudo = pseudo;
+        this.nom = pseudo;
         this.direction = direction;
         this.positionX = x;
         this.positionY = y;
@@ -49,14 +47,6 @@ public class PersonnageJoueur extends Personnage {
         this.direction = personnageJoueur.direction;
         this.moving = personnageJoueur.moving;
         this.nomCarte = personnageJoueur.nomCarte;
-    }
-
-    public String getPseudo() {
-        return pseudo;
-    }
-
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
     }
 
     public String getNomCarte() {

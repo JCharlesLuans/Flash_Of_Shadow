@@ -79,19 +79,7 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
 
         updateTrigger(carte);
 
-        if (this.moving) {
-
-            // Calcul des de la futur position
-            futurX = getFuturX(delta);
-            futurY = getFuturY(delta);
-
-            // Gestion des collisions avec un mur
-            if (!carte.isCollision(futurX, futurY)) {
-                positionX = futurX;
-                positionY = futurY;
-            }
-
-        }
+        super.update(carte, delta);
 
         client.getPersonnage().setX(positionX);
         client.getPersonnage().setY(positionY);
@@ -130,64 +118,6 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
 
             }
         }
-    }
-
-    /**
-     * @param delta
-     * @return la position en X aprés déplacement
-     */
-    private float getFuturX(int delta) {
-
-        float futurX = positionX;
-
-        switch (this.direction) {
-            case DROITE :
-                futurX += .1f * delta;
-                break;
-            case GAUCHE :
-                futurX -= .1f * delta;
-                break;
-        }
-
-        return futurX;
-    }
-
-    /**
-     * @param delta
-     * @return la position en Y aprés déplacement
-     */
-    private float getFuturY(int delta) {
-
-        float futurY = positionY;
-
-        switch (this.direction) {
-            case BAS :
-                futurY += .1f * delta;
-                break;
-            case HAUT :
-                futurY -= .1f * delta;
-                break;
-
-            case GAUCHE:
-                if (escalierDroite) {
-                    futurY = positionY + .1f * delta;
-                }
-                if (escalierGauche) {
-                    futurY = positionY - .1f * delta;
-                }
-                break;
-
-            case 3:
-                if (escalierGauche) {
-                    futurY = positionY + .1f * delta;
-                }
-                if (escalierDroite) {
-                    futurY = positionY - .1f * delta;
-                }
-                break;
-        }
-
-        return futurY;
     }
 
     /**
