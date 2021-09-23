@@ -88,7 +88,7 @@ public class MapGameState extends BasicGameState {
         carte.renderBackground();
         joueur.render(graphics);
 
-        carte.renderMob(graphics);
+        carte.renderPnj(graphics);
 
         // Affichage des autres joueur
         if (listeJoueur.size() > 0) {
@@ -110,6 +110,9 @@ public class MapGameState extends BasicGameState {
             camera.update(container, carte);
             updateListeJoueur(client.updateServeurMouvement()); //Envoi des data au joueur
         }
+
+        // Update des PNJ
+        carte.updatePnj(delta);
 
     }
 

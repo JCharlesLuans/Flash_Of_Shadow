@@ -49,6 +49,9 @@ public class Personnage {
     private boolean escalierDroite,
                     escalierGauche;
 
+    /** Indique si le personnage subit une colision */
+    protected boolean collision;
+
     /**
      * Charge une animations a partir d'une sprite sheet, en indiquant les début de l'annimation et la fin
      *
@@ -89,12 +92,12 @@ public class Personnage {
             futurX = getFuturX(delta);
             futurY = getFuturY(delta);
 
+            collision = carte.isCollision(futurX, futurY);
             // Gestion des collisions avec un mur
-            if (!carte.isCollision(futurX, futurY)) {
+            if (!collision) {
                 positionX = futurX;
                 positionY = futurY;
             }
-
         }
     }
 

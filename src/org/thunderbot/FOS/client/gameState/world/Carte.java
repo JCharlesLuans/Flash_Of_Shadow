@@ -52,7 +52,7 @@ public class Carte extends Map {
         tiledMap.render(0 ,0, 3); // background 2
     }
 
-    public void renderMob(Graphics graphics) {
+    public void renderPnj(Graphics graphics) {
         for (int i = 0; i < listePnj.size(); i++) {
             listePnj.get(i).render(graphics);
         }
@@ -64,6 +64,12 @@ public class Carte extends Map {
     public void renderForeground() {
         tiledMap.render(0,0,4); // overground
         tiledMap.render(0,0,5); // overground 2
+    }
+
+    public void updatePnj(int delta) {
+        for (int i = 0; i < listePnj.size(); i++) {
+            listePnj.get(i).update(this, delta);
+        }
     }
 
     /**

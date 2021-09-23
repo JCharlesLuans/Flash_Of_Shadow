@@ -7,6 +7,7 @@ package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.database.beans.PNJ;
 
 /**
@@ -15,6 +16,8 @@ import org.thunderbot.FOS.database.beans.PNJ;
  * @author Jean-Charles Luans
  */
 public class PersonnageNonJoueur extends Personnage{
+
+    private int timer;
 
     public PersonnageNonJoueur(PNJ pnj) throws SlickException {
         this.moving = true;
@@ -25,4 +28,19 @@ public class PersonnageNonJoueur extends Personnage{
         loadAnimation(spriteSheet);
     }
 
+    @Override
+    public void update(Carte carte, int delta) {
+        super.update(carte, delta);
+
+        timer += delta;
+        if (timer >= 1500) {
+            timer = 0;
+            collision = true;
+        }
+
+        if (collision) {
+            direction = Personnage.HAUT + (int)(Math.random() * ((Personnage.DROITE - Personnage.HAUT) + 1));
+        }
+
+    }
 }

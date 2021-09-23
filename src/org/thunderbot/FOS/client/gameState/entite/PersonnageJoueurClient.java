@@ -5,10 +5,7 @@
 
 package org.thunderbot.FOS.client.gameState.entite;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.*;
 import org.thunderbot.FOS.client.gameState.GUI.Gui;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
@@ -65,6 +62,11 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
         float positionAnimationY = positionY-60;
 
         graphics.drawAnimation(animations[direction + (moving ? 4 : 0)],positionAnimationX , positionAnimationY);
+        // Couleur de l'ombre
+        graphics.setColor(new Color(49,36,33, 153));
+
+        // Taille + position de l'ombre
+        graphics.fillOval(positionX - 16, positionY - 8, 32,16);
     }
 
     /**
