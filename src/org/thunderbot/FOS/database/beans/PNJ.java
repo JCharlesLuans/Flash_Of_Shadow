@@ -160,4 +160,24 @@ public class PNJ implements Serializable {
     public void setIdTitre(int idTitre) {
         this.idTitre = idTitre;
     }
+
+    @Override
+    public String toString() {
+        return "PNJ{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", sprite='" + sprite + '\'' +
+                ", agressif=" + agressif +
+                ", statAgilite=" + statAgilite +
+                ", statArmure=" + statArmure +
+                ", statDexterite=" + statDexterite +
+                ", statForce=" + statForce +
+                ", statEndurance=" + statEndurance +
+                ", statInteligence=" + statInteligence +
+                ", statSagesse=" + statSagesse +
+                ", idMap=" + idMap +
+                ", idFaction=" + idFaction +
+                ", idTitre=" + idTitre +
+                '}';
+    }
 }
