@@ -74,9 +74,6 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
      */
     public void update(Carte carte, int delta) {
 
-        float futurX,
-                futurY;
-
         updateTrigger(carte);
 
         super.update(carte, delta);
