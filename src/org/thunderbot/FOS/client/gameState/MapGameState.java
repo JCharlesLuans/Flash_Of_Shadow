@@ -64,7 +64,7 @@ public class MapGameState extends BasicGameState {
         joueur = new PersonnageJoueurClient(client);
         joueur.setGui(new Gui(gameContainer, client, stateBasedGame));
         camera = new Camera(joueur);
-        personnageController = new PersonnageController(joueur);
+        personnageController = new PersonnageController(this);
 
         carte.setChangeCarte(true);
         carte.changeMap(client.getPersonnage().getMap().getNom(), client);
@@ -137,5 +137,9 @@ public class MapGameState extends BasicGameState {
             tmp.setMoving(listeDistante.get(i).isMoving());
             listeJoueur.add(tmp);
         }
+    }
+
+    public Carte getCarte() {
+        return carte;
     }
 }

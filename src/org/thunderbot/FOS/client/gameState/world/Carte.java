@@ -240,4 +240,9 @@ public class Carte extends Map {
         return nomMap;
     }
 
+    public void mouseClicked(int x, int y) {
+        for (int i = 0; i < listePnj.size(); i++) {
+            listePnj.get(i).mouseClicked(x, y);
+        }
+    }
 }

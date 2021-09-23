@@ -89,7 +89,6 @@ public class FichePersonnage extends FenetreEnJeu{
         if (active) {
 
             x += EMPLACEMENT_X/4;
-            y += EMPLACEMENT_Y;
             for (int i = 0; i < NOMBRE_EQUIPEMENT; i++) {
                 listeEmplacement[i].mouseMouved(y, x, imgFond.getHeight());
             }

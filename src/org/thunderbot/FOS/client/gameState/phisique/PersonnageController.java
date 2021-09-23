@@ -4,7 +4,9 @@ import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
+import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
+import org.thunderbot.FOS.client.gameState.world.Carte;
 
 /**
  * Objet de controle d'un personnage
@@ -18,9 +20,11 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
             DROITE = 3;
 
     PersonnageJoueurClient personnageJoueurClient; // Personnage a faire bouger
+    Carte carte; // Carte avec laquelle le joueur interagie avec son curseur
 
-    public PersonnageController(PersonnageJoueurClient personnageJoueurClient) {
-        this.personnageJoueurClient = personnageJoueurClient;
+    public PersonnageController(MapGameState mapGameState) {
+        this.personnageJoueurClient = mapGameState.getJoueur();
+        this.carte = mapGameState.getCarte();
     }
 
 
@@ -130,6 +134,8 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
     @Override
     public void mouseClicked(int button, int x, int y, int nbClick) {
         personnageJoueurClient.getGui().mouseClicked(x, y);
+        personnageJoueurClient.mouseClicked(x, y);
+        carte.mouseClicked(x, y);
     }
 
     @Override
@@ -144,10 +150,7 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
 
     @Override
     public void mouseMoved(int i, int x, int y, int i3) {
-        if (personnageJoueurClient.getGui().getMenu().isActive())
-            personnageJoueurClient.getGui().getMenu().mouseMouved(x, y);
-
-        personnageJoueurClient.getGui().getFichePersonnage().mouseMouved(x, y);
+        personnageJoueurClient.getGui().mouseMouved(i, x, y, i3);
     }
 
     @Override

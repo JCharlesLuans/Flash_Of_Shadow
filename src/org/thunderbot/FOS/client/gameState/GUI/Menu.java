@@ -107,38 +107,40 @@ public class Menu extends FenetreEnJeu {
 
     @Override
     public void mouseMouved(int y, int x) {
-        x -= this.x;
-        y -= this.y;
+        if (active) {
+            x -= this.x;
+            y -= this.y;
 
-        barreVisible = true;
+            barreVisible = true;
 
-        // En dehors du menu
-        if (MIN_X > x || MAX_X < x || Y_INVENTAIRE > y || MAX_Y < y) {
-            barreVisible = false;
-        } else if (y < Y_PERSONNAGE) {
-            positionYBarre = Y_INVENTAIRE;
-            code = INVENTAIRE;
-        } else if (y < Y_CARTE) {
-            positionYBarre = Y_PERSONNAGE;
-            code = PERSONNAGE;
-        } else if (y < Y_COMPETANCE) {
-            positionYBarre = Y_CARTE;
-            code = CARTE;
-        } else if (y < Y_QUETE) {
-            positionYBarre = Y_COMPETANCE;
-            code = COMPETANCE;
-        } else if (y < Y_GUILDE) {
-            positionYBarre = Y_QUETE;
-            code = QUETE;
-        } else if (y < Y_OPTION) {
-            positionYBarre = Y_GUILDE;
-            code = GUILDE;
-        } else if (y < Y_DECONNEXION) {
-            positionYBarre = Y_OPTION;
-            code = OPTION;
-        } else {
-            positionYBarre = Y_DECONNEXION;
-            code = DECONNEXION;
+            // En dehors du menu
+            if (MIN_X > x || MAX_X < x || Y_INVENTAIRE > y || MAX_Y < y) {
+                barreVisible = false;
+            } else if (y < Y_PERSONNAGE) {
+                positionYBarre = Y_INVENTAIRE;
+                code = INVENTAIRE;
+            } else if (y < Y_CARTE) {
+                positionYBarre = Y_PERSONNAGE;
+                code = PERSONNAGE;
+            } else if (y < Y_COMPETANCE) {
+                positionYBarre = Y_CARTE;
+                code = CARTE;
+            } else if (y < Y_QUETE) {
+                positionYBarre = Y_COMPETANCE;
+                code = COMPETANCE;
+            } else if (y < Y_GUILDE) {
+                positionYBarre = Y_QUETE;
+                code = QUETE;
+            } else if (y < Y_OPTION) {
+                positionYBarre = Y_GUILDE;
+                code = GUILDE;
+            } else if (y < Y_DECONNEXION) {
+                positionYBarre = Y_OPTION;
+                code = OPTION;
+            } else {
+                positionYBarre = Y_DECONNEXION;
+                code = DECONNEXION;
+            }
         }
     }
 }

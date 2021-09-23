@@ -56,4 +56,9 @@ public class Gui {
         menu.mouseClicked(x, y);
         fichePersonnage.mouseClicked(x, y);
     }
+
+    public void mouseMouved(int i, int x, int y, int i3) {
+        menu.mouseMouved(x, y);
+        fichePersonnage.mouseMouved(x, y);
+    }
 }

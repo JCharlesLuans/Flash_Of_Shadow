@@ -133,4 +133,17 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
     public Gui getGui() {
         return gui;
     }
+
+    public void mouseClicked(int x, int y) {
+
+        x += 32;
+        y += 60;
+
+        System.out.println("Joueur : " + positionX + " : " + positionY);
+        System.out.println(x + " : " + y);
+
+        if (this.positionX - 32 < x && x < positionX + 92 && this.positionY - 32 < y && y  < positionY + 92) {
+            this.gui.getFichePersonnage().ouvrir();
+        }
+    }
 }
