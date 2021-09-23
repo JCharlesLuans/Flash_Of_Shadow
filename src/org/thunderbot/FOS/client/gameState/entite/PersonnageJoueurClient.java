@@ -14,12 +14,12 @@ import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 
 /**
- * Personnage du client
+ * Personnage du client que le joueur va interpreter et jouer.
  *
  * @author J-Charles Luans
  * @version 1.0
  */
-public class Personnage extends PersonnageJoueur {
+public class PersonnageJoueurClient extends PersonnageJoueur {
 
     /** Client pour la connection avec le serveur */
     Client client;
@@ -38,7 +38,7 @@ public class Personnage extends PersonnageJoueur {
      * @throws SlickException
      * @param client de jeu pour la communication avec le serveur
      */
-    public Personnage(Client client) throws SlickException {
+    public PersonnageJoueurClient(Client client) throws SlickException {
         super();
 
         this.client = client;
@@ -131,8 +131,6 @@ public class Personnage extends PersonnageJoueur {
             }
         }
     }
-
-
 
     /**
      * @param delta
