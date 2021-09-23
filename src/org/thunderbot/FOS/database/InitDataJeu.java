@@ -56,11 +56,33 @@ public class InitDataJeu {
                     + "( 'Tong'             , 'Deux vieilles tongs usés par le temps'            ,5, 0, 1, 1, 1, 1, 1, 1, 1, 0, 'tong.png'), "
                     + "( 'Baton De Base'    , 'Un vieux baton usé par le temps'                ,6, 0, 1, 1, 1, 1, 1, 1, 1, 1, 'robe_haut.png');";
 
+    private static String CREATION_PNJ =
+            "INSERT INTO " + NOM_TABLE_PNJ + " ( "
+                + PNJ_NOM + ", "
+                + PNJ_SPRITE + ", "
+                + PNJ_AGRESSIF + ", "
+                + PNJ_STAT_AGILITE + ", "
+                + PNJ_STAT_ARMURE + ", "
+                + PNJ_STAT_DEXTERITE + ", "
+                + PNJ_STAT_ENDURANCE + ", "
+                + PNJ_STAT_FORCE + ", "
+                + PNJ_STAT_INTELLIGENCE + ", "
+                + PNJ_STAT_SAGESSE + ", "
+                + PNJ_CLE_MAP + ", "
+                + PNJ_CLE_FACTION + ", "
+                + PNJ_CLE_TITRE + " ) "
+            + "VALUES "
+                + "( 'JORG', 'necromant.png', 1, 5, 5, 5, 5, 5, 5, 5, 1, 1, 0),"
+                + "( 'MORG', 'necromant.png', 1, 5, 5, 5, 5, 5, 5, 5, 2, 2, 0),"
+                + "( 'WORG', 'necromant.png', 1, 5, 5, 5, 5, 5, 5, 5, 3, 3, 0)"
+            + ";";
+
     public static void main(String[] args) {
         HelperBD helperBD = new HelperBD(FosDAO.NOM_BD);
         helperBD.executeUpdate(CREATION_CLASSE);
         helperBD.executeUpdate(CREATION_FACTION);
         helperBD.executeUpdate(CREATION_MAP);
+        helperBD.executeUpdate(CREATION_PNJ);
         helperBD.executeUpdate(CREATION_OBJET);
     }
 }
