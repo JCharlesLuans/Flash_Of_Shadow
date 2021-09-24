@@ -8,6 +8,7 @@ package org.thunderbot.FOS.client;
 import org.newdawn.slick.*;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.client.combatState.CombatGameState;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.CreationPersonnageState;
@@ -52,6 +53,7 @@ public class ChaosRevolt extends StateBasedGame {
         this.addState(new MainScreenState(client));
         this.addState(new CreationPersonnageState(client));
         this.addState(new MapGameState(client));
+        this.addState(new CombatGameState(client));
     }
 
     @Override

@@ -5,7 +5,6 @@
 
 package org.thunderbot.FOS.client.gameState;
 
-import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -61,12 +60,16 @@ public class MapGameState extends BasicGameState {
     /** Fentre de confirmation pour le combat */
     private FenetrePopUpChoix fenetreCombat;
 
+    /** */
+    private StateBasedGame stateBasedGame;
+
     public MapGameState(Client client) {
         this.client = client;
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        this.stateBasedGame = stateBasedGame;
         this.gameContainer = gameContainer;
         this.fenetreCombat = new FenetrePopUpChoix(INF_COMBAT);
         listeJoueur = new ArrayList<>();
@@ -177,5 +180,9 @@ public class MapGameState extends BasicGameState {
 
     public void setCombat(boolean combat) {
         this.combat = combat;
+    }
+
+    public StateBasedGame getStateBasedGame() {
+        return stateBasedGame;
     }
 }

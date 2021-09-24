@@ -1,6 +1,7 @@
 package org.thunderbot.FOS.client.gameState.phisique;
 
 import org.newdawn.slick.*;
+import org.thunderbot.FOS.client.combatState.CombatGameState;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.Camera;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
@@ -148,10 +149,7 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
         mapGameState.getFenetreCombat().mouseClicked(button, x, y, nbClick);
 
         if (mapGameState.getFenetreCombat().isOui()) {
-
-
-        } else if (mapGameState.getFenetreCombat().isNon()) {
-
+            mapGameState.getStateBasedGame().enterState(CombatGameState.ID);
         }
     }
 
