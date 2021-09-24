@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
+import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.Map;
@@ -240,9 +241,9 @@ public class Carte extends Map {
         return nomMap;
     }
 
-    public void mouseClicked(int x, int y) {
+    public void mouseClicked(MapGameState mapGameState, int x, int y) {
         for (int i = 0; i < listePnj.size(); i++) {
-            listePnj.get(i).mouseClicked(x, y);
+            listePnj.get(i).mouseClicked(mapGameState, x, y);
         }
     }
 }

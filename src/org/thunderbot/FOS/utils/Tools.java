@@ -5,6 +5,8 @@
 
 package org.thunderbot.FOS.utils;
 
+import org.newdawn.slick.Image;
+import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -96,6 +98,54 @@ public class Tools {
             e.printStackTrace();
         }
 
+
+        return aRetourner;
+    }
+
+    /**
+     * Redécoupe une string pour l'adapter a la taille de la fenetre
+     * @param texte la string a découper
+     * @return la sring découper
+     */
+    public static String recoupeString(String texte, Image image, MedievalSharp font) {
+        String[] decoupeEspace;
+        String[] decoupeSautLigne;
+        String tmp;
+        String aRetourner = "";
+
+        decoupeSautLigne = texte.split("\\n");
+
+        // Pour toute les ligne potentielle
+        for (int i = 0; i < decoupeSautLigne.length; i++) {
+            // on verifie qu'elles rentre dans la feuille
+            if (font.getFont().getWidth(decoupeSautLigne[i]) < image.getWidth()) {
+                // Si c'est le cas on peux concatener avec le reste
+                aRetourner += decoupeSautLigne[i] + "\n";
+            } else {
+                // On reinitialise la string de travail
+                tmp = "";
+                // On redecoupe la string qui ne va pas
+                decoupeEspace = decoupeSautLigne[i].split(" ");
+                for (int j = 0; j < decoupeEspace.length; j++) {
+                    // On verifie que l'on peux concatener
+                    if (font.getFont().getWidth(decoupeEspace[j] + " " + tmp) < image.getWidth()) {
+                        //Si on peux on concatene
+                        tmp += decoupeEspace[j] + " ";
+                    } else {
+                        // Sinon on returne a la ligne, et on concatene le reste du tableau
+                        tmp += '\n';
+                        for (int k = j; k < decoupeEspace.length; k++) {
+                            tmp += decoupeEspace[k] + " ";
+                        }
+                        // On rapelle la fonction pour redecouper
+                        tmp = recoupeString(tmp, image, font);
+                        // On sort de la boucle
+                        break;
+                    }
+                }
+                aRetourner += tmp;
+            }
+        }
 
         return aRetourner;
     }

@@ -1,9 +1,6 @@
 package org.thunderbot.FOS.client.statiqueState.layout;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
-import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 
 public class FenetrePopUpChoix extends FenetrePopUp{
 
@@ -41,21 +38,23 @@ public class FenetrePopUpChoix extends FenetrePopUp{
         return super.mouseClicked(button, x, y, clickCount);
     }
 
-    private void clickOui(int x, int y) {
+    public boolean clickOui(int x, int y) {
         if (OUI_X < x && x < OUI_X_FIN && OUI_Y < y && y < OUI_Y_FIN) {
             setShow(false);
             oui = true;
             non = false;
         }
+        return oui;
     }
 
-    private void clickNon(int x, int y) {
+    private boolean clickNon(int x, int y) {
 
         if (NON_X < x && x < NON_X_FIN && NON_Y < y && y < NON_Y_FIN) {
             setShow(false);
             oui = false;
             non = true;
         }
+        return non;
     }
 
     public boolean isOui() {

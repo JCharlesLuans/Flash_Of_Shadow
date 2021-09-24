@@ -9,6 +9,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.thunderbot.FOS.client.ChaosRevolt;
 import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
+import org.thunderbot.FOS.utils.Tools;
 
 /**
  * Affiche un message d'avertissement
@@ -60,6 +61,7 @@ public class FenetrePopUp {
 
     public void render(Graphics graphics) {
         if (show) {
+            graphics.setColor(Color.white);
             graphics.setFont(font.getFont());
             graphics.drawImage(imageFond, x, y);
             graphics.drawString(message, x + DELTA_START_MESSAGE, y + DELTA_START_MESSAGE);
@@ -112,8 +114,8 @@ public class FenetrePopUp {
     private void initFenetre(String message) throws SlickException {
         son = new Sound("res/menuState/son/ouvertureFenetre.wav");
 
-        this.message = message;
         this.font = new MedievalSharp(TAILLE_POLICE);
+        this.message = Tools.recoupeString(message, imageFond, font);
         show = false;
 
         x = ChaosRevolt.WIDTH / 2 - imageFond.getWidth() / 2;

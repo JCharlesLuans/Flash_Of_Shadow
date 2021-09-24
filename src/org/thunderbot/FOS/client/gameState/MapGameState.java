@@ -19,6 +19,7 @@ import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUpChoix;
 
 import java.util.ArrayList;
 
@@ -33,24 +34,32 @@ public class MapGameState extends BasicGameState {
     /** ID de la state */
     public static final int ID = 2;
 
+    private static final String INF_COMBAT = "Voulez vous vraiment entrer en combat contre ";
+
     /** Fenetre */
-    GameContainer gameContainer;
+    private GameContainer gameContainer;
 
     /** Carte afficher a l'écran */
-    Carte carte;
+    private Carte carte;
 
     /** Client pour la communication multijoueur et liste des joueurs connecter */
-    Client client;
-    ArrayList<Personnage> listeJoueur;
+    private Client client;
+    private ArrayList<Personnage> listeJoueur;
 
     /** Personnage */
-    PersonnageJoueurClient joueur;
+    private PersonnageJoueurClient joueur;
 
     /** Camera */
-    Camera camera;
+    private Camera camera;
 
     /** Gere les inputs du joueur*/
-    PersonnageController personnageController;
+    private PersonnageController personnageController;
+
+    /** Indique si le joueur rentre dans un combat ou pas */
+    private boolean combat;
+
+    /** Fentre de confirmation pour le combat */
+    private FenetrePopUpChoix fenetreCombat;
 
     public MapGameState(Client client) {
         this.client = client;
@@ -59,6 +68,7 @@ public class MapGameState extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.gameContainer = gameContainer;
+        this.fenetreCombat = new FenetrePopUpChoix(INF_COMBAT);
         listeJoueur = new ArrayList<>();
         carte = new Carte();
     }
@@ -103,6 +113,7 @@ public class MapGameState extends BasicGameState {
 
         carte.renderForeground();
         joueur.getGui().render(graphics);
+        fenetreCombat.render(graphics);
     }
 
     @Override
@@ -117,6 +128,11 @@ public class MapGameState extends BasicGameState {
 
         // Update des PNJ
         carte.updatePnj(delta);
+
+        if (combat && !fenetreCombat.isShow()) {
+            fenetreCombat.setShow(true);
+            combat = false;
+        }
 
     }
 
@@ -153,5 +169,13 @@ public class MapGameState extends BasicGameState {
 
     public GameContainer getGameContainer() {
         return gameContainer;
+    }
+
+    public FenetrePopUpChoix getFenetreCombat() {
+        return fenetreCombat;
+    }
+
+    public void setCombat(boolean combat) {
+        this.combat = combat;
     }
 }

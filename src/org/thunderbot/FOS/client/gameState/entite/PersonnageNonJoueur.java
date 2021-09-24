@@ -5,8 +5,10 @@
 
 package org.thunderbot.FOS.client.gameState.entite;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUpChoix;
 import org.thunderbot.FOS.database.beans.PNJ;
@@ -20,19 +22,19 @@ public class PersonnageNonJoueur extends Personnage{
 
     private int timer;
 
-    private FenetrePopUpChoix fenetreCombat;
-
     public PersonnageNonJoueur(PNJ pnj) throws SlickException {
         this.moving = true;
         this.positionX = 640;
         this.positionY = 400;
         this.nom = pnj.getNom();
-       // this.fenetreCombat = new FenetrePopUpChoix()
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/pnj/" + pnj.getSprite(), 64, 64 );
         loadAnimation(spriteSheet);
     }
 
-    @Override
+    public void render(Graphics graphics) {
+        super.render(graphics);
+    }
+
     public void update(Carte carte, int delta) {
         super.update(carte, delta);
 
@@ -48,13 +50,13 @@ public class PersonnageNonJoueur extends Personnage{
 
     }
 
-    public void mouseClicked(int x, int y) {
+    public void mouseClicked(MapGameState mapGameState, int x, int y) {
 
         x += 32;
         y += 60;
 
         if (this.positionX - 32 < x && x < positionX + 92 && this.positionY - 32 < y && y  < positionY + 92) {
-            System.out.println("Combat");
+            mapGameState.setCombat(true);
         }
     }
 }

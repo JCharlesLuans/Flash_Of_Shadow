@@ -17,12 +17,14 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
             BAS = 2,
             DROITE = 3;
 
+    MapGameState mapGameState;
     GameContainer gameContainer;
     PersonnageJoueurClient personnageJoueurClient; // Personnage a faire bouger
     Carte carte; // Carte avec laquelle le joueur interagie avec son curseur
     Camera camera;
 
     public PersonnageController(MapGameState mapGameState) {
+        this.mapGameState = mapGameState;
         this.personnageJoueurClient = mapGameState.getJoueur();
         this.carte = mapGameState.getCarte();
         this.camera = mapGameState.getCamera();
@@ -142,7 +144,15 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
         y += camera.getPositionY() - gameContainer.getHeight() / 2;
 
         personnageJoueurClient.mouseClicked(x, y);
-        carte.mouseClicked(x, y);
+        carte.mouseClicked(mapGameState ,x, y);
+        mapGameState.getFenetreCombat().mouseClicked(button, x, y, nbClick);
+
+        if (mapGameState.getFenetreCombat().isOui()) {
+
+
+        } else if (mapGameState.getFenetreCombat().isNon()) {
+
+        }
     }
 
     @Override

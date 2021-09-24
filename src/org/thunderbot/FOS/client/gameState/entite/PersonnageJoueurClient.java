@@ -139,8 +139,6 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
         x += 32;
         y += 60;
 
-        System.out.println("Joueur : " + positionX + " : " + positionY);
-
         if (this.positionX - 32 < x && x < positionX + 92 && this.positionY - 32 < y && y  < positionY + 92) {
             this.gui.getFichePersonnage().ouvrir();
         }
