@@ -38,7 +38,7 @@
    H4sIAAAAAAAACu3V0QkAIAgE0KRo/5HbIDvSTsPAv8jnBSWjNUlU7BXdyfKdnmvl8tof9V7L949v1wvxMTKNkB/i64Ymi/my5efhQ9/t176bVb7ysUxePsu52PlpPVBf/b+Yb5JL80WrBe5ronygDwAA
   </data>
  </layer>
- <objectgroup id="8" name="trigger">
+ <objectgroup id="8" name="trigger" width="1" height="1" >
   <object id="5" type="changementMap" x="3" y="351" width="36" height="33">
    <properties>
     <property name="destiMap" value="map_desert.tmx"/>
