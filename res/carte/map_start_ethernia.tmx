@@ -33,12 +33,12 @@
    H4sIAAAAAAAACu3OQQkAMAwEsPt0zL/OiaiJQSkkCpLw0z3Jq+kFAAAA2zQE0QusoA8AAA==
   </data>
  </layer>
- <layer id="7" name="logique" width="40" height="25" visible="0">
+ <layer id="7" name="logique" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3V0QkAIAgEUIVo/5HbIDvSTkPBv7DXBaVDRAs1u7I7Wb7TuV6uqPVZ77V9//h2eyE+RqYZ8kN83rM9ZlTKL8KHvtuvfTfVvvaxTFE+z3Ox87P2QH39/2K+SW7Ll60XmX8AmqAPAAA=
+   H4sIAAAAAAAACu3V0QkAIAgE0KRo/5HbIDvSTsPAv8jnBSWjNUlU7BXdyfKdnmvl8tof9V7L949v1wvxMTKNkB/i64Ymi/my5efhQ9/t176bVb7ysUxePsu52PlpPVBf/b+Yb5JL80WrBe5ronygDwAA
   </data>
  </layer>
- <objectgroup id="8" name="trigger" width="1" height="1" >
+ <objectgroup id="8" name="trigger">
   <object id="5" type="changementMap" x="3" y="351" width="36" height="33">
    <properties>
     <property name="destiMap" value="map_desert.tmx"/>
