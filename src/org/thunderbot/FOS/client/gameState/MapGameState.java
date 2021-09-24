@@ -5,6 +5,7 @@
 
 package org.thunderbot.FOS.client.gameState;
 
+import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -29,6 +30,12 @@ import java.util.ArrayList;
  */
 public class MapGameState extends BasicGameState {
 
+    /** ID de la state */
+    public static final int ID = 2;
+
+    /** Fenetre */
+    GameContainer gameContainer;
+
     /** Carte afficher a l'écran */
     Carte carte;
 
@@ -42,9 +49,8 @@ public class MapGameState extends BasicGameState {
     /** Camera */
     Camera camera;
 
+    /** Gere les inputs du joueur*/
     PersonnageController personnageController;
-
-    public static final int ID = 2;
 
     public MapGameState(Client client) {
         this.client = client;
@@ -52,11 +58,9 @@ public class MapGameState extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        this.gameContainer = gameContainer;
         listeJoueur = new ArrayList<>();
-
         carte = new Carte();
-
-
     }
 
     @Override
@@ -141,5 +145,13 @@ public class MapGameState extends BasicGameState {
 
     public Carte getCarte() {
         return carte;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public GameContainer getGameContainer() {
+        return gameContainer;
     }
 }

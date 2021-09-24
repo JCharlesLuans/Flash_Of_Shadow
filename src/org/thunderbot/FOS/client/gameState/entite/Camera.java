@@ -7,6 +7,7 @@ package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.thunderbot.FOS.client.ChaosRevolt;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 
 /**
@@ -130,4 +131,11 @@ public class Camera {
                            gameContainer.getHeight() / 2f -  positionY);
     }
 
+    public float getPositionX() {
+        return positionX;
+    }
+
+    public float getPositionY() {
+        return positionY;
+    }
 }

@@ -1,10 +1,8 @@
 package org.thunderbot.FOS.client.gameState.phisique;
 
-import org.newdawn.slick.ControllerListener;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.KeyListener;
-import org.newdawn.slick.MouseListener;
+import org.newdawn.slick.*;
 import org.thunderbot.FOS.client.gameState.MapGameState;
+import org.thunderbot.FOS.client.gameState.entite.Camera;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 
@@ -19,12 +17,16 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
             BAS = 2,
             DROITE = 3;
 
+    GameContainer gameContainer;
     PersonnageJoueurClient personnageJoueurClient; // Personnage a faire bouger
     Carte carte; // Carte avec laquelle le joueur interagie avec son curseur
+    Camera camera;
 
     public PersonnageController(MapGameState mapGameState) {
         this.personnageJoueurClient = mapGameState.getJoueur();
         this.carte = mapGameState.getCarte();
+        this.camera = mapGameState.getCamera();
+        this.gameContainer = mapGameState.getGameContainer();
     }
 
 
@@ -134,6 +136,11 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
     @Override
     public void mouseClicked(int button, int x, int y, int nbClick) {
         personnageJoueurClient.getGui().mouseClicked(x, y);
+
+        // Rectification du X par rapport a la camera
+        x += camera.getPositionX() - gameContainer.getWidth() / 2;
+        y += camera.getPositionY() - gameContainer.getHeight() / 2;
+
         personnageJoueurClient.mouseClicked(x, y);
         carte.mouseClicked(x, y);
     }
