@@ -49,9 +49,6 @@ public class PersonnageNonJoueur extends Personnage{
         x += 32;
         y += 60;
 
-        System.out.println(positionX + " : " + positionY);
-        System.out.println(x + " : " + y);
-
         if (this.positionX - 32 < x && x < positionX + 92 && this.positionY - 32 < y && y  < positionY + 92) {
             System.out.println("Combat");
         }
