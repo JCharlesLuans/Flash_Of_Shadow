@@ -22,9 +22,9 @@ public class FenetrePopUpChoix extends FenetrePopUp{
     private boolean oui;
     private boolean non;
 
-    public FenetrePopUpChoix(GameContainer gameContainer, String message, MedievalSharp font) throws SlickException {
-        super(gameContainer, message, "res/menuState/gui/fenetrePopUpChoix.png", font);
-        super.getFont().setSize(TAILLE_POLICE);
+    public FenetrePopUpChoix(String message) throws SlickException {
+        super(message, "res/menuState/gui/fenetrePopUpChoix.png");
+        getFont().setSize(TAILLE_POLICE);
     }
 
 

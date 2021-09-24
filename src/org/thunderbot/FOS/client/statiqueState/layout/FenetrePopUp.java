@@ -7,6 +7,7 @@ package org.thunderbot.FOS.client.statiqueState.layout;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.thunderbot.FOS.client.ChaosRevolt;
 import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 
 /**
@@ -32,6 +33,8 @@ public class FenetrePopUp {
 
     private static final int DELTA_START_MESSAGE = 50;
 
+    private static final int TAILLE_POLICE = 55;
+
     private MedievalSharp font;
 
     private int y;
@@ -45,14 +48,14 @@ public class FenetrePopUp {
 
     private Sound son;
 
-    public FenetrePopUp(GameContainer gameContainer, String message, MedievalSharp font) throws SlickException {
+    public FenetrePopUp(String message) throws SlickException {
         imageFond = new Image("res/menuState/gui/fenetrePopUp.png");
-        initFenetre(gameContainer, message, font);
+        initFenetre(message);
     }
 
-    public FenetrePopUp(GameContainer gameContainer, String message, String srcImage, MedievalSharp font) throws SlickException {
+    public FenetrePopUp(String message, String srcImage) throws SlickException {
         imageFond = new Image(srcImage);
-        initFenetre(gameContainer, message, font);
+        initFenetre(message);
     }
 
     public void render(Graphics graphics) {
@@ -106,15 +109,15 @@ public class FenetrePopUp {
         return codeRetour;
     }
 
-    private void initFenetre(GameContainer gameContainer, String message, MedievalSharp font) throws SlickException {
+    private void initFenetre(String message) throws SlickException {
         son = new Sound("res/menuState/son/ouvertureFenetre.wav");
 
         this.message = message;
-        this.font = font;
+        this.font = new MedievalSharp(TAILLE_POLICE);
         show = false;
 
-        x = gameContainer.getWidth() / 2 - imageFond.getWidth() / 2;
-        y = gameContainer.getHeight() / 2 - imageFond.getHeight() / 2;
+        x = ChaosRevolt.WIDTH / 2 - imageFond.getWidth() / 2;
+        y = ChaosRevolt.HEIGHT / 2 - imageFond.getHeight() / 2;
     }
 
     int getX() {

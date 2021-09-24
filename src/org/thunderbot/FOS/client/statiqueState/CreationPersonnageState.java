@@ -140,8 +140,8 @@ public class CreationPersonnageState extends BasicGameState {
         int x = gameContainer.getWidth() / 2;
 
         // Init fenetree popup
-        fenetreConfirmation = new FenetrePopUpChoix(gameContainer, "", font);
-        fenetreErreur = new FenetrePopUp(gameContainer, "", font);
+        fenetreConfirmation = new FenetrePopUpChoix("");
+        fenetreErreur = new FenetrePopUp("");
 
         // Init du background
         imgBackground = new Image("res/menuState/creationJoueur/background.png");

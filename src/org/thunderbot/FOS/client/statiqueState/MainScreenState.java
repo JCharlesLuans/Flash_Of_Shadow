@@ -79,7 +79,7 @@ public class MainScreenState extends BasicGameState {
 
         font = new MedievalSharp(55);
 
-        fenetrePopUp = new FenetrePopUp(gameContainer, "", font);
+        fenetrePopUp = new FenetrePopUp("");
 
         gameContainer.setMouseCursor("res/menuState/gui/cursor.png", 0, 0);
 
