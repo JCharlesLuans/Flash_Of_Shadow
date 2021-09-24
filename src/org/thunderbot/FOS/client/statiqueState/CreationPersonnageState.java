@@ -131,8 +131,6 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
-        MedievalSharp font = new MedievalSharp(55);
-
         valide = false;
 
         this.stateBasedGame = stateBasedGame;
