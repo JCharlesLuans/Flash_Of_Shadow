@@ -11,6 +11,7 @@ import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
 import org.thunderbot.FOS.utils.Tools;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -49,10 +50,11 @@ public class Serveur extends Thread {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             accesBD = new FosDAO();
+            CmdServeur cmdServeur = new CmdServeur(accesBD);
+            cmdServeur.run();
 
-            System.out.println("Lancement du serveur");
 
-            while (true) {
+            while (cmdServeur.serveurOn) {
                 Socket newClient = serverSocket.accept();
                 ClientConnecter clientConnecter = new ClientConnecter(newClient);
                 listeClientConnecter.add(clientConnecter);
