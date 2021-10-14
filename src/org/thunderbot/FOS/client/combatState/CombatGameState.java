@@ -71,10 +71,10 @@ public class CombatGameState extends BasicGameState {
     private void initCase() {
         int nombreCaseLongueur = ChaosRevolt.WIDTH / TAILLE_CASE;
         int nombreCaseHauteur  = ChaosRevolt.HEIGHT / TAILLE_CASE;
-        terrain = new Case[nombreCaseLongueur][nombreCaseHauteur];
+        terrain = new Case[nombreCaseHauteur][nombreCaseLongueur];
 
-        for (int i = 0; i < nombreCaseLongueur; i++) {
-            for (int j = 0; j < nombreCaseHauteur; j++) {
+        for (int i = 0; i < nombreCaseHauteur; i++) {
+            for (int j = 0; j < nombreCaseLongueur; j++) {
                 terrain[i][j] = new Case((1 +1) * j, TAILLE_CASE*j, TAILLE_CASE*i, TAILLE_CASE);
             }
         }
