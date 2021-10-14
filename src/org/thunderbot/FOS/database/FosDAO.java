@@ -444,4 +444,29 @@ public class FosDAO {
 
         return aRetourner;
     }
+
+    public ArrayList<Competence> getCompetenceAll() {
+        ArrayList<Competence> aRetourner = new ArrayList<>();
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_COMPETENCE + ";";
+        try {
+
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+            while (rs.next()) {
+                Competence tmp = new Competence();
+                tmp.setId(rs.getInt(COMPETENCE_CLE));
+                tmp.setNom(rs.getString(COMPETENCE_NOM));
+                tmp.setDegaBase(rs.getInt(COMPETENCE_DEGAT_BASE));
+                tmp.setIdEffet(rs.getInt(COMPETENCE_ID_EFFET));
+                tmp.setImage(rs.getString(COMPETENCE_ID_IMAGE));
+                aRetourner.add(tmp);
+            }
+            rs.close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
 }

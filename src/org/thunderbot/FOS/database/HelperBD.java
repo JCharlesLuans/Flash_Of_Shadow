@@ -94,8 +94,8 @@ public class HelperBD {
                 + COMPETENCE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COMPETENCE_NOM + " TEXT NOT NULL,"
                 + COMPETENCE_DEGAT_BASE + " INTEGER NOT NULL,"
-                + COMPETENCE_ID_EFFET + "INTEGER NOT NULL REFERENCES " + NOM_TABLE_EFFET + " (" + EFFET_CLE + "),"
-                + COMPETENCE_ID_IMAGE + "INTEGER NOT NULL"
+                + COMPETENCE_ID_EFFET + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_EFFET + " (" + EFFET_CLE + "),"
+                + COMPETENCE_ID_IMAGE + " INTEGER NOT NULL"
             + ") ;";
 
 

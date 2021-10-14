@@ -21,6 +21,16 @@ public class InitDataJeu {
                 + "( 'Pugilat'  , 4, 2, 3, 2, 5, 1, 1);"
     ;
 
+    private static final String CREATION_COMPETENCE =
+            "INSERT INTO " + NOM_TABLE_COMPETENCE
+                + " ( " + COMPETENCE_NOM + ", " + COMPETENCE_DEGAT_BASE + ", " + COMPETENCE_ID_EFFET + ", " + COMPETENCE_ID_IMAGE + " )"
+            + "VALUES "
+                + " ( 'Tir de fleche', 1, 1, 'fleche.png'),"
+                + " ( 'Tir de fleche piégée', 1, 1, 'flechePiege.png'),"
+                + " ( 'Tir de fleche explosive', 1, 1, 'flecheExplosive.png'),"
+                + " ( 'Tir de fleche empoisonnée', 0, 2, 'flecheEmpoisonnee.png');"
+            ;
+
     private static final String CREATION_FACTION =
             "INSERT INTO " + NOM_TABLE_FACTION
                 + " ( " + FACTION_NOM + "," + FACTION_CLE_MAP_START + " ) "
@@ -80,6 +90,7 @@ public class InitDataJeu {
     public static void main(String[] args) {
         HelperBD helperBD = new HelperBD(FosDAO.NOM_BD);
         helperBD.executeUpdate(CREATION_CLASSE);
+        helperBD.executeUpdate(CREATION_COMPETENCE);
         helperBD.executeUpdate(CREATION_FACTION);
         helperBD.executeUpdate(CREATION_MAP);
         helperBD.executeUpdate(CREATION_PNJ);
