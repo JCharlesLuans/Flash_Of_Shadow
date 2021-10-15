@@ -51,10 +51,10 @@ public class Serveur extends Thread {
             ServerSocket serverSocket = new ServerSocket(PORT);
             accesBD = new FosDAO();
             CmdServeur cmdServeur = new CmdServeur(accesBD);
-            cmdServeur.run();
+            cmdServeur.start();
 
 
-            while (cmdServeur.serveurOn) {
+            while (true) {
                 Socket newClient = serverSocket.accept();
                 ClientConnecter clientConnecter = new ClientConnecter(newClient);
                 listeClientConnecter.add(clientConnecter);
@@ -224,8 +224,6 @@ public class Serveur extends Thread {
     }
 
     private void traitementRequeteServeur(RequeteServeur requeteServeur) throws IOException, ClassNotFoundException {
-
-        System.out.println(requeteServeur.toString());
 
         switch (requeteServeur.getMotif()) {
 
