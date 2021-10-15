@@ -31,6 +31,25 @@ public class InitDataJeu {
                 + " ( 'Tir de fleche empoisonnée', 0, 2, 'flecheEmpoisonnee.png');"
             ;
 
+    private static final String CREATION_EFFET =
+            "INSERT INTO " + NOM_TABLE_EFFET
+                + " ( " + EFFET_NOM + ", "
+                        + EFFET_STAT_AGILITE + ", "
+                        + EFFET_STAT_ARMURE + ", "
+                        + EFFET_STAT_DEXTERITE + ", "
+                        + EFFET_STAT_ENDURANCE + ", "
+                        + EFFET_STAT_FORCE + ", "
+                        + EFFET_STAT_INTELLIGENCE + ", "
+                        + EFFET_STAT_SAGESSE + ", "
+                        + EFFET_DPS + ", "
+                        + EFFET_DUREE + ", "
+                        + EFFET_ID_IMAGE
+                + " ) "
+            + " VALUES "
+                + " ( 'DEFAUT', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'effet.png' ),"
+                + " ( 'POISON', 0, 0, 0, 0, 0, 0, 0, 1, 3, 'effet.png' );";
+
+
     private static final String CREATION_FACTION =
             "INSERT INTO " + NOM_TABLE_FACTION
                 + " ( " + FACTION_NOM + "," + FACTION_CLE_MAP_START + " ) "
@@ -91,6 +110,7 @@ public class InitDataJeu {
         HelperBD helperBD = new HelperBD(FosDAO.NOM_BD);
         helperBD.executeUpdate(CREATION_CLASSE);
         helperBD.executeUpdate(CREATION_COMPETENCE);
+        helperBD.executeUpdate(CREATION_EFFET);
         helperBD.executeUpdate(CREATION_FACTION);
         helperBD.executeUpdate(CREATION_MAP);
         helperBD.executeUpdate(CREATION_PNJ);

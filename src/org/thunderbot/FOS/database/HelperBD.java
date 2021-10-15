@@ -78,7 +78,7 @@ public class HelperBD {
                 + EFFET_STAT_SAGESSE      + " INTEGER NOT NULL,"
                 + EFFET_DPS + " INTEGER NOT NULL,"
                 + EFFET_DUREE +  " INTEGER NOT NULL,"
-                + EFFET_ID_IMAGE + "INTEGER NOT NULL"
+                + EFFET_ID_IMAGE + " INTEGER NOT NULL"
             + ");";
 
     ///// TABLE COMPETENCE ////////
