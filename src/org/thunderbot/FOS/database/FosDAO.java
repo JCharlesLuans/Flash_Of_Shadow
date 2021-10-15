@@ -469,4 +469,8 @@ public class FosDAO {
 
         return aRetourner;
     }
+
+    public HelperBD getGestionnaireBase() {
+        return gestionnaireBase;
+    }
 }
