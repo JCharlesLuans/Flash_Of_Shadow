@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static org.thunderbot.FOS.database.HelperBD.*;
@@ -58,33 +59,46 @@ public class CmdServeur extends Thread {
         String requete = saisie();
 
         try {
-            ResultSet rs = helper.executeRequete(requete);
-
-            if (rs != null) {
-
-                ResultSetMetaData rsmd = rs.getMetaData();
-
-                // Dessin entete du tableau
-                printLigne(rsmd.getColumnCount());
-                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    System.out.print(formatageText(rsmd.getColumnName(i)));
-                }
-                System.out.print("|\n");
-                printLigne(rsmd.getColumnCount());
-
-                // Affichage des valeurs de la BD
-                while (rs.next()) {
-                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                        System.out.print(formatageText(rs.getString(i)));
-                    }
-                    System.out.print("|\n");
-                }
-                rs.close();
+            if (requete.split(" ")[0].equalsIgnoreCase("select")) {
+                executionRequete(helper, requete);
+            } else {
+                executionUpdate(helper, requete);
             }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
+    }
+
+    private void executionRequete(HelperBD helper, String requete) throws SQLException {
+        ResultSet rs = helper.executeRequete(requete);
+
+        if (rs != null) {
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            // Dessin entete du tableau
+            printLigne(rsmd.getColumnCount());
+            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                System.out.print(formatageText(rsmd.getColumnName(i)));
+            }
+            System.out.print("|\n");
+            printLigne(rsmd.getColumnCount());
+
+            // Affichage des valeurs de la BD
+            while (rs.next()) {
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    System.out.print(formatageText(rs.getString(i)));
+                }
+                System.out.print("|\n");
+            }
+            rs.close();
+        }
+    }
+
+    private void executionUpdate(HelperBD helper, String requete) {
+        helper.executeUpdate(requete);
     }
 
     private void printLigne(int columnCount) {
