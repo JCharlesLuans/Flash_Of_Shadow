@@ -1,26 +1,28 @@
 package org.thunderbot.FOS.serveur;
 
-import org.newdawn.slick.Sound;
 import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.HelperBD;
-import org.thunderbot.FOS.database.beans.Classe;
-import org.thunderbot.FOS.database.beans.Competence;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
-
-import static org.thunderbot.FOS.database.HelperBD.*;
 
 public class CmdServeur extends Thread {
 
-    private static final int CASE_TABLEAU_AFFFICHAGE = 21;
+    private String[] listeCommande;
+    private String[] descriptionCommande;
+    private static final int NOMBRE_COMMANDES = 3;
 
-    private static final String STOP_SERVEUR = "shutdown";
-    private static final String EXECUTE_SQL = "exec sql";
+    private static final String CMD_EXECUTE_SQL = "exec sql";
+    private static final String DESC_EXECUTE_SQL = "Permet d'executer une requetes SQL sur la base de donnée du serveur";
+    private static final String CMD_STOP_SERVEUR = "shutdown";
+    private static final String DESC_STOP_SERVEUR = "Permet d'éteindre le serveur.";
+    private static final String CMD_HELP = "help";
+    private static final String DESC_HELP = "Affiche les commandes serveur";
+
+
+    private static final int CASE_TABLEAU_AFFFICHAGE = 21;
     private static final int GESTION_COMPETENCE = 2;
     private static final int GESTION_FACTION = 3;
     private static final int GESTION_MAP = 4;
@@ -32,6 +34,17 @@ public class CmdServeur extends Thread {
 
     public CmdServeur(FosDAO accesBD) {
         this.accesBD = accesBD;
+
+        // Gestion des commandes
+        listeCommande = new String[NOMBRE_COMMANDES];
+        descriptionCommande= new String[NOMBRE_COMMANDES];
+
+        listeCommande[0] = CMD_STOP_SERVEUR;
+        descriptionCommande[0] = DESC_STOP_SERVEUR;
+        listeCommande[1] = CMD_EXECUTE_SQL;
+        descriptionCommande[1] = DESC_EXECUTE_SQL;
+        listeCommande[2] = CMD_HELP;
+        descriptionCommande[2] = DESC_HELP;
     }
 
     public void run() {
@@ -41,11 +54,14 @@ public class CmdServeur extends Thread {
         while (serveurOn) {
 
             switch (saisie()) {
-                case STOP_SERVEUR:
+                case CMD_STOP_SERVEUR:
                     serveurOn = false;
                     break;
-                case EXECUTE_SQL:
+                case CMD_EXECUTE_SQL:
                     executerSQL();
+                    break;
+                case CMD_HELP:
+                    afficherAide();
                     break;
                 default:
                     System.out.println("Commande inconnu");
@@ -102,6 +118,12 @@ public class CmdServeur extends Thread {
 
     private void executionUpdate(HelperBD helper, String requete) {
         helper.executeUpdate(requete);
+    }
+
+    private void afficherAide() {
+        for (int i = 0; i < NOMBRE_COMMANDES; i++) {
+            System.out.println(listeCommande[i] + " | "  + descriptionCommande[i]);
+        }
     }
 
     private void printLigne(int columnCount) {
