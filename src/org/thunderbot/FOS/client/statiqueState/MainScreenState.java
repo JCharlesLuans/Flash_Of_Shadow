@@ -17,8 +17,6 @@ import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
 import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUp;
 import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 
-import java.awt.*;
-import java.awt.Font;
 import java.io.IOException;
 
 /**
@@ -34,7 +32,8 @@ public class MainScreenState extends BasicGameState {
     public static final boolean INSCRIPTION = true;
     public static final boolean CONNEXION = false;
 
-    private static final String ERR_SERVEUR = "Erreur lors de la \nconnection au serveur \n! Verifier votre \nconnexion, puis \nrelancer le jeu";
+    private static final String ERR_SERVEUR_CONNECTION = "Erreur lors de la \nconnection au serveur \n! Verifier votre \nconnexion, puis \nrelancer le jeu";
+    private static final String ERR_SERVEUR_PERTE =      "Vous avez perdu la \nconnection au serveur !";
     private static final String ERR_PSEUDO_UTILISER =  "Ce pseudo est déjà \nutilisé !";
     private static final String ERR_PSEUDO_INEXISTANT =  "Pseudo ou mot de \npasse incorrect";
     private static final String INF_CONNEXION_OK =  "Connexion réussie ! ";
@@ -120,10 +119,12 @@ public class MainScreenState extends BasicGameState {
 
         // Connexion au serveur
         try {
+            // Trouve le serveur dés le lancement du jeu
             client.connectionServeur();
             connexionServeur = true;
         } catch (IOException e) {
-            fenetrePopUp.setMessage(ERR_SERVEUR);
+            // Ne trouve pas le serveur dés le lancement du jeu
+            fenetrePopUp.setMessage(ERR_SERVEUR_CONNECTION);
             fenetrePopUp.setShow(true);
             connexionServeur = false;
         }
@@ -203,7 +204,10 @@ public class MainScreenState extends BasicGameState {
                 quitter = true;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            // Affiche un message en cas de perte totale de connexion avec le serveur
+            fenetrePopUp.setMessage(ERR_SERVEUR_PERTE);
+            fenetrePopUp.setShow(true);
+            connexionServeur = false;
         }
     }
 

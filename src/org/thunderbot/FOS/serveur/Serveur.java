@@ -54,7 +54,7 @@ public class Serveur extends Thread {
             cmdServeur.start();
 
 
-            while (true) {
+            while (cmdServeur.serveurOn) {
                 Socket newClient = serverSocket.accept();
                 ClientConnecter clientConnecter = new ClientConnecter(newClient);
                 listeClientConnecter.add(clientConnecter);

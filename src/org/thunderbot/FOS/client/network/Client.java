@@ -11,6 +11,7 @@ import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
 import org.thunderbot.FOS.utils.Tools;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -270,7 +271,8 @@ public class Client {
         try {
             aRetourner = entree.readObject();
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            JFrame jFrame = new JFrame();
+            JOptionPane.showMessageDialog(jFrame, "Serveur déconnecté!");
         }
 
         return aRetourner;

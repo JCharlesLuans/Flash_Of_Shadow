@@ -51,6 +51,9 @@ public class CmdServeur extends Thread {
                     System.out.println("Commande inconnu");
             }
         }
+
+        System.out.println("Arret du serveur en cours ...");
+        System.exit(1);
     }
 
     private void executerSQL() {
