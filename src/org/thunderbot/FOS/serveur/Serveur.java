@@ -48,9 +48,9 @@ public class Serveur extends Thread {
         ArrayList<ClientConnecter> listeClientConnecter = new ArrayList<>(); // Liste des sockets des clients connectés
 
         try {
-            ServerSocket serverSocket = new ServerSocket(PORT);
-            accesBD = new FosDAO();
-            CmdServeur cmdServeur = new CmdServeur(accesBD);
+            ServerSocket serverSocket = new ServerSocket(PORT); // Socket du serveur
+            accesBD = new FosDAO();                             // Creation de l'acces a la BD (Je crois)
+            CmdServeur cmdServeur = new CmdServeur(accesBD);    // Creation de l'objet serveur permettant d'executer des cmd
             cmdServeur.start();
 
 
@@ -331,8 +331,14 @@ public class Serveur extends Thread {
 
     }
 
+    /**
+     * Renvoi la liste des personnages joueur a afficher et mettre à sur un client distant
+     * @param idMap l'id de la map sur laquelle se trouve le joueur
+     * @return la liste
+     */
     private ArrayList<Personnage> listePersonnageConnecter(int idMap) {
         ArrayList<Personnage> aRetourner = new ArrayList<>();
+
 
         for (int i = 0; i < listeSocketClient.size(); i++) {
             if (listeSocketClient.get(i).isConnecter() &&
@@ -342,7 +348,6 @@ public class Serveur extends Thread {
                 aRetourner.add(listeSocketClient.get(i).getPersonnage());
             }
         }
-
         return aRetourner;
     }
 
