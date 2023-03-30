@@ -7,6 +7,8 @@ public class PNJ implements Serializable {
     private String nom;
     private String sprite;
     private int agressif;
+    private float x;
+    private float y;
     private int statAgilite;
     private int statArmure;
     private int statDexterite;
@@ -23,6 +25,8 @@ public class PNJ implements Serializable {
         nom = "";
         sprite = "";
         agressif = -1;
+        x = -1f;
+        y = -1f;
         statAgilite = -1;
         statArmure = -1;
         statDexterite = -1;
@@ -32,11 +36,13 @@ public class PNJ implements Serializable {
         statSagesse = -1;
     }
 
-    public PNJ(int id, String nom, String sprite, int agressif, int statAgilite, int statArmure, int statDexterite, int statForce, int statEndurance, int statInteligence, int statSagesse, int idMap, int idFaction, int idTitre) {
+    public PNJ(int id, String nom, String sprite, int agressif, float x, float y, int statAgilite, int statArmure, int statDexterite, int statForce, int statEndurance, int statInteligence, int statSagesse, int idMap, int idFaction, int idTitre) {
         this.id = id;
         this.nom = nom;
         this.sprite = sprite;
         this.agressif = agressif;
+        this.x = x;
+        this.y = y;
         this.statAgilite = statAgilite;
         this.statArmure = statArmure;
         this.statDexterite = statDexterite;
@@ -79,6 +85,22 @@ public class PNJ implements Serializable {
 
     public void setAgressif(int agressif) {
         this.agressif = agressif;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 
     public int getStatAgilite() {
