@@ -411,7 +411,7 @@ public class FosDAO {
 
 
 
-    public ArrayList<PNJ> getPnjByIdmap(String id) {
+    public ArrayList<PNJ> getPnjByIdMap(String id) {
         ArrayList<PNJ> aRetourner = new ArrayList<>();
         String requete =
                 "SELECT * FROM " + NOM_TABLE_PNJ + " WHERE " + PNJ_CLE_MAP + " = " + id + ";";

@@ -138,6 +138,8 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
 
     @Override
     public void mouseClicked(int button, int x, int y, int nbClick) {
+
+        // Click sur le joueur pour declancher son GUI
         personnageJoueurClient.getGui().mouseClicked(x, y);
 
         // Rectification du X par rapport a la camera
@@ -145,9 +147,10 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
         y += camera.getPositionY() - gameContainer.getHeight() / 2;
 
         personnageJoueurClient.mouseClicked(x, y);
-        carte.mouseClicked(mapGameState ,x, y);
+        carte.mouseClicked(personnageJoueurClient, mapGameState ,x, y);
         mapGameState.getFenetreCombat().mouseClicked(button, x, y, nbClick);
 
+        // Gestion de la fenetre des combat
         if (mapGameState.getFenetreCombat().isOui()) {
             mapGameState.getStateBasedGame().enterState(CombatGameState.ID);
         }

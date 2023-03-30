@@ -244,16 +244,16 @@ public class Carte extends Map {
 
 
     /**
-     * Appeller par la gameState lorsque l'on fait un click pour tester les différente possibiliter de clique sur la
+     * Appeller par le PLAYER CONTROLLER lorsque l'on fait un click pour tester les différente possibiliter de clique sur la
      * carte
      * @param mapGameState
      * @param x position en x du curseur de la souris
      * @param y position en y du curseur de la souris
      * @param personnage personnage qui fait l'action
      */
-    public void mouseClicked(MapGameState mapGameState, int x, int y, PersonnageJoueurClient personnage) {
+    public void mouseClicked(PersonnageJoueurClient personnage, MapGameState mapGameState, int x, int y) {
         for (int i = 0; i < listePnj.size(); i++) {
-            listePnj.get(i).mouseClicked(mapGameState, x, y);
+            listePnj.get(i).mouseClicked(personnage, mapGameState, x, y);
         }
     }
 }

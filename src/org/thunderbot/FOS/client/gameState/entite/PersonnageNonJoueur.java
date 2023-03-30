@@ -60,13 +60,16 @@ public class PersonnageNonJoueur extends Personnage{
      * @param x position en x du curseur
      * @param y position en y du curseur
      */
-    public void mouseClicked(MapGameState mapGameState, int x, int y) {
+    public void mouseClicked(PersonnageJoueurClient personnageJoueurClient, MapGameState mapGameState, int x, int y) {
 
         x += 32;
         y += 60;
 
+        // Fait rentrer le joueur et le PNJ en combat
         if (this.positionX - 32 < x && x < positionX + 92 && this.positionY - 32 < y && y  < positionY + 92) {
             mapGameState.setCombat(true);
+            this.enCombat = true;
+            personnageJoueurClient.setEnCombat(true);
         }
     }
 }

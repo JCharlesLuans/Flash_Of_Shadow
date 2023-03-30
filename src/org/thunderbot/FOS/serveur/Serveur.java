@@ -11,7 +11,6 @@ import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
 import org.thunderbot.FOS.utils.Tools;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,6 +30,9 @@ public class Serveur extends Thread {
 
     private ArrayList<ClientConnecter> listeSocketClient;
     private ClientConnecter me;
+
+    private static IAServeur iaServeur;
+
     private static FosDAO accesBD;
 
     private boolean isIdentifier;
@@ -49,9 +51,12 @@ public class Serveur extends Thread {
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT); // Socket du serveur
-            accesBD = new FosDAO();                             // Creation de l'acces a la BD (Je crois)
+            accesBD = new FosDAO();                             // Creation de l'acces a la BD
             CmdServeur cmdServeur = new CmdServeur(accesBD);    // Creation de l'objet serveur permettant d'executer des cmd
             cmdServeur.start();
+
+            iaServeur = new IAServeur(accesBD);
+            iaServeur.start();
 
 
             while (cmdServeur.serveurOn) {
@@ -82,7 +87,10 @@ public class Serveur extends Thread {
     }
 
     private void traitement() {
-        System.out.println("Connection de : " + me.getSocket().getInetAddress());
+        System.out.println("Connexion de : " + me.getSocket().getInetAddress());
+
+        // DEBUG LOG
+        System.out.println(iaServeur.getPnjByMap(1));
 
         try {
             sortie = me.getSortie();
@@ -288,7 +296,7 @@ public class Serveur extends Thread {
 
         switch (table) {
             case "Map":
-                aRenvoyer = accesBD.getPnjByIdmap(id);
+                aRenvoyer = accesBD.getPnjByIdMap(id);
                 break;
         }
 
@@ -327,8 +335,9 @@ public class Serveur extends Thread {
 
     private void updateMouvement() {
         me.setPersonnage((Personnage) receptionXML());
-        envoiXML(listePersonnageConnecter(me.getPersonnage().getMap().getId()));
 
+        // Renvoi la liste des joueurs, ainsi que leurs position actuelles
+        envoiXML(listePersonnageConnecter(me.getPersonnage().getMap().getId()));
     }
 
     /**

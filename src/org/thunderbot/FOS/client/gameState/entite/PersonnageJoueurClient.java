@@ -143,8 +143,5 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
         if (this.positionX - 32 < x && x < positionX + 92 && this.positionY - 32 < y && y  < positionY + 92) {
             this.gui.getFichePersonnage().ouvrir();
         }
-
-        // Si clique sur un PNJ hostile
-        for (int i = 0; i < carte)
     }
 }

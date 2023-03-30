@@ -63,6 +63,9 @@ public class MapGameState extends BasicGameState {
     /** */
     private StateBasedGame stateBasedGame;
 
+    /** liste des joueur distant qu'on l'on recois par le serveur */
+    private static ArrayList<org.thunderbot.FOS.database.beans.Personnage> listePersonnageAJour;
+
     public MapGameState(Client client) {
         this.client = client;
     }
@@ -73,6 +76,7 @@ public class MapGameState extends BasicGameState {
         this.gameContainer = gameContainer;
         this.fenetreCombat = new FenetrePopUpChoix(INF_COMBAT);
         listeJoueur = new ArrayList<>();
+        listePersonnageAJour = new ArrayList<>();
         carte = new Carte();
     }
 
@@ -126,11 +130,13 @@ public class MapGameState extends BasicGameState {
         if (!client.socketIsClosed()) {
             joueur.update(carte, delta);
             camera.update(container, carte);
-            updateListeJoueur(client.updateServeurMouvement()); //Envoi des data au joueur
+            updateListeJoueur(client.updateServeurMouvementJoueurs()); //Envoi des data au joueur local
+
+            // Update des PNJ
+            carte.updatePnj(delta);
         }
 
-        // Update des PNJ
-        carte.updatePnj(delta);
+
 
         if (combat && !fenetreCombat.isShow()) {
             fenetreCombat.setShow(true);

@@ -5,7 +5,6 @@
 
 package org.thunderbot.FOS.client.network;
 
-import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
@@ -99,7 +98,7 @@ public class Client {
     /**
      * Envoi une demande de update au serveur, ainsi que sa propre update
      */
-    public ArrayList<Personnage> updateServeurMouvement() {
+    public ArrayList<Personnage> updateServeurMouvementJoueurs() {
         String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
         String stringReception;
         ArrayList<Personnage> listePersonnageAJour = new ArrayList<>();
@@ -110,6 +109,8 @@ public class Client {
             envoi(stringReception);
             stringReception = (String) reception(); // Attente reception update
             listePersonnageAJour = (ArrayList<Personnage>) Tools.decodeString(stringReception);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }

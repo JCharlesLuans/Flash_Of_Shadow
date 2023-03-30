@@ -232,6 +232,10 @@ public class Personnage {
         this.moving = moving;
     }
 
+    public void setEnCombat(boolean enCombat) { this.enCombat = enCombat; }
+
+    public boolean getEnCombat() { return  enCombat; }
+
     public String toString() {
         return "ServPersonnage(" + nom + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
     }
