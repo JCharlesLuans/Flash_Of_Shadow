@@ -175,6 +175,18 @@ public class Carte extends Map {
         nomMap = nom;
     }
 
+    public void changeMapServeur(String nom) {
+        try {
+            String chemin = "res/carte/" + nom;
+            initialiseMap(chemin);
+            tiledMap = new TiledMap(chemin);
+            nomMap = nom;
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     /**
      * Verifie si la position en X Y est dans un trigger dont l'id est ID
      * @param positionX position en X
