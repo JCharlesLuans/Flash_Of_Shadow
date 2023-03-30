@@ -78,7 +78,7 @@ public class HelperBD {
                 + EFFET_STAT_SAGESSE      + " INTEGER NOT NULL,"
                 + EFFET_DPS + " INTEGER NOT NULL,"
                 + EFFET_DUREE +  " INTEGER NOT NULL,"
-                + EFFET_ID_IMAGE + "INTEGER NOT NULL"
+                + EFFET_ID_IMAGE + " INTEGER NOT NULL"
             + ");";
 
     ///// TABLE COMPETENCE ////////
@@ -94,8 +94,8 @@ public class HelperBD {
                 + COMPETENCE_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COMPETENCE_NOM + " TEXT NOT NULL,"
                 + COMPETENCE_DEGAT_BASE + " INTEGER NOT NULL,"
-                + COMPETENCE_ID_EFFET + "INTEGER NOT NULL REFERENCES " + NOM_TABLE_EFFET + " (" + EFFET_CLE + "),"
-                + COMPETENCE_ID_IMAGE + "INTEGER NOT NULL"
+                + COMPETENCE_ID_EFFET + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_EFFET + " (" + EFFET_CLE + "),"
+                + COMPETENCE_ID_IMAGE + " INTEGER NOT NULL"
             + ") ;";
 
 
@@ -119,7 +119,9 @@ public class HelperBD {
     public static final String NOM_TABLE_OBJET = "Objet";
     public static final String OBJET_CLE = "_id";
     public static final String OBJET_NOM = "nom";
+    public static final String OBJET_DESC = "description";
     public static final String OBJET_EMPLACEMENT = "emplacement";
+    public static final String OBJET_ID_CLASSE = "equipableParClasse";
     public static final String OBJET_STAT_ARMURE = "statArmure";
     public static final String OBJET_STAT_DEXTERITE = "statDexterite";
     public static final String OBJET_STAT_FORCE = "statForce";
@@ -134,7 +136,9 @@ public class HelperBD {
             "CREATE TABLE " + NOM_TABLE_OBJET + " ("
                 + OBJET_CLE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + OBJET_NOM + " TEXT NOT NULL,"
+                + OBJET_DESC + " TEXT NOT NULL,"
                 + OBJET_EMPLACEMENT + " INTEGER NOT NULL,"
+                + OBJET_ID_CLASSE  + " INTEGER NOT NULL,"
                 + OBJET_STAT_ARMURE       + " INTEGER NOT NULL,"
                 + OBJET_STAT_DEXTERITE    + " INTEGER NOT NULL,"
                 + OBJET_STAT_FORCE        + " INTEGER NOT NULL,"
@@ -452,7 +456,7 @@ public class HelperBD {
                         + ", " + PERSONNAGE_CLE_STUFF_TORSE + ", " + PERSONNAGE_CLE_STUFF_GANT + ", " + PERSONNAGE_CLE_STUFF_JAMBE
                         + ", " + PERSONNAGE_CLE_STUFF_BOTTE + ", " + PERSONNAGE_CLE_STUFF_ARME + ", " + PERSONNAGE_CLE_FACTION
                         + ", " + PERSONNAGE_CLE_GUILDE + ", " + PERSONNAGE_CLE_TITRE +  ")"
-                        + "VALUES ( 'TestPerso', 'image', 640, 400, 1, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1); ");
+                        + "VALUES ( 'TestPerso', 'sprite2.png', 640, 400, 1, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1); ");
 
         System.out.println("Initialisation du personnage");
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="2">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="3">
  <tileset firstgid="1" source="tile_terrain_atlas.tsx"/>
  <tileset firstgid="1025" source="tile_colision.tsx"/>
  <tileset firstgid="1050" source="tile_base_out_atlas.tsx"/>
@@ -20,7 +20,7 @@
  </layer>
  <layer id="4" name="background 2" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu2WTQ6CMBBGB8WlujduVFiqZ1BwqZ7Bv4OoF/cjsUlDmBlqsbCgyduQaXlthq+kRLTvKAk4gGtHycEDvDrKHazo9xGBAcPQqhujcAKmkdv6C0+/Yv6SwV53Da8N2Ab22xHf25niV3X29pk34Xchvrdvil/V2ZddQvkd4XUCZ8vPPvukZT9tbv4nvyfx2fB2mHuv6SflhdbLPsP0ouYn5YXWyy57K+/P1S8l+U7k1qq7t/J8Vz/pTpZ6OZSfdCdzvSxldRV2frv6Sd80VyNljZY/IfykrNHyJ4Sfz+j9er+67zY5kgk1bfqZHNH+T9ryMzmi/Z805TcC85hoBuJvXfHM5a73hXtv8fwDBg+lV6APAAA=
+   H4sIAAAAAAAACu2WQQ6CMBBFp4pLdW/cqLBUz6DgUj2DigdRL+6Q0GRCmBlqsbCgyds0bXltht8mAHDsKTFyQu49JUOeyLun5MgGfm8GGTGMybgpDpwhc+O2/srTr5i/ZqDrbtFrh+wD+x2Ar+1U8as7e3rmbfjdgK/th+JXd/ZVl1B+Z/S6IFfiR88+7thPm5v9ye8FfDZ8HObmDf2kvNBq2afZWtT8pLzQatllb9X9ufolIN+J3FpN91ad7+on3clSLYfyk+5krpalrK6D5rern/RPc2OkrNHyJ4SflDVa/oTw82mD3+DX9Ns2R1JhTJd+Nke090lXfjZHtPdJW34TZBkBLJCoHFf0udz1vtDv2neDKfu/6wd5m6APAAA=
   </data>
  </layer>
  <layer id="5" name="overground" width="40" height="25">
@@ -44,6 +44,13 @@
     <property name="destiMap" value="map_start_idenia.tmx"/>
     <property name="destiX" type="int" value="708"/>
     <property name="destiY" type="int" value="220"/>
+   </properties>
+  </object>
+  <object id="2" type="changementMap" x="1163" y="780" width="78" height="19">
+   <properties>
+    <property name="destiMap" value="map_start_umbra.tmx"/>
+    <property name="destiX" type="int" value="611"/>
+    <property name="destiY" type="int" value="256"/>
    </properties>
   </object>
  </objectgroup>

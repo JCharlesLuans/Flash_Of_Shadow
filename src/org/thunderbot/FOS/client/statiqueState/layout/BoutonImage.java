@@ -55,4 +55,20 @@ public class BoutonImage {
     public int getHeight() {
         return imageSelect.getHeight();
     }
+
+    public void setX(int newX) {
+        x = newX;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
 }

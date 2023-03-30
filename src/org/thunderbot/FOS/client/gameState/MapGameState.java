@@ -10,12 +10,15 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.client.gameState.GUI.Gui;
 import org.thunderbot.FOS.client.gameState.entite.Camera;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUpChoix;
 
 import java.util.ArrayList;
 
@@ -27,47 +30,72 @@ import java.util.ArrayList;
  */
 public class MapGameState extends BasicGameState {
 
+    /** ID de la state */
+    public static final int ID = 2;
+
+    private static final String INF_COMBAT = "Voulez vous vraiment entrer en combat contre ";
+
+    /** Fenetre */
+    private GameContainer gameContainer;
+
     /** Carte afficher a l'écran */
-    Carte carte;
+    private Carte carte;
 
     /** Client pour la communication multijoueur et liste des joueurs connecter */
-    Client client;
-    ArrayList<PersonnageJoueur> listeJoueur;
+    private Client client;
+    private ArrayList<Personnage> listeJoueur;
 
     /** Personnage */
-    Personnage joueur;
+    private PersonnageJoueurClient joueur;
 
     /** Camera */
-    Camera camera;
+    private Camera camera;
 
-    PersonnageController personnageController;
+    /** Gere les inputs du joueur*/
+    private PersonnageController personnageController;
 
-    public static final int ID = 2;
+    /** Indique si le joueur rentre dans un combat ou pas */
+    private boolean combat;
+
+    /** Fentre de confirmation pour le combat */
+    private FenetrePopUpChoix fenetreCombat;
+
+    /** */
+    private StateBasedGame stateBasedGame;
 
     public MapGameState(Client client) {
         this.client = client;
     }
 
     @Override
-    public void init(GameContainer container, StateBasedGame game) throws SlickException {
+    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        this.stateBasedGame = stateBasedGame;
+        this.gameContainer = gameContainer;
+        this.fenetreCombat = new FenetrePopUpChoix(INF_COMBAT);
         listeJoueur = new ArrayList<>();
-
         carte = new Carte();
-        joueur = new Personnage(client);
-        camera = new Camera(joueur);
-        personnageController = new PersonnageController(joueur);
-
-        container.getInput().addKeyListener(personnageController);
-        container.getInput().addControllerListener(personnageController);
     }
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        //client.updateClient(this); // Création du thread qui recois les données
+        joueur = new PersonnageJoueurClient(client);
+        joueur.setGui(new Gui(gameContainer, client, stateBasedGame));
+        camera = new Camera(joueur);
+        personnageController = new PersonnageController(this);
+
         carte.setChangeCarte(true);
-        carte.changeMap(client.getPersonnage().getMap().getNom());
+        carte.changeMap(client.getPersonnage().getMap().getNom(), client);
         joueur.setPositionX(client.getPersonnage().getX());
         joueur.setPositionY(client.getPersonnage().getY());
+
+        gameContainer.getInput().addKeyListener(personnageController);
+        gameContainer.getInput().addControllerListener(personnageController);
+        gameContainer.getInput().addMouseListener(personnageController);
+    }
+
+    @Override
+    public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        gameContainer.getInput().removeAllControllerListeners();
     }
 
     @Override
@@ -77,24 +105,37 @@ public class MapGameState extends BasicGameState {
         carte.renderBackground();
         joueur.render(graphics);
 
+        carte.renderPnj(graphics);
+
         // Affichage des autres joueur
         if (listeJoueur.size() > 0) {
             for (int i = 0; i < listeJoueur.size(); i++) {
                 listeJoueur.get(i).render(graphics);
-                //TODO prendre en compte la carte
             }
         }
 
         carte.renderForeground();
+        joueur.getGui().render(graphics);
+        fenetreCombat.render(graphics);
     }
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 
         // UPDATTE DU JOUEUR
-        joueur.update(carte, delta);
-        camera.update(container, carte);
-        updateListeJoueur(client.updateServeurMouvement()); //Envoi des data au joueur
+        if (!client.socketIsClosed()) {
+            joueur.update(carte, delta);
+            camera.update(container, carte);
+            updateListeJoueur(client.updateServeurMouvement()); //Envoi des data au joueur
+        }
+
+        // Update des PNJ
+        carte.updatePnj(delta);
+
+        if (combat && !fenetreCombat.isShow()) {
+            fenetreCombat.setShow(true);
+            combat = false;
+        }
 
     }
 
@@ -108,16 +149,40 @@ public class MapGameState extends BasicGameState {
         return ID;
     }
 
-    public Personnage getJoueur() {
+    public PersonnageJoueurClient getJoueur() {
         return joueur;
     }
 
     public void updateListeJoueur(ArrayList<org.thunderbot.FOS.database.beans.Personnage> listeDistante) throws SlickException {
         listeJoueur = new ArrayList<>();
         for (int i = 0; i < listeDistante.size(); i++) {
-            PersonnageJoueur tmp = new PersonnageJoueur(listeDistante.get(i).getNom(), listeDistante.get(i).getDirection(), listeDistante.get(i).getX(), listeDistante.get(i).getY());
+            Personnage tmp = new PersonnageJoueur(listeDistante.get(i).getNom(), listeDistante.get(i).getDirection(), listeDistante.get(i).getX(), listeDistante.get(i).getY(), listeDistante.get(i).getSprite());
             tmp.setMoving(listeDistante.get(i).isMoving());
             listeJoueur.add(tmp);
         }
+    }
+
+    public Carte getCarte() {
+        return carte;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public GameContainer getGameContainer() {
+        return gameContainer;
+    }
+
+    public FenetrePopUpChoix getFenetreCombat() {
+        return fenetreCombat;
+    }
+
+    public void setCombat(boolean combat) {
+        this.combat = combat;
+    }
+
+    public StateBasedGame getStateBasedGame() {
+        return stateBasedGame;
     }
 }

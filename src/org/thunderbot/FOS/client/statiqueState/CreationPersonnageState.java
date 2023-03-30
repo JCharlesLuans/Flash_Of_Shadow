@@ -9,19 +9,19 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.MapGameState;
+import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.network.Client;
-import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
-import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
-import org.thunderbot.FOS.client.statiqueState.layout.ImageFlottante;
+import org.thunderbot.FOS.client.statiqueState.layout.*;
+import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 import org.thunderbot.FOS.database.beans.Classe;
 import org.thunderbot.FOS.database.beans.Faction;
 import org.thunderbot.FOS.database.beans.Map;
 
-import javax.swing.*;
-
 public class CreationPersonnageState extends BasicGameState {
 
     public static final int ID = 3;
+
+    private static final int START_TITRE_Y = 25;
 
     /** Position de la zone texte */
     private static final int ZT_NOM_WIDTH = 480;
@@ -33,13 +33,16 @@ public class CreationPersonnageState extends BasicGameState {
     private static final int BTN_VALIDER_HAUTEUR  = 50;
     private static final int BTN_VALIDER_DELTA = 65;
 
-    /** Position des bouton classes */
+    /** Position des boutons classes */
     private static final int BTN_CLASSE_X_START = 100;
-    private static final int BTN_CLASSE_Y_START = 50;
+    private static final int BTN_CLASSE_Y_START = START_TITRE_Y + 128;
 
-    /** Position des bouton faction */
+    /** Position des boutons faction */
     private static final int BTN_FACTION_X_START = 100;
-    private static final int BTN_FACTION_Y_START = 178;
+    private static final int BTN_FACTION_Y_START = BTN_CLASSE_Y_START + 128;
+
+    /**Position des boutons sprite */
+    private static final int BTN_SPRITE_Y = BTN_FACTION_Y_START + 128;
 
     /** Espace entre les bouton sur l'axe X */
     private static final int DELTA_ESPACE_BOUTON = 64;
@@ -47,18 +50,30 @@ public class CreationPersonnageState extends BasicGameState {
     private static final int ZT_CHAR_MAX = 15;
     private static final int ZT_CHAR_MIN = 3;
 
-    private static final String ERR_CLASSE_NULL = "Veuillez selectionner une classe !";
-    private static final String ERR_FACTION_NULL = "Veuillez selectionner une faction !";
+    private static final String ERR_CLASSE_NULL = "Veuillez selectionner \nune classe !";
+    private static final String ERR_FACTION_NULL = "Veuillez selectionner \nune faction !";
     private static final String ERR_PSEUDO =
-            "Veuillez saisir un pseudo valide entre " + ZT_CHAR_MIN + " et " + ZT_CHAR_MAX +  " caractère !";
+            "Veuillez saisir un \npseudo valide entre \n" + ZT_CHAR_MIN + " et " + ZT_CHAR_MAX +  " caractères !";
+
+    private static final String INF_CONFIRMATION = "Etes-vous sûr de vouloir créer\n ce personnage ?";
+
+    // Gestion du nombre de sprite
+    private static final int NOMBRE_SPRITE_MAX = 4;
+
 
     private Client client;
 
+    private boolean valide;
+
     private StateBasedGame stateBasedGame;
 
-    private Image background;
+    private Image imgBackground;
+    private Image imgTitre;
+    private Image imgClasse;
+    private Image imgFaction;
+    private Image imgNom;
 
-    private Bouton btnValider;
+    private BoutonImage btnValider;
     private TextField ztNom;
 
     private BoutonImage btnImg_archer;
@@ -79,6 +94,10 @@ public class CreationPersonnageState extends BasicGameState {
     private BoutonImage btnImg_umbra;
     private BoutonImage btnImg_ethernia;
 
+    private BoutonImage btnImg_droite;
+    private BoutonImage btnImg_gauche;
+    private Image cadreSprite;
+
     private ImageFlottante desc_idenia;
     private ImageFlottante desc_umbra;
     private ImageFlottante desc_ethernia;
@@ -87,6 +106,13 @@ public class CreationPersonnageState extends BasicGameState {
     private Faction factionSelectionner;
 
     private Sound click;
+
+    private FenetrePopUpChoix fenetreConfirmation;
+    private FenetrePopUp fenetreErreur;
+
+    private SpriteSheet spriteAfficher;
+    private int numeroSprite;
+    private Animation animation;
 
     public CreationPersonnageState(Client client) {
         this.client = client;
@@ -105,9 +131,22 @@ public class CreationPersonnageState extends BasicGameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
+        valide = false;
+
         this.stateBasedGame = stateBasedGame;
 
-        int x;
+        int x = gameContainer.getWidth() / 2;
+
+        // Init fenetree popup
+        fenetreConfirmation = new FenetrePopUpChoix("");
+        fenetreErreur = new FenetrePopUp("");
+
+        // Init du background
+        imgBackground = new Image("res/menuState/creationJoueur/background.png");
+        imgTitre = new Image("res/menuState/creationJoueur/titre.png");
+        imgClasse = new Image("res/menuState/creationJoueur/sousTitre_classe.png");
+        imgFaction = new Image("res/menuState/creationJoueur/sousTitre_faction.png");
+        imgNom = new Image("res/menuState/creationJoueur/sousTitre_nom.png");
 
         // Init du son
         click = new Sound("res/menuState/son/click.wav");
@@ -121,18 +160,26 @@ public class CreationPersonnageState extends BasicGameState {
         desc_pugilat = new ImageFlottante("res/menuState/creationJoueur/descriptionClasse/pugilat.png");
 
         // Init des bouton pour gerer les classes
-        x = BTN_CLASSE_X_START;
-        btnImg_archer   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/archer.png", x,  BTN_CLASSE_Y_START);
-        x+= btnImg_archer.getWidth() + DELTA_ESPACE_BOUTON;
-        btnImg_mage     = new BoutonImage("res/menuState/creationJoueur/boutonClasse/mage.png", x,  BTN_CLASSE_Y_START);
-        x+= btnImg_mage.getWidth() + DELTA_ESPACE_BOUTON;
-        btnImg_pretre   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pretre.png", x,  BTN_CLASSE_Y_START);
-        x+= btnImg_pretre.getWidth() + DELTA_ESPACE_BOUTON;
-        btnImg_guerrier = new BoutonImage("res/menuState/creationJoueur/boutonClasse/guerrier.png", x,  BTN_CLASSE_Y_START);
-        x+= btnImg_guerrier.getWidth() + DELTA_ESPACE_BOUTON;
-        btnImg_voleur   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/voleur.png", x,  BTN_CLASSE_Y_START);
-        x+= btnImg_voleur.getWidth() + DELTA_ESPACE_BOUTON;
-        btnImg_pugilat  = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pugilat.png", x,  BTN_CLASSE_Y_START);
+        btnImg_archer   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/archer.png", 0,  BTN_CLASSE_Y_START);
+        btnImg_mage     = new BoutonImage("res/menuState/creationJoueur/boutonClasse/mage.png", 0,  BTN_CLASSE_Y_START);
+        btnImg_pretre   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pretre.png", 0,  BTN_CLASSE_Y_START);
+        btnImg_guerrier = new BoutonImage("res/menuState/creationJoueur/boutonClasse/guerrier.png", 0,  BTN_CLASSE_Y_START);
+        btnImg_voleur   = new BoutonImage("res/menuState/creationJoueur/boutonClasse/voleur.png", 0,  BTN_CLASSE_Y_START);
+        btnImg_pugilat  = new BoutonImage("res/menuState/creationJoueur/boutonClasse/pugilat.png", 0,  BTN_CLASSE_Y_START);
+
+        // Gestion de la position des bouton
+        x -= 3 * btnImg_archer.getWidth() + 3 * DELTA_ESPACE_BOUTON;
+        btnImg_archer.setX(x);
+        x += btnImg_archer.getWidth() + DELTA_ESPACE_BOUTON;
+        btnImg_mage.setX(x);
+        x += btnImg_mage.getWidth() + DELTA_ESPACE_BOUTON;
+        btnImg_pretre.setX(x);
+        x += btnImg_pretre.getWidth() + DELTA_ESPACE_BOUTON;
+        btnImg_guerrier.setX(x);
+        x += btnImg_guerrier.getWidth() + DELTA_ESPACE_BOUTON;
+        btnImg_voleur.setX(x);
+        x += btnImg_voleur.getWidth() + DELTA_ESPACE_BOUTON;
+        btnImg_pugilat.setX(x);
 
         // Init des images flottante des factions
         desc_idenia = new ImageFlottante("res/menuState/creationJoueur/descriptionFaction/idenia.png");
@@ -140,32 +187,46 @@ public class CreationPersonnageState extends BasicGameState {
         desc_ethernia = new ImageFlottante("res/menuState/creationJoueur/descriptionFaction/ethernia.png");
 
         // Init des bouton pour gerer les factions
-        x = BTN_FACTION_X_START;
-        btnImg_idenia = new BoutonImage("res/menuState/creationJoueur/boutonFaction/idenia.png", x, BTN_FACTION_Y_START);
-        x += btnImg_idenia.getWidth() + DELTA_ESPACE_BOUTON;
-        btnImg_umbra = new BoutonImage("res/menuState/creationJoueur/boutonFaction/umbra.png", x, BTN_FACTION_Y_START);
-        x += btnImg_umbra.getWidth() + DELTA_ESPACE_BOUTON;
-        btnImg_ethernia = new BoutonImage("res/menuState/creationJoueur/boutonFaction/ethernia.png", x, BTN_FACTION_Y_START);
+        btnImg_idenia = new BoutonImage("res/menuState/creationJoueur/boutonFaction/idenia.png", 0, BTN_FACTION_Y_START);
+        btnImg_umbra = new BoutonImage("res/menuState/creationJoueur/boutonFaction/umbra.png", 0, BTN_FACTION_Y_START);
+        btnImg_ethernia = new BoutonImage("res/menuState/creationJoueur/boutonFaction/ethernia.png", 0, BTN_FACTION_Y_START);
 
+        // Gestion de la position des bouton
+        x = gameContainer.getWidth() / 2 - btnImg_umbra.getWidth() / 2;
+        btnImg_umbra.setX(x);
+        btnImg_idenia.setX((int) btnImg_umbra.getX() + btnImg_umbra.getWidth() + DELTA_ESPACE_BOUTON);
+        btnImg_ethernia.setX((int) btnImg_umbra.getX() - btnImg_umbra.getWidth() - DELTA_ESPACE_BOUTON);
 
-        // Init du background
-        background = new Image("res/menuState/creationJoueur/backgroundCreationPerso.jpg");
+        // Init des bouton pour le sprite
+        cadreSprite = new Image("res/menuState/creationJoueur/cadreSprite.png");
+        x = gameContainer.getWidth() / 2 - cadreSprite.getWidth() / 2; // Centre de l'image
+        btnImg_droite = new BoutonImage("res/menuState/creationJoueur/droite.png", x + DELTA_ESPACE_BOUTON + cadreSprite.getWidth(), BTN_SPRITE_Y + cadreSprite.getHeight() / 8);
+        btnImg_gauche = new BoutonImage("res/menuState/creationJoueur/gauche.png", x - DELTA_ESPACE_BOUTON - cadreSprite.getWidth() / 2, BTN_SPRITE_Y + cadreSprite.getHeight() / 8);
 
         // Init du bouton valider
-        btnValider = new Bouton(gameContainer.getWidth() / 2 - BTN_VALIDER_LONGUEUR / 2,
-                gameContainer.getHeight() - BTN_VALIDER_DELTA,
-                BTN_VALIDER_LONGUEUR, BTN_VALIDER_HAUTEUR, "Valider");
+        btnValider = new BoutonImage("res/menuState/creationJoueur/valider.png", gameContainer.getWidth() / 2 - BTN_VALIDER_LONGUEUR / 2,
+                gameContainer.getHeight() - BTN_VALIDER_DELTA);
 
         // Init de la zone texte
         ztNom = new TextField(gameContainer, gameContainer.getDefaultFont(),
                 gameContainer.getWidth() / 2 - ZT_NOM_WIDTH / 2,
                 gameContainer.getHeight() - ZT_NOM_DELTA_HEIGHT,
                 ZT_NOM_WIDTH, ZT_NOM_HEIGHT);
+
+        // Init du sprite
+        numeroSprite = 1;
+        gestionSprite();
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        background.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
+
+        imgBackground.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
+
+        graphics.drawImage(imgTitre, gameContainer.getWidth() / 2 - imgTitre.getWidth() / 2, START_TITRE_Y);
+        graphics.drawImage(imgClasse,  gameContainer.getWidth() / 2 - imgTitre.getWidth() / 2 - imgClasse.getWidth() , BTN_CLASSE_Y_START);
+        graphics.drawImage(imgFaction, gameContainer.getWidth() / 2 - imgTitre.getWidth() / 2 - imgFaction.getWidth(), BTN_FACTION_Y_START);
+        graphics.drawImage(imgNom, ztNom.getX() - imgNom.getWidth(), ztNom.getY());
 
         btnValider.render(graphics);
 
@@ -182,6 +243,12 @@ public class CreationPersonnageState extends BasicGameState {
         btnImg_umbra.render(graphics);
         btnImg_ethernia.render(graphics);
 
+        btnImg_droite.render(graphics);
+        btnImg_gauche.render(graphics);
+        graphics.drawImage(cadreSprite, gameContainer.getWidth() / 2 - cadreSprite.getWidth() / 2, BTN_SPRITE_Y);
+        graphics.drawAnimation(animation, gameContainer.getWidth() / 2 - animation.getWidth() / 2, BTN_SPRITE_Y);
+
+        // Affichage des description en dernier pour qu'lles s'affiche au dessus de tout
         desc_archer.render(graphics);
         desc_mage.render(graphics);
         desc_pretre.render(graphics);
@@ -193,25 +260,46 @@ public class CreationPersonnageState extends BasicGameState {
         desc_umbra.render(graphics);
         desc_ethernia.render(graphics);
 
-
+        fenetreConfirmation.render(graphics);
+        fenetreErreur.render(graphics);
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+        if (valide && !fenetreConfirmation.isShow() && fenetreConfirmation.isOui()) {
+            client.getPersonnage().setNom(ztNom.getText());
+            client.getPersonnage().setClasse(classeSelectionner);
+            client.getPersonnage().setFaction(factionSelectionner);
+            client.getPersonnage().setMap(factionSelectionner.getMapStart());
+            client.getPersonnage().setX(Map.POSITION_X_DEFAUT);
+            client.getPersonnage().setY(Map.POSITION_Y_DEFAUT);
+            client.getPersonnage().setSprite("sprite" + numeroSprite + ".png");
+            client.chargementStuffBase();
 
+            client.createPersonnage();
+            stateBasedGame.enterState(MapGameState.ID);
+        }
     }
 
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
-
-        gestionBoutonValider(x, y);
-        gestionBoutonClasse(x, y);
-        gestionBoutonFaction(x, y);
+        if (fenetreConfirmation.isShow()) {
+            fenetreConfirmation.mouseClicked(button, x, y, clickCount);
+        } else if (fenetreErreur.isShow()) {
+            fenetreErreur.mouseClicked(button,x,y,clickCount);
+        } else {
+            gestionBoutonValider(x, y);
+            gestionBoutonClasse(x, y);
+            gestionBoutonFaction(x, y);
+            gestionBoutonSprite(x, y);
+        }
     }
 
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-        gestionDescriptionClasse(newx, newy);
-        gestionDescriptionFaction(newx, newy);
+        if (!fenetreConfirmation.isShow() && !fenetreErreur.isShow()) {
+            gestionDescriptionClasse(newx, newy);
+            gestionDescriptionFaction(newx, newy);
+        }
     }
 
     /**
@@ -310,6 +398,35 @@ public class CreationPersonnageState extends BasicGameState {
         }
     }
 
+    private void gestionBoutonSprite(int x, int y) {
+        if (btnImg_gauche.isInLayout(x, y)) {
+            numeroSprite--;
+            if (numeroSprite <= 0) {
+                numeroSprite = NOMBRE_SPRITE_MAX;
+            }
+            gestionSprite();
+            click.play();
+        }
+
+        if (btnImg_droite.isInLayout(x, y)) {
+            numeroSprite++;
+            if (numeroSprite > NOMBRE_SPRITE_MAX) {
+                numeroSprite = 1;
+            }
+            gestionSprite();
+            click.play();
+        }
+    }
+
+    private void gestionSprite() {
+        try {
+            spriteAfficher = new SpriteSheet("res/texture/sprite/joueur/sprite" + numeroSprite + ".png", 64, 64);
+            animation = Personnage.loadAnimation(spriteAfficher, 1, 9, 2);
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void gestionDescriptionClasse(int x, int y) {
         desc_archer.setVisible(false);
         desc_mage.setVisible(false);
@@ -380,38 +497,30 @@ public class CreationPersonnageState extends BasicGameState {
     }
 
     private void gestionBoutonValider(int x, int y) {
-        if (btnValider.isInBouton(x, y)) {
-            JFrame jFrame = new JFrame();
+        if (btnValider.isInLayout(x, y)) {
 
             click.play();
 
-            System.out.println(ztNom.getText().length());
-
-            // Gestion erruer
+            // Gestion erreur
             if (classeSelectionner == null) {
-                JOptionPane.showMessageDialog(jFrame, ERR_CLASSE_NULL);
+                fenetreErreur.setMessage(ERR_CLASSE_NULL);
+                fenetreErreur.setShow(true);
             } else if (factionSelectionner == null) {
-                JOptionPane.showMessageDialog(jFrame, ERR_FACTION_NULL);
+                fenetreErreur.setMessage(ERR_FACTION_NULL);
+                fenetreErreur.setShow(true);
             } else if (ZT_CHAR_MIN > ztNom.getText().length() ||  ztNom.getText().length() > ZT_CHAR_MAX ) {
-                JOptionPane.showMessageDialog(jFrame, ERR_PSEUDO);
+                fenetreErreur.setMessage(ERR_PSEUDO);
+                fenetreErreur.setShow(true);
             } else {
-                String recap = "Nom : " + ztNom.getText() + '\n';
+                String recap = INF_CONFIRMATION+ '\n' + '\n';
+                recap += "Nom : " + ztNom.getText() + '\n';
                 recap += "Classe : " + classeSelectionner.getNom() + '\n';
                 recap += "Faction : " + factionSelectionner.getNom() + '\n';
+                recap += "Sprite : " + numeroSprite;
 
-                JOptionPane.showMessageDialog(jFrame, recap);
-
-                client.getPersonnage().setNom(ztNom.getText());
-                client.getPersonnage().setClasse(classeSelectionner);
-                client.getPersonnage().setFaction(factionSelectionner);
-                client.getPersonnage().setMap(factionSelectionner.getMapStart());
-                client.getPersonnage().setX(Map.POSITION_X_DEFAUT);
-                client.getPersonnage().setY(Map.POSITION_Y_DEFAUT);
-                client.chargementStuffBase();
-
-                client.createPersonnage();
-
-                stateBasedGame.enterState(MapGameState.ID);
+                fenetreConfirmation.setMessage(recap);
+                fenetreConfirmation.setShow(true);
+                valide = true;
             }
 
 

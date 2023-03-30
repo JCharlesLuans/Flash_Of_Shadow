@@ -9,10 +9,9 @@ import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
-import org.thunderbot.FOS.serveur.networkObject.Stop;
-import org.thunderbot.FOS.serveur.networkObject.Update;
-import org.thunderbot.FOS.utils.XMLTools;
+import org.thunderbot.FOS.utils.Tools;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -49,12 +48,13 @@ public class Serveur extends Thread {
         ArrayList<ClientConnecter> listeClientConnecter = new ArrayList<>(); // Liste des sockets des clients connectés
 
         try {
-            ServerSocket serverSocket = new ServerSocket(PORT);
-            accesBD = new FosDAO();
+            ServerSocket serverSocket = new ServerSocket(PORT); // Socket du serveur
+            accesBD = new FosDAO();                             // Creation de l'acces a la BD (Je crois)
+            CmdServeur cmdServeur = new CmdServeur(accesBD);    // Creation de l'objet serveur permettant d'executer des cmd
+            cmdServeur.start();
 
-            System.out.println("Lancement du serveur");
 
-            while (true) {
+            while (cmdServeur.serveurOn) {
                 Socket newClient = serverSocket.accept();
                 ClientConnecter clientConnecter = new ClientConnecter(newClient);
                 listeClientConnecter.add(clientConnecter);
@@ -89,26 +89,17 @@ public class Serveur extends Thread {
             entree = me.getEntree();
 
             while (!isIdentifier) {
-
-                // TODO ED
-                System.out.println(me.getSocket().getInetAddress() + " n'est pas identifier");
                 connexion(entree, sortie);
             }
 
-            // TODO ED
+            // LOG
             System.out.println(me.getSocket().getInetAddress() + " est identifier");
 
             while (isConnecter) {
                 Object reception = entree.readObject();
 
-                if (reception.getClass() == Update.class) {
-                    // Gestion de l'updae
-
-                    // TODO ed
-                    System.out.println("UPDATE");
-
-                } else if (reception.getClass() == RequeteServeur.class) {
-                    traitementRequeteServeur(entree, sortie, (RequeteServeur) reception);
+                if (reception.getClass() == RequeteServeur.class) {
+                    traitementRequeteServeur((RequeteServeur) reception);
                 }
 
             }
@@ -155,9 +146,6 @@ public class Serveur extends Thread {
 
             me.setConnecter(false);
 
-            // TODO debug
-            System.out.println("Nouveau joueur");
-
             //si le joueur n'existe pas
             joueur.setPseudo(pseudo);
             joueur.setMdp(mdp);
@@ -168,38 +156,21 @@ public class Serveur extends Thread {
                 joueur = accesBD.getJoueurByPseudo(joueur.getPseudo());
                 code = 0;
                 isIdentifier = true;
-
-                // TODO debug
-                System.out.println("Nouveau joueur créer");
-
             } else {
                 code = 1;
-
-                // TODO debug
-                System.out.println("Joueur existant");
             }
 
         } else {
             // Verification cohérance pseudo + mdp
             if (joueur.isExistant() && joueur.getMdp().equals(mdp)) {
-
-                // TODO debug
-                System.out.println("Joueur authentifier : " + joueur.getId());
-
                 code = 0;
                 isIdentifier = true;
 
                 // recherche du personnage de ce joueur
                 personnage = accesBD.getPersonnageByJoueur(joueur);
-
                 me.setPersonnage(personnage);
                 me.setConnecter(true);
-
             } else {
-
-                // TODO debug
-                System.out.println("Echec auth car non trouver");
-
                 code = 2;
             }
         }
@@ -221,7 +192,7 @@ public class Serveur extends Thread {
     /**
      * Permet de deconnecter un joueur et son client de maniere propre, puis dde sauvegarder ses donnée en DB
      */
-    private void deconnexion(ObjectInputStream entree, ObjectOutputStream sortie) {
+    private void deconnexion() {
 
         Personnage personnageAReconstruire = new Personnage();
 
@@ -229,7 +200,7 @@ public class Serveur extends Thread {
         try {
 
             personnageAReconstruire = receptionPersonnage();
-
+            me.clientClose();
             me.getSocket().close();
             listeSocketClient.remove(me);
         }  catch (IOException e) {
@@ -252,7 +223,8 @@ public class Serveur extends Thread {
 
     }
 
-    private void traitementRequeteServeur(ObjectInputStream entree, ObjectOutputStream sortie, RequeteServeur requeteServeur) throws IOException, ClassNotFoundException {
+    private void traitementRequeteServeur(RequeteServeur requeteServeur) throws IOException, ClassNotFoundException {
+
         switch (requeteServeur.getMotif()) {
 
             // Gere les demande de chargement d'objet du jeu, stocker en BD
@@ -260,16 +232,19 @@ public class Serveur extends Thread {
                 me.setConnecter(false);
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.MAP:
-                        chargementCarte(sortie, requeteServeur.getCle());
+                        chargementCarte(requeteServeur.getCle());
                         break;
                     case RequeteServeur.CLASSE:
-                        chargementClasse(sortie, requeteServeur.getCle());
+                        chargementClasse(requeteServeur.getCle());
                         break;
                     case RequeteServeur.FACTION:
                         chargementFaction(sortie, requeteServeur.getCle());
                         break;
                     case RequeteServeur.STUFF_BASE:
-                        chargementStuffBase(sortie);
+                        chargementStuffBase();
+                        break;
+                    case RequeteServeur.PNJ:
+                        chargementPNJ(requeteServeur.getCle());
                         break;
                 }
                 me.setConnecter(true);
@@ -282,9 +257,7 @@ public class Serveur extends Thread {
                         Personnage personnage = (Personnage) entree.readObject();
                         sortie.writeObject(accesBD.addPersonnage(personnage));
                         sortie.flush();
-
-                        //TODO ED
-                        System.out.println(personnage);
+                        
                         me.setPersonnage(personnage);
                 }
                 break;
@@ -299,23 +272,37 @@ public class Serveur extends Thread {
 
             // Gere la deconnexion
             case RequeteServeur.DECONNEXION:
-                deconnexion(entree, sortie);
+                deconnexion();
                 break;
         }
     }
 
-    private void chargementStuffBase(ObjectOutputStream sortie) {
-        ArrayList<Objet> aRetourner;
-        aRetourner = accesBD.getListeStuffBase();
-        try {
-            sortie.writeObject(aRetourner);
-            sortie.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+    private void chargementPNJ(String resteRequete) {
+
+        System.out.println(resteRequete);
+
+        ArrayList<PNJ> aRenvoyer = new ArrayList<>();
+        String table = resteRequete.split(":")[0];
+        String id = resteRequete.split(":")[1];
+
+        switch (table) {
+            case "Map":
+                aRenvoyer = accesBD.getPnjByIdmap(id);
+                break;
+        }
+
+        System.out.println(aRenvoyer);
+        envoiXML(aRenvoyer);
+    }
+
+    private void chargementStuffBase() {
+        for (int i = 2; i < 8; i++) {
+            envoiXML(accesBD.getObjetById(i));
         }
     }
 
-    private void chargementCarte(ObjectOutputStream sortie, String nom) throws IOException {
+    private void chargementCarte(String nom) throws IOException {
         Map map;
 
         // Recherche en BD la carte, ainsi que ses datas
@@ -326,7 +313,7 @@ public class Serveur extends Thread {
         sortie.flush();
     }
 
-    private void chargementClasse(ObjectOutputStream sortie, String nom) throws IOException {
+    private void chargementClasse(String nom) throws IOException {
         Classe classe = accesBD.getClasseByName(nom);
         sortie.writeObject(classe);
         sortie.flush();
@@ -344,8 +331,14 @@ public class Serveur extends Thread {
 
     }
 
+    /**
+     * Renvoi la liste des personnages joueur a afficher et mettre à sur un client distant
+     * @param idMap l'id de la map sur laquelle se trouve le joueur
+     * @return la liste
+     */
     private ArrayList<Personnage> listePersonnageConnecter(int idMap) {
         ArrayList<Personnage> aRetourner = new ArrayList<>();
+
 
         for (int i = 0; i < listeSocketClient.size(); i++) {
             if (listeSocketClient.get(i).isConnecter() &&
@@ -355,7 +348,6 @@ public class Serveur extends Thread {
                 aRetourner.add(listeSocketClient.get(i).getPersonnage());
             }
         }
-
         return aRetourner;
     }
 
@@ -383,10 +375,15 @@ public class Serveur extends Thread {
         return personnageAReconstruire;
     }
 
+
+    /**
+     * Envoi d'un String contenant un objet serialiser en XML. L'objet va etre serialiser puis envoyer
+     * @param object a sérialiser puis a envoyer
+     */
     public void envoiXML(Object object) {
         try {
             String strEnvoi;
-            strEnvoi = XMLTools.encodeString(object);
+            strEnvoi = Tools.encodeString(object);
             sortie.writeObject(strEnvoi);
             sortie.flush();
         } catch (IOException e) {
@@ -394,17 +391,21 @@ public class Serveur extends Thread {
         }
     }
 
+    /**
+     * Reception d'un String contenant un objet serialiser en XML. L'objet va etre desserialiser puis retourner
+     * @return l'objet déserialiser
+     */
     private Object receptionXML() {
         String strReception = null;
         try {
             strReception = (String) entree.readObject();
-            return XMLTools.decodeString(strReception);
+            return Tools.decodeString(strReception);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return XMLTools.decodeString(strReception);
+        return Tools.decodeString(strReception);
     }
 }
 

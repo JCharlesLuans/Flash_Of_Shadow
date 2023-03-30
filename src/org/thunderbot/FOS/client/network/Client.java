@@ -9,8 +9,9 @@ import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
-import org.thunderbot.FOS.utils.XMLTools;
+import org.thunderbot.FOS.utils.Tools;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,7 +32,7 @@ public class Client {
 
     private Personnage personnage;
 
-    private final Socket socket;
+    private Socket socket;
 
     private ObjectOutputStream sortie; // Sortie du socket
 
@@ -41,12 +42,7 @@ public class Client {
     /**
      * Création de l'objet client, encapsulation de la socket, gestion de la connection avec le serveur
      */
-    public Client() throws IOException {
-        InetAddress adresseServeur = InetAddress.getByName(lectureIpServeur());
-        socket = new Socket(adresseServeur, PORT);
-
-        entree = new ObjectInputStream(socket.getInputStream());
-        sortie = new ObjectOutputStream(socket.getOutputStream());
+    public Client() {
     }
 
     /**
@@ -65,32 +61,18 @@ public class Client {
         code = (int) reception();
 
         if (nouveauJoueur && code == 0) {
-
+            /* Inscription */
             personnage = new Personnage();
             Joueur tmp = (Joueur) reception();
             personnage.setIdJoueur(tmp.getId());
 
-            // TODO ED
-            System.out.println("Création du nouveau joueur");
-            System.out.println(personnage.getIdJoueur());
-
-
         } else if (code == 0) {
-            //TODO ed
-            System.out.println("Attente personnage");
+            /* Connexion */
             personnage = (Personnage) reception();
         }
 
 
         return code;
-    }
-
-    /**
-     * Charge un personnage suite a une connexion
-     * @return
-     */
-    public PersonnageJoueur loadJoueur() {
-        return (PersonnageJoueur) reception();
     }
 
     /**
@@ -109,140 +91,30 @@ public class Client {
         envoi(personnage.getMap());
         envoi(personnage);
 
+        socket.close();
+
     }
 
-//    /**
-//     * Actualise les données du client
-//     * @param mapGameState
-//     */
-//    public void updateClient(MapGameState mapGameState) {
-//        new Thread(actualisationDonneeDistante(mapGameState.getListeJoueur())).start();
-//    }
 
-    /**
-     * @param objet a envoyer
-     */
-    private void envoi(Object objet) throws IOException {
-        sortie.writeObject(objet);
-        sortie.flush();
-    }
-
-    /**
-     * Receptionne des donnée du serveurs
-     * @return l'objets reçu
-     */
-    private Object reception() {
-        Object aRetourner = new Object();
-        try {
-            aRetourner = entree.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-
-        return aRetourner;
-    }
-
-//    /**
-//     * Reception et actualisation des donnée sur le client de jeu
-//     * @param listeJoueur liste des joueur a actualiser
-//     * @return un thread
-//     */
-//    private Runnable actualisationDonneeDistante(ArrayList<ServPersonnage> listeJoueur) {
-//        return () -> {
-//
-//
-//            // Joueur a actualiser existe ou pas
-//            boolean existe;
-//
-//            while (true) {
-//
-//                existe = false;
-//
-//                try {
-//
-//                    String reception = reception();
-//
-//                    Object objReception = XMLTools.decodeString(reception);
-//
-//                    // Update
-//                    if (objReception.getClass() == Update.class) {
-//                        Update update = (Update) objReception;
-//                        ServPersonnage tmp = update.getServPersonnage();
-//
-//                        // Mise a jour des joueur qui existe
-//                        for (int i = 0; i < listeJoueur.size(); i++) {
-//
-//                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
-//
-//                                existe = true;
-//
-//                                // Mise à jours du joueur
-//                                listeJoueur.get(i).miseAJour(tmp);
-//                            }
-//                        }
-//
-//                        // Ajout du nouveau joueur a la liste
-//                        if (!existe) {
-//                            listeJoueur.add(new ServPersonnage(tmp));
-//                        }
-//
-//                    } else if (objReception.getClass() == Stop.class) {
-//
-//                        // Deconnexion
-//                        Stop tmp = (Stop) objReception;
-//
-//                        // Recherche du joueur a remove
-//                        for (int i = 0; i < listeJoueur.size(); i++) {
-//
-//                            if (listeJoueur.get(i).getPseudo().equals(tmp.getPseudo())) {
-//
-//                                // Suppression de l'ancien puis remplacement
-//                                listeJoueur.remove(i);
-//                                System.out.println("Deconexion de " + tmp.getPseudo());
-//                            }
-//                        }
-//                    }
-//
-//                } catch(IOException | SlickException err){
-//                    err.printStackTrace();
-//                }
-//            }
-//        };
-//    }
-//
     /**
      * Envoi une demande de update au serveur, ainsi que sa propre update
      */
     public ArrayList<Personnage> updateServeurMouvement() {
         String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
         String stringReception;
-        String stringEnvoi;
         ArrayList<Personnage> listePersonnageAJour = new ArrayList<>();
 
         try {
             envoi(new RequeteServeur(requete));
-            stringReception = XMLTools.encodeString(personnage);
+            stringReception = Tools.encodeString(personnage);
             envoi(stringReception);
-            System.out.println(personnage);
             stringReception = (String) reception(); // Attente reception update
-            listePersonnageAJour = (ArrayList<Personnage>) XMLTools.decodeString(stringReception);
+            listePersonnageAJour = (ArrayList<Personnage>) Tools.decodeString(stringReception);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return listePersonnageAJour;
-    }
-
-    /**
-     * Permet d'envoyer le personnage au serveur
-     * @throws IOException
-     */
-    private void envoiPersonnage() throws IOException {
-        envoi(personnage.getId());
-        envoi(personnage.getX());
-        envoi(personnage.getY());
-        envoi(personnage.getMap());
-        envoi(personnage);
     }
 
     /**
@@ -264,6 +136,12 @@ public class Client {
         return aRetourner;
     }
 
+    /**
+     * Envoi une demande au serveur pour charger les information relative
+     * à une classe, dont le nom est passé en paramettre.
+     * @param nomClasse Nom de la classe dont on veux les information
+     * @return l'objet classe encapsulant les infos.
+     */
     public Classe chargementClasse(String nomClasse) {
         Classe aRetourner = null;
         String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.CLASSE + ";" + nomClasse + ';';
@@ -278,6 +156,12 @@ public class Client {
         return aRetourner;
     }
 
+    /**
+     * Envoi une demande au serveur pour charger les information relative
+     * à une faction, dont le nom est passé en paramettre.
+     * @param nom Nom de la faction dont on veux les informations
+     * @return l'objet Faction encapsulant les infos.
+     */
     public Faction chargementFaction(String nom) {
         Faction aRetourner = null;
         String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.FACTION + ";" + nom + ';';
@@ -287,6 +171,108 @@ public class Client {
             aRetourner = (Faction) reception();
         } catch (IOException err) {
             err.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
+    /**
+     * Envoi une demande au serveur pour charger les information relative
+     * à 6 objet, du 2eme au 7eme, ce qui correspond à l'équipement de départ d'un nouveau joueur.
+     * Les objet vont directement ètre appliquer au personnage de ce client.
+     */
+    public void chargementStuffBase() {
+        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.STUFF_BASE + ";";
+
+        try {
+            envoi(new RequeteServeur(requete));
+            personnage.setStuffTete((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffTorse((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffGant((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffJambe((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffBotte((Objet) Tools.decodeString((String) reception()));
+            personnage.setStuffArme((Objet) Tools.decodeString((String) reception()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Envooi une demande au serveur pour charger les inforamtions relative aux personnages non joueur
+     * se trouvant sur une carte. Le serveur renvoi un objet arrayliste contant ces PNJ.
+     * @param idMap id de la carte dont on veux les PNJ
+     * @return une array list contenant les différent PNJ
+     */
+    public ArrayList<PNJ> chargementPnjOnMap(int idMap) {
+        ArrayList<PNJ> aRetourner = new ArrayList<>();
+        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.PNJ + ";" + RequeteServeur.MAP + ":" + idMap;
+
+        System.out.println(requete);
+
+        try {
+            envoi(new RequeteServeur(requete));
+            aRetourner = (ArrayList<PNJ>) Tools.decodeString((String) reception());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(aRetourner);
+        return aRetourner;
+    }
+
+    /**
+     * Envoi un demande au serveur pour créer un personnage, puis envoi le personnage de se client. Le serveur revoi
+     * ensuite l'ID du personnage.
+     */
+    public void createPersonnage() {
+        String requete = RequeteServeur.CREATE + ";" + RequeteServeur.PERSONNAGE + ";";
+
+        try {
+            envoi(new RequeteServeur(requete));
+            envoi(personnage);
+
+            personnage.setId((int) reception());
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String lectureIpServeur() {
+        return Tools.readXMLElement("res/option.xml", "ipServeur");
+    }
+
+    public boolean socketIsClosed() {
+        return socket.isClosed();
+    }
+
+    public void connectionServeur() throws IOException {
+        InetAddress adresseServeur = null;
+        adresseServeur = InetAddress.getByName(lectureIpServeur());
+        socket = new Socket(adresseServeur, PORT);
+        entree = new ObjectInputStream(socket.getInputStream());
+        sortie = new ObjectOutputStream(socket.getOutputStream());
+    }
+
+    /**
+     * Gere l'envoi d'objet par socket
+     * @param objet a envoyer
+     */
+    private void envoi(Object objet) throws IOException {
+        sortie.writeObject(objet);
+        sortie.flush();
+    }
+
+    /**
+     * Receptionne des donnée du serveurs
+     * @return l'objets reçu
+     */
+    private Object reception() {
+        Object aRetourner = new Object();
+        try {
+            aRetourner = entree.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            JFrame jFrame = new JFrame();
+            JOptionPane.showMessageDialog(jFrame, "Serveur déconnecté!");
         }
 
         return aRetourner;
@@ -304,39 +290,4 @@ public class Client {
         return personnage;
     }
 
-    private String lectureIpServeur() {
-        return XMLTools.readXMLElement("res/option.xml", "ipServeur");
-    }
-
-    public void createPersonnage() {
-        String requete = RequeteServeur.CREATE + ";" + RequeteServeur.PERSONNAGE + ";";
-
-        try {
-            envoi(new RequeteServeur(requete));
-            envoi(personnage);
-
-            personnage.setId((int) reception());
-        }  catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void chargementStuffBase() {
-        ArrayList<Objet> aRetourner;
-        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.STUFF_BASE + ";";
-        try {
-            envoi(new RequeteServeur(requete));
-            aRetourner = (ArrayList) reception();
-
-            personnage.setStuffTete(aRetourner.get(0));
-            personnage.setStuffTorse(aRetourner.get(1));
-            personnage.setStuffGant(aRetourner.get(2));
-            personnage.setStuffJambe(aRetourner.get(3));
-            personnage.setStuffBotte(aRetourner.get(4));
-            personnage.setStuffArme(aRetourner.get(5));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

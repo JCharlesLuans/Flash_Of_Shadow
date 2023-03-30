@@ -7,6 +7,7 @@ package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.thunderbot.FOS.client.ChaosRevolt;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 
 /**
@@ -17,7 +18,7 @@ import org.thunderbot.FOS.client.gameState.world.Carte;
  */
 public class Camera {
 
-    private Personnage personnage; // Personnage que doit suivre la camera
+    private PersonnageJoueurClient personnageJoueurClient; // Personnage que doit suivre la camera
 
     private float positionX;  // Position X du centre de la camera
     private float positionY;  // Position Y du centre de la camera
@@ -26,17 +27,17 @@ public class Camera {
      * Initialisation d'une nouvelle camera avec un personnage null
      */
     public Camera() {
-        personnage = null;
+        personnageJoueurClient = null;
     }
 
     /**
      * Iitialisation d'une nouvelle camera avec un personnage passé en paramettre
-     * @param newPersonnage personnage que suivra la camera
+     * @param newPersonnageJoueurClient personnage que suivra la camera
      */
-    public Camera(Personnage newPersonnage) {
-        this.personnage = newPersonnage;
-        this.positionX = personnage.getPositionX();
-        this.positionY = personnage.getPositionY();
+    public Camera(PersonnageJoueurClient newPersonnageJoueurClient) {
+        this.personnageJoueurClient = newPersonnageJoueurClient;
+        this.positionX = personnageJoueurClient.getPositionX();
+        this.positionY = personnageJoueurClient.getPositionY();
     }
 
     /**
@@ -54,24 +55,27 @@ public class Camera {
         if (positionX < largeurCarte - demiEcranLarg) {
 
             if (positionX > demiEcranLarg) {
-                positionX = personnage.getPositionX();
-            } else if (personnage.getDirection() == PersonnageJoueur.DROITE && personnage.getPositionX() > demiEcranLarg) {
-                positionX = personnage.getPositionX();
+                positionX = personnageJoueurClient.getPositionX();
+            } else if (personnageJoueurClient.getDirection() == Personnage.DROITE && personnageJoueurClient.getPositionX() > demiEcranLarg) {
+                positionX = personnageJoueurClient.getPositionX();
             }
-        } else if (personnage.getDirection() == PersonnageJoueur.GAUCHE && personnage.getPositionX() < largeurCarte - demiEcranLarg) {
-            positionX = personnage.getPositionX();
+        } else if (personnageJoueurClient.getDirection() == Personnage.GAUCHE && personnageJoueurClient.getPositionX() < largeurCarte - demiEcranLarg) {
+            positionX = personnageJoueurClient.getPositionX();
         }
 
         if (positionY < hauteurCarte - demiEcranHaut) {
 
             if (positionY > demiEcranHaut) {
-                positionY = personnage.getPositionY();
-            } else if (personnage.getDirection() == PersonnageJoueur.BAS && personnage.getPositionY() > demiEcranHaut) {
-                positionY = personnage.getPositionY();
+                positionY = personnageJoueurClient.getPositionY();
+            } else if (personnageJoueurClient.getDirection() == Personnage.BAS && personnageJoueurClient.getPositionY() > demiEcranHaut) {
+                positionY = personnageJoueurClient.getPositionY();
             }
-        } else if (personnage.getDirection() == PersonnageJoueur.HAUT && personnage.getPositionY() < hauteurCarte - demiEcranHaut) {
-            positionY = personnage.getPositionY();
+        } else if (personnageJoueurClient.getDirection() == Personnage.HAUT && personnageJoueurClient.getPositionY() < hauteurCarte - demiEcranHaut) {
+            positionY = personnageJoueurClient.getPositionY();
         }
+
+        personnageJoueurClient.getGui().setX((int) positionX);
+        personnageJoueurClient.getGui().setY((int) positionY);
     }
 
     private void updateChangementCarte(Carte carte, int demiEcranLarg, int demiEcranHaut) {
@@ -87,8 +91,8 @@ public class Camera {
         if (carte.getChangeCarte()) {
             /* Recadrage de la camera */
             // Déplacement du centre de la camera au coordonnée du joueur
-            positionX = personnage.getPositionX() - 32;
-            positionY = personnage.getPositionY() + 60;
+            positionX = personnageJoueurClient.getPositionX() - 32;
+            positionY = personnageJoueurClient.getPositionY() + 60;
 
             // Application d'un delta si la camera dépasse la limite de la carte
 
@@ -127,4 +131,11 @@ public class Camera {
                            gameContainer.getHeight() / 2f -  positionY);
     }
 
+    public float getPositionX() {
+        return positionX;
+    }
+
+    public float getPositionY() {
+        return positionY;
+    }
 }

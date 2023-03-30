@@ -1,11 +1,16 @@
 package org.thunderbot.FOS.client.gameState.world;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
+import org.thunderbot.FOS.client.gameState.MapGameState;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.Map;
+import org.thunderbot.FOS.database.beans.PNJ;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,7 +28,7 @@ public class Carte extends Map {
 
     private String nomMap;
 
-    private int niveau;
+    private ArrayList<PersonnageNonJoueur> listePnj;
 
     private boolean changeCarte; // Indique si la map change
 
@@ -39,12 +44,6 @@ public class Carte extends Map {
         nomMap = "map_campagne_ThunderSun.tmx";
     }
 
-    public Carte(String nom) throws SlickException {
-        initialiseMap("src/Ressources/Map/" + nom);
-        tiledMap = new TiledMap("Ressources/Map/" + nom);
-        nomMap = nom;
-    }
-
     /**
      * Fait le rendu du foreground de la map
      */
@@ -55,6 +54,12 @@ public class Carte extends Map {
         tiledMap.render(0 ,0, 3); // background 2
     }
 
+    public void renderPnj(Graphics graphics) {
+        for (int i = 0; i < listePnj.size(); i++) {
+            listePnj.get(i).render(graphics);
+        }
+    }
+
     /**
      * Fait le rendu du foreground de la map
      */
@@ -63,9 +68,15 @@ public class Carte extends Map {
         tiledMap.render(0,0,5); // overground 2
     }
 
+    public void updatePnj(int delta) {
+        for (int i = 0; i < listePnj.size(); i++) {
+            listePnj.get(i).update(this, delta);
+        }
+    }
+
     /**
      * Réecrit le fichier de map pour qu'il sois lisible par Slick
-     * (ajoute a l'attribut objectgroup une auteur et une largeur)
+     * (ajoute a l'attribut objectgroup une hauteur et une largeur)
      * @param cheminMap : chemin du fichier map a réécrire
      */
     static void initialiseMap(String cheminMap) {
@@ -147,16 +158,17 @@ public class Carte extends Map {
      * @throws SlickException
      */
     public void changeMap(String nom, Client client) throws SlickException {
+
+        listePnj = new ArrayList<>();
         Map map = client.chargementCarte(nom);
+        ArrayList<PNJ> listeDataPnj = client.chargementPnjOnMap(map.getId());
         System.out.println("Chargement de la carte depuis le serveur : " + map);
 
-        String chemin = "res/carte/" + nom;
-        initialiseMap(chemin);
-        tiledMap = new TiledMap(chemin);
-        nomMap = nom;
-    }
+        for (int i = 0; i < listeDataPnj.size(); i++) {
+            listePnj.add(new PersonnageNonJoueur(listeDataPnj.get(i)));
+        }
 
-    public void changeMap(String nom) throws SlickException {
+
         String chemin = "res/carte/" + nom;
         initialiseMap(chemin);
         tiledMap = new TiledMap(chemin);
@@ -230,5 +242,18 @@ public class Carte extends Map {
         return nomMap;
     }
 
-    public int getNiveau() {return niveau;}
+
+    /**
+     * Appeller par la gameState lorsque l'on fait un click pour tester les différente possibiliter de clique sur la
+     * carte
+     * @param mapGameState
+     * @param x position en x du curseur de la souris
+     * @param y position en y du curseur de la souris
+     * @param personnage personnage qui fait l'action
+     */
+    public void mouseClicked(MapGameState mapGameState, int x, int y, PersonnageJoueurClient personnage) {
+        for (int i = 0; i < listePnj.size(); i++) {
+            listePnj.get(i).mouseClicked(mapGameState, x, y);
+        }
+    }
 }

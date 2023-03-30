@@ -323,6 +323,8 @@ public class FosDAO {
 
           aRetourner.setId(rs.getInt(OBJET_CLE));
           aRetourner.setNom(rs.getString(OBJET_NOM));
+          aRetourner.setDesc(rs.getString(OBJET_DESC));
+          aRetourner.setEquipableParClasse(rs.getInt(OBJET_ID_CLASSE));
           aRetourner.setEmplacement(rs.getInt(OBJET_EMPLACEMENT));
           aRetourner.setStatAgilite(rs.getInt(OBJET_STAT_AGILITE));
           aRetourner.setStatArmure(rs.getInt(OBJET_STAT_ARMURE));
@@ -407,40 +409,68 @@ public class FosDAO {
         return aRetourner;
     }
 
-    public ArrayList<Objet> getListeStuffBase() {
-        ArrayList<Objet> list = new ArrayList<>();
 
-        String requete = "SELECT * FROM " + NOM_TABLE_OBJET + " WHERE " + OBJET_CLE + " <= 7 AND " + OBJET_CLE + " > 1";
-        ResultSet resultSet = gestionnaireBase.executeRequete(requete);
 
+    public ArrayList<PNJ> getPnjByIdmap(String id) {
+        ArrayList<PNJ> aRetourner = new ArrayList<>();
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_PNJ + " WHERE " + PNJ_CLE_MAP + " = " + id + ";";
         try {
-            while (resultSet.next()) {
 
-                Objet aRetourner  = new Objet();
-
-                ResultSet rs = gestionnaireBase.executeRequete(requete);
-
-                aRetourner.setId(rs.getInt(OBJET_CLE));
-                aRetourner.setNom(rs.getString(OBJET_NOM));
-                aRetourner.setEmplacement(rs.getInt(OBJET_EMPLACEMENT));
-                aRetourner.setStatAgilite(rs.getInt(OBJET_STAT_AGILITE));
-                aRetourner.setStatArmure(rs.getInt(OBJET_STAT_ARMURE));
-                aRetourner.setStatDexterite(rs.getInt(OBJET_STAT_DEXTERITE));
-                aRetourner.setStatEndurance(rs.getInt(OBJET_STAT_ENDURANCE));
-                aRetourner.setStatForce(rs.getInt(OBJET_STAT_FORCE));
-                aRetourner.setStatIntelligence(rs.getInt(OBJET_STAT_INTELLIGENCE));
-                aRetourner.setStatSagesse(rs.getInt(OBJET_STAT_SAGESSE));
-                aRetourner.setDps(rs.getInt(OBJET_DPS));
-                aRetourner.setImage(rs.getString(OBJET_IMAGE));
-
-                list.add(aRetourner);
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+            while (rs.next()) {
+                PNJ tmp = new PNJ();
+                tmp.setId(rs.getInt(PNJ_CLE));
+                tmp.setNom(rs.getString(PNJ_NOM));
+                tmp.setSprite(rs.getString(PNJ_SPRITE));
+                tmp.setAgressif(rs.getInt(PNJ_AGRESSIF));
+                tmp.setStatArmure(rs.getInt(PNJ_STAT_ARMURE));
+                tmp.setStatAgilite(rs.getInt(PNJ_STAT_AGILITE));
+                tmp.setStatDexterite(rs.getInt(PNJ_STAT_DEXTERITE));
+                tmp.setStatEndurance(rs.getInt(PNJ_STAT_ENDURANCE));
+                tmp.setStatForce(rs.getInt(PNJ_STAT_FORCE));
+                tmp.setStatInteligence(rs.getInt(PNJ_STAT_INTELLIGENCE));
+                tmp.setStatSagesse(rs.getInt(PNJ_STAT_SAGESSE));
+                tmp.setIdMap(rs.getInt(PNJ_CLE_MAP));
+                tmp.setIdFaction(rs.getInt(PNJ_CLE_FACTION));
+                tmp.setIdTitre(rs.getInt(PNJ_CLE_TITRE));
+                aRetourner.add(tmp);
             }
+            rs.close();
 
-            resultSet.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        return list;
+        return aRetourner;
+    }
+
+    public ArrayList<Competence> getCompetenceAll() {
+        ArrayList<Competence> aRetourner = new ArrayList<>();
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_COMPETENCE + ";";
+        try {
+
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+            while (rs.next()) {
+                Competence tmp = new Competence();
+                tmp.setId(rs.getInt(COMPETENCE_CLE));
+                tmp.setNom(rs.getString(COMPETENCE_NOM));
+                tmp.setDegaBase(rs.getInt(COMPETENCE_DEGAT_BASE));
+                tmp.setIdEffet(rs.getInt(COMPETENCE_ID_EFFET));
+                tmp.setImage(rs.getString(COMPETENCE_ID_IMAGE));
+                aRetourner.add(tmp);
+            }
+            rs.close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
+    public HelperBD getGestionnaireBase() {
+        return gestionnaireBase;
     }
 }

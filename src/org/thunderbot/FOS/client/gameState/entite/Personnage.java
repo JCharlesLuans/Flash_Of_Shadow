@@ -1,8 +1,3 @@
-/*
- * Personnage.java             24/05/2021
- * Copyright et copyleft TNLag Corp.
- */
-
 package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.Animation;
@@ -10,37 +5,74 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.thunderbot.FOS.client.gameState.world.Carte;
-import org.thunderbot.FOS.client.network.Client;
 
 /**
- * Personnage du client
- *
- * @author J-Charles Luans
- * @version 1.0
+ * Représente un personnage, qu'il soit joueur ou non joueur.
  */
-public class Personnage extends PersonnageJoueur {
+public class Personnage {
+    public static final int HAUT = 0;
+    public static final int GAUCHE = 1;
+    public static final int BAS = 2;
+    public static final int DROITE = 3;
 
-    /** Client pour la connection avec le serveur */
-    Client client;
+    /**
+     * Indique si le personnage se deplace ou non
+     */
+    protected boolean moving = false;
 
-    /** Annimations du personnages */
-    private Animation[] animations = new Animation[8];
+    /**
+     * Position en X
+     */
+    protected float positionX;
+
+    /**
+     * Position en Y
+     */
+    protected float positionY;
+
+    /**
+     * Direction vers laquelle va le personnage
+     */
+    protected int direction;
+
+    /**
+     * Carte sur laquelle se situe le personnage
+     */
+    protected String nom;
+
+    /**
+     * Animation générer a partir du sprite du personnage
+     */
+    protected Animation[] animations = new Animation[8];
 
     /**  Inidique si le personnage est sur un escalier ou pas */
     private boolean escalierDroite,
                     escalierGauche;
 
+    /** Indique si le personnage subit une colision */
+    protected boolean collision;
+
+    /** Indique si le personnage est en combat */
+    protected boolean enCombat;
+
     /**
-     * Nouveau personnage joueur de ce client
-     * @throws SlickException
-     * @param client de jeu pour la communication avec le serveur
+     * Charge une animations a partir d'une sprite sheet, en indiquant les début de l'annimation et la fin
+     *
+     * @param spriteSheet
+     * @param startX
+     * @param endX
+     * @param y
+     * @return l'annimation
      */
-    public Personnage(Client client) throws SlickException {
-        super();
+    public static Animation loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int y) {
+        Animation animation = new Animation();
+        for (int x = startX; x < endX; x++) {
+            animation.addFrame(spriteSheet.getSprite(x, y), 100);
+        }
+        return animation;
+    }
 
-        this.client = client;
-
-        SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/personnage.png", 64, 64);
+    public void loadAnimation(SpriteSheet spriteSheet) {
         this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
         this.animations[1] = loadAnimation(spriteSheet, 0, 1, 1);
         this.animations[2] = loadAnimation(spriteSheet, 0, 1, 2);
@@ -51,28 +83,9 @@ public class Personnage extends PersonnageJoueur {
         this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
     }
 
-    /**
-     * Affichage du personnage jouuer sur le client
-     * @param graphics graphic sur lequel afficher le personnage
-     */
-    public void render(Graphics graphics) {
-
-        // Application d'un delta pour les collisions
-        float positionAnimationX = positionX-32;
-        float positionAnimationY = positionY-60;
-
-        graphics.drawAnimation(animations[direction + (moving ? 4 : 0)],positionAnimationX , positionAnimationY);
-    }
-
-    /**
-     * Update le du client
-     * @param carte Map sur laquelle evolue le personnage
-     * @param delta
-     */
     public void update(Carte carte, int delta) {
-
         float futurX,
-              futurY;
+                futurY;
 
         updateTrigger(carte);
 
@@ -82,19 +95,13 @@ public class Personnage extends PersonnageJoueur {
             futurX = getFuturX(delta);
             futurY = getFuturY(delta);
 
+            collision = carte.isCollision(futurX, futurY);
             // Gestion des collisions avec un mur
-            if (!carte.isCollision(futurX, futurY)) {
+            if (!collision) {
                 positionX = futurX;
                 positionY = futurY;
             }
-
         }
-
-        client.getPersonnage().setX(positionX);
-        client.getPersonnage().setY(positionY);
-        client.getPersonnage().setDirection(direction);
-        client.getPersonnage().setMoving(moving);
-
     }
 
     /**
@@ -109,27 +116,23 @@ public class Personnage extends PersonnageJoueur {
             if (carte.isInTrigger(positionX, positionY, objectID)) {
                 escalierGauche = "escalierGauche".equals(carte.getObjectType(objectID));
                 escalierDroite = "escalierDroite".equals(carte.getObjectType(objectID));
-
-                if ("changementMap".equals(carte.getObjectType(objectID))) {
-                    String newMap = carte.getObjectProperty(objectID, "destiMap", "undefine");
-                    positionX = Integer.parseInt(carte.getObjectProperty(objectID, "destiX", "undefinine"));
-                    positionY = Integer.parseInt(carte.getObjectProperty(objectID, "destiY", "undefinine"));
-
-                    try {
-                        nomCarte = newMap;
-                        carte.changeMap(newMap, client);
-                        carte.setChangeCarte(true);
-                    } catch (SlickException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
             }
         }
     }
 
+    /**
+     * Affichage du personnage sur le graphics passer en parametre
+     *
+     * @param graphics graphic sur lequel afficher le personnage
+     */
+    public void render(Graphics graphics) {
+        // Application d'un delta pour les collisions
+        float positionAnimationX = positionX - 32;
+        float positionAnimationY = positionY - 60;
 
+        graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionAnimationX, positionAnimationY);
+        graphics.drawString(nom, positionX - graphics.getFont().getWidth(nom) / 2, positionY - 65);
+    }
 
     /**
      * @param delta
@@ -189,10 +192,47 @@ public class Personnage extends PersonnageJoueur {
         return futurY;
     }
 
-    /**
-     * @param moving nouvelle état de moving
-     */
+    public float getPositionX() {
+        return positionX;
+    }
+
+    public float getPositionY() {
+        return positionY;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+
+    public String toString() {
+        return "ServPersonnage(" + nom + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
     }
 }

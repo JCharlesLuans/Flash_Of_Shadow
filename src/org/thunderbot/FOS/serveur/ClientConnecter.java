@@ -18,14 +18,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * TODO ecrire Java Doc
+ * Representation d'un client connecter au serveur, encapsulant son personnage
  *
  * @author Jean-Charles Luans
  */
 public class ClientConnecter {
 
     private Socket socket;
-    private Personnage personnage;
+    private Personnage personnage; /** Personnage correspondant au client connecter */
 
     private ObjectInputStream entree;
     private ObjectOutputStream sortie;
@@ -40,6 +40,15 @@ public class ClientConnecter {
         sortie = new ObjectOutputStream(socket.getOutputStream());
         entree = new ObjectInputStream(socket.getInputStream());
         personnage = new Personnage();
+    }
+
+    public void clientClose() {
+        try {
+            sortie.close();
+            entree.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Socket getSocket() {

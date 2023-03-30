@@ -1,14 +1,16 @@
 package org.thunderbot.FOS.client.gameState.phisique;
 
-import org.newdawn.slick.ControllerListener;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.KeyListener;
-import org.thunderbot.FOS.client.gameState.entite.Personnage;
+import org.newdawn.slick.*;
+import org.thunderbot.FOS.client.combatState.CombatGameState;
+import org.thunderbot.FOS.client.gameState.MapGameState;
+import org.thunderbot.FOS.client.gameState.entite.Camera;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
+import org.thunderbot.FOS.client.gameState.world.Carte;
 
 /**
  * Objet de controle d'un personnage
  */
-public class PersonnageController implements KeyListener, ControllerListener {
+public class PersonnageController implements KeyListener, ControllerListener, MouseListener {
 
     /* Indique les position */
     private static final int HAUT = 0,
@@ -16,10 +18,18 @@ public class PersonnageController implements KeyListener, ControllerListener {
             BAS = 2,
             DROITE = 3;
 
-    Personnage personnage; // Personnage a faire bouger
+    MapGameState mapGameState;
+    GameContainer gameContainer;
+    PersonnageJoueurClient personnageJoueurClient; // Personnage a faire bouger
+    Carte carte; // Carte avec laquelle le joueur interagie avec son curseur
+    Camera camera;
 
-    public PersonnageController(Personnage personnage) {
-        this.personnage = personnage;
+    public PersonnageController(MapGameState mapGameState) {
+        this.mapGameState = mapGameState;
+        this.personnageJoueurClient = mapGameState.getJoueur();
+        this.carte = mapGameState.getCarte();
+        this.camera = mapGameState.getCamera();
+        this.gameContainer = mapGameState.getGameContainer();
     }
 
 
@@ -27,61 +37,67 @@ public class PersonnageController implements KeyListener, ControllerListener {
     public void keyPressed(int key, char c) {
         switch (key) {
             case Input.KEY_Z:
-                personnage.setDirection(HAUT);
-                personnage.setMoving(true);
+                personnageJoueurClient.setDirection(HAUT);
+                personnageJoueurClient.setMoving(true);
                 break;
             case Input.KEY_Q:
-                personnage.setDirection(GAUCHE);
-                personnage.setMoving(true);
+                personnageJoueurClient.setDirection(GAUCHE);
+                personnageJoueurClient.setMoving(true);
                 break;
             case Input.KEY_S:
-                personnage.setDirection(BAS);
-                personnage.setMoving(true);
+                personnageJoueurClient.setDirection(BAS);
+                personnageJoueurClient.setMoving(true);
                 break;
             case Input.KEY_D:
-                personnage.setDirection(DROITE);
-                personnage.setMoving(true);
+                personnageJoueurClient.setDirection(DROITE);
+                personnageJoueurClient.setMoving(true);
                 break;
+            case Input.KEY_ESCAPE:
+                if (personnageJoueurClient.getGui().getMenu().isActive()) {
+                    personnageJoueurClient.getGui().getMenu().fermer();
+                } else {
+                    personnageJoueurClient.getGui().getMenu().ouvrir();
+                }
         }
     }
 
     @Override
     public void keyReleased(int key, char c) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
 
 
     public void controllerLeftPressed(int controller) {
-        personnage.setDirection(GAUCHE);
-        personnage.setMoving(true);
+        personnageJoueurClient.setDirection(GAUCHE);
+        personnageJoueurClient.setMoving(true);
     }
     public void controllerLeftReleased(int controller) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
     public void controllerRightPressed(int controller) {
-        personnage.setDirection(DROITE);
-        personnage.setMoving(true);
+        personnageJoueurClient.setDirection(DROITE);
+        personnageJoueurClient.setMoving(true);
     }
     public void controllerRightReleased(int controller) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
     public void controllerUpPressed(int controller) {
-        personnage.setDirection(HAUT);
-        personnage.setMoving(true);
+        personnageJoueurClient.setDirection(HAUT);
+        personnageJoueurClient.setMoving(true);
     }
     public void controllerUpReleased(int controller) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
     public void controllerDownPressed(int controller) {
-        personnage.setDirection(BAS);
-        personnage.setMoving(true);
+        personnageJoueurClient.setDirection(BAS);
+        personnageJoueurClient.setMoving(true);
     }
     public void controllerDownReleased(int controller) {
-        personnage.setMoving(false);
+        personnageJoueurClient.setMoving(false);
     }
 
     @Override
@@ -112,6 +128,48 @@ public class PersonnageController implements KeyListener, ControllerListener {
 
     @Override
     public void inputStarted() {
+
+    }
+
+    @Override
+    public void mouseWheelMoved(int i) {
+
+    }
+
+    @Override
+    public void mouseClicked(int button, int x, int y, int nbClick) {
+        personnageJoueurClient.getGui().mouseClicked(x, y);
+
+        // Rectification du X par rapport a la camera
+        x += camera.getPositionX() - gameContainer.getWidth() / 2;
+        y += camera.getPositionY() - gameContainer.getHeight() / 2;
+
+        personnageJoueurClient.mouseClicked(x, y);
+        carte.mouseClicked(mapGameState ,x, y);
+        mapGameState.getFenetreCombat().mouseClicked(button, x, y, nbClick);
+
+        if (mapGameState.getFenetreCombat().isOui()) {
+            mapGameState.getStateBasedGame().enterState(CombatGameState.ID);
+        }
+    }
+
+    @Override
+    public void mousePressed(int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void mouseReleased(int i, int x, int y) {
+
+    }
+
+    @Override
+    public void mouseMoved(int i, int x, int y, int i3) {
+        personnageJoueurClient.getGui().mouseMouved(i, x, y, i3);
+    }
+
+    @Override
+    public void mouseDragged(int i, int i1, int i2, int i3) {
 
     }
 }

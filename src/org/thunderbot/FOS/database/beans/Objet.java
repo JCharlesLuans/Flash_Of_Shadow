@@ -16,7 +16,9 @@ public class Objet implements Serializable {
 
     private int id;
     private String nom;
+    private String desc;
     private int emplacement;
+    private int equipableParClasse;
     private int statAgilite;
     private int statArmure;
     private int statDexterite;
@@ -30,7 +32,9 @@ public class Objet implements Serializable {
     public Objet() {
         id = -1;
         nom = "";
+        desc = "";
         emplacement = -1;
+        equipableParClasse = -1;
         statAgilite = -1;
         statArmure = -1;
         statDexterite = -1;
@@ -42,10 +46,12 @@ public class Objet implements Serializable {
         image = "";
     }
 
-    public Objet(int id, String nom, int emplacement, int statAgilite, int statArmure, int statDexterite,int statEndurance, int statForce, int statIntelligence, int statSagesse, int dps, String image) {
+    public Objet(int id, String nom, String desc, int emplacement, int equipableParClasse, int statAgilite, int statArmure, int statDexterite,int statEndurance, int statForce, int statIntelligence, int statSagesse, int dps, String image) {
         this.id = id;
         this.nom = nom;
+        this.desc = desc;
         this.emplacement = emplacement;
+        this.equipableParClasse = equipableParClasse;
         this.statAgilite = statAgilite;
         this.statArmure = statArmure;
         this.statDexterite = statDexterite;
@@ -73,12 +79,28 @@ public class Objet implements Serializable {
         this.nom = nom;
     }
 
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
     public int getEmplacement() {
         return emplacement;
     }
 
     public void setEmplacement(int emplacement) {
         this.emplacement = emplacement;
+    }
+
+    public int getEquipableParClasse() {
+        return this.equipableParClasse;
+    }
+
+    public void setEquipableParClasse(int equipableParClasse) {
+        this.equipableParClasse = equipableParClasse;
     }
 
     public int getStatAgilite() {
@@ -158,7 +180,9 @@ public class Objet implements Serializable {
         return "Objet{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
+                ", desc='" + desc + '\'' +
                 ", emplacement=" + emplacement +
+                ", equipableParClasse=" + equipableParClasse +
                 ", statAgilite=" + statAgilite +
                 ", statArmure=" + statArmure +
                 ", statDexterite=" + statDexterite +

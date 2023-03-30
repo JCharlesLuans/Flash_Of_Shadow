@@ -4,17 +4,20 @@ import java.io.Serializable;
 
 public class RequeteServeur implements Serializable {
 
+    /* Motif */
     public static final String CHARGEMENT = "chargement";
     public static final String CREATE = "creation";
     public static final String DECONNEXION = "deconnexion";
     public static final String UPDATE = "update";
 
-    public static final String MAP ="map";
-    public static final String CLASSE ="classe";
-    public static final String FACTION = "faction";
-    public static final String PERSONNAGE = "personnage";
+    /* Objet */
+    public static final String MAP ="Map";
+    public static final String CLASSE ="Classe";
+    public static final String FACTION = "Faction";
+    public static final String PERSONNAGE = "Personnage";
     public static final String STUFF_BASE = "stuffDefaut";
-    public static final String MOUVEMENT = "moove";
+    public static final String MOUVEMENT = "move";
+    public static final String PNJ = "PersonnageNonJoueur";
 
 
     private String requete;
@@ -33,5 +36,12 @@ public class RequeteServeur implements Serializable {
 
     public String getCle() {
         return requete.split(";")[2];
+    }
+
+    @Override
+    public String toString() {
+        return "RequeteServeur{" +
+                "requete='" + requete + '\'' +
+                '}';
     }
 }
