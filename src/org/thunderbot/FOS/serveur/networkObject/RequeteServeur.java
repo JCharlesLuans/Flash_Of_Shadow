@@ -19,7 +19,6 @@ public class RequeteServeur implements Serializable {
     public static final String MOUVEMENT = "move";
     public static final String PNJ = "PersonnageNonJoueur";
 
-
     private String requete;
 
     public RequeteServeur(String requeteServeur) {

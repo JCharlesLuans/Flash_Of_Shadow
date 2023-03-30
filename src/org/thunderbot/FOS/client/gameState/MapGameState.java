@@ -11,14 +11,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.gameState.GUI.Gui;
-import org.thunderbot.FOS.client.gameState.entite.Camera;
-import org.thunderbot.FOS.client.gameState.entite.Personnage;
-import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
-import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueur;
+import org.thunderbot.FOS.client.gameState.entite.*;
 import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUpChoix;
+import org.thunderbot.FOS.database.beans.PNJ;
 
 import java.util.ArrayList;
 
@@ -44,6 +42,7 @@ public class MapGameState extends BasicGameState {
     /** Client pour la communication multijoueur et liste des joueurs connecter */
     private Client client;
     private ArrayList<Personnage> listeJoueur;
+    private ArrayList<PersonnageNonJoueur> listePNJ;
 
     /** Personnage */
     private PersonnageJoueurClient joueur;
@@ -76,6 +75,7 @@ public class MapGameState extends BasicGameState {
         this.gameContainer = gameContainer;
         this.fenetreCombat = new FenetrePopUpChoix(INF_COMBAT);
         listeJoueur = new ArrayList<>();
+        listePNJ = new ArrayList<>();
         listePersonnageAJour = new ArrayList<>();
         carte = new Carte();
     }
@@ -109,12 +109,16 @@ public class MapGameState extends BasicGameState {
         carte.renderBackground();
         joueur.render(graphics);
 
-        carte.renderPnj(graphics);
-
         // Affichage des autres joueur
         if (listeJoueur.size() > 0) {
             for (int i = 0; i < listeJoueur.size(); i++) {
                 listeJoueur.get(i).render(graphics);
+            }
+        }
+
+        if (listePNJ.size() > 0) {
+            for (int i = 0; i < listePNJ.size(); i++) {
+                listePNJ.get(i).render(graphics);
             }
         }
 
@@ -131,9 +135,7 @@ public class MapGameState extends BasicGameState {
             joueur.update(carte, delta);
             camera.update(container, carte);
             updateListeJoueur(client.updateServeurMouvementJoueurs()); //Envoi des data au joueur local
-
-            // Update des PNJ
-            carte.updatePnj(delta);
+            updateListePNJ(client.updateServeurMouvementPNJ());
         }
 
 
@@ -165,6 +167,14 @@ public class MapGameState extends BasicGameState {
             Personnage tmp = new PersonnageJoueur(listeDistante.get(i).getNom(), listeDistante.get(i).getDirection(), listeDistante.get(i).getX(), listeDistante.get(i).getY(), listeDistante.get(i).getSprite());
             tmp.setMoving(listeDistante.get(i).isMoving());
             listeJoueur.add(tmp);
+        }
+    }
+
+    public void updateListePNJ(ArrayList<PNJ> listeDistante) throws SlickException {
+        listePNJ = new ArrayList<>();
+        for (int i = 0; i < listeDistante.size(); i++) {
+            PersonnageNonJoueur tmp = new PersonnageNonJoueur(listeDistante.get(i));
+            listePNJ.add(tmp);
         }
     }
 

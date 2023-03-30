@@ -274,7 +274,12 @@ public class Serveur extends Thread {
             case RequeteServeur.UPDATE:
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.MOUVEMENT:
-                        updateMouvement();
+                        updateMouvementJoueurs();
+                        break;
+
+                    case RequeteServeur.PNJ:
+                        updateMouvementPNJ();
+                        break;
                 }
                 break;
 
@@ -333,11 +338,15 @@ public class Serveur extends Thread {
         sortie.flush();
     }
 
-    private void updateMouvement() {
+    private void updateMouvementJoueurs() {
         me.setPersonnage((Personnage) receptionXML());
 
         // Renvoi la liste des joueurs, ainsi que leurs position actuelles
         envoiXML(listePersonnageConnecter(me.getPersonnage().getMap().getId()));
+    }
+
+    private void updateMouvementPNJ() {
+        envoiXML(iaServeur.getPnjByMap(me.getPersonnage().getMap().getId()));
     }
 
     /**

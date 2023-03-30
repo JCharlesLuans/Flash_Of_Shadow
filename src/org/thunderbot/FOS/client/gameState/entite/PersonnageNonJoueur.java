@@ -24,8 +24,8 @@ public class PersonnageNonJoueur extends Personnage{
 
     public PersonnageNonJoueur(PNJ pnj) throws SlickException {
         this.moving = true;
-        this.positionX = 640;
-        this.positionY = 400;
+        this.positionX = pnj.getX();
+        this.positionY = pnj.getY();
         this.nom = pnj.getNom();
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/pnj/" + pnj.getSprite(), 64, 64 );
         loadAnimation(spriteSheet);
@@ -36,7 +36,6 @@ public class PersonnageNonJoueur extends Personnage{
     }
 
     public void update(Carte carte, int delta) {
-        super.update(carte, delta);
 
         timer += delta;
 

@@ -54,24 +54,12 @@ public class Carte extends Map {
         tiledMap.render(0 ,0, 3); // background 2
     }
 
-    public void renderPnj(Graphics graphics) {
-        for (int i = 0; i < listePnj.size(); i++) {
-            listePnj.get(i).render(graphics);
-        }
-    }
-
     /**
      * Fait le rendu du foreground de la map
      */
     public void renderForeground() {
         tiledMap.render(0,0,4); // overground
         tiledMap.render(0,0,5); // overground 2
-    }
-
-    public void updatePnj(int delta) {
-        for (int i = 0; i < listePnj.size(); i++) {
-            listePnj.get(i).update(this, delta);
-        }
     }
 
     /**
@@ -124,6 +112,77 @@ public class Carte extends Map {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * Permet de recuperer les position des objets colision dans le XML d'une map, afin de pouvoir simuler les
+     * deplacement des PNJ
+     * @param nomCarte => Nom de la carte dont on cherche a avoir les colisions
+     * @return
+     */
+    public static int[][] getColisionObject(String nomCarte) {
+        BufferedReader lecteurAvecBuffer = null;
+
+        String chemin = "res/carte/" + nomCarte;
+        String nomBalise = "objectgroup";
+        String attribut = "colision";
+
+        int compteurLigne = 0;
+        int compteurValeur = 0;
+        int[][] aRetourner;
+        ArrayList<Integer> valeurs = new ArrayList<>();
+
+        String ligne;
+        String resultat = "";
+
+        try {
+            lecteurAvecBuffer = new BufferedReader(new FileReader(chemin));
+            while ((ligne = lecteurAvecBuffer.readLine()) != null) {
+
+                if (ligne.contains(nomBalise) && ligne.contains(attribut)) {
+                    while ((ligne = lecteurAvecBuffer.readLine()) != null && !(ligne.contains("</"))) {
+                        resultat += ligne + "\n";
+
+                        compteurLigne++; // Connaitre le nombre de ligne
+                    }
+                }
+            }
+            lecteurAvecBuffer.close();
+        } catch(FileNotFoundException exc) {
+            System.out.println("Erreur d'ouverture");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        resultat = resultat.replaceAll("\"", "");
+        resultat = resultat.replaceAll("/", " ");
+        resultat = resultat.replaceAll("=", " ");
+
+        String[] splited = resultat.split(" ");
+
+        for (String current : splited) {
+            try {
+                //tenter de convertir le mot en int
+                int parsedInt = Integer.parseInt(current);
+                //ajouter l Integer à la list
+                valeurs.add(parsedInt);                    //un "auto boxing", une instance de Integer est créée à partir d'un int
+
+            } catch (NumberFormatException e) {
+                //c est pas un int
+            }
+        }
+
+        aRetourner = new int[compteurLigne][5];
+        for (int i = 0; i < compteurLigne; i++) {
+            for (int j = 0; j < 5; j++) {
+                aRetourner[i][j] = valeurs.get(compteurValeur);
+                compteurValeur++;
+            }
+            if (compteurValeur > valeurs.size())
+                break;
+        }
+
+        return aRetourner;
     }
 
     /**

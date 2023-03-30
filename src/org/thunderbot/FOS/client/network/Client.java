@@ -96,7 +96,8 @@ public class Client {
 
 
     /**
-     * Envoi une demande de update au serveur, ainsi que sa propre update
+     * Envoi sa propre update puis demande demande de update au serveur. Le serveur renvoie d'abord une update des joueurs
+     * par la suite
      */
     public ArrayList<Personnage> updateServeurMouvementJoueurs() {
         String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.MOUVEMENT + ';';
@@ -110,6 +111,32 @@ public class Client {
             stringReception = (String) reception(); // Attente reception update
             listePersonnageAJour = (ArrayList<Personnage>) Tools.decodeString(stringReception);
 
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return listePersonnageAJour;
+    }
+
+    /**
+     * Demande de update au serveur. Le serveur renvoie alors une update des PNJ
+     * par la suite
+     */
+    public ArrayList<PNJ> updateServeurMouvementPNJ() {
+        String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.PNJ + ';';
+        String stringReception;
+        ArrayList<PNJ> listePersonnageAJour = new ArrayList<>();
+
+        try {
+            envoi(new RequeteServeur(requete));
+            stringReception = Tools.encodeString(personnage);
+            envoi(stringReception);
+            stringReception = (String) reception(); // Attente reception update
+            listePersonnageAJour = (ArrayList<PNJ>) Tools.decodeString(stringReception);
+
+            // DEBUG
+            System.out.println(listePersonnageAJour);
 
         } catch (IOException e) {
             e.printStackTrace();
