@@ -6,6 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 import org.thunderbot.FOS.client.gameState.MapGameState;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.Map;
@@ -241,7 +242,16 @@ public class Carte extends Map {
         return nomMap;
     }
 
-    public void mouseClicked(MapGameState mapGameState, int x, int y) {
+
+    /**
+     * Appeller par la gameState lorsque l'on fait un click pour tester les différente possibiliter de clique sur la
+     * carte
+     * @param mapGameState
+     * @param x position en x du curseur de la souris
+     * @param y position en y du curseur de la souris
+     * @param personnage personnage qui fait l'action
+     */
+    public void mouseClicked(MapGameState mapGameState, int x, int y, PersonnageJoueurClient personnage) {
         for (int i = 0; i < listePnj.size(); i++) {
             listePnj.get(i).mouseClicked(mapGameState, x, y);
         }

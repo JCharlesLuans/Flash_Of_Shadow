@@ -39,17 +39,27 @@ public class PersonnageNonJoueur extends Personnage{
         super.update(carte, delta);
 
         timer += delta;
+
+        // Simule une colision pour le faire changer de direction
         if (timer >= 1500) {
             timer = 0;
             collision = true;
         }
 
+        // Applique une rotation si il rencontre une colision
         if (collision) {
             direction = Personnage.HAUT + (int)(Math.random() * ((Personnage.DROITE - Personnage.HAUT) + 1));
         }
 
     }
 
+    /**
+     * Appeller par la carte lorsque l'on fait un clic sur cette derniere. Elle permet ensuite de tester si le click
+     * est fait sur un PNJ ou pas
+     * @param mapGameState
+     * @param x position en x du curseur
+     * @param y position en y du curseur
+     */
     public void mouseClicked(MapGameState mapGameState, int x, int y) {
 
         x += 32;

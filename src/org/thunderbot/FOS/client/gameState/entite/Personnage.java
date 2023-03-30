@@ -52,6 +52,9 @@ public class Personnage {
     /** Indique si le personnage subit une colision */
     protected boolean collision;
 
+    /** Indique si le personnage est en combat */
+    protected boolean enCombat;
+
     /**
      * Charge une animations a partir d'une sprite sheet, en indiquant les début de l'annimation et la fin
      *
