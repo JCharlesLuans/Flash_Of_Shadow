@@ -440,6 +440,8 @@ public class FosDAO {
                 tmp.setNom(rs.getString(PNJ_NOM));
                 tmp.setSprite(rs.getString(PNJ_SPRITE));
                 tmp.setAgressif(rs.getInt(PNJ_AGRESSIF));
+                tmp.setX(rs.getFloat(PNJ_X));
+                tmp.setY(rs.getFloat(PNJ_Y));
                 tmp.setStatArmure(rs.getInt(PNJ_STAT_ARMURE));
                 tmp.setStatAgilite(rs.getInt(PNJ_STAT_AGILITE));
                 tmp.setStatDexterite(rs.getInt(PNJ_STAT_DEXTERITE));

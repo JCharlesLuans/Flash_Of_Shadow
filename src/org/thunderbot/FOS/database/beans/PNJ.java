@@ -190,6 +190,8 @@ public class PNJ implements Serializable {
                 ", nom='" + nom + '\'' +
                 ", sprite='" + sprite + '\'' +
                 ", agressif=" + agressif +
+                ", x=" + x +
+                ", y=" + y +
                 ", statAgilite=" + statAgilite +
                 ", statArmure=" + statArmure +
                 ", statDexterite=" + statDexterite +
