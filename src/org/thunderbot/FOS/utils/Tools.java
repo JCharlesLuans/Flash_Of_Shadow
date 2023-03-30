@@ -8,9 +8,6 @@ package org.thunderbot.FOS.utils;
 import org.newdawn.slick.Image;
 import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Outil pour manipuler le XML
