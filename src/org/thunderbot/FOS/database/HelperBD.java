@@ -247,6 +247,8 @@ public class HelperBD {
     public static final String PNJ_NOM = "nom";
     public static final String PNJ_SPRITE = "sprite";
     public static final String PNJ_AGRESSIF = "agressif";
+    public static final String PNJ_X = "x";
+    public static final String PNJ_Y = "y";
     public static final String PNJ_STAT_ARMURE = "statArmure";
     public static final String PNJ_STAT_DEXTERITE = "statDexterite";
     public static final String PNJ_STAT_FORCE = "statForce";
@@ -265,6 +267,8 @@ public class HelperBD {
                 + PNJ_NOM + " TEXT NOT NULL,"
                 + PNJ_SPRITE + " TEXT NOT NULL,"
                 + PNJ_AGRESSIF + " INTEGER NOT NULL,"
+                + PNJ_X + " FLOAT NOT NULL,"
+                + PNJ_Y + " FLOAT NOT NULL,"
                 + PNJ_STAT_ARMURE       + " INTEGER NOT NULL,"
                 + PNJ_STAT_DEXTERITE    + " INTEGER NOT NULL,"
                 + PNJ_STAT_FORCE        + " INTEGER NOT NULL,"
