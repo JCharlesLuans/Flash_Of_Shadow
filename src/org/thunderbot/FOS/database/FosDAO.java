@@ -310,7 +310,23 @@ public class FosDAO {
         return aRetourner;
     }
 
+    public int getNombreMap() {
+        int aRetourner = 0;
 
+        String requete =
+                "SELECT COUNT(*) FROM " + NOM_TABLE_MAP + ";" ;
+
+        try {
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            aRetourner = rs.getInt(1);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
 
     public Objet getObjetById(int id) {
         Objet aRetourner = new Objet();
