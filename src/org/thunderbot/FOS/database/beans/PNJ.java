@@ -1,5 +1,7 @@
 package org.thunderbot.FOS.database.beans;
 
+import org.thunderbot.FOS.client.gameState.entite.Personnage;
+
 import java.io.Serializable;
 
 public class PNJ implements Serializable {
@@ -20,6 +22,8 @@ public class PNJ implements Serializable {
     private int idFaction;
     private int idTitre;
 
+    private int direction;
+
     public PNJ() {
         id = -1;
         nom = "";
@@ -34,6 +38,8 @@ public class PNJ implements Serializable {
         statForce = -1;
         statInteligence = -1;
         statSagesse = -1;
+
+        direction = Personnage.HAUT;
     }
 
     public PNJ(int id, String nom, String sprite, int agressif, float x, float y, int statAgilite, int statArmure, int statDexterite, int statForce, int statEndurance, int statInteligence, int statSagesse, int idMap, int idFaction, int idTitre) {
@@ -203,5 +209,13 @@ public class PNJ implements Serializable {
                 ", idFaction=" + idFaction +
                 ", idTitre=" + idTitre +
                 '}';
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public int getDirection() {
+        return direction;
     }
 }

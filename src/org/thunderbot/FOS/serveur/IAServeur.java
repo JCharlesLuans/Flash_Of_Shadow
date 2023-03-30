@@ -1,5 +1,6 @@
 package org.thunderbot.FOS.serveur;
 
+import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.database.FosDAO;
@@ -49,16 +50,18 @@ public class IAServeur extends Thread {
                 nomMap[indexMap] = accesBD.getMapById(indexMap).getNom();
             }
 
+            // TODO
+            // Pour toute les map et pour tout les PNJ initialiser une direction par defaut
 
 
-            // Boucle infini
+            // Boucle infini de fonctionnement
             while (true) {
+
                 // Pour toute les maps
                 for (int indexMap = 1; indexMap <= nombreCarte; indexMap ++) {
 
                     // Chargement de la map a simuler en fonction de son nom
                     colisions = Carte.getColisionObject(nomMap[4]);
-
 
                     int nombresPNJSurMap = pnjByMap[indexMap].size();
 
@@ -66,7 +69,28 @@ public class IAServeur extends Thread {
                         // Simuler les PNJs
                         pnjTmp = (PNJ) pnjByMap[indexMap].get(indexPNJ);
 
-                        pnjTmp.setX(pnjTmp.getX() + VITESSE_PNJ);
+
+                        // TODO
+                        // Possible d'aller la ? => gestion colision
+                            //=> Oui deplacement
+                            switch (pnjTmp.getDirection()) {
+                                case Personnage.HAUT:
+                                    pnjTmp.setX(pnjTmp.getY() - VITESSE_PNJ);
+                                    break;
+                                case Personnage.BAS:
+                                    pnjTmp.setX(pnjTmp.getY() + VITESSE_PNJ);
+                                    break;
+                                case Personnage.GAUCHE:
+                                    pnjTmp.setX(pnjTmp.getX() + VITESSE_PNJ);
+                                    break;
+                                case Personnage.DROITE:
+                                    pnjTmp.setX(pnjTmp.getX() - VITESSE_PNJ);
+                                    break;
+                            }
+                            //=> Choix d'une direction
+
+
+
 
                     }
                 }
