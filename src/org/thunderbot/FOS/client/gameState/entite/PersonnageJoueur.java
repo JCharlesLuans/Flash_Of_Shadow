@@ -16,8 +16,6 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class PersonnageJoueur extends Personnage {
 
-    private int id;
-
     protected String nomCarte;
 
     public PersonnageJoueur() {
@@ -38,18 +36,6 @@ public class PersonnageJoueur extends Personnage {
         loadAnimation(spriteSheet);
     }
 
-    /**
-     * Mise a jour réseaux
-     * @param personnageJoueur
-     */
-    public void miseAJour(PersonnageJoueur personnageJoueur) {
-        this.positionX = personnageJoueur.positionX;
-        this.positionY = personnageJoueur.positionY;
-        this.direction = personnageJoueur.direction;
-        this.moving = personnageJoueur.moving;
-        this.nomCarte = personnageJoueur.nomCarte;
-    }
-
     public String getNomCarte() {
         return this.nomCarte;
     }
@@ -57,7 +43,4 @@ public class PersonnageJoueur extends Personnage {
     public void setNomCarte(String nomCarte) {
         this.nomCarte = nomCarte;
     }
-
-    public int getId() {return id;}
-    public void setId(int id) {this.id = id;}
 }

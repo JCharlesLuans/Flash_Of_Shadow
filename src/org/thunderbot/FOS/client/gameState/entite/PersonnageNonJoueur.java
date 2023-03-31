@@ -23,10 +23,12 @@ public class PersonnageNonJoueur extends Personnage{
     private int timer;
 
     public PersonnageNonJoueur(PNJ pnj) throws SlickException {
+        this.id = pnj.getId();
         this.moving = true;
-        this.positionX = pnj.getX();
-        this.positionY = pnj.getY();
+        this.positionX = pnj.getX() + 16;
+        this.positionY = pnj.getY() + 32;
         this.nom = pnj.getNom();
+        this.direction = pnj.getDirection();
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/pnj/" + pnj.getSprite(), 64, 64 );
         loadAnimation(spriteSheet);
     }
@@ -36,19 +38,6 @@ public class PersonnageNonJoueur extends Personnage{
     }
 
     public void update(Carte carte, int delta) {
-
-        timer += delta;
-
-        // Simule une colision pour le faire changer de direction
-        if (timer >= 1500) {
-            timer = 0;
-            collision = true;
-        }
-
-        // Applique une rotation si il rencontre une colision
-        if (collision) {
-            direction = Personnage.HAUT + (int)(Math.random() * ((Personnage.DROITE - Personnage.HAUT) + 1));
-        }
 
     }
 

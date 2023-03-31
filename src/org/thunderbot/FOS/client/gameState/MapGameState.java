@@ -41,8 +41,8 @@ public class MapGameState extends BasicGameState {
 
     /** Client pour la communication multijoueur et liste des joueurs connecter */
     private Client client;
-    private ArrayList<PersonnageJoueur> listeJoueur;
-    private ArrayList<PersonnageNonJoueur> listePNJ;
+    private ArrayList<Personnage> listeJoueur;
+    private ArrayList<Personnage> listePNJ;
 
     /** Personnage */
     private PersonnageJoueurClient joueur;
@@ -134,8 +134,8 @@ public class MapGameState extends BasicGameState {
         if (!client.socketIsClosed()) {
             joueur.update(carte, delta);
             camera.update(container, carte);
-            updateListeJoueur(client.updateServeurMouvementJoueurs()); //Envoi des data au joueur local
-            updateListePNJ(client.updateServeurMouvementPNJ());
+            updateListeJoueur(client.updateServeurMouvementJoueurs(), listeJoueur); //Envoi des data au joueur local
+            updateListePNJ(client.updateServeurMouvementPNJ(), listePNJ);
         }
 
 
@@ -161,34 +161,28 @@ public class MapGameState extends BasicGameState {
         return joueur;
     }
 
-    public void updateListeJoueur(ArrayList<org.thunderbot.FOS.database.beans.Personnage> listeDistante) throws SlickException {
+    public void updateListeJoueur(ArrayList<org.thunderbot.FOS.database.beans.Personnage> listeDistante, ArrayList<Personnage> listeLocale) throws SlickException {
 
         boolean existe = false;
 
         // Effacement des joueur qui n'existe plus sur la carte
-        for (int i = 0; i < listeJoueur.size(); i ++) {
+        for (int i = 0; i < listeLocale.size(); i ++) {
             existe = false;
 
             // Y'a t'il des joueur dans la liste distante ?
             if (listeDistante.size() > 0) {
                 for (int j = 0; j < listeDistante.size(); j++) {
-                    existe = listeJoueur.get(i).getId() == listeDistante.get(j).getId();
-                    // TODO LOG
-                    System.out.println(listeJoueur.get(i).getId());
-                    System.out.println(listeDistante.get(j).getId());
+                    existe = listeLocale.get(i).getId() == listeDistante.get(j).getId();
                     if (existe)
                         break;
                 }
 
                 if (!existe) {
-                    listeJoueur.remove(listeJoueur.get(i));
+                    listeLocale.remove(listeLocale.get(i));
                 }
             } else {
-                listeJoueur.remove(listeJoueur.get(i));
+                listeLocale.remove(listeLocale.get(i));
             }
-
-
-
         }
 
         for (int i = 0; i < listeDistante.size(); i++) {
@@ -196,19 +190,17 @@ public class MapGameState extends BasicGameState {
             tmp.setMoving(listeDistante.get(i).isMoving());
 
 
-            if (listeJoueur.size() > 0) {
+            if (listeLocale.size() > 0) {
                 // Mise a jour des personnage
-                for (int j = 0; j < listeJoueur.size(); j++) {
+                for (int j = 0; j < listeLocale.size(); j++) {
 
-                    if (listeJoueur.get(j).getId() == tmp.getId()) {
-                        listeJoueur.get(i).miseAJour(tmp);
-
+                    if (listeLocale.get(j).getId() == tmp.getId()) {
+                        listeLocale.get(i).miseAJour(tmp);
                     }
-
                 }
             } else {
                 // Ajout d'un personnage qui arrive
-                listeJoueur.add(tmp);
+                listeLocale.add(tmp);
 
                 // TODO LOG
                 System.out.println("Ajout");
@@ -217,12 +209,49 @@ public class MapGameState extends BasicGameState {
         }
     }
 
-    public void updateListePNJ(ArrayList<PNJ> listeDistante) throws SlickException {
-        listePNJ = new ArrayList<>();
+
+
+    public void updateListePNJ(ArrayList<PNJ> listeDistante, ArrayList<Personnage> listeLocale) throws SlickException {
+
+        boolean existe = false;
+
+        // Effacement des joueur qui n'existe plus sur la carte
+        for (int i = 0; i < listeLocale.size(); i ++) {
+            existe = false;
+
+            // Y'a t'il des joueur dans la liste distante ?
+            if (listeDistante.size() > 0) {
+                for (int j = 0; j < listeDistante.size(); j++) {
+                    existe = listeLocale.get(i).getId() == listeDistante.get(j).getId();
+                    if (existe)
+                        break;
+                }
+
+                if (!existe) {
+                    listeLocale.remove(listeLocale.get(i));
+                }
+            } else {
+                listeLocale.remove(listeLocale.get(i));
+            }
+        }
+
         for (int i = 0; i < listeDistante.size(); i++) {
             PersonnageNonJoueur tmp = new PersonnageNonJoueur(listeDistante.get(i));
             tmp.setMoving(true);
-            listePNJ.add(tmp);
+
+            if (listeLocale.size() > 0) {
+                // Mise a jour des personnages
+                for (int j = 0; j < listeLocale.size(); j++) {
+
+                    if (listeLocale.get(j).getId() == tmp.getId()) {
+                        listeLocale.get(i).miseAJour(tmp);
+                    }
+                }
+            } else {
+                // Ajout d'un personnage qui arrive
+                listeLocale.add(tmp);
+            }
+            listeDistante.remove(listeDistante.get(i));
         }
     }
 

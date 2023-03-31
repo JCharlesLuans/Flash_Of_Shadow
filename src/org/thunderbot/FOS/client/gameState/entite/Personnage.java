@@ -15,6 +15,9 @@ public class Personnage {
     public static final int BAS = 2;
     public static final int DROITE = 3;
 
+    /** ID du personnage, permettant de le diférancier avce les autre personnage du mêmetype que lui*/
+    protected int id;
+
     /**
      * Indique si le personnage se deplace ou non
      */
@@ -135,6 +138,18 @@ public class Personnage {
     }
 
     /**
+     * Mise a jour réseaux
+     * @param personnageJoueur
+     */
+    public void miseAJour(Personnage personnageJoueur) {
+        this.positionX = personnageJoueur.positionX;
+        this.positionY = personnageJoueur.positionY;
+        this.direction = personnageJoueur.direction;
+        this.moving = personnageJoueur.moving;
+        //this.nomCarte = personnageJoueur.nomCarte;
+    }
+
+    /**
      * @param delta
      * @return la position en X aprés déplacement
      */
@@ -235,6 +250,9 @@ public class Personnage {
     public void setEnCombat(boolean enCombat) { this.enCombat = enCombat; }
 
     public boolean getEnCombat() { return  enCombat; }
+
+    public int getId() {return id;}
+    public void setId(int id) {this.id = id;}
 
     public String toString() {
         return "ServPersonnage(" + nom + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
