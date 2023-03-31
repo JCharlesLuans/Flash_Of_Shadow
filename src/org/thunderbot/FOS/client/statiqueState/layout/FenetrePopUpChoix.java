@@ -16,6 +16,8 @@ public class FenetrePopUpChoix extends FenetrePopUp{
     private final static int NON_Y = 365;
     private final static int NON_Y_FIN = 400;
 
+    private String infoComplementaire;
+
     private boolean oui;
     private boolean non;
 
@@ -65,4 +67,11 @@ public class FenetrePopUpChoix extends FenetrePopUp{
         return non;
     }
 
+    public String getInfoComplementaire() {
+        return infoComplementaire;
+    }
+
+    public void setInfoComplementaire(String infoComplementaire) {
+        this.infoComplementaire = infoComplementaire;
+    }
 }

@@ -1,6 +1,7 @@
 package org.thunderbot.FOS.database.beans;
 
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 
 import java.io.Serializable;
 
@@ -59,6 +60,24 @@ public class PNJ implements Serializable {
         this.idMap = idMap;
         this.idFaction = idFaction;
         this.idTitre = idTitre;
+    }
+
+    public PNJ(PersonnageNonJoueur personnageNonJoueur) {
+        this.id = personnageNonJoueur.getId();
+        this.nom = personnageNonJoueur.getNom();
+        this.sprite = personnageNonJoueur.getSprite();
+        agressif = -1;
+        x = -1f;
+        y = -1f;
+        statAgilite = -1;
+        statArmure = -1;
+        statDexterite = -1;
+        statEndurance = -1;
+        statForce = -1;
+        statInteligence = -1;
+        statSagesse = -1;
+
+        direction = Personnage.HAUT;
     }
 
     public int getId() {

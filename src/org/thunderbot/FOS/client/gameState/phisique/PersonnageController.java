@@ -153,6 +153,7 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
         // Gestion de la fenetre des combat
         if (mapGameState.getFenetreCombat().isOui()) {
             mapGameState.getStateBasedGame().enterState(CombatGameState.ID);
+            personnageJoueurClient.enCombat(mapGameState.getFenetreCombat().getInfoComplementaire()); // TODO STUB
         }
     }
 

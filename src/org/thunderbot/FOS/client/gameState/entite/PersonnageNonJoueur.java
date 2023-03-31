@@ -22,6 +22,8 @@ public class PersonnageNonJoueur extends Personnage{
 
     private int timer;
 
+    private String sprite;
+
     public PersonnageNonJoueur(PNJ pnj) throws SlickException {
         this.id = pnj.getId();
         this.moving = true;
@@ -29,6 +31,7 @@ public class PersonnageNonJoueur extends Personnage{
         this.positionY = pnj.getY();
         this.nom = pnj.getNom();
         this.direction = pnj.getDirection();
+        this.sprite = pnj.getSprite();
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/pnj/" + pnj.getSprite(), 64, 64 );
         loadAnimation(spriteSheet);
     }
@@ -55,9 +58,11 @@ public class PersonnageNonJoueur extends Personnage{
 
         // Fait rentrer le joueur et le PNJ en combat
         if (this.positionX - 32 < x && x < positionX + 92 && this.positionY - 32 < y && y  < positionY + 92) {
-            mapGameState.setCombat(true);
-            this.enCombat = true;
-            personnageJoueurClient.setEnCombat(true);
+            mapGameState.setCombat(true, this);
         }
+    }
+
+    public String getSprite() {
+        return sprite;
     }
 }

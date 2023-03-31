@@ -18,6 +18,7 @@ import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUpChoix;
 import org.thunderbot.FOS.database.beans.PNJ;
+import org.thunderbot.FOS.utils.Tools;
 
 import java.util.ArrayList;
 
@@ -272,8 +273,15 @@ public class MapGameState extends BasicGameState {
         return fenetreCombat;
     }
 
-    public void setCombat(boolean combat) {
+    /**
+     * Déclanche un combat, tout en passant en paramette l'ID du PNJ qui le declanche
+     * @param combat
+     * @param idPNJ
+     */
+    public void setCombat(boolean combat, PersonnageNonJoueur personnageNonJoueur) {
         this.combat = combat;
+        this.fenetreCombat.setMessage(this.fenetreCombat.getMessage() + personnageNonJoueur.getNom());
+        this.fenetreCombat.setInfoComplementaire(Tools.encodeString(new PNJ(personnageNonJoueur)));
     }
 
     public StateBasedGame getStateBasedGame() {

@@ -315,4 +315,27 @@ public class Client {
         return personnage;
     }
 
+    /**
+     * Envoi au serveur qu'un combat à été déclancher entre le joueur et le mobs.
+     * @param idJoueur
+     * @param idPnj
+     */
+    public void entreEnCombat(String pnjEncode) {
+        try {
+            //Envoi au serveur que le joueur et le PNJ rentre en combat
+            String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.COMBAT + ';';
+            envoi(new RequeteServeur(requete));
+
+            envoi(pnjEncode);
+
+            requete = Tools.encodeString(personnage); // Envoi du personnage et de ses stats
+            envoi(requete);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
 }

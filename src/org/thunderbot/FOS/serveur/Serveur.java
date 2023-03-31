@@ -280,6 +280,9 @@ public class Serveur extends Thread {
                     case RequeteServeur.PNJ:
                         updateMouvementPNJ();
                         break;
+
+                    case RequeteServeur.COMBAT:
+                        lancementCombat();
                 }
                 break;
 
@@ -424,6 +427,18 @@ public class Serveur extends Thread {
             e.printStackTrace();
         }
         return Tools.decodeString(strReception);
+    }
+
+    /**
+     * Lance un combat entre le joueur et le PNJ
+     */
+    private void lancementCombat() {
+        System.out.println("Entrée en combat");
+        // Attente de la reception des infos complementaire => PNJ
+        System.out.println(receptionXML());
+        // Attente de la reception des infos complementaire => Joueur
+        System.out.println(receptionXML());
+
     }
 }
 

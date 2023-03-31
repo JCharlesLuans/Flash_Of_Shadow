@@ -81,6 +81,10 @@ public class FenetrePopUp {
         this.message = message;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     public int mouseClicked(int button, int x, int y, int clickCount) {
 
         int codeRetour = CODE_RETOUR_DEFAUT;
@@ -133,4 +137,6 @@ public class FenetrePopUp {
     protected MedievalSharp getFont() {
         return font;
     }
+
+
 }

@@ -144,4 +144,8 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
             this.gui.getFichePersonnage().ouvrir();
         }
     }
+
+    public void enCombat(String pnjEncode) {
+        client.entreEnCombat(pnjEncode);
+    }
 }
