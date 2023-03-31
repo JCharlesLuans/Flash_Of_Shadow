@@ -103,9 +103,9 @@ public class InitDataJeu {
                 + PNJ_CLE_FACTION + ", "
                 + PNJ_CLE_TITRE + " ) "
             + "VALUES "
-                + "( 'JORG', 'necromant.png', 1, 680, 320, 5, 5, 5, 5, 5, 5, 5, 1, 1, 0),"
-                + "( 'MORG', 'necromant.png', 1, 680, 320, 5, 5, 5, 5, 5, 5, 5, 2, 2, 0),"
-                + "( 'WORG', 'necromant.png', 1, 680, 320, 5, 5, 5, 5, 5, 5, 5, 3, 3, 0)"
+                + "( 'JORG', 'necromant.png', 1, 680, 450, 5, 5, 5, 5, 5, 5, 5, 1, 1, 0),"
+                + "( 'MORG', 'necromant.png', 1, 680, 450, 5, 5, 5, 5, 5, 5, 5, 2, 2, 0),"
+                + "( 'WORG', 'necromant.png', 1, 680, 450, 5, 5, 5, 5, 5, 5, 5, 3, 3, 0)"
             + ";";
 
     public static void main(String[] args) {
