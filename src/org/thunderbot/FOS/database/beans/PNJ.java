@@ -76,7 +76,7 @@ public class PNJ implements Serializable {
         statForce = -1;
         statInteligence = -1;
         statSagesse = -1;
-
+        this.idMap = personnageNonJoueur.getIdMap();
         direction = Personnage.HAUT;
     }
 
