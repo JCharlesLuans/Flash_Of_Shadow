@@ -135,9 +135,6 @@ public class Client {
             stringReception = (String) reception(); // Attente reception update
             listePersonnageAJour = (ArrayList<PNJ>) Tools.decodeString(stringReception);
 
-            // DEBUG
-            System.out.println(listePersonnageAJour);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
