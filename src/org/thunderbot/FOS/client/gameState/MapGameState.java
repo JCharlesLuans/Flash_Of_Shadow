@@ -10,6 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.xml.XMLElementList;
 import org.thunderbot.FOS.client.gameState.GUI.Gui;
 import org.thunderbot.FOS.client.gameState.entite.*;
 import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
@@ -41,8 +42,8 @@ public class MapGameState extends BasicGameState {
 
     /** Client pour la communication multijoueur et liste des joueurs connecter */
     private Client client;
-    private ArrayList<Personnage> listeJoueur;
-    private ArrayList<Personnage> listePNJ;
+    private ArrayList<PersonnageJoueur> listeJoueur;
+    private ArrayList<PersonnageNonJoueur> listePNJ;
 
     /** Personnage */
     private PersonnageJoueurClient joueur;
@@ -161,7 +162,7 @@ public class MapGameState extends BasicGameState {
         return joueur;
     }
 
-    public void updateListeJoueur(ArrayList<org.thunderbot.FOS.database.beans.Personnage> listeDistante, ArrayList<Personnage> listeLocale) throws SlickException {
+    public void updateListeJoueur(ArrayList<org.thunderbot.FOS.database.beans.Personnage> listeDistante, ArrayList<PersonnageJoueur> listeLocale) throws SlickException {
 
         boolean existe = false;
 
@@ -211,7 +212,7 @@ public class MapGameState extends BasicGameState {
 
 
 
-    public void updateListePNJ(ArrayList<PNJ> listeDistante, ArrayList<Personnage> listeLocale) throws SlickException {
+    public void updateListePNJ(ArrayList<PNJ> listeDistante, ArrayList<PersonnageNonJoueur> listeLocale) throws SlickException {
 
         boolean existe = false;
 
@@ -277,5 +278,9 @@ public class MapGameState extends BasicGameState {
 
     public StateBasedGame getStateBasedGame() {
         return stateBasedGame;
+    }
+
+    public ArrayList<PersonnageNonJoueur> getListePnj() {
+        return listePNJ;
     }
 }

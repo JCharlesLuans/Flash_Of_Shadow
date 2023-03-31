@@ -322,8 +322,8 @@ public class Carte extends Map {
      * @param personnage personnage qui fait l'action
      */
     public void mouseClicked(PersonnageJoueurClient personnage, MapGameState mapGameState, int x, int y) {
-        for (int i = 0; i < listePnj.size(); i++) {
-            listePnj.get(i).mouseClicked(personnage, mapGameState, x, y);
+        for (int i = 0; i < mapGameState.getListePnj().size(); i++) {
+            mapGameState.getListePnj().get(i).mouseClicked(personnage, mapGameState, x, y);
         }
     }
 }
