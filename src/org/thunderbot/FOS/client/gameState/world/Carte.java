@@ -1,7 +1,6 @@
 package org.thunderbot.FOS.client.gameState.world;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -115,17 +114,17 @@ public class Carte extends Map {
     }
 
     /**
-     * Permet de recuperer les position des objets colision dans le XML d'une map, afin de pouvoir simuler les
+     * Permet de recuperer les position des objets collision dans le XML d'une map, afin de pouvoir simuler les
      * deplacement des PNJ
-     * @param nomCarte => Nom de la carte dont on cherche a avoir les colisions
+     * @param nomCarte => Nom de la carte dont on cherche a avoir les collisions
      * @return
      */
-    public static int[][] getColisionObject(String nomCarte) {
+    public static int[][] getCollisionObject(String nomCarte) {
         BufferedReader lecteurAvecBuffer = null;
 
         String chemin = "res/carte/" + nomCarte;
         String nomBalise = "objectgroup";
-        String attribut = "colision";
+        String attribut = "collision";
 
         int compteurLigne = 0;
         int compteurValeur = 0;
@@ -186,11 +185,11 @@ public class Carte extends Map {
     }
 
     /**
-     * Verifie si il y a une colision
-     * @param x axe x sur lequelle on verifie si il y a une colision
-     * @param y axe x sur lequelle on verifie si il y a une colision
-     * @return true si il y a une colision
-     *         false si il n'y a pas de colision
+     * Verifie si il y a une collision
+     * @param x axe x sur lequelle on verifie si il y a une collision
+     * @param y axe x sur lequelle on verifie si il y a une collision
+     * @return true si il y a une collision
+     *         false si il n'y a pas de collision
      */
     public boolean isCollision(float x, float y) {
 

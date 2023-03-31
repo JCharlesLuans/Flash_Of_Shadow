@@ -75,7 +75,7 @@ public class IAServeur extends Thread {
                 for (int indexMap = 1; indexMap <= nombreCarte; indexMap ++) {
 
                     // Chargement de la map a simuler en fonction de son nom
-                    colisions = Carte.getColisionObject(nomMap[4]);
+                    colisions = Carte.getCollisionObject(nomMap[indexMap]);
 
                     int nombresPNJSurMap = pnjByMap[indexMap].size();
 
@@ -125,7 +125,6 @@ public class IAServeur extends Thread {
                             }
 
                             if (peutPasMarcher) {
-                                System.out.println("Colision"); // DEBUG);
                                 break;
                             }
 
