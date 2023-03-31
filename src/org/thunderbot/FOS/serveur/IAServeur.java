@@ -88,7 +88,6 @@ public class IAServeur extends Thread {
                         // Change la direction d'un PNJ de maniere léatoire
                         if (timer > 1000f) {
                             pnjTmp.setDirection(Personnage.HAUT + (int) (Math.random() * ((Personnage.DROITE - Personnage.HAUT) + 1)));
-                            System.out.println("Timer");
                             timer = 0;
                         }
 
@@ -149,7 +148,6 @@ public class IAServeur extends Thread {
                         } else {
                             //=> Choix d'une direction aléatoire
                             pnjTmp.setDirection(Personnage.HAUT + (int) (Math.random() * ((Personnage.DROITE - Personnage.HAUT) + 1)));
-                            System.out.println(pnjTmp.getDirection());
                         }
 
                     }
