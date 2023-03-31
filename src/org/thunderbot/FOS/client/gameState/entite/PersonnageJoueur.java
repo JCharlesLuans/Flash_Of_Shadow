@@ -16,7 +16,7 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class PersonnageJoueur extends Personnage {
 
-    /** Pseudo du joueur / nom du personnage */
+    private int id;
 
     protected String nomCarte;
 
@@ -27,7 +27,8 @@ public class PersonnageJoueur extends Personnage {
         nom = "";
     }
 
-    public PersonnageJoueur(String pseudo, int direction, float x, float y, String sprite) throws SlickException {
+    public PersonnageJoueur(int id, String pseudo, int direction, float x, float y, String sprite) throws SlickException {
+        this.id = id;
         this.nom = pseudo;
         this.direction = direction;
         this.positionX = x;
@@ -56,4 +57,7 @@ public class PersonnageJoueur extends Personnage {
     public void setNomCarte(String nomCarte) {
         this.nomCarte = nomCarte;
     }
+
+    public int getId() {return id;}
+    public void setId(int id) {this.id = id;}
 }
