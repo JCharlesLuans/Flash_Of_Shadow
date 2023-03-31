@@ -19,7 +19,6 @@ public class IAServeur extends Thread {
     private FosDAO accesBD;
 
 
-
     private ArrayList[] pnjByMap;
 
     public IAServeur(FosDAO accesBD) {
@@ -31,9 +30,18 @@ public class IAServeur extends Thread {
             String[] nomMap;    // Tableau associant le nom et l'id de la map
 
             int[][] colisions;
+            int xColision        = 0;
+            int yColision        = 0;
+            int hauteurColision  = 0;
+            int longueurColision = 0;
+            boolean peutPasMarcher = false;
 
             int nombreCarte = 0;
             PNJ pnjTmp;
+
+            float timer = 0;
+
+
 
             // Démarage du thread
             // Obtenir le nombre de carte
@@ -48,14 +56,20 @@ public class IAServeur extends Thread {
             for (int indexMap = 1; indexMap <= nombreCarte; indexMap ++) {
                 pnjByMap[indexMap] = accesBD.getPnjByIdMap("" + indexMap);
                 nomMap[indexMap] = accesBD.getMapById(indexMap).getNom();
+
+                  // Pour toute les map et pour tout les PNJ initialiser une direction par defaut
+                for (int indexPNJ = 0; indexPNJ < pnjByMap[indexMap].size(); indexPNJ++) {
+                    pnjTmp = (PNJ) pnjByMap[indexMap].get(indexPNJ);
+                    pnjTmp.setDirection(0);
+                }
             }
 
-            // TODO
-            // Pour toute les map et pour tout les PNJ initialiser une direction par defaut
 
 
             // Boucle infini de fonctionnement
             while (true) {
+
+                timer++;
 
                 // Pour toute les maps
                 for (int indexMap = 1; indexMap <= nombreCarte; indexMap ++) {
@@ -65,20 +79,66 @@ public class IAServeur extends Thread {
 
                     int nombresPNJSurMap = pnjByMap[indexMap].size();
 
+                    // Tester tout les PNJ sur la map
                     for (int indexPNJ = 0; indexPNJ < nombresPNJSurMap; indexPNJ++) {
+
                         // Simuler les PNJs
                         pnjTmp = (PNJ) pnjByMap[indexMap].get(indexPNJ);
 
+                        // Change la direction d'un PNJ de maniere léatoire
+                        if (timer > 1000f) {
+                            pnjTmp.setDirection(Personnage.HAUT + (int) (Math.random() * ((Personnage.DROITE - Personnage.HAUT) + 1)));
+                            System.out.println("Timer");
+                            timer = 0;
+                        }
 
-                        // TODO
                         // Possible d'aller la ? => gestion colision
+                        // Test de tutes les colisions
+                        for (int indexColision = 0; indexColision < colisions.length; indexColision++) {
+                            // Recuperation des coordonnée de la colision :
+                            // Premier index => ID de la colisions donc inutiles
+                            xColision        = colisions[indexColision][1];
+                            yColision        = colisions[indexColision][2];
+                            longueurColision = colisions[indexColision][3];
+                            hauteurColision  = colisions[indexColision][4];
+
+                            //    Si le x + vitesse n'est pas compris dans xColision et xColision + longueurColision
+                            // Ou si le Y + vitesse n'est pas compris dans yColision et yColision + hauteurColision
+                            // alors on peut marcher
+
+                            // RAZ des colisions
+                            peutPasMarcher = false;
+
+                            switch (pnjTmp.getDirection()) {
+                                case Personnage.HAUT:
+                                    peutPasMarcher = (yColision <= pnjTmp.getY() - VITESSE_PNJ && pnjTmp.getY() - VITESSE_PNJ <= yColision + hauteurColision) && (xColision <= pnjTmp.getX() && pnjTmp.getX() <= xColision + longueurColision);
+                                    break;
+                                case Personnage.BAS:
+                                    peutPasMarcher = (yColision <= pnjTmp.getY() + VITESSE_PNJ && pnjTmp.getY() + VITESSE_PNJ <= yColision + hauteurColision) && (xColision <= pnjTmp.getX() && pnjTmp.getX() <= xColision + longueurColision);
+                                    break;
+                                case Personnage.GAUCHE:
+                                    peutPasMarcher = (xColision <= pnjTmp.getX() + VITESSE_PNJ && pnjTmp.getX() + VITESSE_PNJ <= xColision + longueurColision) && (yColision <= pnjTmp.getY() && pnjTmp.getY() <= yColision + hauteurColision);
+                                    break;
+                                case Personnage.DROITE:
+                                    peutPasMarcher = (xColision <= pnjTmp.getX() - VITESSE_PNJ && pnjTmp.getX() - VITESSE_PNJ <= xColision + longueurColision) && (yColision <= pnjTmp.getY() && pnjTmp.getY() <= yColision + hauteurColision);
+                                    break;
+                            }
+
+                            if (peutPasMarcher) {
+                                System.out.println("Colision"); // DEBUG);
+                                break;
+                            }
+
+                        }
+
+                        if (!peutPasMarcher) {
                             //=> Oui deplacement
                             switch (pnjTmp.getDirection()) {
                                 case Personnage.HAUT:
-                                    pnjTmp.setX(pnjTmp.getY() - VITESSE_PNJ);
+                                    pnjTmp.setY(pnjTmp.getY() - VITESSE_PNJ);
                                     break;
                                 case Personnage.BAS:
-                                    pnjTmp.setX(pnjTmp.getY() + VITESSE_PNJ);
+                                    pnjTmp.setY(pnjTmp.getY() + VITESSE_PNJ);
                                     break;
                                 case Personnage.GAUCHE:
                                     pnjTmp.setX(pnjTmp.getX() + VITESSE_PNJ);
@@ -87,10 +147,11 @@ public class IAServeur extends Thread {
                                     pnjTmp.setX(pnjTmp.getX() - VITESSE_PNJ);
                                     break;
                             }
-                            //=> Choix d'une direction
-
-
-
+                        } else {
+                            //=> Choix d'une direction aléatoire
+                            pnjTmp.setDirection(Personnage.HAUT + (int) (Math.random() * ((Personnage.DROITE - Personnage.HAUT) + 1)));
+                            System.out.println(pnjTmp.getDirection());
+                        }
 
                     }
                 }
