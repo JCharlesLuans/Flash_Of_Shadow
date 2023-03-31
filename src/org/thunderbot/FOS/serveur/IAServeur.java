@@ -117,10 +117,10 @@ public class IAServeur extends Thread {
                                     peutPasMarcher = (yColision <= pnjTmp.getY() + VITESSE_PNJ && pnjTmp.getY() + VITESSE_PNJ <= yColision + hauteurColision) && (xColision <= pnjTmp.getX() && pnjTmp.getX() <= xColision + longueurColision);
                                     break;
                                 case Personnage.GAUCHE:
-                                    peutPasMarcher = (xColision <= pnjTmp.getX() + VITESSE_PNJ && pnjTmp.getX() + VITESSE_PNJ <= xColision + longueurColision) && (yColision <= pnjTmp.getY() && pnjTmp.getY() <= yColision + hauteurColision);
+                                    peutPasMarcher = (xColision <= pnjTmp.getX() - VITESSE_PNJ && pnjTmp.getX() - VITESSE_PNJ <= xColision + longueurColision) && (yColision <= pnjTmp.getY() && pnjTmp.getY() <= yColision + hauteurColision);
                                     break;
                                 case Personnage.DROITE:
-                                    peutPasMarcher = (xColision <= pnjTmp.getX() - VITESSE_PNJ && pnjTmp.getX() - VITESSE_PNJ <= xColision + longueurColision) && (yColision <= pnjTmp.getY() && pnjTmp.getY() <= yColision + hauteurColision);
+                                    peutPasMarcher = (xColision <= pnjTmp.getX() + VITESSE_PNJ && pnjTmp.getX() + VITESSE_PNJ <= xColision + longueurColision) && (yColision <= pnjTmp.getY() && pnjTmp.getY() <= yColision + hauteurColision);
                                     break;
                             }
 
@@ -141,10 +141,10 @@ public class IAServeur extends Thread {
                                     pnjTmp.setY(pnjTmp.getY() + VITESSE_PNJ);
                                     break;
                                 case Personnage.GAUCHE:
-                                    pnjTmp.setX(pnjTmp.getX() + VITESSE_PNJ);
+                                    pnjTmp.setX(pnjTmp.getX() - VITESSE_PNJ);
                                     break;
                                 case Personnage.DROITE:
-                                    pnjTmp.setX(pnjTmp.getX() - VITESSE_PNJ);
+                                    pnjTmp.setX(pnjTmp.getX() + VITESSE_PNJ);
                                     break;
                             }
                         } else {
