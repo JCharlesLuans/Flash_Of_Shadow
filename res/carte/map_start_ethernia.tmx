@@ -38,7 +38,7 @@
    H4sIAAAAAAAACu3V0QkAIAgE0KRo/5HbIDvSTsPAv8jnBSWjNUlU7BXdyfKdnmvl8tof9V7L949v1wvxMTKNkB/i64Ymi/my5efhQ9/t176bVb7ysUxePsu52PlpPVBf/b+Yb5JL80WrBe5ronygDwAA
   </data>
  </layer>
- <objectgroup id="8" name="trigger" width="1" height="1" >
+ <objectgroup id="8" name="trigger">
   <object id="5" type="changementMap" x="3" y="351" width="36" height="33">
    <properties>
     <property name="destiMap" value="map_desert.tmx"/>
@@ -47,11 +47,11 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="9" name="collision" width="1" height="1" >
+ <objectgroup id="9" name="collision">
   <object id="7" x="0" y="0" width="123" height="803"/>
-  <object id="8" x="126" y="0" width="1151" height="32"/>
-  <object id="9" x="1152" y="33" width="124" height="767"/>
-  <object id="10" x="124" y="748" width="1029" height="53"/>
+  <object id="8" x="0" y="0" width="1277" height="32"/>
+  <object id="9" x="1152" y="3" width="124" height="797"/>
+  <object id="10" x="2" y="748" width="1275" height="53"/>
   <object id="12" x="123" y="63" width="68" height="64"/>
   <object id="13" x="224" y="287" width="64" height="30"/>
   <object id="14" x="255" y="672" width="33" height="28"/>
