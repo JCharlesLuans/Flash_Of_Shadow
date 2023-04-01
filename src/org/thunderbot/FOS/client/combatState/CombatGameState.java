@@ -33,8 +33,10 @@ public class CombatGameState extends BasicGameState {
     public static final int ID = 4;
 
     public static final int TAILLE_CASE = 64;
+    public static final int TAILLE_INTERFACE = 2;
 
     private Image background;
+    private Image hud;
 
     private Client client;
 
@@ -49,6 +51,7 @@ public class CombatGameState extends BasicGameState {
 
     public CombatGameState(Client client) throws SlickException {
         background = new Image("res/combatState/fond.png");
+        hud = new Image("res/combatState/ui.png");
         this.client = client;
     }
 
@@ -86,6 +89,7 @@ public class CombatGameState extends BasicGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         background.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
+        hud.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
         renderGrille(graphics);
         renderPNJ(graphics);
         personnage.render(graphics);

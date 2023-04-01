@@ -29,7 +29,7 @@ public class CombatServeur {
         this.accesBD = accesBD;
 
         nombreCaseLongueur = ChaosRevolt.WIDTH / CombatGameState.TAILLE_CASE;
-        nombreCaseHauteur  = ChaosRevolt.HEIGHT / CombatGameState.TAILLE_CASE;
+        nombreCaseHauteur  = (ChaosRevolt.HEIGHT / CombatGameState.TAILLE_CASE) - CombatGameState.TAILLE_INTERFACE;
 
         rnd = new Random();
     }
