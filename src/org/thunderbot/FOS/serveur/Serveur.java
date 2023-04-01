@@ -5,6 +5,9 @@
 
 package org.thunderbot.FOS.serveur;
 
+import org.thunderbot.FOS.client.ChaosRevolt;
+import org.thunderbot.FOS.client.combatState.Case;
+import org.thunderbot.FOS.client.combatState.CombatGameState;
 import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
@@ -17,6 +20,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * org.thunderbot.FOS.Serveur de FOS
@@ -434,6 +438,8 @@ public class Serveur extends Thread {
      */
     private void lancementCombat() {
 
+        Random rnd = new Random();
+
         ArrayList<PNJ> listePnjPossible;
         ArrayList<PNJ> listePnjChoisis = new ArrayList<>();
 
@@ -441,6 +447,10 @@ public class Serveur extends Thread {
         Personnage personnageTemporaire;
 
         int nombrePNJ = 0;
+
+        // Donnée pour la simulation du terrain
+        int nombreCaseLongueur = ChaosRevolt.WIDTH / CombatGameState.TAILLE_CASE;
+        int nombreCaseHauteur  = ChaosRevolt.HEIGHT / CombatGameState.TAILLE_CASE;
 
         // LOG
         System.out.println("Entrée en combat");
@@ -451,14 +461,20 @@ public class Serveur extends Thread {
         personnageTemporaire = (Personnage) receptionXML();
 
         // Génération du nombre de PNJ que va affronter le joueur (entre 2 et 4)
-        nombrePNJ = 2 + (int) (Math.random() * (4 - 2) + 1);
+        nombrePNJ = 2 + rnd.nextInt(3);
 
         // Recuperation des PNJ possibles sur la maps
         listePnjPossible = accesBD.getPnjAgressifByIdMap(pnjTemporaire.getIdMap() + "", "1");
 
         // Pour tout le nombres de PNJ possible, choisir aléatoirement les pnj dans la liste créer précédament
         for (int i = 0; i < nombrePNJ; i++) {
-            listePnjChoisis.add(listePnjPossible.get((int) (Math.random() * (listePnjPossible.size()) )));
+            listePnjChoisis.add(listePnjPossible.get(rnd.nextInt(listePnjPossible.size())));
+        }
+
+        // Une fois tout les PNJ choisis, selectionner leurs position de maniere aléatoire
+        for (PNJ pnjTmp : listePnjChoisis) {
+            pnjTmp.setX(rnd.nextInt(nombreCaseLongueur) + 1);
+            pnjTmp.setY(rnd.nextInt(nombreCaseHauteur) + 1);
         }
 
         // Renvoi de la liste au joueur
