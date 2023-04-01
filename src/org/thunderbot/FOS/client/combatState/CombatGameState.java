@@ -12,6 +12,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.ChaosRevolt;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
+import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.PNJ;
@@ -34,6 +35,8 @@ public class CombatGameState extends BasicGameState {
     private Image background;
 
     private Client client;
+
+    private PersonnageController personnageController;
 
     private Carte carte;
 
@@ -58,29 +61,7 @@ public class CombatGameState extends BasicGameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-
-        // RAZ de la liste des PNJ
-        listePNJ = new ArrayList<>();
-
-        ArrayList<PNJ> listeTmp;
-
-        initCase();
-        listeTmp = client.initialiseCombatPNJ();
-
-        System.out.println(listeTmp);
-
-        for (PNJ pnjTmp : listeTmp) {
-            listePNJ.add(new PersonnageNonJoueur(pnjTmp));
-        }
-
-        for (int i = 0; i < listePNJ.size(); i++) {
-            System.out.println(listePNJ.get(i).getPositionX()); // LOG
-            System.out.println(listePNJ.get(i).getPositionY()); // LOG
-        }
-
-        System.out.println(listePNJ.size()); // LOG
-
-
+        initPNJ();
     }
 
     @Override
@@ -107,6 +88,29 @@ public class CombatGameState extends BasicGameState {
             for (int j = 0; j < nombreCaseLongueur; j++) {
                 terrain[i][j] = new Case((1 +1) * j, TAILLE_CASE*j, TAILLE_CASE*i, TAILLE_CASE);
             }
+        }
+    }
+
+    /**
+     * Génére aléatoirement les PNJ depuis le serveurs, ainsi que les informations qui leurs sont relatives
+     */
+    private void initPNJ() {
+        try {
+            // RAZ de la liste des PNJ
+            listePNJ = new ArrayList<>();
+
+            ArrayList<PNJ> listeTmp;
+
+            initCase();
+            listeTmp = client.initialiseCombatPNJ();
+
+            System.out.println(listeTmp);
+
+            for (PNJ pnjTmp : listeTmp) {
+                listePNJ.add(new PersonnageNonJoueur(pnjTmp));
+            }
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
         }
     }
 
