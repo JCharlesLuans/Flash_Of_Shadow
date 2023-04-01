@@ -101,6 +101,7 @@ public class MapGameState extends BasicGameState {
 
     @Override
     public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        System.out.println("leave"); // LOG
         gameContainer.getInput().removeAllControllerListeners();
     }
 

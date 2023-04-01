@@ -74,4 +74,10 @@ public class FenetrePopUpChoix extends FenetrePopUp{
     public void setInfoComplementaire(String infoComplementaire) {
         this.infoComplementaire = infoComplementaire;
     }
+
+    public void init() {
+        oui = false;
+        non = false;
+        this.setShow(false);
+    }
 }
