@@ -81,7 +81,6 @@ public class Carte extends Map {
             while ((ligne = lecteurAvecBuffer.readLine()) != null) {
 
                 if (ligne.contains("<objectgroup") && !ligne.contains("width")) {
-                    System.out.println(ligne);
                     ligne = ligne.replace('>', ' ');
                     if (ligne.contains("/")) {
                         ligne = ligne.replace('/', ' ');
@@ -220,7 +219,6 @@ public class Carte extends Map {
         listePnj = new ArrayList<>();
         Map map = client.chargementCarte(nom);
         ArrayList<PNJ> listeDataPnj = client.chargementPnjOnMap(map.getId());
-        System.out.println("Chargement de la carte depuis le serveur : " + map);
 
         for (int i = 0; i < listeDataPnj.size(); i++) {
             listePnj.add(new PersonnageNonJoueur(listeDataPnj.get(i)));
