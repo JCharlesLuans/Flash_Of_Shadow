@@ -233,8 +233,6 @@ public class Client {
         ArrayList<PNJ> aRetourner = new ArrayList<>();
         String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.PNJ + ";" + RequeteServeur.MAP + ":" + idMap;
 
-        System.out.println(requete);
-
         try {
             envoi(new RequeteServeur(requete));
             aRetourner = (ArrayList<PNJ>) Tools.decodeString((String) reception());
@@ -242,7 +240,6 @@ public class Client {
             e.printStackTrace();
         }
 
-        System.out.println(aRetourner);
         return aRetourner;
     }
 
