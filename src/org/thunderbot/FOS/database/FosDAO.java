@@ -463,6 +463,42 @@ public class FosDAO {
         return aRetourner;
     }
 
+    public ArrayList<PNJ> getPnjAgressifByIdMap(String idMap, String agressif ) {
+        ArrayList<PNJ> aRetourner = new ArrayList<>();
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_PNJ + " WHERE " + PNJ_CLE_MAP + " = " + idMap + " AND " + PNJ_AGRESSIF +" = " + agressif + ";";
+        try {
+
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+            while (rs.next()) {
+                PNJ tmp = new PNJ();
+                tmp.setId(rs.getInt(PNJ_CLE));
+                tmp.setNom(rs.getString(PNJ_NOM));
+                tmp.setSprite(rs.getString(PNJ_SPRITE));
+                tmp.setAgressif(rs.getInt(PNJ_AGRESSIF));
+                tmp.setX(rs.getFloat(PNJ_X));
+                tmp.setY(rs.getFloat(PNJ_Y));
+                tmp.setStatArmure(rs.getInt(PNJ_STAT_ARMURE));
+                tmp.setStatAgilite(rs.getInt(PNJ_STAT_AGILITE));
+                tmp.setStatDexterite(rs.getInt(PNJ_STAT_DEXTERITE));
+                tmp.setStatEndurance(rs.getInt(PNJ_STAT_ENDURANCE));
+                tmp.setStatForce(rs.getInt(PNJ_STAT_FORCE));
+                tmp.setStatInteligence(rs.getInt(PNJ_STAT_INTELLIGENCE));
+                tmp.setStatSagesse(rs.getInt(PNJ_STAT_SAGESSE));
+                tmp.setIdMap(rs.getInt(PNJ_CLE_MAP));
+                tmp.setIdFaction(rs.getInt(PNJ_CLE_FACTION));
+                tmp.setIdTitre(rs.getInt(PNJ_CLE_TITRE));
+                aRetourner.add(tmp);
+            }
+            rs.close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
     public ArrayList<Competence> getCompetenceAll() {
         ArrayList<Competence> aRetourner = new ArrayList<>();
         String requete =

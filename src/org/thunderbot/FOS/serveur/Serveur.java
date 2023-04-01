@@ -454,11 +454,10 @@ public class Serveur extends Thread {
         nombrePNJ = 2 + (int) (Math.random() * (4 - 2) + 1);
 
         // Recuperation des PNJ possibles sur la maps
-        listePnjPossible = accesBD.getPnjByIdMap(pnjTemporaire.getIdMap() + "");
+        listePnjPossible = accesBD.getPnjAgressifByIdMap(pnjTemporaire.getIdMap() + "", "1");
 
         // Pour tout le nombres de PNJ possible, choisir aléatoirement les pnj dans la liste créer précédament
         for (int i = 0; i < nombrePNJ; i++) {
-            // TODO selectionnée seulement ceux qui sont agressif
             listePnjChoisis.add(listePnjPossible.get((int) (Math.random() * (listePnjPossible.size()) )));
         }
 
