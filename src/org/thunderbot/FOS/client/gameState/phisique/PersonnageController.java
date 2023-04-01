@@ -6,6 +6,7 @@ import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.Camera;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.world.Carte;
+import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUpChoix;
 
 /**
  * Objet de controle d'un personnage
@@ -152,8 +153,9 @@ public class PersonnageController implements KeyListener, ControllerListener, Mo
 
         // Gestion de la fenetre des combat
         if (mapGameState.getFenetreCombat().isOui()) {
+            mapGameState.getFenetreCombat().init();
             mapGameState.getStateBasedGame().enterState(CombatGameState.ID);
-            personnageJoueurClient.enCombat(mapGameState.getFenetreCombat().getInfoComplementaire()); // TODO STUB
+            personnageJoueurClient.enCombat(mapGameState.getFenetreCombat().getInfoComplementaire());
         }
     }
 

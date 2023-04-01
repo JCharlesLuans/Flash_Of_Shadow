@@ -7,6 +7,7 @@ package org.thunderbot.FOS.client.gameState;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -84,6 +85,10 @@ public class MapGameState extends BasicGameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        gameContainer.getInput().removeAllKeyListeners();
+        gameContainer.getInput().removeAllControllerListeners();
+        gameContainer.getInput().removeAllMouseListeners();
+
         joueur = new PersonnageJoueurClient(client);
         joueur.setGui(new Gui(gameContainer, client, stateBasedGame));
         camera = new Camera(joueur);
@@ -101,8 +106,7 @@ public class MapGameState extends BasicGameState {
 
     @Override
     public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        System.out.println("leave"); // LOG
-        gameContainer.getInput().removeAllControllerListeners();
+
     }
 
     @Override
@@ -204,9 +208,6 @@ public class MapGameState extends BasicGameState {
             } else {
                 // Ajout d'un personnage qui arrive
                 listeLocale.add(tmp);
-
-                // TODO LOG
-                System.out.println("Ajout");
             }
             listeDistante.remove(listeDistante.get(i));
         }

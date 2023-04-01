@@ -14,12 +14,12 @@ import org.thunderbot.FOS.client.ChaosRevolt;
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
+import org.thunderbot.FOS.client.gameState.phisique.CombatController;
 import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.PNJ;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -38,7 +38,7 @@ public class CombatGameState extends BasicGameState {
 
     private Client client;
 
-    private PersonnageController personnageController;
+    private CombatController combatController;
 
     private Carte carte;
 
@@ -59,13 +59,28 @@ public class CombatGameState extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-
+        combatController = new CombatController(this);
     }
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        gameContainer.getInput().removeAllKeyListeners();
+        gameContainer.getInput().removeAllControllerListeners();
+        gameContainer.getInput().removeAllMouseListeners();
+
+        gameContainer.getInput().addControllerListener(combatController);
+        gameContainer.getInput().addMouseListener(combatController);
+        gameContainer.getInput().addKeyListener(combatController);
+
+        System.out.println(gameContainer.getInput().toString());
+
         initPNJ();
         initJoueur();
+    }
+
+    @Override
+    public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+
     }
 
     @Override
