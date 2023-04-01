@@ -5,6 +5,7 @@
 
 package org.thunderbot.FOS.client.network;
 
+import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
@@ -338,4 +339,17 @@ public class Client {
 
 
     }
+
+    /**
+     * Récupere la liste des PNJs depuis le serveur
+     * @return la liste
+     */
+    public ArrayList<PNJ> initialiseCombatPNJ() {
+        ArrayList<PNJ> aRetourner = new ArrayList<>();
+        String aDecoder;
+        aDecoder = (String) reception();
+        aRetourner = (ArrayList<PNJ>) Tools.decodeString(aDecoder);
+        return aRetourner;
+    }
+
 }

@@ -433,11 +433,37 @@ public class Serveur extends Thread {
      * Lance un combat entre le joueur et le PNJ
      */
     private void lancementCombat() {
+
+        ArrayList<PNJ> listePnjPossible;
+        ArrayList<PNJ> listePnjChoisis = new ArrayList<>();
+
+        PNJ pnjTemporaire;
+        Personnage personnageTemporaire;
+
+        int nombrePNJ = 0;
+
+        // LOG
         System.out.println("Entrée en combat");
+
         // Attente de la reception des infos complementaire => PNJ
-        System.out.println(receptionXML());
+        pnjTemporaire = (PNJ) receptionXML();
         // Attente de la reception des infos complementaire => Joueur
-        System.out.println(receptionXML());
+        personnageTemporaire = (Personnage) receptionXML();
+
+        // Génération du nombre de PNJ que va affronter le joueur (entre 2 et 4)
+        nombrePNJ = 2 + (int) (Math.random() * (4 - 2) + 1);
+
+        // Recuperation des PNJ possibles sur la maps
+        listePnjPossible = accesBD.getPnjByIdMap(pnjTemporaire.getIdMap() + "");
+
+        // Pour tout le nombres de PNJ possible, choisir aléatoirement les pnj dans la liste créer précédament
+        for (int i = 0; i < nombrePNJ; i++) {
+            // TODO selectionnée seulement ceux qui sont agressif
+            listePnjChoisis.add(listePnjPossible.get((int) (Math.random() * (listePnjPossible.size()) )));
+        }
+
+        // Renvoi de la liste au joueur
+        envoiXML(listePnjChoisis);
 
     }
 }

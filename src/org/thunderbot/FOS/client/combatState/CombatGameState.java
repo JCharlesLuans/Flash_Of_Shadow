@@ -11,8 +11,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.ChaosRevolt;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.database.beans.PNJ;
+
+import java.util.ArrayList;
 
 /**
  * State du monde de base
@@ -34,6 +38,8 @@ public class CombatGameState extends BasicGameState {
 
     private Case[][] terrain;
 
+    private ArrayList<PNJ> listePNJ;
+
     public CombatGameState(Client client) throws SlickException {
         background = new Image("res/combatState/fond.png");
         this.client = client;
@@ -52,6 +58,10 @@ public class CombatGameState extends BasicGameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         initCase();
+        listePNJ = client.initialiseCombatPNJ();
+
+        // LOG
+        System.out.println(listePNJ);
     }
 
     @Override
