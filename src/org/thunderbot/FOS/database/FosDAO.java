@@ -107,7 +107,11 @@ public class FosDAO {
         return aRetourner;
     }
 
-    public void updatePersonnage(int id, Personnage personnage) {
+    /**
+     * Met ajour un personnage dans la base de donnée
+     * @param personnage
+     */
+    public void updatePersonnage(Personnage personnage) {
         String requette =
                 "UPDATE " + NOM_TABLE_PERSONNAGE
                 + " SET " + PERSONNAGE_X + " = " + personnage.getX() + ','
@@ -121,7 +125,7 @@ public class FosDAO {
                           + PERSONNAGE_CLE_STUFF_ARME + " = " + personnage.getStuffArme().getId() + ','
                           + PERSONNAGE_CLE_GUILDE + " = " + personnage.getGuilde().getId() + ','
                           + PERSONNAGE_CLE_TITRE + " = " + personnage.getTitre().getId()
-                + " WHERE " + PERSONNAGE_CLE + " = " + id;
+                + " WHERE " + PERSONNAGE_CLE + " = " + personnage.getId();
 
         gestionnaireBase.executeUpdate(requette);
     }

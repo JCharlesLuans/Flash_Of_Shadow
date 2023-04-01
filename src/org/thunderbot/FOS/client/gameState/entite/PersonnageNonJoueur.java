@@ -24,8 +24,6 @@ public class PersonnageNonJoueur extends Personnage{
 
     private int idMap; // Id de la map sur laquelle se trouve le PNJ
 
-    private String sprite;
-
     public PersonnageNonJoueur(PNJ pnj) throws SlickException {
         this.id = pnj.getId();
         this.moving = true;
@@ -35,7 +33,7 @@ public class PersonnageNonJoueur extends Personnage{
         this.direction = pnj.getDirection();
         this.sprite = pnj.getSprite();
         this.idMap = pnj.getIdMap();
-        SpriteSheet spriteSheet = new SpriteSheet("res/texture/pnj/" + pnj.getSprite(), 64, 64 );
+        SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/pnj/" + pnj.getSprite(), 64, 64 );
         loadAnimation(spriteSheet);
     }
 

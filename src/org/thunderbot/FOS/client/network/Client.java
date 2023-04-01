@@ -289,6 +289,21 @@ public class Client {
     }
 
     /**
+     * Serialise un objet en XML et l'envoi au serveur
+     * @param objet à serialiser et envoyé
+     * @throws IOException
+     */
+    private void envoiXML(Object objet) {
+        try {
+            sortie.writeObject(Tools.encodeString(objet));
+            sortie.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    /**
      * Receptionne des donnée du serveurs
      * @return l'objets reçu
      */
@@ -296,6 +311,20 @@ public class Client {
         Object aRetourner = new Object();
         try {
             aRetourner = entree.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            JFrame jFrame = new JFrame();
+            JOptionPane.showMessageDialog(jFrame, "Serveur déconnecté!");
+        }
+
+        return aRetourner;
+    }
+
+    private Object receptionXML() {
+        Object aRetourner = new Object();
+        String reception;
+        try {
+            reception = (String) entree.readObject();
+            aRetourner = Tools.decodeString(reception);
         } catch (ClassNotFoundException | IOException e) {
             JFrame jFrame = new JFrame();
             JOptionPane.showMessageDialog(jFrame, "Serveur déconnecté!");
@@ -318,8 +347,7 @@ public class Client {
 
     /**
      * Envoi au serveur qu'un combat à été déclancher entre le joueur et le mobs.
-     * @param idJoueur
-     * @param idPnj
+     * @param pnjEncode
      */
     public void entreEnCombat(String pnjEncode) {
         try {
@@ -328,9 +356,6 @@ public class Client {
             envoi(new RequeteServeur(requete));
 
             envoi(pnjEncode);
-
-            requete = Tools.encodeString(personnage); // Envoi du personnage et de ses stats
-            envoi(requete);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -350,6 +375,16 @@ public class Client {
         aDecoder = (String) reception();
         aRetourner = (ArrayList<PNJ>) Tools.decodeString(aDecoder);
         return aRetourner;
+    }
+
+    /**
+     * Envoi les donnée du personnage au serveur pour effectuer la sauvegarde au début du combat
+     * @return le personnage renvoyé par le serveur avec les position relative au combat game state
+     */
+    public Personnage initialiseCombatJoueur() {
+
+        envoiXML(personnage);
+        return (Personnage) receptionXML();
     }
 
 }

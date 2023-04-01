@@ -9,6 +9,8 @@ import org.newdawn.slick.*;
 import org.thunderbot.FOS.client.gameState.GUI.Gui;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.database.beans.PNJ;
+import org.thunderbot.FOS.database.beans.Personnage;
 
 /**
  * Personnage du client que le joueur va interpreter et jouer.
@@ -40,7 +42,31 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
 
         this.client = client;
 
-        SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/" + client.getPersonnage().getSprite(), 64, 64);
+        this.sprite = client.getPersonnage().getSprite();
+
+        SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/" + this.sprite, 64, 64);
+        this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
+        this.animations[1] = loadAnimation(spriteSheet, 0, 1, 1);
+        this.animations[2] = loadAnimation(spriteSheet, 0, 1, 2);
+        this.animations[3] = loadAnimation(spriteSheet, 0, 1, 3);
+        this.animations[4] = loadAnimation(spriteSheet, 1, 9, 0);
+        this.animations[5] = loadAnimation(spriteSheet, 1, 9, 1);
+        this.animations[6] = loadAnimation(spriteSheet, 1, 9, 2);
+        this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
+    }
+
+    public PersonnageJoueurClient(Personnage personnage) throws SlickException {
+        this.id = personnage.getId();
+        this.moving = true;
+        this.positionX = personnage.getX();
+        this.positionY = personnage.getY();
+        this.nom = personnage.getNom();
+        this.direction = personnage.getDirection();
+        this.sprite = personnage.getSprite();
+
+        this.direction = BAS;
+
+        SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/joueur/" + this.sprite, 64, 64 );
         this.animations[0] = loadAnimation(spriteSheet, 0, 1, 0);
         this.animations[1] = loadAnimation(spriteSheet, 0, 1, 1);
         this.animations[2] = loadAnimation(spriteSheet, 0, 1, 2);

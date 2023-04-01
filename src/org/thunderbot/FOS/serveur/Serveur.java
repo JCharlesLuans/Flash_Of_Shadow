@@ -6,7 +6,6 @@
 package org.thunderbot.FOS.serveur;
 
 import org.thunderbot.FOS.client.ChaosRevolt;
-import org.thunderbot.FOS.client.combatState.Case;
 import org.thunderbot.FOS.client.combatState.CombatGameState;
 import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.beans.*;
@@ -93,9 +92,6 @@ public class Serveur extends Thread {
     private void traitement() {
         System.out.println("Connexion de : " + me.getSocket().getInetAddress());
 
-        // DEBUG LOG
-        System.out.println(iaServeur.getPnjByMap(1));
-
         try {
             sortie = me.getSortie();
             entree = me.getEntree();
@@ -103,9 +99,6 @@ public class Serveur extends Thread {
             while (!isIdentifier) {
                 connexion(entree, sortie);
             }
-
-            // LOG
-            System.out.println(me.getSocket().getInetAddress() + " est identifier");
 
             while (isConnecter) {
                 Object reception = entree.readObject();
@@ -226,7 +219,7 @@ public class Serveur extends Thread {
             // Suppression du joeueur car il n'a pas créer son personnage
             accesBD.deleteJoueur(personnageAReconstruire.getIdJoueur());
         } else {
-            accesBD.updatePersonnage(personnageAReconstruire.getId(), personnageAReconstruire);
+            accesBD.updatePersonnage(personnageAReconstruire);
         }
 
         System.out.println("Deconnexion de : " + me.getSocket().getInetAddress());
@@ -286,7 +279,8 @@ public class Serveur extends Thread {
                         break;
 
                     case RequeteServeur.COMBAT:
-                        lancementCombat();
+                        CombatServeur tmp =  new CombatServeur(this, accesBD);
+                        tmp.combat();
                 }
                 break;
 
@@ -300,8 +294,6 @@ public class Serveur extends Thread {
 
     private void chargementPNJ(String resteRequete) {
 
-        System.out.println(resteRequete);
-
         ArrayList<PNJ> aRenvoyer = new ArrayList<>();
         String table = resteRequete.split(":")[0];
         String id = resteRequete.split(":")[1];
@@ -311,8 +303,6 @@ public class Serveur extends Thread {
                 aRenvoyer = accesBD.getPnjByIdMap(id);
                 break;
         }
-
-        System.out.println(aRenvoyer);
         envoiXML(aRenvoyer);
     }
 
@@ -420,7 +410,7 @@ public class Serveur extends Thread {
      * Reception d'un String contenant un objet serialiser en XML. L'objet va etre desserialiser puis retourner
      * @return l'objet déserialiser
      */
-    private Object receptionXML() {
+    public Object receptionXML() {
         String strReception = null;
         try {
             strReception = (String) entree.readObject();
@@ -431,81 +421,6 @@ public class Serveur extends Thread {
             e.printStackTrace();
         }
         return Tools.decodeString(strReception);
-    }
-
-    /**
-     * Lance un combat entre le joueur et le PNJ
-     */
-    private void lancementCombat() {
-
-        Random rnd = new Random();
-
-        ArrayList<PNJ> listePnjPossible;
-        ArrayList<PNJ> listePnjChoisis = new ArrayList<>();
-        ArrayList<PNJ> listePnjAEnvoyer = new ArrayList<>();
-
-        PNJ pnjTemporaire;
-        Personnage personnageTemporaire;
-
-        int nombrePNJ = 0;
-
-        // Donnée pour la simulation du terrain
-        int nombreCaseLongueur = ChaosRevolt.WIDTH / CombatGameState.TAILLE_CASE;
-        int nombreCaseHauteur  = ChaosRevolt.HEIGHT / CombatGameState.TAILLE_CASE;
-
-        boolean dejaUtilise;
-
-        // LOG
-        System.out.println("Entrée en combat");
-
-        // Attente de la reception des infos complementaire => PNJ
-        pnjTemporaire = (PNJ) receptionXML();
-        // Attente de la reception des infos complementaire => Joueur
-        personnageTemporaire = (Personnage) receptionXML();
-
-        // Génération du nombre de PNJ que va affronter le joueur (entre 2 et 4)
-        nombrePNJ = 2 + rnd.nextInt(3);
-
-        // Recuperation des PNJ possibles sur la maps
-        listePnjPossible = accesBD.getPnjAgressifByIdMap(pnjTemporaire.getIdMap() + "", "1");
-
-        // Pour tout le nombres de PNJ possible, choisir aléatoirement les pnj dans la liste créer précédament
-        for (int i = 0; i < nombrePNJ; i++) {
-            listePnjChoisis.add(new PNJ(listePnjPossible.get(rnd.nextInt(listePnjPossible.size()))));
-        }
-
-        // Une fois tout les PNJ choisis, selectionner leurs position de maniere aléatoire
-        for (int i = 0; i < listePnjChoisis.size(); i++) {
-
-            listePnjChoisis.get(i).setDirection(org.thunderbot.FOS.client.gameState.entite.Personnage.BAS);
-
-            dejaUtilise = false; // Reinitialise l'indicateur de coordonnée deja utiliser
-
-            do {
-                // Choisi un position aléatoire sur la carte, puis applique un delta pour l'affichage
-                listePnjChoisis.get(i).setX((rnd.nextInt(nombreCaseLongueur) + 1) * CombatGameState.TAILLE_CASE - 32);
-                listePnjChoisis.get(i).setY((rnd.nextInt(nombreCaseHauteur) + 1) * CombatGameState.TAILLE_CASE - 16);
-
-                for (int j = 0; j < listePnjChoisis.size(); j++) {
-                    if (j != i) {
-                        dejaUtilise = (listePnjChoisis.get(i).getX() == listePnjChoisis.get(j).getX()
-                                && listePnjChoisis.get(i).getY() == listePnjChoisis.get(j).getY())
-                                || dejaUtilise;
-                    }
-                }
-            } while (dejaUtilise);
-
-            System.out.println(listePnjChoisis.get(i).getX()); // LOG
-            System.out.println(listePnjChoisis.get(i).getY()); // LOG
-
-            // TODO Empecher que les PNJ ais la meme position
-        }
-
-        System.out.println(listePnjChoisis);
-
-        // Renvoi de la liste au joueur
-        envoiXML(listePnjChoisis);
-
     }
 }
 

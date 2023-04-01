@@ -11,6 +11,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.ChaosRevolt;
+import org.thunderbot.FOS.client.gameState.entite.Personnage;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
 import org.thunderbot.FOS.client.gameState.world.Carte;
@@ -43,6 +45,7 @@ public class CombatGameState extends BasicGameState {
     private Case[][] terrain;
 
     private ArrayList<PersonnageNonJoueur> listePNJ;
+    private Personnage personnage;
 
     public CombatGameState(Client client) throws SlickException {
         background = new Image("res/combatState/fond.png");
@@ -62,6 +65,7 @@ public class CombatGameState extends BasicGameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         initPNJ();
+        initJoueur();
     }
 
     @Override
@@ -69,6 +73,7 @@ public class CombatGameState extends BasicGameState {
         background.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
         renderGrille(graphics);
         renderPNJ(graphics);
+        personnage.render(graphics);
     }
 
     @Override
@@ -109,6 +114,17 @@ public class CombatGameState extends BasicGameState {
             for (PNJ pnjTmp : listeTmp) {
                 listePNJ.add(new PersonnageNonJoueur(pnjTmp));
             }
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Génére le joueur et lui attribut une position aléatoire
+     */
+    private void initJoueur() {
+        try {
+            personnage = new PersonnageJoueurClient(client.initialiseCombatJoueur());
         } catch (SlickException e) {
             throw new RuntimeException(e);
         }

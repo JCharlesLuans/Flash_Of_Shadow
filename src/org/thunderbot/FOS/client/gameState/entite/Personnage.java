@@ -58,6 +58,8 @@ public class Personnage {
     /** Indique si le personnage est en combat */
     protected boolean enCombat;
 
+    protected String sprite;
+
     /**
      * Charge une animations a partir d'une sprite sheet, en indiquant les début de l'annimation et la fin
      *
