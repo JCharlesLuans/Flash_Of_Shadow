@@ -80,6 +80,25 @@ public class PNJ implements Serializable {
         direction = Personnage.HAUT;
     }
 
+    public PNJ(PNJ pnj) {
+        this.id              = pnj.id;
+        this.nom             = pnj.nom;
+        this.sprite          = pnj.sprite;
+        this.agressif        = pnj.agressif;
+        this.x               = pnj.x;
+        this.y               = pnj.y;
+        this.statAgilite     = pnj.statAgilite;
+        this.statArmure      = pnj.statArmure;
+        this.statDexterite   = pnj.statDexterite;
+        this.statForce       = pnj.statForce;
+        this.statEndurance   = pnj.statEndurance;
+        this.statInteligence = pnj.statInteligence;
+        this.statSagesse     = pnj.statSagesse;
+        this.idMap           = pnj.idMap;
+        this.idFaction       = pnj.idFaction;
+        this.idTitre         = pnj.idTitre;
+    }
+
     public int getId() {
         return id;
     }

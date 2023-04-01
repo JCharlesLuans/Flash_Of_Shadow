@@ -16,6 +16,7 @@ import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.PNJ;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -38,7 +39,7 @@ public class CombatGameState extends BasicGameState {
 
     private Case[][] terrain;
 
-    private ArrayList<PNJ> listePNJ;
+    private ArrayList<PersonnageNonJoueur> listePNJ;
 
     public CombatGameState(Client client) throws SlickException {
         background = new Image("res/combatState/fond.png");
@@ -57,17 +58,36 @@ public class CombatGameState extends BasicGameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        initCase();
-        listePNJ = client.initialiseCombatPNJ();
 
-        // LOG
-        System.out.println(listePNJ);
+        // RAZ de la liste des PNJ
+        listePNJ = new ArrayList<>();
+
+        ArrayList<PNJ> listeTmp;
+
+        initCase();
+        listeTmp = client.initialiseCombatPNJ();
+
+        System.out.println(listeTmp);
+
+        for (PNJ pnjTmp : listeTmp) {
+            listePNJ.add(new PersonnageNonJoueur(pnjTmp));
+        }
+
+        for (int i = 0; i < listePNJ.size(); i++) {
+            System.out.println(listePNJ.get(i).getPositionX()); // LOG
+            System.out.println(listePNJ.get(i).getPositionY()); // LOG
+        }
+
+        System.out.println(listePNJ.size()); // LOG
+
+
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         background.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
         renderGrille(graphics);
+        renderPNJ(graphics);
     }
 
     @Override
@@ -98,6 +118,12 @@ public class CombatGameState extends BasicGameState {
             for (int j = 0; j < terrain[i].length; j++) {
                 terrain[i][j].render(graphics);
             }
+        }
+    }
+
+    private void renderPNJ(Graphics graphics) {
+        for (PersonnageNonJoueur pnj : listePNJ) {
+            pnj.render(graphics);
         }
     }
 }

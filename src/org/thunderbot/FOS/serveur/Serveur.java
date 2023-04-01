@@ -442,6 +442,7 @@ public class Serveur extends Thread {
 
         ArrayList<PNJ> listePnjPossible;
         ArrayList<PNJ> listePnjChoisis = new ArrayList<>();
+        ArrayList<PNJ> listePnjAEnvoyer = new ArrayList<>();
 
         PNJ pnjTemporaire;
         Personnage personnageTemporaire;
@@ -451,6 +452,8 @@ public class Serveur extends Thread {
         // Donnée pour la simulation du terrain
         int nombreCaseLongueur = ChaosRevolt.WIDTH / CombatGameState.TAILLE_CASE;
         int nombreCaseHauteur  = ChaosRevolt.HEIGHT / CombatGameState.TAILLE_CASE;
+
+        boolean dejaUtilise;
 
         // LOG
         System.out.println("Entrée en combat");
@@ -468,14 +471,37 @@ public class Serveur extends Thread {
 
         // Pour tout le nombres de PNJ possible, choisir aléatoirement les pnj dans la liste créer précédament
         for (int i = 0; i < nombrePNJ; i++) {
-            listePnjChoisis.add(listePnjPossible.get(rnd.nextInt(listePnjPossible.size())));
+            listePnjChoisis.add(new PNJ(listePnjPossible.get(rnd.nextInt(listePnjPossible.size()))));
         }
 
         // Une fois tout les PNJ choisis, selectionner leurs position de maniere aléatoire
-        for (PNJ pnjTmp : listePnjChoisis) {
-            pnjTmp.setX(rnd.nextInt(nombreCaseLongueur) + 1);
-            pnjTmp.setY(rnd.nextInt(nombreCaseHauteur) + 1);
+        for (int i = 0; i < listePnjChoisis.size(); i++) {
+
+            listePnjChoisis.get(i).setDirection(org.thunderbot.FOS.client.gameState.entite.Personnage.BAS);
+
+            dejaUtilise = false; // Reinitialise l'indicateur de coordonnée deja utiliser
+
+            do {
+                // Choisi un position aléatoire sur la carte, puis applique un delta pour l'affichage
+                listePnjChoisis.get(i).setX((rnd.nextInt(nombreCaseLongueur) + 1) * CombatGameState.TAILLE_CASE - 32);
+                listePnjChoisis.get(i).setY((rnd.nextInt(nombreCaseHauteur) + 1) * CombatGameState.TAILLE_CASE - 16);
+
+                for (int j = 0; j < listePnjChoisis.size(); j++) {
+                    if (j != i) {
+                        dejaUtilise = (listePnjChoisis.get(i).getX() == listePnjChoisis.get(j).getX()
+                                && listePnjChoisis.get(i).getY() == listePnjChoisis.get(j).getY())
+                                || dejaUtilise;
+                    }
+                }
+            } while (dejaUtilise);
+
+            System.out.println(listePnjChoisis.get(i).getX()); // LOG
+            System.out.println(listePnjChoisis.get(i).getY()); // LOG
+
+            // TODO Empecher que les PNJ ais la meme position
         }
+
+        System.out.println(listePnjChoisis);
 
         // Renvoi de la liste au joueur
         envoiXML(listePnjChoisis);
