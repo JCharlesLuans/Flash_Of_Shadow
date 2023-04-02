@@ -5,6 +5,7 @@
 package org.thunderbot.FOS.database.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Personnage implements Serializable {
 
@@ -27,6 +28,8 @@ public class Personnage implements Serializable {
     private Guilde guilde;
     private Titre titre;
 
+    private ArrayList<Competence> listeCompetence;
+
     //Autre
     private int direction;
     private boolean moving;
@@ -47,6 +50,8 @@ public class Personnage implements Serializable {
         faction = new Faction();
         guilde = new Guilde();
         titre = new Titre();
+
+        listeCompetence = new ArrayList<>(); // TODO STUB
 
          direction = 0;
          moving = false;
@@ -248,5 +253,10 @@ public class Personnage implements Serializable {
 
     public boolean isMoving() {
         return moving;
+    }
+
+    public void setListeCompetence(Competence competenceById) {
+        listeCompetence = new ArrayList<>();
+        listeCompetence.add(competenceById);
     }
 }

@@ -260,7 +260,13 @@ public class Serveur extends Thread {
                 switch (requeteServeur.getObjet()) {
                     case RequeteServeur.PERSONNAGE:
                         Personnage personnage = (Personnage) entree.readObject();
-                        sortie.writeObject(accesBD.addPersonnage(personnage));
+
+                        int newIdJoueur = accesBD.addPersonnage(personnage);
+
+                        accesBD.addListeCompetence(newIdJoueur, 1);
+                        personnage.setListeCompetence(accesBD.getCompetenceById(1));
+                        personnage.setId(newIdJoueur);
+                        sortie.writeObject(personnage);
                         sortie.flush();
                         
                         me.setPersonnage(personnage);

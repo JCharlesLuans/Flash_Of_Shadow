@@ -254,7 +254,7 @@ public class Client {
             envoi(new RequeteServeur(requete));
             envoi(personnage);
 
-            personnage.setId((int) reception());
+            personnage = (Personnage) reception();
         }  catch (IOException e) {
             e.printStackTrace();
         }

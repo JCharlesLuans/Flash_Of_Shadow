@@ -1,6 +1,8 @@
 package org.thunderbot.FOS.database.beans;
 
-public class Competence {
+import java.io.Serializable;
+
+public class Competence implements Serializable {
     private int _id;
     private int idEffet;
     private int degaBase;
@@ -45,5 +47,16 @@ public class Competence {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "Competence{" +
+                "_id=" + _id +
+                ", idEffet=" + idEffet +
+                ", degaBase=" + degaBase +
+                ", nom='" + nom + '\'' +
+                ", image='" + image + '\'' +
+                '}';
     }
 }

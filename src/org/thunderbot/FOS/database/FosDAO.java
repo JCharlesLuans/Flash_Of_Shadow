@@ -108,7 +108,7 @@ public class FosDAO {
     }
 
     /**
-     * Met ajour un personnage dans la base de donnée
+     * Met a jour un personnage dans la base de donnée
      * @param personnage
      */
     public void updatePersonnage(Personnage personnage) {
@@ -182,6 +182,72 @@ public class FosDAO {
     }
 
 
+    public Competence getCompetenceById(int id) {
+        Competence aRetourner = new Competence();
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_COMPETENCE + " WHERE " + COMPETENCE_CLE + " = " + id;
+
+        try {
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            aRetourner.setId(rs.getInt(COMPETENCE_NOM));
+            aRetourner.setNom(rs.getString(COMPETENCE_NOM));
+            aRetourner.setDegaBase(rs.getInt(COMPETENCE_DEGAT_BASE));
+            aRetourner.setIdEffet(rs.getInt(COMPETENCE_ID_EFFET));
+            aRetourner.setImage(rs.getString(COMPETENCE_IMAGE));
+
+
+            rs.close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
+    /**
+     * Recupére la liste de compétance d'un personnage dont l'id est passer en paramettre
+     * @param idPersonnage dont on veux les compétance
+     * @return la liste des compétance sous forme d'une array list
+     */
+//    public ArrayList<Competence> getCompetenceByPersonnage(int idPersonnage) {
+//        ArrayList<Competence> aRetourner = new ArrayList<>();
+//        String requete =
+//                "SELECT *" +
+//                " FROM " + NOM_TABLE_COMPETENCE + ", " + NOM_TABLE_PERSONNAGE + ", " + NOM_TABLE_LISTE_COMPETENCE +
+//                " WHERE " + NOM_TABLE_PERSONNAGE + "." + PERSONNAGE_CLE + " = " + idPersonnage
+//        try {
+//
+//            ResultSet rs = gestionnaireBase.executeRequete(requete);
+//            while (rs.next()) {
+//                PNJ tmp = new PNJ();
+//                tmp.setId(rs.getInt(PNJ_CLE));
+//                tmp.setNom(rs.getString(PNJ_NOM));
+//                tmp.setSprite(rs.getString(PNJ_SPRITE));
+//                tmp.setAgressif(rs.getInt(PNJ_AGRESSIF));
+//                tmp.setX(rs.getFloat(PNJ_X));
+//                tmp.setY(rs.getFloat(PNJ_Y));
+//                tmp.setStatArmure(rs.getInt(PNJ_STAT_ARMURE));
+//                tmp.setStatAgilite(rs.getInt(PNJ_STAT_AGILITE));
+//                tmp.setStatDexterite(rs.getInt(PNJ_STAT_DEXTERITE));
+//                tmp.setStatEndurance(rs.getInt(PNJ_STAT_ENDURANCE));
+//                tmp.setStatForce(rs.getInt(PNJ_STAT_FORCE));
+//                tmp.setStatInteligence(rs.getInt(PNJ_STAT_INTELLIGENCE));
+//                tmp.setStatSagesse(rs.getInt(PNJ_STAT_SAGESSE));
+//                tmp.setIdMap(rs.getInt(PNJ_CLE_MAP));
+//                tmp.setIdFaction(rs.getInt(PNJ_CLE_FACTION));
+//                tmp.setIdTitre(rs.getInt(PNJ_CLE_TITRE));
+//                aRetourner.add(tmp);
+//            }
+//            rs.close();
+//
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+//
+//        return aRetourner;
+//    }
 
     public Classe getClasseById(int id) {
         Classe aRetourner = new Classe();
@@ -530,5 +596,26 @@ public class FosDAO {
 
     public HelperBD getGestionnaireBase() {
         return gestionnaireBase;
+    }
+
+    /**
+     * Ajoute une nouvelle entrée dans la table liste compétence, ce qui permet de faire le liens entre la competence et
+     * le personnage dont les ID sont passer en paramettre
+     * @param idPersonnage
+     * @param idCompetence
+     */
+    public void addListeCompetence(int idPersonnage, int idCompetence) {
+        String requete =
+                "INSERT INTO " + NOM_TABLE_LISTE_COMPETENCE
+                        + " ( " + LISTE_COMPETENCE_EXPERIENCE + ", "
+                        + LISTE_COMPETENCE_CLE_COMPETENCE + ", "
+                        + LISTE_COMPETENCE_CLE_PERSO + ")"
+                        + "VALUES ( '"
+                        + 0 + "', '"
+                        + idCompetence + "', "
+                        + idPersonnage + "); ";
+
+
+        gestionnaireBase.executeUpdate(requete);
     }
 }
