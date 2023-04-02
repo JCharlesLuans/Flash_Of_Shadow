@@ -58,6 +58,7 @@ public class Personnage {
     /** Indique si le personnage est en combat */
     protected boolean enCombat;
 
+    /** Fichier de sprite */
     protected String sprite;
 
     /**
