@@ -15,7 +15,6 @@ import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.CombatController;
-import org.thunderbot.FOS.client.gameState.phisique.PersonnageController;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.PNJ;
@@ -23,7 +22,7 @@ import org.thunderbot.FOS.database.beans.PNJ;
 import java.util.ArrayList;
 
 /**
- * State du monde de base
+ * State des combats
  *
  * @author J-Charles Luans
  * @version 1.0
@@ -36,8 +35,8 @@ public class CombatGameState extends BasicGameState {
     public static final int TAILLE_INTERFACE = 2;
 
     private Image background;
-    private Image hud;
 
+    private InterfaceJoueur interfaceJoueur;
     private Client client;
 
     private CombatController combatController;
@@ -46,12 +45,14 @@ public class CombatGameState extends BasicGameState {
 
     private Case[][] terrain;
 
+    int nombreCaseHauteur;
+
+    /** Entité en combats */
     private ArrayList<PersonnageNonJoueur> listePNJ;
-    private Personnage personnage;
+    private PersonnageJoueurClient personnage;
 
     public CombatGameState(Client client) throws SlickException {
         background = new Image("res/combatState/fond.png");
-        hud = new Image("res/combatState/ui.png");
         this.client = client;
     }
 
@@ -76,9 +77,10 @@ public class CombatGameState extends BasicGameState {
         gameContainer.getInput().addKeyListener(combatController);
 
         System.out.println(gameContainer.getInput().toString());
-
+        initCase();
         initPNJ();
         initJoueur();
+        initInterface();
     }
 
     @Override
@@ -89,10 +91,12 @@ public class CombatGameState extends BasicGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         background.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
-        hud.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
         renderGrille(graphics);
+
         renderPNJ(graphics);
         personnage.render(graphics);
+
+        interfaceJoueur.render(gameContainer, graphics);
     }
 
     @Override
@@ -105,7 +109,7 @@ public class CombatGameState extends BasicGameState {
      */
     private void initCase() {
         int nombreCaseLongueur = ChaosRevolt.WIDTH / TAILLE_CASE;
-        int nombreCaseHauteur  = ChaosRevolt.HEIGHT / TAILLE_CASE;
+        nombreCaseHauteur  = ChaosRevolt.HEIGHT / TAILLE_CASE - TAILLE_INTERFACE;
         terrain = new Case[nombreCaseHauteur][nombreCaseLongueur];
 
         for (int i = 0; i < nombreCaseHauteur; i++) {
@@ -125,7 +129,6 @@ public class CombatGameState extends BasicGameState {
 
             ArrayList<PNJ> listeTmp;
 
-            initCase();
             listeTmp = client.initialiseCombatPNJ();
 
             System.out.println(listeTmp);
@@ -147,6 +150,13 @@ public class CombatGameState extends BasicGameState {
         } catch (SlickException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Initialise l'interface de combat
+     */
+    private void initInterface() throws SlickException {
+        interfaceJoueur = new InterfaceJoueur(nombreCaseHauteur);
     }
 
     /**

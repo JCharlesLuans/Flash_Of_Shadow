@@ -92,7 +92,6 @@ public class CombatController implements KeyListener, ControllerListener, MouseL
     @Override
     public void mouseClicked(int button, int x, int y, int nbClick) {
 
-        System.out.println("hello");
     }
 
     @Override
