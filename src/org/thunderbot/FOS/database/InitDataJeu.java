@@ -23,7 +23,7 @@ public class InitDataJeu {
 
     private static final String CREATION_COMPETENCE =
             "INSERT INTO " + NOM_TABLE_COMPETENCE
-                + " ( " + COMPETENCE_NOM + ", " + COMPETENCE_DEGAT_BASE + ", " + COMPETENCE_ID_EFFET + ", " + COMPETENCE_ID_IMAGE + " )"
+                + " ( " + COMPETENCE_NOM + ", " + COMPETENCE_DEGAT_BASE + ", " + COMPETENCE_ID_EFFET + ", " + COMPETENCE_IMAGE + " )"
             + "VALUES "
                 + " ( 'Tir de fleche', 1, 1, 'fleche.png'),"
                 + " ( 'Tir de fleche piégée', 1, 1, 'flechePiege.png'),"
@@ -43,7 +43,7 @@ public class InitDataJeu {
                         + EFFET_STAT_SAGESSE + ", "
                         + EFFET_DPS + ", "
                         + EFFET_DUREE + ", "
-                        + EFFET_ID_IMAGE
+                        + EFFET_IMAGE
                 + " ) "
             + " VALUES "
                 + " ( 'DEFAUT', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'effet.png' ),"

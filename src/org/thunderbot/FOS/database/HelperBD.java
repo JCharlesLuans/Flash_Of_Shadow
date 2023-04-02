@@ -63,7 +63,7 @@ public class HelperBD {
     public static final String EFFET_STAT_SAGESSE = "statSagesse";
     public static final String EFFET_DPS = "dps";
     public static final String EFFET_DUREE = "duree";
-    public static final String EFFET_ID_IMAGE = "idImage";
+    public static final String EFFET_IMAGE = "image";
 
     private static final String CREATION_TABLE_EFFET =
             "CREATE TABLE " + NOM_TABLE_EFFET + " ( "
@@ -78,7 +78,7 @@ public class HelperBD {
                 + EFFET_STAT_SAGESSE      + " INTEGER NOT NULL,"
                 + EFFET_DPS + " INTEGER NOT NULL,"
                 + EFFET_DUREE +  " INTEGER NOT NULL,"
-                + EFFET_ID_IMAGE + " INTEGER NOT NULL"
+                + EFFET_IMAGE + " TEXT NOT NULL"
             + ");";
 
     ///// TABLE COMPETENCE ////////
@@ -87,7 +87,7 @@ public class HelperBD {
     public static final String COMPETENCE_NOM = "nom";
     public static final String COMPETENCE_DEGAT_BASE = "degatBase";
     public static final String COMPETENCE_ID_EFFET = "idEffet";
-    public static final String COMPETENCE_ID_IMAGE = "idImage";
+    public static final String COMPETENCE_IMAGE = "image";
 
     private static final String CREATION_TABLE_COMPETENCE =
             "CREATE TABLE " + NOM_TABLE_COMPETENCE + " ( "
@@ -95,7 +95,7 @@ public class HelperBD {
                 + COMPETENCE_NOM + " TEXT NOT NULL,"
                 + COMPETENCE_DEGAT_BASE + " INTEGER NOT NULL,"
                 + COMPETENCE_ID_EFFET + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_EFFET + " (" + EFFET_CLE + "),"
-                + COMPETENCE_ID_IMAGE + " INTEGER NOT NULL"
+                + COMPETENCE_IMAGE + " TEXT NOT NULL"
             + ") ;";
 
 

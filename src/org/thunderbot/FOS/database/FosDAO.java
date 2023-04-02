@@ -516,7 +516,7 @@ public class FosDAO {
                 tmp.setNom(rs.getString(COMPETENCE_NOM));
                 tmp.setDegaBase(rs.getInt(COMPETENCE_DEGAT_BASE));
                 tmp.setIdEffet(rs.getInt(COMPETENCE_ID_EFFET));
-                tmp.setImage(rs.getString(COMPETENCE_ID_IMAGE));
+                tmp.setImage(rs.getString(COMPETENCE_IMAGE));
                 aRetourner.add(tmp);
             }
             rs.close();
