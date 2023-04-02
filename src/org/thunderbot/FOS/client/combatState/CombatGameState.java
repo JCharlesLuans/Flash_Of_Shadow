@@ -11,7 +11,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.thunderbot.FOS.client.ChaosRevolt;
-import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.CombatController;
@@ -19,6 +18,7 @@ import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.gameState.world.Terrain;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.PNJ;
+import org.thunderbot.FOS.database.beans.Personnage;
 
 import java.util.ArrayList;
 

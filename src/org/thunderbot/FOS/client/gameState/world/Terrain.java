@@ -1,3 +1,7 @@
+/*
+ * Terrain.java             02/04/2023
+ * Copyright et copyleft TNLag Corp.
+ */
 package org.thunderbot.FOS.client.gameState.world;
 
 import org.newdawn.slick.Graphics;
@@ -59,5 +63,41 @@ public class Terrain {
         }
 
         return aRetourner;
+    }
+
+    public float getXById(int id) {
+        int compteur = 0;
+        int x = -1;
+        nombreCaseLongueur = ChaosRevolt.WIDTH / TAILLE_CASE;
+        nombreCaseHauteur  = ChaosRevolt.HEIGHT / TAILLE_CASE - TAILLE_INTERFACE;
+
+        for (int i = 0; i < nombreCaseHauteur; i++) {
+            for (int j = 0; j < nombreCaseLongueur; j++) {
+                compteur++;
+                if (compteur == id) {
+                    x = j;
+                }
+            }
+        }
+
+        return x;
+    }
+
+    public float getYById(int id) {
+        int compteur = 0;
+        int y = -1;
+        nombreCaseLongueur = ChaosRevolt.WIDTH / TAILLE_CASE;
+        nombreCaseHauteur  = ChaosRevolt.HEIGHT / TAILLE_CASE - TAILLE_INTERFACE;
+
+        for (int i = 0; i < nombreCaseHauteur; i++) {
+            for (int j = 0; j < nombreCaseLongueur; j++) {
+                compteur++;
+                if (compteur == id) {
+                    y = i;
+                }
+            }
+        }
+
+        return y;
     }
 }
