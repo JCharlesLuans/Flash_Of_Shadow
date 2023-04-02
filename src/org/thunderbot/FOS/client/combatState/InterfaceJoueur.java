@@ -19,7 +19,7 @@ import static org.thunderbot.FOS.client.combatState.CombatGameState.TAILLE_CASE;
 public class InterfaceJoueur {
 
     /** Placement des jauges */
-    public static final int DEBUT_X = 224;
+    public static final int DEBUT_X = 64;
     public static final int DEBUT_Y_VIE = 591;
     public static final int DEBUT_Y_MANA = 636;
     public static final int DEBUT_Y_MOUV= 682;
