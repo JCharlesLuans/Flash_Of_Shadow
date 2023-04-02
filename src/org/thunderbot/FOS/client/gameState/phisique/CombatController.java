@@ -99,15 +99,15 @@ public class CombatController implements KeyListener, ControllerListener, MouseL
         // Verification que le joueur a bien clicker sur le terrain
         if (id > 0) {
             // Déplacement du joueur sur la case ou le joueur a cliquer
-            combatGameState.getPersonnage().setPositionX(combatGameState.getTerrain().getXById(id) * CombatGameState.TAILLE_CASE - 32 + CombatGameState.TAILLE_CASE);
-            combatGameState.getPersonnage().setPositionY(combatGameState.getTerrain().getYById(id) * CombatGameState.TAILLE_CASE - 16 + CombatGameState.TAILLE_CASE);
+            combatGameState.getPersonnageAAfficher().setPositionX(combatGameState.getTerrain().getXById(id) * CombatGameState.TAILLE_CASE - 32 + CombatGameState.TAILLE_CASE);
+            combatGameState.getPersonnageAAfficher().setPositionY(combatGameState.getTerrain().getYById(id) * CombatGameState.TAILLE_CASE - 16 + CombatGameState.TAILLE_CASE);
 
             combatGameState.miseAJour();
         }
 
         //log
-        System.out.println((combatGameState.getPersonnage().getPositionX() +32) / 64);
-        System.out.println((combatGameState.getPersonnage().getPositionY() +16) / 64);
+        System.out.println((combatGameState.getPersonnageAAfficher().getPositionX() +32) / 64);
+        System.out.println((combatGameState.getPersonnageAAfficher().getPositionY() +16) / 64);
     }
 
     @Override

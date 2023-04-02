@@ -363,6 +363,37 @@ public class Client {
     }
 
     /**
+     * Met a jour les donnée de combats et les synchronise avec le serveur
+     * @param personnage personnage a mettre a jour
+     * @param listePNJ PNJs a mettre a jour
+     */
+    public void updateServeurCombat(Personnage personnage, ArrayList<PNJ> listePNJ) {
+
+        ArrayList<PNJ> tmpListe;
+        Personnage tmpPersonnage;
+
+        // envoi l'indicateur de fin de combat
+        envoiXML(false);
+        // envoi nouvelle position du joueur;
+        envoiXML(personnage);
+        // envoi etat pnj
+        envoiXML(listePNJ);
+
+        // reception nouvelle position des PNJ
+        tmpListe = (ArrayList<PNJ>) receptionXML();
+
+        for (int i = 0; i < tmpListe.size(); i++) {
+            listePNJ.set(i, tmpListe.get(i));
+        }
+
+        // reception etat du joueur
+        tmpPersonnage = (Personnage) receptionXML();
+
+        personnage.setData();
+
+    }
+
+    /**
      * Récupere la liste des PNJs depuis le serveur
      * @return la liste
      */
@@ -383,5 +414,4 @@ public class Client {
         envoiXML(personnage);
         return (Personnage) receptionXML();
     }
-
 }

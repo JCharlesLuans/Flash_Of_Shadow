@@ -78,6 +78,32 @@ public class Personnage implements Serializable {
         this.titre = titre;
     }
 
+    public Personnage(org.thunderbot.FOS.client.gameState.entite.Personnage personnage) {
+        id = -1;
+        idJoueur = -1;
+        nom = "";
+        sprite = "";
+        classe = new Classe();
+        map = new Map();
+        stuffArme = new Objet();
+        stuffBotte = new Objet();
+        stuffGant = new Objet();
+        stuffJambe = new Objet();
+        stuffTete = new Objet();
+        stuffTorse = new Objet();
+        faction = new Faction();
+        guilde = new Guilde();
+        titre = new Titre();
+
+        listeCompetence = new ArrayList<>(); // TODO STUB
+
+        direction = 0;
+        moving = false;
+
+        this.x = personnage.getPositionX();
+        this.y = personnage.getPositionY();
+    }
+
     public int getId() {
         return id;
     }
@@ -267,5 +293,8 @@ public class Personnage implements Serializable {
     public void setListeCompetence(Competence competence) {
         this.listeCompetence = new ArrayList<>();
         this.listeCompetence.add(competence);
+    }
+
+    public void setData() {
     }
 }

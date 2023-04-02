@@ -2,6 +2,7 @@ package org.thunderbot.FOS.serveur;
 
 import org.thunderbot.FOS.client.ChaosRevolt;
 import org.thunderbot.FOS.client.combatState.CombatGameState;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.beans.PNJ;
 import org.thunderbot.FOS.database.beans.Personnage;
@@ -40,6 +41,7 @@ public class CombatServeur {
     public void combat() {
         initCombatPnj();
         initJoueurCombat();
+        update();
     }
 
     /**
@@ -129,5 +131,55 @@ public class CombatServeur {
         } while (dejaUtilise);
 
         serveur.envoiXML(personnage);
+    }
+
+    private void update() {
+        boolean combatFini = false;
+        boolean dejaUtilise = false;
+
+        while (!combatFini) {
+            // reception de l'indicateur de combat fini
+            combatFini = (boolean) serveur.receptionXML();
+            System.out.println(combatFini);
+
+            if (!combatFini) {
+                // reception du joueur
+                serveur.receptionXML();
+
+                // reception etat des pnj
+                serveur.receptionXML();
+
+                // Une fois tout les PNJ choisis, selectionner leurs position de maniere aléatoire
+                for (int i = 0; i < listePnjEnCombat.size(); i++) {
+
+                    listePnjEnCombat.get(i).setDirection(org.thunderbot.FOS.client.gameState.entite.Personnage.BAS);
+
+                    dejaUtilise = false; // Reinitialise l'indicateur de coordonnée deja utiliser
+
+                    do {
+                        // Choisi un position aléatoire sur la carte, puis applique un delta pour l'affichage
+                        listePnjEnCombat.get(i).setX((rnd.nextInt(nombreCaseLongueur) + 1) * CombatGameState.TAILLE_CASE - 32);
+                        listePnjEnCombat.get(i).setY((rnd.nextInt(nombreCaseHauteur) + 1) * CombatGameState.TAILLE_CASE - 16);
+
+                        for (int j = 0; j < listePnjEnCombat.size(); j++) {
+                            if (j != i) {
+                                dejaUtilise = (listePnjEnCombat.get(i).getX() == listePnjEnCombat.get(j).getX()
+                                        && listePnjEnCombat.get(i).getY() == listePnjEnCombat.get(j).getY())
+                                        || dejaUtilise;
+                            }
+                        }
+                    } while (dejaUtilise);
+                }
+
+                // envoi nouvelle position pnj
+                serveur.envoiXML(listePnjEnCombat);
+
+
+                // envoi etat joueur
+                serveur.envoiXML(new Personnage());
+            }
+        }
+
+
     }
 }

@@ -10,7 +10,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.thunderbot.FOS.client.ChaosRevolt;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.CombatController;
@@ -49,8 +48,8 @@ public class CombatGameState extends BasicGameState {
     int nombreCaseHauteur;
 
     /** Entité en combats */
-    private ArrayList<PersonnageNonJoueur> listePNJ;
-    private PersonnageJoueurClient personnage;
+    private ArrayList<PersonnageNonJoueur> listePNJAAfficher;
+    private PersonnageJoueurClient personnageAAfficher;
 
     public CombatGameState(Client client) throws SlickException {
         background = new Image("res/combatState/fond.png");
@@ -95,7 +94,7 @@ public class CombatGameState extends BasicGameState {
         terrain.render(graphics);
 
         renderPNJ(graphics);
-        personnage.render(graphics);
+        personnageAAfficher.render(graphics);
 
         interfaceJoueur.render(gameContainer, graphics);
     }
@@ -113,7 +112,7 @@ public class CombatGameState extends BasicGameState {
     private void initPNJ() {
         try {
             // RAZ de la liste des PNJ
-            listePNJ = new ArrayList<>();
+            listePNJAAfficher = new ArrayList<>();
 
             ArrayList<PNJ> listeTmp;
 
@@ -122,7 +121,7 @@ public class CombatGameState extends BasicGameState {
             System.out.println(listeTmp);
 
             for (PNJ pnjTmp : listeTmp) {
-                listePNJ.add(new PersonnageNonJoueur(pnjTmp));
+                listePNJAAfficher.add(new PersonnageNonJoueur(pnjTmp));
             }
         } catch (SlickException e) {
             throw new RuntimeException(e);
@@ -134,7 +133,7 @@ public class CombatGameState extends BasicGameState {
      */
     private void initJoueur() {
         try {
-            personnage = new PersonnageJoueurClient(client.initialiseCombatJoueur());
+            personnageAAfficher = new PersonnageJoueurClient(client.initialiseCombatJoueur());
         } catch (SlickException e) {
             throw new RuntimeException(e);
         }
@@ -148,7 +147,7 @@ public class CombatGameState extends BasicGameState {
     }
 
     private void renderPNJ(Graphics graphics) {
-        for (PersonnageNonJoueur pnj : listePNJ) {
+        for (PersonnageNonJoueur pnj : listePNJAAfficher) {
             pnj.render(graphics);
         }
     }
@@ -159,5 +158,31 @@ public class CombatGameState extends BasicGameState {
 
     public Terrain getTerrain() {
         return terrain;
+    }
+
+    public PersonnageJoueurClient getPersonnageAAfficher() {
+        return personnageAAfficher;
+    }
+
+    public void miseAJour() {
+        try {
+            Personnage personnageData = new Personnage(this.personnageAAfficher);
+            ArrayList<PNJ> listeDataPNJ = new ArrayList<>();
+
+            for (PersonnageNonJoueur personnageNonJoueur : listePNJAAfficher) {
+                listeDataPNJ.add(new PNJ(personnageNonJoueur));
+            }
+
+            // Mise a jour des données sur le serveur puis remise a jours des attributs des paramettres
+            client.updateServeurCombat(personnageData, listeDataPNJ);
+
+            listePNJAAfficher = new ArrayList<>();
+
+            for (PNJ pnj : listeDataPNJ) {
+                listePNJAAfficher.add(new PersonnageNonJoueur(pnj));
+            }
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
