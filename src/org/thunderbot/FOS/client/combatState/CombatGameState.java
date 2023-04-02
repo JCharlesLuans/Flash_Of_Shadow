@@ -16,6 +16,7 @@ import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.CombatController;
 import org.thunderbot.FOS.client.gameState.world.Carte;
+import org.thunderbot.FOS.client.gameState.world.Terrain;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.PNJ;
 
@@ -43,7 +44,7 @@ public class CombatGameState extends BasicGameState {
 
     private Carte carte;
 
-    private Case[][] terrain;
+    private Terrain terrain;
 
     int nombreCaseHauteur;
 
@@ -76,11 +77,11 @@ public class CombatGameState extends BasicGameState {
         gameContainer.getInput().addMouseListener(combatController);
         gameContainer.getInput().addKeyListener(combatController);
 
-        System.out.println(gameContainer.getInput().toString());
-        initCase();
+        terrain = new Terrain();
+
         initPNJ();
         initJoueur();
-        initInterface();
+        initInterface(gameContainer);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class CombatGameState extends BasicGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         background.draw(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
-        renderGrille(graphics);
+        terrain.render(graphics);
 
         renderPNJ(graphics);
         personnage.render(graphics);
@@ -104,20 +105,7 @@ public class CombatGameState extends BasicGameState {
 
     }
 
-    /**
-     * Genere tout les cases de se terrain
-     */
-    private void initCase() {
-        int nombreCaseLongueur = ChaosRevolt.WIDTH / TAILLE_CASE;
-        nombreCaseHauteur  = ChaosRevolt.HEIGHT / TAILLE_CASE - TAILLE_INTERFACE;
-        terrain = new Case[nombreCaseHauteur][nombreCaseLongueur];
 
-        for (int i = 0; i < nombreCaseHauteur; i++) {
-            for (int j = 0; j < nombreCaseLongueur; j++) {
-                terrain[i][j] = new Case((1 +1) * j, TAILLE_CASE*j, TAILLE_CASE*i, TAILLE_CASE);
-            }
-        }
-    }
 
     /**
      * Génére aléatoirement les PNJ depuis le serveurs, ainsi que les informations qui leurs sont relatives
@@ -155,24 +143,21 @@ public class CombatGameState extends BasicGameState {
     /**
      * Initialise l'interface de combat
      */
-    private void initInterface() throws SlickException {
-        interfaceJoueur = new InterfaceJoueur(nombreCaseHauteur);
-    }
-
-    /**
-     * Affichage les cases du terrain
-     */
-    private void renderGrille(Graphics graphics) {
-        for (int i = 0; i < terrain.length; i++) {
-            for (int j = 0; j < terrain[i].length; j++) {
-                terrain[i][j].render(graphics);
-            }
-        }
+    private void initInterface(GameContainer gameContainer) throws SlickException {
+        interfaceJoueur = new InterfaceJoueur(gameContainer, client.getPersonnage().getListeCompetence(), terrain.getNombreCaseHauteur());
     }
 
     private void renderPNJ(Graphics graphics) {
         for (PersonnageNonJoueur pnj : listePNJ) {
             pnj.render(graphics);
         }
+    }
+
+    public InterfaceJoueur getInterfaceJoueur() {
+        return interfaceJoueur;
+    }
+
+    public Terrain getTerrain() {
+        return terrain;
     }
 }

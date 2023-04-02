@@ -6,6 +6,9 @@
 package org.thunderbot.FOS.client.combatState;
 
 import org.newdawn.slick.*;
+import org.thunderbot.FOS.database.beans.Competence;
+
+import java.util.ArrayList;
 
 import static org.thunderbot.FOS.client.combatState.CombatGameState.TAILLE_CASE;
 
@@ -46,11 +49,17 @@ public class InterfaceJoueur {
     private Image imgCadreCompetenceInfGauche;
     private Image imgCadreCompetenceInfDroite;
 
-    /** Position du cadrre ds competence */
+    private int x, y;
+
+    /** Position du cadre des competence */
     private static final int DELTA_COMPTENCE = 16;
+    private static final int DELTA_IMAGE = 4;
 
+    /** Liste des compétence du joueur */
+    private Image[] imgCompetence;
+    private Case[] interactionCompetence;
 
-    public InterfaceJoueur(int nombreCaseHauteur) throws SlickException {
+    public InterfaceJoueur(GameContainer gameContainer, ArrayList<Competence> listeCompetence, int nombreCaseHauteur) throws SlickException {
         imgFondInterface = new Image("res/combatState/ui.png");
         imgJauge = new Image("res/combatState/jauge.png");
         imgCadreCompetenceSupGauche = new Image("res/combatState/cadreCompetenceSupGauche.png");
@@ -58,6 +67,30 @@ public class InterfaceJoueur {
         imgCadreCompetenceInfGauche = new Image("res/combatState/cadreCompetenceInfGauche.png");
         imgCadreCompetenceInfDroite = new Image("res/combatState/cadreCompetenceInfDroite.png");
         yFondInterface = nombreCaseHauteur * TAILLE_CASE;
+        imgCompetence = new Image[listeCompetence.size()];
+
+        // Charge les images des competences
+        for (int i = 0; i < listeCompetence.size(); i++) {
+            imgCompetence[i] = new Image("res/texture/competence/" + listeCompetence.get(i).getImage());
+        }
+
+        x = gameContainer.getWidth() / 2 - imgCadreCompetenceSupGauche.getWidth();
+        y = yFondInterface + imgFondInterface.getHeight() / 2 - imgCadreCompetenceSupGauche.getHeight() + DELTA_COMPTENCE;
+
+        // Initialisation des case clicable des competences
+        interactionCompetence = new Case[listeCompetence.size()];
+
+        interactionCompetence[0] = new Case(listeCompetence.get(0).getId(), x, y, TAILLE_CASE);
+
+        if (interactionCompetence.length > 1)
+            interactionCompetence[1] = new Case(listeCompetence.get(1).getId(),x + TAILLE_CASE, y, TAILLE_CASE);
+
+        if (interactionCompetence.length > 2)
+            interactionCompetence[2] = new Case(listeCompetence.get(2).getId(), x, y + TAILLE_CASE, TAILLE_CASE);
+
+        if (interactionCompetence.length > 3)
+            interactionCompetence[3] = new Case(listeCompetence.get(3).getId(), x + TAILLE_CASE, y + TAILLE_CASE, TAILLE_CASE);
+
     }
 
     public void render(GameContainer gameContainer, Graphics graphics) {
@@ -76,11 +109,30 @@ public class InterfaceJoueur {
         imgJauge.draw(DEBUT_X - 15, DEBUT_Y_MANA - 4, LONGUEUR + 30, HAUTEUR + 7);
         imgJauge.draw(DEBUT_X - 15, DEBUT_Y_MOUV - 4, LONGUEUR + 30, HAUTEUR + 7);
 
-        imgCadreCompetenceSupGauche.draw(gameContainer.getWidth() / 2 - imgCadreCompetenceSupGauche.getWidth(), yFondInterface + imgFondInterface.getHeight() / 2 - imgCadreCompetenceSupGauche.getHeight() + DELTA_COMPTENCE);
-        imgCadreCompetenceSupDroite.draw(gameContainer.getWidth() / 2, yFondInterface + imgFondInterface.getHeight() / 2 - imgCadreCompetenceSupDroite.getHeight() + DELTA_COMPTENCE);
+        imgCadreCompetenceSupGauche.draw(x, y);
+        imgCompetence[0].draw(x, y);
 
-        imgCadreCompetenceInfGauche.draw(gameContainer.getWidth() / 2 - imgCadreCompetenceSupGauche.getWidth(), yFondInterface + imgFondInterface.getHeight() / 2 + DELTA_COMPTENCE);
-        imgCadreCompetenceInfDroite.draw(gameContainer.getWidth() / 2, yFondInterface + imgFondInterface.getHeight() / 2 + DELTA_COMPTENCE);
+        imgCadreCompetenceSupDroite.draw(x + TAILLE_CASE, y);
+        if (imgCompetence.length > 1)
+            imgCompetence[1].draw(x + TAILLE_CASE, y);
+
+        imgCadreCompetenceInfGauche.draw(x, y + TAILLE_CASE);
+        if (imgCompetence.length > 2)
+            imgCompetence[2].draw(x, y + TAILLE_CASE);
+
+        imgCadreCompetenceInfDroite.draw(x + TAILLE_CASE, y + TAILLE_CASE);
+        if (imgCompetence.length > 3)
+            imgCompetence[3].draw(x + TAILLE_CASE, y + TAILLE_CASE);
+
+    }
+
+    public void mouseClicked(int button, int x, int y, int nbClick) {
+        for (Case caseSurClick : interactionCompetence) {
+            if (caseSurClick.mouseClicked(button, x, y, nbClick)) {
+                System.out.println(caseSurClick.getId());
+                // TODO Action
+            }
+        }
     }
 
 }

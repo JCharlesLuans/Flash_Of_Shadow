@@ -19,9 +19,18 @@ public class Case {
         this.x = x;
         this.y = y;
         this.longueur = longueur;
+        this.id = id;
     }
 
     public void render(Graphics graphics) {
         graphics.drawRect(x, y, longueur, longueur);
+    }
+
+    public boolean mouseClicked(int button, int x, int y, int nbClick) {
+        return this.x < x && x < this.x + longueur && this.y < y && y < this.y + longueur;
+    }
+
+    public int getId() {
+        return id;
     }
 }

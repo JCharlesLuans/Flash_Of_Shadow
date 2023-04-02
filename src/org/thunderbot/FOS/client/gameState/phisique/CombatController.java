@@ -91,7 +91,8 @@ public class CombatController implements KeyListener, ControllerListener, MouseL
 
     @Override
     public void mouseClicked(int button, int x, int y, int nbClick) {
-
+        combatGameState.getInterfaceJoueur().mouseClicked(button, x, y, nbClick);
+        System.out.println(combatGameState.getTerrain().mouseClicked(button, x, y, nbClick));
     }
 
     @Override
