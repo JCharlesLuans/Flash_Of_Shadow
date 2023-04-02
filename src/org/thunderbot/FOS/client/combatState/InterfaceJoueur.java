@@ -40,10 +40,23 @@ public class InterfaceJoueur {
     private Image imgFondInterface;
     private Image imgJauge;
 
+    /** Image des compétances */
+    private Image imgCadreCompetenceSupGauche;
+    private Image imgCadreCompetenceSupDroite;
+    private Image imgCadreCompetenceInfGauche;
+    private Image imgCadreCompetenceInfDroite;
+
+    /** Position du cadrre ds competence */
+    private static final int DELTA_COMPTENCE = 16;
+
 
     public InterfaceJoueur(int nombreCaseHauteur) throws SlickException {
         imgFondInterface = new Image("res/combatState/ui.png");
         imgJauge = new Image("res/combatState/jauge.png");
+        imgCadreCompetenceSupGauche = new Image("res/combatState/cadreCompetenceSupGauche.png");
+        imgCadreCompetenceSupDroite = new Image("res/combatState/cadreCompetenceSupDroite.png");
+        imgCadreCompetenceInfGauche = new Image("res/combatState/cadreCompetenceInfGauche.png");
+        imgCadreCompetenceInfDroite = new Image("res/combatState/cadreCompetenceInfDroite.png");
         yFondInterface = nombreCaseHauteur * TAILLE_CASE;
     }
 
@@ -62,6 +75,12 @@ public class InterfaceJoueur {
         imgJauge.draw(DEBUT_X - 15, DEBUT_Y_VIE - 4, LONGUEUR + 30, HAUTEUR + 7);
         imgJauge.draw(DEBUT_X - 15, DEBUT_Y_MANA - 4, LONGUEUR + 30, HAUTEUR + 7);
         imgJauge.draw(DEBUT_X - 15, DEBUT_Y_MOUV - 4, LONGUEUR + 30, HAUTEUR + 7);
+
+        imgCadreCompetenceSupGauche.draw(gameContainer.getWidth() / 2 - imgCadreCompetenceSupGauche.getWidth(), yFondInterface + imgFondInterface.getHeight() / 2 - imgCadreCompetenceSupGauche.getHeight() + DELTA_COMPTENCE);
+        imgCadreCompetenceSupDroite.draw(gameContainer.getWidth() / 2, yFondInterface + imgFondInterface.getHeight() / 2 - imgCadreCompetenceSupDroite.getHeight() + DELTA_COMPTENCE);
+
+        imgCadreCompetenceInfGauche.draw(gameContainer.getWidth() / 2 - imgCadreCompetenceSupGauche.getWidth(), yFondInterface + imgFondInterface.getHeight() / 2 + DELTA_COMPTENCE);
+        imgCadreCompetenceInfDroite.draw(gameContainer.getWidth() / 2, yFondInterface + imgFondInterface.getHeight() / 2 + DELTA_COMPTENCE);
     }
 
 }
