@@ -7,6 +7,7 @@ package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.thunderbot.FOS.client.gameState.phisique.Stats;
 
 /**
  * Personnage jouer par différent joueur, qu'ils soient se client la ou des joueur distants
@@ -23,6 +24,7 @@ public class PersonnageJoueur extends Personnage {
         positionY = 400;
         direction = 0;
         nom = "";
+        stats = new Stats();
     }
 
     public PersonnageJoueur(int id, String pseudo, int direction, float x, float y, String sprite) throws SlickException {
