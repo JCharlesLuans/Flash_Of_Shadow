@@ -100,6 +100,8 @@ public class FosDAO {
             aRetourner.setGuilde(getGuildeById(rs.getInt(PERSONNAGE_CLE_GUILDE)));
             aRetourner.setTitre(getTitreById(rs.getInt(PERSONNAGE_CLE_TITRE)));
 
+            aRetourner.setListeCompetence(this.getCompetenceByPersonnage(rs.getInt(PERSONNAGE_CLE)));
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -211,43 +213,35 @@ public class FosDAO {
      * @param idPersonnage dont on veux les compétance
      * @return la liste des compétance sous forme d'une array list
      */
-//    public ArrayList<Competence> getCompetenceByPersonnage(int idPersonnage) {
-//        ArrayList<Competence> aRetourner = new ArrayList<>();
-//        String requete =
-//                "SELECT *" +
-//                " FROM " + NOM_TABLE_COMPETENCE + ", " + NOM_TABLE_PERSONNAGE + ", " + NOM_TABLE_LISTE_COMPETENCE +
-//                " WHERE " + NOM_TABLE_PERSONNAGE + "." + PERSONNAGE_CLE + " = " + idPersonnage
-//        try {
-//
-//            ResultSet rs = gestionnaireBase.executeRequete(requete);
-//            while (rs.next()) {
-//                PNJ tmp = new PNJ();
-//                tmp.setId(rs.getInt(PNJ_CLE));
-//                tmp.setNom(rs.getString(PNJ_NOM));
-//                tmp.setSprite(rs.getString(PNJ_SPRITE));
-//                tmp.setAgressif(rs.getInt(PNJ_AGRESSIF));
-//                tmp.setX(rs.getFloat(PNJ_X));
-//                tmp.setY(rs.getFloat(PNJ_Y));
-//                tmp.setStatArmure(rs.getInt(PNJ_STAT_ARMURE));
-//                tmp.setStatAgilite(rs.getInt(PNJ_STAT_AGILITE));
-//                tmp.setStatDexterite(rs.getInt(PNJ_STAT_DEXTERITE));
-//                tmp.setStatEndurance(rs.getInt(PNJ_STAT_ENDURANCE));
-//                tmp.setStatForce(rs.getInt(PNJ_STAT_FORCE));
-//                tmp.setStatInteligence(rs.getInt(PNJ_STAT_INTELLIGENCE));
-//                tmp.setStatSagesse(rs.getInt(PNJ_STAT_SAGESSE));
-//                tmp.setIdMap(rs.getInt(PNJ_CLE_MAP));
-//                tmp.setIdFaction(rs.getInt(PNJ_CLE_FACTION));
-//                tmp.setIdTitre(rs.getInt(PNJ_CLE_TITRE));
-//                aRetourner.add(tmp);
-//            }
-//            rs.close();
-//
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//
-//        return aRetourner;
-//    }
+    public ArrayList<Competence> getCompetenceByPersonnage(int idPersonnage) {
+        ArrayList<Competence> aRetourner = new ArrayList<>();
+        String requete =
+                "SELECT *" +
+                " FROM " + NOM_TABLE_COMPETENCE +
+                " JOIN " + NOM_TABLE_LISTE_COMPETENCE +
+                " ON " + LISTE_COMPETENCE_CLE_COMPETENCE + " = " + COMPETENCE_CLE +
+                " WHERE " + LISTE_COMPETENCE_CLE_PERSO + " = " + idPersonnage  + ";";
+        try {
+
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+            while (rs.next()) {
+                Competence tmp = new Competence();
+                tmp.setId(rs.getInt(COMPETENCE_CLE));
+                tmp.setNom(rs.getString(COMPETENCE_NOM));
+                tmp.setDegaBase(rs.getInt(COMPETENCE_DEGAT_BASE));
+                tmp.setIdEffet(rs.getInt(COMPETENCE_ID_EFFET));
+                tmp.setImage(rs.getString(COMPETENCE_IMAGE));
+
+                aRetourner.add(tmp);
+            }
+            rs.close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
 
     public Classe getClasseById(int id) {
         Classe aRetourner = new Classe();
@@ -594,10 +588,6 @@ public class FosDAO {
         return aRetourner;
     }
 
-    public HelperBD getGestionnaireBase() {
-        return gestionnaireBase;
-    }
-
     /**
      * Ajoute une nouvelle entrée dans la table liste compétence, ce qui permet de faire le liens entre la competence et
      * le personnage dont les ID sont passer en paramettre
@@ -618,4 +608,10 @@ public class FosDAO {
 
         gestionnaireBase.executeUpdate(requete);
     }
+
+    public HelperBD getGestionnaireBase() {
+        return gestionnaireBase;
+    }
+
+
 }

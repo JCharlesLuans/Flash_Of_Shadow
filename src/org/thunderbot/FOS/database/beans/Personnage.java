@@ -236,6 +236,7 @@ public class Personnage implements Serializable {
                 ", titre='" + titre + '\'' +
                 ", direction='" + direction + '\'' +
                 ", moving='" + moving + '\'' +
+                ", competenceList='" + listeCompetence + '\'' +
                 '}';
     }
 
@@ -255,8 +256,16 @@ public class Personnage implements Serializable {
         return moving;
     }
 
-    public void setListeCompetence(Competence competenceById) {
-        listeCompetence = new ArrayList<>();
-        listeCompetence.add(competenceById);
+    public ArrayList<Competence> getListeCompetence() {
+        return listeCompetence;
+    }
+
+    public void setListeCompetence(ArrayList<Competence> listeCompetence) {
+        this.listeCompetence = listeCompetence;
+    }
+
+    public void setListeCompetence(Competence competence) {
+        this.listeCompetence = new ArrayList<>();
+        this.listeCompetence.add(competence);
     }
 }
