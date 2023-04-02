@@ -25,7 +25,7 @@ public class InitDataJeu {
             "INSERT INTO " + NOM_TABLE_COMPETENCE
                 + " ( " + COMPETENCE_NOM + ", " + COMPETENCE_DEGAT_BASE + ", " + COMPETENCE_ID_EFFET + ", " + COMPETENCE_IMAGE + " )"
             + "VALUES "
-                + " ( 'Coup de point', 1, 1, 'point.png'),"
+                + " ( 'Coup de point', 1, 1, 'coupDePoint.png'),"
                 + " ( 'Tir de fleche', 1, 1, 'fleche.png'),"
                 + " ( 'Tir de fleche piégée', 1, 1, 'flechePiege.png'),"
                 + " ( 'Tir de fleche explosive', 1, 1, 'flecheExplosive.png'),"
