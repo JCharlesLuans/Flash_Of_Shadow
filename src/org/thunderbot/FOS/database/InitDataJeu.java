@@ -68,7 +68,8 @@ public class InitDataJeu {
                 + "( 'map_start_umbra.tmx', 1, 3),"
                 + "( 'map_start_ethernia.tmx', 1, 3),"
                 + "( 'map_desert.tmx', 2, 3),"
-                + "( 'map_grotte.tmx', 3, 3);"
+                + "( 'map_grotte.tmx', 3, 3),"
+                + "( 'map_cimetiere.tmx', 3, 3);"
     ;
 
     private static String CREATION_OBJET =
