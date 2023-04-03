@@ -219,37 +219,15 @@ public class CombatGameState extends BasicGameState {
         // Verification que le joueur a bien clicker sur le terrain
         if (id > 0) {
 
-            // Transformation de l'id en coordonner
-            futurX = terrain.getXById(id);
-            futurY = terrain.getYById(id);
-
             // Convertion des coordonner du joueur en coordonner de combats
             x = (personnageAAfficher.getPositionX() + 32) / TAILLE_CASE;
             y = (personnageAAfficher.getPositionY() + 16) / TAILLE_CASE;
 
-            System.out.println("X = " + x);
-            System.out.println("Y = " + y);
-            System.out.println("futurX = " + futurX);
-            System.out.println("futurY = " + futurY);
-
-            // Verification si coordonnée > stats.mouvement
-            // On va vers la GAUCHE
-            if (x > futurX) {
-                resteX = x - futurX;
-            } else {
-                resteX = futurX - x;
-            }
-
-            if (y > futurY) {
-                resteY = y - futurY;
-            } else {
-                resteY = futurY - y;
-            }
-
-            if (resteX + resteY <= personnageAAfficher.getStats().getMouvementsRestants()) {
+            if (terrain.caseAPortee(id, 1, x, y) && 0 < personnageAAfficher.getStats().getMouvementsRestants()){
                 // Déplacement du joueur sur la case ou le joueur a cliquer
                 personnageAAfficher.setPositionX(terrain.getXById(id) * CombatGameState.TAILLE_CASE - 32);
                 personnageAAfficher.setPositionY(terrain.getYById(id) * CombatGameState.TAILLE_CASE - 16);
+                personnageAAfficher.getStats().setMouvementsRestants(personnageAAfficher.getStats().getMouvementsRestants() - 1);
             }
 
 

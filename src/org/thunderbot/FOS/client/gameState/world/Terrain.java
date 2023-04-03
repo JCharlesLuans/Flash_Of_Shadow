@@ -65,6 +65,11 @@ public class Terrain {
         return aRetourner;
     }
 
+    /**
+     * Retourne l'abscisse d'une case dont l'ID est passer en paramettre. L'ordre de grandeur correspond au terrain
+     * @param id de la case
+     * @return le x
+     */
     public float getXById(int id) {
         int compteur = 0;
         int x = -1;
@@ -83,6 +88,11 @@ public class Terrain {
         return x + 1;
     }
 
+    /**
+     * Retourne l'ordonnée d'une case dont l'ID est passer en paramettre. L'ordre de grandeur correspond au terrain
+     * @param id de la case
+     * @return le y
+     */
     public float getYById(int id) {
         int compteur = 0;
         int y = -1;
@@ -99,5 +109,38 @@ public class Terrain {
         }
 
         return y + 1;
+    }
+
+    /**
+     * Retourne un boolean si la case est à la portée des coordonnées mise en paramettre.
+     * @param id de la case
+     * @param portee a atteindre
+     * @param x
+     * @param y
+     * @return true si a portee false sinon
+     */
+    public boolean caseAPortee(int id, int portee, float x, float y) {
+        // Transformation de l'id en coordonner
+        float futurX = getXById(id);
+        float futurY = getYById(id);
+
+        float resteX;
+        float resteY;
+
+        // Verification si coordonnée > stats.mouvement
+        // On va vers la GAUCHE
+        if (x > futurX) {
+            resteX = x - futurX;
+        } else {
+            resteX = futurX - x;
+        }
+
+        if (y > futurY) {
+            resteY = y - futurY;
+        } else {
+            resteY = futurY - y;
+        }
+
+        return resteX + resteY <= portee;
     }
 }
