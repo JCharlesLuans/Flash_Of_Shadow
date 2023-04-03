@@ -264,4 +264,8 @@ public class Personnage {
     public String toString() {
         return "ServPersonnage(" + nom + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
     }
+
+    public Stats getStats() {
+        return stats;
+    }
 }

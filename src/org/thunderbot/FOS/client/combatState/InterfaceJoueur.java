@@ -6,6 +6,7 @@
 package org.thunderbot.FOS.client.combatState;
 
 import org.newdawn.slick.*;
+import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.database.beans.Competence;
 
 import java.util.ArrayList;
@@ -33,8 +34,12 @@ public class InterfaceJoueur {
     private static final Color COULEUR_MOUV = new Color(0, 255, 0);
 
     /** Tailles des jauges */
-    private final int LONGUEUR = 266; // Longueur maximale de la barre
-    private final int HAUTEUR = 24;
+    private static final int LONGUEUR = 266; // Longueur maximale de la barre
+    private static final int HAUTEUR = 24;
+
+    private float pourcentageVie = 0;
+    private float pourcentageMana = 0;
+    private float pourcentageMouvement = 0;
 
     /** Coordonnée de placement du fond de l'interface */
     private int yFondInterface;
@@ -97,13 +102,13 @@ public class InterfaceJoueur {
         imgFondInterface.draw(0, yFondInterface, gameContainer.getWidth(), gameContainer.getHeight());
 
         graphics.setColor(COULEUR_VIE);
-        graphics.fillRect(DEBUT_X, DEBUT_Y_VIE, LONGUEUR, HAUTEUR);
+        graphics.fillRect(DEBUT_X, DEBUT_Y_VIE, pourcentageVie, HAUTEUR);
 
         graphics.setColor(COULEUR_MANA);
-        graphics.fillRect(DEBUT_X, DEBUT_Y_MANA, LONGUEUR, HAUTEUR);
+        graphics.fillRect(DEBUT_X, DEBUT_Y_MANA, pourcentageMana, HAUTEUR);
 
         graphics.setColor(COULEUR_MOUV);
-        graphics.fillRect(DEBUT_X, DEBUT_Y_MOUV, LONGUEUR, HAUTEUR);
+        graphics.fillRect(DEBUT_X, DEBUT_Y_MOUV, pourcentageMouvement, HAUTEUR);
 
         imgJauge.draw(DEBUT_X - 15, DEBUT_Y_VIE - 4, LONGUEUR + 30, HAUTEUR + 7);
         imgJauge.draw(DEBUT_X - 15, DEBUT_Y_MANA - 4, LONGUEUR + 30, HAUTEUR + 7);
@@ -135,4 +140,14 @@ public class InterfaceJoueur {
         }
     }
 
+    public void update(PersonnageJoueurClient personnageAAfficher) {
+        if (personnageAAfficher.getStats().getVieRestante() >= 0)
+            pourcentageVie = (personnageAAfficher.getStats().getVieRestante() * LONGUEUR) / personnageAAfficher.getStats().getVieMax();
+
+        if (personnageAAfficher.getStats().getManaRestante() >= 0)
+            pourcentageMana = (personnageAAfficher.getStats().getManaRestante() * LONGUEUR) / personnageAAfficher.getStats().getManaMax();
+
+        if (personnageAAfficher.getStats().getMouvementsRestants() >= 0)
+            pourcentageMouvement = (personnageAAfficher.getStats().getMouvementsMax() * LONGUEUR) / personnageAAfficher.getStats().getMouvementsMax();
+    }
 }

@@ -40,6 +40,23 @@ public class PersonnageJoueur extends Personnage {
         loadAnimation(spriteSheet);
     }
 
+    public void calculStats() {
+        // Calcul des stats secondaire
+        stats.setAgilite(equipement.getAgilite());
+        stats.setArmure(equipement.getArmure());
+        stats.setDexterite(equipement.getDexterite());
+        stats.setEndurance(equipement.getEndurance());
+        stats.setForce(equipement.getForce());
+        stats.setIntelligence(equipement.getIntelligence());
+        stats.setSagesse(equipement.getSagesse());
+
+        // Calcul des stas primaire
+        stats.calculVie();
+        stats.calculMana();
+        stats.calculMouvement();
+        stats.calculActions();
+    }
+
     public String getNomCarte() {
         return this.nomCarte;
     }

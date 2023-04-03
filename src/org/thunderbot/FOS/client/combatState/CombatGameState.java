@@ -101,7 +101,7 @@ public class CombatGameState extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-
+        interfaceJoueur.update(personnageAAfficher);
     }
 
 

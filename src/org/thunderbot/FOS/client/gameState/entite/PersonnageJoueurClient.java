@@ -61,20 +61,8 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
                 client.getPersonnage().getStuffArme()
         );
 
-        // Calcul des stats secondaire
-        stats.setAgilite(equipement.getAgilite());
-        stats.setArmure(equipement.getArmure());
-        stats.setDexterite(equipement.getDexterite());
-        stats.setEndurance(equipement.getEndurance());
-        stats.setForce(equipement.getForce());
-        stats.setIntelligence(equipement.getIntelligence());
-        stats.setSagesse(equipement.getSagesse());
-
-        // Calcul des stas primaire
-        stats.calculVie();
-        stats.calculMana();
-        stats.calculMouvement();
-        stats.calculActions();
+        // Calcul des stats
+        calculStats();
     }
 
     public PersonnageJoueurClient(Personnage personnage) throws SlickException {
@@ -97,6 +85,19 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
         this.animations[5] = loadAnimation(spriteSheet, 1, 9, 1);
         this.animations[6] = loadAnimation(spriteSheet, 1, 9, 2);
         this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
+
+        // Chargements de l'equipement
+        equipement = new Equipement(
+                personnage.getStuffTete(),
+                personnage.getStuffTorse(),
+                personnage.getStuffGant(),
+                personnage.getStuffJambe(),
+                personnage.getStuffBotte(),
+                personnage.getStuffArme()
+        );
+
+        // Calcul des stats
+        calculStats();
     }
 
     /**

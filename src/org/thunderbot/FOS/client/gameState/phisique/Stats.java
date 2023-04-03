@@ -12,10 +12,15 @@ package org.thunderbot.FOS.client.gameState.phisique;
  */
 public class Stats {
 
-    private int vie;
-    private int mana;
-    private int mouvements;
-    private int actions;
+    private int vieMax;
+    private int manaMax;
+    private int mouvementsMax;
+    private int actionsMax;
+
+    private int vieRestante;
+    private int manaRestante;
+    private int mouvementsRestants;
+    private int actionsRestantes;
 
 
     private int armure;
@@ -28,9 +33,9 @@ public class Stats {
 
     public Stats() {
 
-        this.vie = 0;
-        this.mana = 0;
-        this.mouvements = 0;
+        this.vieMax = 0;
+        this.manaMax = 0;
+        this.mouvementsMax = 0;
         this.armure = 0;
 
         this.agilite = 0;
@@ -42,11 +47,11 @@ public class Stats {
         this.sagesse = 0;
     }
 
-    public Stats(int vie, int mana, int mouvements, int actions, int agilite, int armure, int dexterite, int intelligence, int endurance, int force, int sagesse) {
-        this.vie = vie;
-        this.mana = mana;
-        this.mouvements = mouvements;
-        this.actions = actions;
+    public Stats(int vieMax, int manaMax, int mouvementsMax, int actionsMax, int agilite, int armure, int dexterite, int intelligence, int endurance, int force, int sagesse) {
+        this.vieMax = this.vieRestante = vieMax;
+        this.manaMax = this.manaRestante = manaMax;
+        this.mouvementsMax = this.mouvementsRestants = mouvementsMax;
+        this.actionsMax = this.actionsRestantes = actionsMax;
 
         this.agilite = agilite;
         this.armure = armure;
@@ -58,10 +63,10 @@ public class Stats {
     }
 
     public Stats(int agilite, int armure, int dexterite, int intelligence, int endurance, int force, int sagesse) {
-        this.vie = 0;
-        this.mana = 0;
-        this.mouvements = 0;
-        this.actions = 0;
+        this.vieMax = 0;
+        this.manaMax = 0;
+        this.mouvementsMax = 0;
+        this.actionsMax = 0;
 
         this.agilite = agilite;
         this.armure = armure;
@@ -70,6 +75,42 @@ public class Stats {
         this.endurance = endurance;
         this.force = force;
         this.sagesse = sagesse;
+    }
+
+    /**
+     * Calcul de la Vie maximale en fonction de la stats endurances
+     * @return la vie max
+     */
+    public int calculVie() {
+        vieMax = vieRestante = endurance;
+        return vieMax;
+    }
+
+    /**
+     * Calcul de la Mana maximale en fonction de la stats sagesse
+     * @return la mana max
+     */
+    public int calculMana() {
+        manaMax = manaRestante = sagesse;
+        return manaMax;
+    }
+
+    /**
+     * Calcul de la Vie maximale en fonction de la stats agilite
+     * @return la mouvement max
+     */
+    public int calculMouvement() {
+        mouvementsMax = mouvementsRestants = agilite;
+        return manaMax;
+    }
+
+    /**
+     * Calcul de la Vie maximale en fonction de la stats dexterite
+     * @return action max
+     */
+    public int calculActions() {
+        actionsMax = agilite = dexterite;
+        return actionsMax;
     }
 
     public int getArmure() {
@@ -128,25 +169,84 @@ public class Stats {
         this.sagesse = sagesse;
     }
 
-    public int calculVie() {
-        vie = endurance;
-        return vie;
+    public int getVieMax() {
+        return vieMax;
     }
 
-    public int calculMana() {
-        mana = sagesse;
-        return mana;
+    public void setVieMax(int vieMax) {
+        this.vieMax = vieMax;
     }
 
-    public int calculMouvement() {
-        mouvements = agilite;
-        return mana;
+    public int getManaMax() {
+        return manaMax;
     }
 
-    public int calculActions() {
-        actions = dexterite;
-        return actions;
+    public void setManaMax(int manaMax) {
+        this.manaMax = manaMax;
     }
 
+    public int getMouvementsMax() {
+        return mouvementsMax;
+    }
 
+    public void setMouvementsMax(int mouvementsMax) {
+        this.mouvementsMax = mouvementsMax;
+    }
+
+    public int getActionsMax() {
+        return actionsMax;
+    }
+
+    public void setActionsMax(int actionsMax) {
+        this.actionsMax = actionsMax;
+    }
+
+    public int getVieRestante() {
+        return vieRestante;
+    }
+
+    public void setVieRestante(int vieRestante) {
+        this.vieRestante = vieRestante;
+    }
+
+    public int getManaRestante() {
+        return manaRestante;
+    }
+
+    public void setManaRestante(int manaRestante) {
+        this.manaRestante = manaRestante;
+    }
+
+    public int getMouvementsRestants() {
+        return mouvementsRestants;
+    }
+
+    public void setMouvementsRestants(int mouvementsRestants) {
+        this.mouvementsRestants = mouvementsRestants;
+    }
+
+    public int getActionsRestantes() {
+        return actionsRestantes;
+    }
+
+    public void setActionsRestantes(int actionsRestantes) {
+        this.actionsRestantes = actionsRestantes;
+    }
+
+    @Override
+    public String toString() {
+        return "Stats{" +
+                "vie=" + vieMax +
+                ", mana=" + manaMax +
+                ", mouvements=" + mouvementsMax +
+                ", actions=" + actionsMax +
+                ", armure=" + armure +
+                ", agilite=" + agilite +
+                ", dexterite=" + dexterite +
+                ", intelligence=" + intelligence +
+                ", endurance=" + endurance +
+                ", force=" + force +
+                ", sagesse=" + sagesse +
+                '}';
+    }
 }

@@ -103,11 +103,10 @@ public class CombatController implements KeyListener, ControllerListener, MouseL
             combatGameState.getPersonnageAAfficher().setPositionY(combatGameState.getTerrain().getYById(id) * CombatGameState.TAILLE_CASE - 16 + CombatGameState.TAILLE_CASE);
 
             combatGameState.miseAJour();
-        }
 
-        //log
-        System.out.println((combatGameState.getPersonnageAAfficher().getPositionX() +32) / 64);
-        System.out.println((combatGameState.getPersonnageAAfficher().getPositionY() +16) / 64);
+            System.out.println(combatGameState.getPersonnageAAfficher().getStats()); // log
+            combatGameState.getPersonnageAAfficher().getStats().setVieRestante(combatGameState.getPersonnageAAfficher().getStats().getVieRestante() - 1);
+        }
     }
 
     @Override
