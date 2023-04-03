@@ -122,7 +122,7 @@ public class InterfaceJoueur {
         graphics.fillRect(DEBUT_X, positionYMouvementJauge, pourcentageMouvement, HAUTEUR);
 
         graphics.setColor(COULEUR_ACTION);
-        graphics.fillRect(DEBUT_X, positionYActionJauge, pourcentageMouvement, HAUTEUR);
+        graphics.fillRect(DEBUT_X, positionYActionJauge, pourcentageAction, HAUTEUR);
 
         imgJauge.draw(DEBUT_X - 15, positionYVieJauge - 4, LONGUEUR + 30, HAUTEUR + 7);
         imgJauge.draw(DEBUT_X - 15, positionYManaJauge - 4, LONGUEUR + 30, HAUTEUR + 7);
@@ -163,6 +163,9 @@ public class InterfaceJoueur {
             pourcentageMana = (personnageAAfficher.getStats().getManaRestante() * LONGUEUR) / personnageAAfficher.getStats().getManaMax();
 
         if (personnageAAfficher.getStats().getMouvementsRestants() >= 0)
-            pourcentageMouvement = (personnageAAfficher.getStats().getMouvementsMax() * LONGUEUR) / personnageAAfficher.getStats().getMouvementsMax();
+            pourcentageMouvement = (personnageAAfficher.getStats().getMouvementsRestants() * LONGUEUR) / personnageAAfficher.getStats().getMouvementsMax();
+
+        if (personnageAAfficher.getStats().getActionsRestantes() >= 0)
+            pourcentageAction = (personnageAAfficher.getStats().getActionsRestantes() * LONGUEUR) / personnageAAfficher.getStats().getActionsMax();
     }
 }
