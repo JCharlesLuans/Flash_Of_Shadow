@@ -34,7 +34,7 @@ public class InterfaceJoueur {
     private static final Color COULEUR_VIE  = new Color(255, 0, 0);
     private static final Color COULEUR_MANA = new Color(0, 0, 255);
     private static final Color COULEUR_MOUV = new Color(0, 255, 0);
-    private static final Color COULEUR_ACTION = new Color(0, 255, 0);
+    private static final Color COULEUR_ACTION = new Color(255, 128, 0);
 
     /** Tailles des jauges */
     private static final int LONGUEUR = 266; // Longueur maximale de la barre
