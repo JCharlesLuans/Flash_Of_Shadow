@@ -170,8 +170,8 @@ public class InterfaceJoueur {
         // Gestion du click sur les competence
         for (Case caseSurClick : interactionCompetence) {
             if (caseSurClick.mouseClicked(button, x, y, nbClick)) {
-                System.out.println(caseSurClick.getId());
-                // TODO Action
+                // TODO DEBUG CETTE DOBE
+                //combatGameState.action(caseSurClick.getId());
             }
         }
 

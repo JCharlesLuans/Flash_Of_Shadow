@@ -18,6 +18,7 @@ import org.thunderbot.FOS.client.gameState.phisique.Stats;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.gameState.world.Terrain;
 import org.thunderbot.FOS.client.network.Client;
+import org.thunderbot.FOS.database.beans.Competence;
 import org.thunderbot.FOS.database.beans.PNJ;
 import org.thunderbot.FOS.database.beans.Personnage;
 
@@ -140,6 +141,10 @@ public class CombatGameState extends BasicGameState {
     private void initJoueur() {
         try {
             personnageAAfficher = new PersonnageJoueurClient(client.initialiseCombatJoueur());
+
+            //log
+            System.out.println(personnageAAfficher.getCompetences());
+
         } catch (SlickException e) {
             throw new RuntimeException(e);
         }
@@ -149,7 +154,7 @@ public class CombatGameState extends BasicGameState {
      * Initialise l'interface de combat
      */
     private void initInterface(GameContainer gameContainer) throws SlickException {
-        interfaceJoueur = new InterfaceJoueur(gameContainer, this, client.getPersonnage().getListeCompetence());
+        interfaceJoueur = new InterfaceJoueur(gameContainer, this, personnageAAfficher.getCompetences());
     }
 
     private void renderPNJ(Graphics graphics) {
@@ -239,5 +244,14 @@ public class CombatGameState extends BasicGameState {
 
     public void tourSuivant() {
         miseAJour();
+    }
+
+    /**
+     * Appeller lorsqu'un clique est fair sur l'un des bouton compétence
+     * @param id
+     */
+    public void action(int idCompetence) {
+        Competence competence = personnageAAfficher.getCompetences().get(idCompetence);
+        System.out.println("Competences : " + competence.getNom());
     }
 }

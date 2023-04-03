@@ -9,7 +9,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.thunderbot.FOS.client.gameState.phisique.Equipement;
 import org.thunderbot.FOS.client.gameState.phisique.Stats;
+import org.thunderbot.FOS.database.beans.Competence;
 import org.thunderbot.FOS.database.beans.Objet;
+
+import java.util.ArrayList;
 
 /**
  * Personnage jouer par différent joueur, qu'ils soient se client la ou des joueur distants
@@ -18,6 +21,8 @@ import org.thunderbot.FOS.database.beans.Objet;
  * @version 1.0
  */
 public class PersonnageJoueur extends Personnage {
+
+    protected ArrayList<Competence> competences;
 
     protected String nomCarte;
     protected Equipement equipement;
@@ -69,4 +74,6 @@ public class PersonnageJoueur extends Personnage {
     public Equipement getEquipement() {
         return equipement;
     }
+
+    public ArrayList<Competence> getCompetences() { return competences; }
 }

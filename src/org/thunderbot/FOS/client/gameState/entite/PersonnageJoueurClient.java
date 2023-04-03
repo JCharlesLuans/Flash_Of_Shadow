@@ -62,6 +62,9 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
 
         // Calcul des stats
         calculStats();
+
+        // Chargements des competence
+        this.competences = personnage.getListeCompetence();
     }
 
     public PersonnageJoueurClient(Personnage personnage) throws SlickException {
@@ -97,6 +100,9 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
 
         // Calcul des stats
         calculStats();
+
+        // Chargements des competence
+        this.competences = personnage.getListeCompetence();
     }
 
     /**
