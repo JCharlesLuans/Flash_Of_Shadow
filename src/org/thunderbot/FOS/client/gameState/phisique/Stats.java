@@ -102,7 +102,7 @@ public class Stats implements Serializable {
      * @return la mouvement max
      */
     public int calculMouvement() {
-        mouvementsMax = mouvementsRestants = agilite;
+        mouvementsMax = mouvementsRestants = agilite / 20 + 2;
         return manaMax;
     }
 
@@ -111,7 +111,7 @@ public class Stats implements Serializable {
      * @return action max
      */
     public int calculActions() {
-        actionsMax = agilite = dexterite;
+        actionsMax = actionsRestantes = dexterite / 20 + 2;
         return actionsMax;
     }
 
@@ -242,7 +242,7 @@ public class Stats implements Serializable {
                 ", manaMax=" + manaMax +
                 ", mouvementsMax=" + mouvementsMax +
                 ", actionsMax=" + actionsMax +
-                "vieRestante=" + vieRestante +
+                ", vieRestante=" + vieRestante +
                 ", manaRestante=" + manaRestante +
                 ", mouvementsRestants=" + mouvementsRestants +
                 ", actionsRestantes=" + actionsRestantes +
