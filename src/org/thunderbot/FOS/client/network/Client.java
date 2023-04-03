@@ -5,7 +5,6 @@
 
 package org.thunderbot.FOS.client.network;
 
-import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
 import org.thunderbot.FOS.serveur.networkObject.RequeteServeur;
@@ -346,7 +345,7 @@ public class Client {
      * Envoi au serveur qu'un combat à été déclancher entre le joueur et le mobs.
      * @param pnjEncode
      */
-    public void entreEnCombat(String pnjEncode) {
+    public void entreeServeurCombat(String pnjEncode) {
         try {
             //Envoi au serveur que le joueur et le PNJ rentre en combat
             String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.COMBAT + ';' + RequeteServeur.START;
@@ -357,8 +356,6 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
     }
 
@@ -376,9 +373,6 @@ public class Client {
         try {
             envoi(new RequeteServeur(requete));
 
-            // envoi l'indicateur de fin de combat
-            envoiXML(false);
-
             // envoi nouvelle position du joueur;
             envoiXML(personnage);
             // envoi etat pnj
@@ -395,6 +389,41 @@ public class Client {
             tmpPersonnage = (Personnage) receptionXML();
 
             personnage.setData();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Met a jour les donnée de combats et les synchronise avec le serveur a la fin de combat
+     * @param personnage personnage a mettre a jour
+     * @param listePNJ PNJs a mettre a jour
+     */
+    public void finServeurCombat(Personnage personnage, ArrayList<PNJ> listePNJ) {
+
+        ArrayList<PNJ> tmpListe;
+        Personnage tmpPersonnage;
+        // envoi requete pour prevenir qu'on met a jour le combat
+        String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.COMBAT + ';' + RequeteServeur.END;
+        try {
+            envoi(new RequeteServeur(requete));
+//
+//            // envoi nouvelle position du joueur;
+//            envoiXML(personnage);
+//            // envoi etat pnj
+//            envoiXML(listePNJ);
+//
+//            // reception nouvelle position des PNJ
+//            tmpListe = (ArrayList<PNJ>) receptionXML();
+//
+//            for (int i = 0; i < tmpListe.size(); i++) {
+//                listePNJ.set(i, tmpListe.get(i));
+//            }
+//
+//            // reception etat du joueur
+//            tmpPersonnage = (Personnage) receptionXML();
+//
+//            personnage.setData();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

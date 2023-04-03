@@ -10,7 +10,6 @@ import org.thunderbot.FOS.client.gameState.GUI.Gui;
 import org.thunderbot.FOS.client.gameState.phisique.Equipement;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
-import org.thunderbot.FOS.database.beans.PNJ;
 import org.thunderbot.FOS.database.beans.Personnage;
 
 /**
@@ -195,6 +194,6 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
     }
 
     public void enCombat(String pnjEncode) {
-        client.entreEnCombat(pnjEncode);
+        client.entreeServeurCombat(pnjEncode);
     }
 }

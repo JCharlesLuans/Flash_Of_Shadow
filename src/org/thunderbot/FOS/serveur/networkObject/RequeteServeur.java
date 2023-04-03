@@ -23,6 +23,8 @@ public class RequeteServeur implements Serializable {
     public static final String COMBAT = "fight";
     public static final String START = "start";
 
+    public static final String END = "end";
+
     private String requete;
 
     public RequeteServeur(String requeteServeur) {

@@ -107,6 +107,10 @@ public class CombatController implements KeyListener, ControllerListener, MouseL
             System.out.println(combatGameState.getPersonnageAAfficher().getStats()); // log
             combatGameState.getPersonnageAAfficher().getStats().setVieRestante(combatGameState.getPersonnageAAfficher().getStats().getVieRestante() - 1);
         }
+
+        if (combatGameState.getPersonnageAAfficher().getStats().getVieRestante() == 0 || combatGameState.getListePNJAAfficher().size() == 0) {
+            combatGameState.fin();
+        }
     }
 
     @Override

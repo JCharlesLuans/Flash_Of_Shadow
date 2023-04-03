@@ -293,6 +293,10 @@ public class Serveur extends Thread {
                             case RequeteServeur.UPDATE:
                                 combatServeur.update();
                                 break;
+
+                            case RequeteServeur.END:
+                                combatServeur.end();
+                                break;
                         }
 
                 }

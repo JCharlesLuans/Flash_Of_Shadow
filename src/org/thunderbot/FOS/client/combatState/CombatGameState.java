@@ -102,6 +102,9 @@ public class CombatGameState extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         interfaceJoueur.update(personnageAAfficher);
+
+        // Fin du combat
+
     }
 
 
@@ -184,5 +187,25 @@ public class CombatGameState extends BasicGameState {
         } catch (SlickException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void fin() {
+
+            Personnage personnageData = new Personnage(this.personnageAAfficher);
+            ArrayList<PNJ> listeDataPNJ = new ArrayList<>();
+
+            for (PersonnageNonJoueur personnageNonJoueur : listePNJAAfficher) {
+                listeDataPNJ.add(new PNJ(personnageNonJoueur));
+            }
+
+            // Mise a jour des données sur le serveur puis remise a jours des attributs des paramettres
+            client.finServeurCombat(personnageData, listeDataPNJ);
+
+            System.out.println("Fin du combat");
+
+    }
+
+    public ArrayList<PersonnageNonJoueur> getListePNJAAfficher() {
+        return listePNJAAfficher;
     }
 }

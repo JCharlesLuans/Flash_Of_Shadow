@@ -125,32 +125,25 @@ public class CombatServeur {
     }
 
     public void update() {
-        boolean combatFini = false;
-        boolean dejaUtilise = false;
+        // reception du joueur
+        serveur.receptionXML();
 
-        System.out.println("update de combat"); // log
+        // reception etat des pnj
+        serveur.receptionXML();
 
-        // reception de l'indicateur de combat fini
-        combatFini = (boolean) serveur.receptionXML();
+        // envoi nouvelle position pnj
+        serveur.envoiXML(listePnjEnCombat);
 
-        if (!combatFini) {
-            // reception du joueur
-            serveur.receptionXML();
-
-            // reception etat des pnj
-            serveur.receptionXML();
-
-            // envoi nouvelle position pnj
-            serveur.envoiXML(listePnjEnCombat);
-            System.out.println("envoe des pnj " + listePnjEnCombat); // log
-
-            // envoi etat joueur
-            serveur.envoiXML(new Personnage());
-        }
+        // envoi etat joueur
+        serveur.envoiXML(new Personnage());
     }
 
     public void start() {
         initCombatPnj();
         initJoueurCombat();
+    }
+
+    public void end() {
+        System.out.println("Fin de combat");
     }
 }
