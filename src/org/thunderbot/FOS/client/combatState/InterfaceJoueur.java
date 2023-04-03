@@ -24,22 +24,28 @@ public class InterfaceJoueur {
 
     /** Placement des jauges */
     public static final int DEBUT_X = 64;
-    public static final int DEBUT_Y_VIE = 591;
-    public static final int DEBUT_Y_MANA = 636;
-    public static final int DEBUT_Y_MOUV= 682;
+
+    public int positionYVieJauge = 591;
+    public int positionYManaJauge = 636;
+    public int positionYMouvementJauge= 682;
+    public int positionYActionJauge = 682;
 
     /** Couleur des jauges */
     private static final Color COULEUR_VIE  = new Color(255, 0, 0);
     private static final Color COULEUR_MANA = new Color(0, 0, 255);
     private static final Color COULEUR_MOUV = new Color(0, 255, 0);
+    private static final Color COULEUR_ACTION = new Color(0, 255, 0);
 
     /** Tailles des jauges */
     private static final int LONGUEUR = 266; // Longueur maximale de la barre
     private static final int HAUTEUR = 24;
 
+    private static final int DELTA_JAUGE = 45;
+
     private float pourcentageVie = 0;
     private float pourcentageMana = 0;
     private float pourcentageMouvement = 0;
+    private float pourcentageAction = 0;
 
     /** Coordonnée de placement du fond de l'interface */
     private int yFondInterface;
@@ -54,11 +60,11 @@ public class InterfaceJoueur {
     private Image imgCadreCompetenceInfGauche;
     private Image imgCadreCompetenceInfDroite;
 
-    private int x, y;
+    private int positionXCadreCompetenceSupGauche,
+                positionYCadreCompetenceSupGauche;
 
     /** Position du cadre des competence */
     private static final int DELTA_COMPTENCE = 16;
-    private static final int DELTA_IMAGE = 4;
 
     /** Liste des compétence du joueur */
     private Image[] imgCompetence;
@@ -79,22 +85,27 @@ public class InterfaceJoueur {
             imgCompetence[i] = new Image("res/texture/competence/" + listeCompetence.get(i).getImage());
         }
 
-        x = gameContainer.getWidth() / 2 - imgCadreCompetenceSupGauche.getWidth();
-        y = yFondInterface + imgFondInterface.getHeight() / 2 - imgCadreCompetenceSupGauche.getHeight() + DELTA_COMPTENCE;
+        positionXCadreCompetenceSupGauche = gameContainer.getWidth() / 2 - imgCadreCompetenceSupGauche.getWidth();
+        positionYCadreCompetenceSupGauche = yFondInterface + imgFondInterface.getHeight() / 2 - imgCadreCompetenceSupGauche.getHeight() + DELTA_COMPTENCE;
+
+        positionYVieJauge = yFondInterface + DELTA_COMPTENCE;
+        positionYManaJauge = positionYVieJauge + DELTA_JAUGE;
+        positionYMouvementJauge = positionYManaJauge + DELTA_JAUGE;
+        positionYActionJauge = positionYMouvementJauge + DELTA_JAUGE;
 
         // Initialisation des case clicable des competences
         interactionCompetence = new Case[listeCompetence.size()];
 
-        interactionCompetence[0] = new Case(listeCompetence.get(0).getId(), x, y, TAILLE_CASE);
+        interactionCompetence[0] = new Case(listeCompetence.get(0).getId(), positionXCadreCompetenceSupGauche, positionYCadreCompetenceSupGauche, TAILLE_CASE);
 
         if (interactionCompetence.length > 1)
-            interactionCompetence[1] = new Case(listeCompetence.get(1).getId(),x + TAILLE_CASE, y, TAILLE_CASE);
+            interactionCompetence[1] = new Case(listeCompetence.get(1).getId(), positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche, TAILLE_CASE);
 
         if (interactionCompetence.length > 2)
-            interactionCompetence[2] = new Case(listeCompetence.get(2).getId(), x, y + TAILLE_CASE, TAILLE_CASE);
+            interactionCompetence[2] = new Case(listeCompetence.get(2).getId(), positionXCadreCompetenceSupGauche, positionYCadreCompetenceSupGauche + TAILLE_CASE, TAILLE_CASE);
 
         if (interactionCompetence.length > 3)
-            interactionCompetence[3] = new Case(listeCompetence.get(3).getId(), x + TAILLE_CASE, y + TAILLE_CASE, TAILLE_CASE);
+            interactionCompetence[3] = new Case(listeCompetence.get(3).getId(), positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche + TAILLE_CASE, TAILLE_CASE);
 
     }
 
@@ -102,32 +113,36 @@ public class InterfaceJoueur {
         imgFondInterface.draw(0, yFondInterface, gameContainer.getWidth(), gameContainer.getHeight());
 
         graphics.setColor(COULEUR_VIE);
-        graphics.fillRect(DEBUT_X, DEBUT_Y_VIE, pourcentageVie, HAUTEUR);
+        graphics.fillRect(DEBUT_X, positionYVieJauge, pourcentageVie, HAUTEUR);
 
         graphics.setColor(COULEUR_MANA);
-        graphics.fillRect(DEBUT_X, DEBUT_Y_MANA, pourcentageMana, HAUTEUR);
+        graphics.fillRect(DEBUT_X, positionYManaJauge, pourcentageMana, HAUTEUR);
 
         graphics.setColor(COULEUR_MOUV);
-        graphics.fillRect(DEBUT_X, DEBUT_Y_MOUV, pourcentageMouvement, HAUTEUR);
+        graphics.fillRect(DEBUT_X, positionYMouvementJauge, pourcentageMouvement, HAUTEUR);
 
-        imgJauge.draw(DEBUT_X - 15, DEBUT_Y_VIE - 4, LONGUEUR + 30, HAUTEUR + 7);
-        imgJauge.draw(DEBUT_X - 15, DEBUT_Y_MANA - 4, LONGUEUR + 30, HAUTEUR + 7);
-        imgJauge.draw(DEBUT_X - 15, DEBUT_Y_MOUV - 4, LONGUEUR + 30, HAUTEUR + 7);
+        graphics.setColor(COULEUR_ACTION);
+        graphics.fillRect(DEBUT_X, positionYActionJauge, pourcentageMouvement, HAUTEUR);
 
-        imgCadreCompetenceSupGauche.draw(x, y);
-        imgCompetence[0].draw(x, y);
+        imgJauge.draw(DEBUT_X - 15, positionYVieJauge - 4, LONGUEUR + 30, HAUTEUR + 7);
+        imgJauge.draw(DEBUT_X - 15, positionYManaJauge - 4, LONGUEUR + 30, HAUTEUR + 7);
+        imgJauge.draw(DEBUT_X - 15, positionYMouvementJauge - 4, LONGUEUR + 30, HAUTEUR + 7);
+        imgJauge.draw(DEBUT_X - 15, positionYActionJauge - 4, LONGUEUR + 30, HAUTEUR + 7);
 
-        imgCadreCompetenceSupDroite.draw(x + TAILLE_CASE, y);
+        imgCadreCompetenceSupGauche.draw(positionXCadreCompetenceSupGauche, positionYCadreCompetenceSupGauche);
+        imgCompetence[0].draw(positionXCadreCompetenceSupGauche, positionYCadreCompetenceSupGauche);
+
+        imgCadreCompetenceSupDroite.draw(positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche);
         if (imgCompetence.length > 1)
-            imgCompetence[1].draw(x + TAILLE_CASE, y);
+            imgCompetence[1].draw(positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche);
 
-        imgCadreCompetenceInfGauche.draw(x, y + TAILLE_CASE);
+        imgCadreCompetenceInfGauche.draw(positionXCadreCompetenceSupGauche, positionYCadreCompetenceSupGauche + TAILLE_CASE);
         if (imgCompetence.length > 2)
-            imgCompetence[2].draw(x, y + TAILLE_CASE);
+            imgCompetence[2].draw(positionXCadreCompetenceSupGauche, positionYCadreCompetenceSupGauche + TAILLE_CASE);
 
-        imgCadreCompetenceInfDroite.draw(x + TAILLE_CASE, y + TAILLE_CASE);
+        imgCadreCompetenceInfDroite.draw(positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche + TAILLE_CASE);
         if (imgCompetence.length > 3)
-            imgCompetence[3].draw(x + TAILLE_CASE, y + TAILLE_CASE);
+            imgCompetence[3].draw(positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche + TAILLE_CASE);
 
     }
 

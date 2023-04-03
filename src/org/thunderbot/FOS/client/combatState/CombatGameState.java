@@ -34,7 +34,7 @@ public class CombatGameState extends BasicGameState {
     public static final int ID = 4;
 
     public static final int TAILLE_CASE = 64;
-    public static final int TAILLE_INTERFACE = 2;
+    public static final int TAILLE_INTERFACE = 3;
 
     private Image background;
 
