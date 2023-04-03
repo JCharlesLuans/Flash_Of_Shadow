@@ -74,6 +74,8 @@ public class InterfaceJoueur {
     private Image[] imgCompetence;
     private Case[] interactionCompetence;
 
+    private ArrayList<Competence> competences;
+
     /** Bouton suivant */
     public static final String TXT_BOUTON = "Tour suivant";
     public static final int LARGEUR_BOUTON = 32;
@@ -108,7 +110,7 @@ public class InterfaceJoueur {
         positionYActionJauge = positionYMouvementJauge + DELTA_JAUGE;
 
         // Initialisation des case clicable des competences
-        interactionCompetence = new Case[listeCompetence.size()];
+        interactionCompetence = new Case[4];
 
         interactionCompetence[0] = new Case(listeCompetence.get(0).getId(), positionXCadreCompetenceSupGauche, positionYCadreCompetenceSupGauche, TAILLE_CASE);
 
@@ -168,10 +170,9 @@ public class InterfaceJoueur {
     public void mouseClicked(int button, int x, int y, int nbClick) {
 
         // Gestion du click sur les competence
-        for (Case caseSurClick : interactionCompetence) {
-            if (caseSurClick.mouseClicked(button, x, y, nbClick)) {
-                // TODO DEBUG CETTE DOBE
-                //combatGameState.action(caseSurClick.getId());
+        for (int i = 0; i < interactionCompetence.length; i++) {
+            if (interactionCompetence[i].mouseClicked(button, x, y, nbClick)) {
+                combatGameState.action(interactionCompetence[i].getId());
             }
         }
 

@@ -251,7 +251,14 @@ public class CombatGameState extends BasicGameState {
      * @param id
      */
     public void action(int idCompetence) {
-        Competence competence = personnageAAfficher.getCompetences().get(idCompetence);
-        System.out.println("Competences : " + competence.getNom());
+        Competence competence = new Competence();
+        for (int i = 0; i < personnageAAfficher.getCompetences().size(); i++) {
+            if (personnageAAfficher.getCompetences().get(i).getId() == idCompetence) {
+                competence = personnageAAfficher.getCompetences().get(i);
+                personnageAAfficher.getStats().setActionsRestantes(personnageAAfficher.getStats().getActionsRestantes() - competence.getCout());
+            }
+        }
+
+        System.out.println("Competences : " + competence);
     }
 }
