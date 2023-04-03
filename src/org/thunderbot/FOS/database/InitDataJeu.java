@@ -146,7 +146,11 @@ public class InitDataJeu {
                     + LISTE_COMPETENCE_CLE_PERSO + ", "
                     + LISTE_COMPETENCE_EXPERIENCE +  ")"
             + "VALUES "
-            + "( '1', '1', 0)"
+            + "( '1', '1', 0),"
+            + "( '2', '1', 0),"
+            + "( '3', '1', 0),"
+            + "( '4', '1', 0),"
+            + "( '5', '1', 0)"
            + ";";
 
     public static void main(String[] args) {
