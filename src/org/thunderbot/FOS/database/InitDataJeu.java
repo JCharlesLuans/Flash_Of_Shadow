@@ -23,13 +23,13 @@ public class InitDataJeu {
 
     private static final String CREATION_COMPETENCE =
             "INSERT INTO " + NOM_TABLE_COMPETENCE
-                + " ( " + COMPETENCE_NOM + ", " + COMPETENCE_DEGAT_BASE + ", " + COMPETENCE_ID_EFFET + ", " + COMPETENCE_IMAGE + " )"
+                + " ( " + COMPETENCE_NOM + ", " + COMPETENCE_DEGAT_BASE + ", " + COMPETENCE_PORTEE + ", " + COMPETENCE_ID_EFFET + ", " + COMPETENCE_IMAGE + " )"
             + "VALUES "
-                + " ( 'Coup de point', 1, 1, 'coupDePoint.png'),"
-                + " ( 'Tir de fleche', 1, 1, 'fleche.png'),"
-                + " ( 'Tir de fleche piégée', 1, 1, 'flechePiege.png'),"
-                + " ( 'Tir de fleche explosive', 1, 1, 'flecheExplosive.png'),"
-                + " ( 'Tir de fleche empoisonnée', 0, 2, 'flecheEmpoisonnee.png');"
+                + " ( 'Coup de point', 1, 1, 1, 'coupDePoint.png'),"
+                + " ( 'Tir de fleche', 1, 1, 5, 'fleche.png'),"
+                + " ( 'Tir de fleche piégée', 1, 1, 3, 'flechePiege.png'),"
+                + " ( 'Tir de fleche explosive', 1, 1, 3, 'flecheExplosive.png'),"
+                + " ( 'Tir de fleche empoisonnée', 0, 2, 3, 'flecheEmpoisonnee.png');"
             ;
 
     private static final String CREATION_EFFET =
@@ -110,6 +110,45 @@ public class InitDataJeu {
                 + "( 'WORG', 'necromant.png', 1, 680, 450, 5, 5, 5, 5, 5, 5, 5, 3, 3, 0)"
             + ";";
 
+    private static final String CREATION_PERSONNAGE =
+            "INSERT INTO " + NOM_TABLE_PERSONNAGE + " ( "
+                    + PERSONNAGE_NOM + ", "
+                    + PERSONNAGE_SPRITE + ", "
+                    + PERSONNAGE_X + ", "
+                    + PERSONNAGE_Y + ", "
+                    + PERSONNAGE_CLE_JOUEUR + ", "
+                    + PERSONNAGE_CLE_CLASSE + ", "
+                    + PERSONNAGE_CLE_MAP + ", "
+                    + PERSONNAGE_CLE_STUFF_TETE + ", "
+                    + PERSONNAGE_CLE_STUFF_TORSE + ", "
+                    + PERSONNAGE_CLE_STUFF_GANT + ", "
+                    + PERSONNAGE_CLE_STUFF_JAMBE + ", "
+                    + PERSONNAGE_CLE_STUFF_BOTTE + ", "
+                    + PERSONNAGE_CLE_STUFF_ARME + ", "
+                    + PERSONNAGE_CLE_FACTION + ", "
+                    + PERSONNAGE_CLE_GUILDE + ", "
+                    + PERSONNAGE_CLE_TITRE +  ")"
+            + "VALUES "
+            + "( 'TestPerso', 'sprite2.png', 640, 400, 1, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1)"
+            + ";";
+
+    private static final String CREATION_JOUEUR =
+            "INSERT INTO " + NOM_TABLE_JOUEUR + " ( "
+                    + JOUEUR_PSEUDO + ","
+                    + JOUEUR_MDP + ")"
+            + "VALUES "
+            + "( 'JeanTest', 'leserveur')"
+            + ";";
+
+    private static final String CREATION_LISTE_COMPETENCE =
+            "INSERT INTO " + NOM_TABLE_LISTE_COMPETENCE + " ("
+                    + LISTE_COMPETENCE_CLE_COMPETENCE + ", "
+                    + LISTE_COMPETENCE_CLE_PERSO + ", "
+                    + LISTE_COMPETENCE_EXPERIENCE +  ")"
+            + "VALUES "
+            + "( '1', '1', 0)"
+           + ";";
+
     public static void main(String[] args) {
         HelperBD helperBD = new HelperBD(FosDAO.NOM_BD);
         helperBD.executeUpdate(CREATION_CLASSE);
@@ -119,5 +158,8 @@ public class InitDataJeu {
         helperBD.executeUpdate(CREATION_MAP);
         helperBD.executeUpdate(CREATION_PNJ);
         helperBD.executeUpdate(CREATION_OBJET);
+        helperBD.executeUpdate(CREATION_JOUEUR);
+        helperBD.executeUpdate(CREATION_PERSONNAGE);
+        helperBD.executeUpdate(CREATION_LISTE_COMPETENCE);
     }
 }
