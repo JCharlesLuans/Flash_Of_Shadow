@@ -407,11 +407,12 @@ public class Client {
         String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.COMBAT + ';' + RequeteServeur.END;
         try {
             envoi(new RequeteServeur(requete));
-//
-//            // envoi nouvelle position du joueur;
-//            envoiXML(personnage);
-//            // envoi etat pnj
-//            envoiXML(listePNJ);
+
+            // envoi nouvelle position du joueur;
+            envoiXML(personnage);
+
+            // envoi etat pnj
+            envoiXML(listePNJ);
 //
 //            // reception nouvelle position des PNJ
 //            tmpListe = (ArrayList<PNJ>) receptionXML();

@@ -78,19 +78,21 @@ public class Personnage implements Serializable {
         this.titre = titre;
     }
 
-    public Personnage(org.thunderbot.FOS.client.gameState.entite.Personnage personnage) {
+    public Personnage(org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient personnage) {
         id = -1;
         idJoueur = -1;
         nom = "";
         sprite = "";
         classe = new Classe();
         map = new Map();
-        stuffArme = new Objet();
-        stuffBotte = new Objet();
-        stuffGant = new Objet();
-        stuffJambe = new Objet();
-        stuffTete = new Objet();
-        stuffTorse = new Objet();
+
+        stuffArme = personnage.getEquipement().getStuffArme();
+        stuffBotte = personnage.getEquipement().getStuffBotte();
+        stuffGant = personnage.getEquipement().getStuffGant();
+        stuffJambe = personnage.getEquipement().getStuffJambe();
+        stuffTete = personnage.getEquipement().getStuffTete();
+        stuffTorse = personnage.getEquipement().getStuffTorse();
+
         faction = new Faction();
         guilde = new Guilde();
         titre = new Titre();
