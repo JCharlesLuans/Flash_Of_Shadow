@@ -108,9 +108,6 @@ public class CombatGameState extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         interfaceJoueur.update(personnageAAfficher);
-
-        // Fin du combat
-
     }
 
 
@@ -196,7 +193,7 @@ public class CombatGameState extends BasicGameState {
     }
 
     public void fin() {
-
+        if (personnageAAfficher.getStats().getVieRestante() == 0 || listePNJAAfficher.size() == 0) {
             Personnage personnageData = new Personnage(this.personnageAAfficher);
             ArrayList<PNJ> listeDataPNJ = new ArrayList<>();
 
@@ -208,7 +205,58 @@ public class CombatGameState extends BasicGameState {
             client.finServeurCombat(personnageData, listeDataPNJ);
 
             stateBasedGame.enterState(MapGameState.ID);
+        }
+    }
 
+    public void deplacement(int id) {
+
+        float futurX, futurY;
+        float x, y;
+        float resteX, resteY;
+
+        boolean possible;
+
+        // Verification que le joueur a bien clicker sur le terrain
+        if (id > 0) {
+
+            // Transformation de l'id en coordonner
+            futurX = terrain.getXById(id);
+            futurY = terrain.getYById(id);
+
+            // Convertion des coordonner du joueur en coordonner de combats
+            x = (personnageAAfficher.getPositionX() + 32) / TAILLE_CASE;
+            y = (personnageAAfficher.getPositionY() + 16) / TAILLE_CASE;
+
+            System.out.println("X = " + x);
+            System.out.println("Y = " + y);
+            System.out.println("futurX = " + futurX);
+            System.out.println("futurY = " + futurY);
+
+            // Verification si coordonnée > stats.mouvement
+            // On va vers la GAUCHE
+            if (x > futurX) {
+                resteX = x - futurX;
+            } else {
+                resteX = futurX - x;
+            }
+
+            if (y > futurY) {
+                resteY = y - futurY;
+            } else {
+                resteY = futurY - y;
+            }
+
+            if (resteX + resteY <= personnageAAfficher.getStats().getMouvementsRestants()) {
+                // Déplacement du joueur sur la case ou le joueur a cliquer
+                personnageAAfficher.setPositionX(terrain.getXById(id) * CombatGameState.TAILLE_CASE - 32);
+                personnageAAfficher.setPositionY(terrain.getYById(id) * CombatGameState.TAILLE_CASE - 16);
+            }
+
+
+
+
+            miseAJour();
+        }
     }
 
     public ArrayList<PersonnageNonJoueur> getListePNJAAfficher() {

@@ -6,6 +6,8 @@ import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
 import org.thunderbot.FOS.client.combatState.CombatGameState;
 
+import java.util.ArrayList;
+
 public class CombatController implements KeyListener, ControllerListener, MouseListener {
 
     private CombatGameState combatGameState;
@@ -15,7 +17,6 @@ public class CombatController implements KeyListener, ControllerListener, MouseL
     }
     @Override
     public void keyPressed(int key, char c) {
-
     }
 
     @Override
@@ -96,21 +97,11 @@ public class CombatController implements KeyListener, ControllerListener, MouseL
         combatGameState.getInterfaceJoueur().mouseClicked(button, x, y, nbClick);
         id = combatGameState.getTerrain().mouseClicked(button, x, y, nbClick);
 
-        // Verification que le joueur a bien clicker sur le terrain
-        if (id > 0) {
-            // Déplacement du joueur sur la case ou le joueur a cliquer
-            combatGameState.getPersonnageAAfficher().setPositionX(combatGameState.getTerrain().getXById(id) * CombatGameState.TAILLE_CASE - 32 + CombatGameState.TAILLE_CASE);
-            combatGameState.getPersonnageAAfficher().setPositionY(combatGameState.getTerrain().getYById(id) * CombatGameState.TAILLE_CASE - 16 + CombatGameState.TAILLE_CASE);
+        combatGameState.deplacement(id);
 
-            combatGameState.miseAJour();
 
-            System.out.println(combatGameState.getPersonnageAAfficher().getStats()); // log
-            combatGameState.getPersonnageAAfficher().getStats().setVieRestante(combatGameState.getPersonnageAAfficher().getStats().getVieRestante() - 1);
-        }
-
-        if (combatGameState.getPersonnageAAfficher().getStats().getVieRestante() == 0 || combatGameState.getListePNJAAfficher().size() == 0) {
-            combatGameState.fin();
-        }
+        // Fin du combat
+        combatGameState.fin();
     }
 
     @Override

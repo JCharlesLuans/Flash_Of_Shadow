@@ -80,7 +80,7 @@ public class Terrain {
             }
         }
 
-        return x;
+        return x + 1;
     }
 
     public float getYById(int id) {
@@ -98,6 +98,6 @@ public class Terrain {
             }
         }
 
-        return y;
+        return y + 1;
     }
 }
