@@ -64,7 +64,7 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
         calculStats();
 
         // Chargements des competence
-        this.competences = personnage.getListeCompetence();
+        this.competences = client.getPersonnage().getListeCompetence();
     }
 
     public PersonnageJoueurClient(Personnage personnage) throws SlickException {

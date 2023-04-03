@@ -6,6 +6,8 @@ public class Competence implements Serializable {
     private int _id;
     private int idEffet;
     private int degaBase;
+    private int portee;
+    private int cout;
     private String nom;
     private String image;
 
@@ -49,12 +51,38 @@ public class Competence implements Serializable {
         this.image = image;
     }
 
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public int getPortee() {
+        return portee;
+    }
+
+    public void setPortee(int portee) {
+        this.portee = portee;
+    }
+
+    public int getCout() {
+        return cout;
+    }
+
+    public void setCout(int cout) {
+        this.cout = cout;
+    }
+
     @Override
     public String toString() {
         return "Competence{" +
                 "_id=" + _id +
                 ", idEffet=" + idEffet +
                 ", degaBase=" + degaBase +
+                ", portee=" + portee +
+                ", cout=" + cout +
                 ", nom='" + nom + '\'' +
                 ", image='" + image + '\'' +
                 '}';

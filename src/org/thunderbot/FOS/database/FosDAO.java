@@ -195,6 +195,8 @@ public class FosDAO {
             aRetourner.setId(rs.getInt(COMPETENCE_NOM));
             aRetourner.setNom(rs.getString(COMPETENCE_NOM));
             aRetourner.setDegaBase(rs.getInt(COMPETENCE_DEGAT_BASE));
+            aRetourner.setPortee(rs.getInt(COMPETENCE_PORTEE));
+            aRetourner.setCout(rs.getInt(COMPETENCE_COUT));
             aRetourner.setIdEffet(rs.getInt(COMPETENCE_ID_EFFET));
             aRetourner.setImage(rs.getString(COMPETENCE_IMAGE));
 
@@ -229,6 +231,8 @@ public class FosDAO {
                 tmp.setId(rs.getInt(COMPETENCE_CLE));
                 tmp.setNom(rs.getString(COMPETENCE_NOM));
                 tmp.setDegaBase(rs.getInt(COMPETENCE_DEGAT_BASE));
+                tmp.setPortee(rs.getInt(COMPETENCE_PORTEE));
+                tmp.setCout(rs.getInt(COMPETENCE_COUT));
                 tmp.setIdEffet(rs.getInt(COMPETENCE_ID_EFFET));
                 tmp.setImage(rs.getString(COMPETENCE_IMAGE));
 

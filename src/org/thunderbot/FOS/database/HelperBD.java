@@ -87,6 +87,7 @@ public class HelperBD {
     public static final String COMPETENCE_NOM = "nom";
     public static final String COMPETENCE_DEGAT_BASE = "degatBase";
     public static final String COMPETENCE_PORTEE = "portee";
+    public static final String COMPETENCE_COUT = "cout";
     public static final String COMPETENCE_ID_EFFET = "idEffet";
     public static final String COMPETENCE_IMAGE = "image";
 
@@ -96,6 +97,7 @@ public class HelperBD {
                 + COMPETENCE_NOM + " TEXT NOT NULL,"
                 + COMPETENCE_DEGAT_BASE + " INTEGER NOT NULL,"
                 + COMPETENCE_PORTEE + " INTEGER NOT NULL,"
+                + COMPETENCE_COUT + " INTEGER NOT NULL,"
                 + COMPETENCE_ID_EFFET + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_EFFET + " (" + EFFET_CLE + "),"
                 + COMPETENCE_IMAGE + " TEXT NOT NULL"
             + ") ;";
