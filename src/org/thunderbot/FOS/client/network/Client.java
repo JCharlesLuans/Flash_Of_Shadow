@@ -349,7 +349,7 @@ public class Client {
     public void entreEnCombat(String pnjEncode) {
         try {
             //Envoi au serveur que le joueur et le PNJ rentre en combat
-            String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.COMBAT + ';';
+            String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.COMBAT + ';' + RequeteServeur.START;
             envoi(new RequeteServeur(requete));
 
             envoi(pnjEncode);
@@ -371,26 +371,33 @@ public class Client {
 
         ArrayList<PNJ> tmpListe;
         Personnage tmpPersonnage;
+        // envoi requete pour prevenir qu'on met a jour le combat
+        String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.COMBAT + ';' + RequeteServeur.UPDATE;
+        try {
+            envoi(new RequeteServeur(requete));
 
-        // envoi l'indicateur de fin de combat
-        envoiXML(false);
-        // envoi nouvelle position du joueur;
-        envoiXML(personnage);
-        // envoi etat pnj
-        envoiXML(listePNJ);
+            // envoi l'indicateur de fin de combat
+            envoiXML(false);
 
-        // reception nouvelle position des PNJ
-        tmpListe = (ArrayList<PNJ>) receptionXML();
+            // envoi nouvelle position du joueur;
+            envoiXML(personnage);
+            // envoi etat pnj
+            envoiXML(listePNJ);
 
-        for (int i = 0; i < tmpListe.size(); i++) {
-            listePNJ.set(i, tmpListe.get(i));
+            // reception nouvelle position des PNJ
+            tmpListe = (ArrayList<PNJ>) receptionXML();
+
+            for (int i = 0; i < tmpListe.size(); i++) {
+                listePNJ.set(i, tmpListe.get(i));
+            }
+
+            // reception etat du joueur
+            tmpPersonnage = (Personnage) receptionXML();
+
+            personnage.setData();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        // reception etat du joueur
-        tmpPersonnage = (Personnage) receptionXML();
-
-        personnage.setData();
-
     }
 
     /**

@@ -5,8 +5,6 @@
 
 package org.thunderbot.FOS.serveur;
 
-import org.thunderbot.FOS.client.ChaosRevolt;
-import org.thunderbot.FOS.client.combatState.CombatGameState;
 import org.thunderbot.FOS.database.FosDAO;
 import org.thunderbot.FOS.database.beans.*;
 import org.thunderbot.FOS.serveur.networkObject.Authentification;
@@ -19,7 +17,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * org.thunderbot.FOS.Serveur de FOS
@@ -35,6 +32,8 @@ public class Serveur extends Thread {
     private ClientConnecter me;
 
     private static IAServeur iaServeur;
+
+    private CombatServeur combatServeur;
 
     private static FosDAO accesBD;
 
@@ -285,8 +284,17 @@ public class Serveur extends Thread {
                         break;
 
                     case RequeteServeur.COMBAT:
-                        CombatServeur tmp =  new CombatServeur(this, accesBD);
-                        tmp.combat();
+                        switch (requeteServeur.getCle()) {
+                            case RequeteServeur.START:
+                                combatServeur =  new CombatServeur(this, accesBD);
+                                combatServeur.start();
+                                break;
+
+                            case RequeteServeur.UPDATE:
+                                combatServeur.update();
+                                break;
+                        }
+
                 }
                 break;
 
@@ -426,7 +434,7 @@ public class Serveur extends Thread {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return Tools.decodeString(strReception);
+        return null;
     }
 }
 

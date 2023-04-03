@@ -36,15 +36,6 @@ public class CombatServeur {
     }
 
     /**
-     * Lance un combat entre le joueur et le PNJ
-     */
-    public void combat() {
-        initCombatPnj();
-        initJoueurCombat();
-        update();
-    }
-
-    /**
      * Initialise les PNJ pour le combat.
      * En fonction du PNJ reçu (le PNJ reçu est le PNJ sur lequelle clique le joueur) on charge entre 2 et 4 autre PNJ.
      * On genere une position aléatoire
@@ -133,53 +124,33 @@ public class CombatServeur {
         serveur.envoiXML(personnage);
     }
 
-    private void update() {
+    public void update() {
         boolean combatFini = false;
         boolean dejaUtilise = false;
 
-        while (!combatFini) {
-            // reception de l'indicateur de combat fini
-            combatFini = (boolean) serveur.receptionXML();
-            System.out.println(combatFini);
+        System.out.println("update de combat"); // log
 
-            if (!combatFini) {
-                // reception du joueur
-                serveur.receptionXML();
+        // reception de l'indicateur de combat fini
+        combatFini = (boolean) serveur.receptionXML();
 
-                // reception etat des pnj
-                serveur.receptionXML();
+        if (!combatFini) {
+            // reception du joueur
+            serveur.receptionXML();
 
-                // Une fois tout les PNJ choisis, selectionner leurs position de maniere aléatoire
-                for (int i = 0; i < listePnjEnCombat.size(); i++) {
+            // reception etat des pnj
+            serveur.receptionXML();
 
-                    listePnjEnCombat.get(i).setDirection(org.thunderbot.FOS.client.gameState.entite.Personnage.BAS);
+            // envoi nouvelle position pnj
+            serveur.envoiXML(listePnjEnCombat);
+            System.out.println("envoe des pnj " + listePnjEnCombat); // log
 
-                    dejaUtilise = false; // Reinitialise l'indicateur de coordonnée deja utiliser
-
-                    do {
-                        // Choisi un position aléatoire sur la carte, puis applique un delta pour l'affichage
-                        listePnjEnCombat.get(i).setX((rnd.nextInt(nombreCaseLongueur) + 1) * CombatGameState.TAILLE_CASE - 32);
-                        listePnjEnCombat.get(i).setY((rnd.nextInt(nombreCaseHauteur) + 1) * CombatGameState.TAILLE_CASE - 16);
-
-                        for (int j = 0; j < listePnjEnCombat.size(); j++) {
-                            if (j != i) {
-                                dejaUtilise = (listePnjEnCombat.get(i).getX() == listePnjEnCombat.get(j).getX()
-                                        && listePnjEnCombat.get(i).getY() == listePnjEnCombat.get(j).getY())
-                                        || dejaUtilise;
-                            }
-                        }
-                    } while (dejaUtilise);
-                }
-
-                // envoi nouvelle position pnj
-                serveur.envoiXML(listePnjEnCombat);
-
-
-                // envoi etat joueur
-                serveur.envoiXML(new Personnage());
-            }
+            // envoi etat joueur
+            serveur.envoiXML(new Personnage());
         }
+    }
 
-
+    public void start() {
+        initCombatPnj();
+        initJoueurCombat();
     }
 }
