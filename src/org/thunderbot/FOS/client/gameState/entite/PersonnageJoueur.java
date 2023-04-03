@@ -7,6 +7,7 @@ package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.thunderbot.FOS.client.gameState.phisique.Equipement;
 import org.thunderbot.FOS.client.gameState.phisique.Stats;
 
 /**
@@ -18,6 +19,7 @@ import org.thunderbot.FOS.client.gameState.phisique.Stats;
 public class PersonnageJoueur extends Personnage {
 
     protected String nomCarte;
+    protected Equipement equipement;
 
     public PersonnageJoueur() {
         positionX = 650;

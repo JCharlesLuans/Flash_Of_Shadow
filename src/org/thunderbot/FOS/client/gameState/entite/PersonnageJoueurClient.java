@@ -7,6 +7,7 @@ package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.*;
 import org.thunderbot.FOS.client.gameState.GUI.Gui;
+import org.thunderbot.FOS.client.gameState.phisique.Equipement;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.PNJ;
@@ -49,6 +50,31 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
         this.animations[5] = loadAnimation(spriteSheet, 1, 9, 1);
         this.animations[6] = loadAnimation(spriteSheet, 1, 9, 2);
         this.animations[7] = loadAnimation(spriteSheet, 1, 9, 3);
+
+        // Chargements de l'equipement
+        equipement = new Equipement(
+                client.getPersonnage().getStuffTete(),
+                client.getPersonnage().getStuffTorse(),
+                client.getPersonnage().getStuffGant(),
+                client.getPersonnage().getStuffJambe(),
+                client.getPersonnage().getStuffBotte(),
+                client.getPersonnage().getStuffArme()
+        );
+
+        // Calcul des stats secondaire
+        stats.setAgilite(equipement.getAgilite());
+        stats.setArmure(equipement.getArmure());
+        stats.setDexterite(equipement.getDexterite());
+        stats.setEndurance(equipement.getEndurance());
+        stats.setForce(equipement.getForce());
+        stats.setIntelligence(equipement.getIntelligence());
+        stats.setSagesse(equipement.getSagesse());
+
+        // Calcul des stas primaire
+        stats.calculVie();
+        stats.calculMana();
+        stats.calculMouvement();
+        stats.calculActions();
     }
 
     public PersonnageJoueurClient(Personnage personnage) throws SlickException {
