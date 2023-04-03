@@ -7,6 +7,8 @@ package org.thunderbot.FOS.client.combatState;
 
 import org.newdawn.slick.*;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
+import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
+import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
 import org.thunderbot.FOS.database.beans.Competence;
 
 import java.util.ArrayList;
@@ -22,13 +24,15 @@ import static org.thunderbot.FOS.client.combatState.CombatGameState.TAILLE_CASE;
  */
 public class InterfaceJoueur {
 
+    CombatGameState combatGameState; // Sur lequelle est afficher l'interface
+
     /** Placement des jauges */
     public static final int DEBUT_X = 64;
 
-    public int positionYVieJauge = 591;
-    public int positionYManaJauge = 636;
-    public int positionYMouvementJauge= 682;
-    public int positionYActionJauge = 682;
+    public int positionYVieJauge = 0;
+    public int positionYManaJauge = 0;
+    public int positionYMouvementJauge= 0;
+    public int positionYActionJauge = 0;
 
     /** Couleur des jauges */
     private static final Color COULEUR_VIE  = new Color(255, 0, 0);
@@ -70,14 +74,24 @@ public class InterfaceJoueur {
     private Image[] imgCompetence;
     private Case[] interactionCompetence;
 
-    public InterfaceJoueur(GameContainer gameContainer, ArrayList<Competence> listeCompetence, int nombreCaseHauteur) throws SlickException {
+    /** Bouton suivant */
+    public static final String TXT_BOUTON = "Tour suivant";
+    public static final int LARGEUR_BOUTON = 32;
+    public static final int LONGUEUR_BOUTON = 64;
+
+    Bouton btnSuivant;
+
+    public InterfaceJoueur(GameContainer gameContainer, CombatGameState combatGameState, ArrayList<Competence> listeCompetence) throws SlickException {
+
+        this.combatGameState = combatGameState;
+
         imgFondInterface = new Image("res/combatState/ui.png");
         imgJauge = new Image("res/combatState/jauge.png");
         imgCadreCompetenceSupGauche = new Image("res/combatState/cadreCompetenceSupGauche.png");
         imgCadreCompetenceSupDroite = new Image("res/combatState/cadreCompetenceSupDroite.png");
         imgCadreCompetenceInfGauche = new Image("res/combatState/cadreCompetenceInfGauche.png");
         imgCadreCompetenceInfDroite = new Image("res/combatState/cadreCompetenceInfDroite.png");
-        yFondInterface = nombreCaseHauteur * TAILLE_CASE;
+        yFondInterface = combatGameState.getTerrain().getNombreCaseHauteur() * TAILLE_CASE;
         imgCompetence = new Image[listeCompetence.size()];
 
         // Charge les images des competences
@@ -106,6 +120,9 @@ public class InterfaceJoueur {
 
         if (interactionCompetence.length > 3)
             interactionCompetence[3] = new Case(listeCompetence.get(3).getId(), positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche + TAILLE_CASE, TAILLE_CASE);
+
+        // Initialisation du bouton suivant, pour indiquer la fin de son tour
+        btnSuivant = new Bouton(((DEBUT_X + LONGUEUR) + positionXCadreCompetenceSupGauche) / 2, yFondInterface + imgFondInterface.getHeight() / 2 + LARGEUR_BOUTON / 2, LARGEUR_BOUTON, LONGUEUR_BOUTON, TXT_BOUTON);
 
     }
 
@@ -144,14 +161,23 @@ public class InterfaceJoueur {
         if (imgCompetence.length > 3)
             imgCompetence[3].draw(positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche + TAILLE_CASE);
 
+        btnSuivant.render(graphics);
+
     }
 
     public void mouseClicked(int button, int x, int y, int nbClick) {
+
+        // Gestion du click sur les competence
         for (Case caseSurClick : interactionCompetence) {
             if (caseSurClick.mouseClicked(button, x, y, nbClick)) {
                 System.out.println(caseSurClick.getId());
                 // TODO Action
             }
+        }
+
+        // Gestion du click sur les boutons
+        if (btnSuivant.isInBouton(x, y)) {
+            combatGameState.tourSuivant();
         }
     }
 

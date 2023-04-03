@@ -149,7 +149,7 @@ public class CombatGameState extends BasicGameState {
      * Initialise l'interface de combat
      */
     private void initInterface(GameContainer gameContainer) throws SlickException {
-        interfaceJoueur = new InterfaceJoueur(gameContainer, client.getPersonnage().getListeCompetence(), terrain.getNombreCaseHauteur());
+        interfaceJoueur = new InterfaceJoueur(gameContainer, this, client.getPersonnage().getListeCompetence());
     }
 
     private void renderPNJ(Graphics graphics) {
@@ -170,6 +170,9 @@ public class CombatGameState extends BasicGameState {
         return personnageAAfficher;
     }
 
+    /**
+     * Comunique et met a jour les informations avec le serveur
+     */
     public void miseAJour() {
         try {
             Personnage personnageData = new Personnage(this.personnageAAfficher);
@@ -187,6 +190,9 @@ public class CombatGameState extends BasicGameState {
             for (PNJ pnj : listeDataPNJ) {
                 listePNJAAfficher.add(new PersonnageNonJoueur(pnj));
             }
+
+            this.personnageAAfficher = new PersonnageJoueurClient(personnageData);
+
         } catch (SlickException e) {
             throw new RuntimeException(e);
         }
@@ -209,12 +215,7 @@ public class CombatGameState extends BasicGameState {
     }
 
     public void deplacement(int id) {
-
-        float futurX, futurY;
         float x, y;
-        float resteX, resteY;
-
-        boolean possible;
 
         // Verification que le joueur a bien clicker sur le terrain
         if (id > 0) {
@@ -229,15 +230,14 @@ public class CombatGameState extends BasicGameState {
                 personnageAAfficher.setPositionY(terrain.getYById(id) * CombatGameState.TAILLE_CASE - 16);
                 personnageAAfficher.getStats().setMouvementsRestants(personnageAAfficher.getStats().getMouvementsRestants() - 1);
             }
-
-
-
-
-            miseAJour();
         }
     }
 
     public ArrayList<PersonnageNonJoueur> getListePNJAAfficher() {
         return listePNJAAfficher;
+    }
+
+    public void tourSuivant() {
+        miseAJour();
     }
 }

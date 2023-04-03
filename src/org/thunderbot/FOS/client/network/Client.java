@@ -388,7 +388,7 @@ public class Client {
             // reception etat du joueur
             tmpPersonnage = (Personnage) receptionXML();
 
-            personnage.setData();
+            personnage.setStats(tmpPersonnage.getStats());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

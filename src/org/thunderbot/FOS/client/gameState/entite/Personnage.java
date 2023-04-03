@@ -268,4 +268,8 @@ public class Personnage {
     public Stats getStats() {
         return stats;
     }
+
+    public String getSprite() {
+        return sprite;
+    }
 }

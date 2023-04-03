@@ -87,10 +87,10 @@ public class Personnage implements Serializable {
     }
 
     public Personnage(org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient personnage) {
-        id = -1;
+        id = personnage.getId();
         idJoueur = -1;
-        nom = "";
-        sprite = "";
+        nom = personnage.getNom();
+        sprite = personnage.getSprite();
         classe = new Classe();
         map = new Map();
 
@@ -314,8 +314,5 @@ public class Personnage implements Serializable {
     public void setListeCompetence(Competence competence) {
         this.listeCompetence = new ArrayList<>();
         this.listeCompetence.add(competence);
-    }
-
-    public void setData() {
     }
 }

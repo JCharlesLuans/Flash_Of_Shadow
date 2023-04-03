@@ -125,8 +125,14 @@ public class CombatServeur {
     }
 
     public void update() {
+
+        Personnage personnage;
+
         // reception du joueur
-        serveur.receptionXML();
+        personnage = (Personnage) serveur.receptionXML();
+
+        personnage.getStats().setMouvementsRestants(personnage.getStats().getMouvementsMax());
+        personnage.getStats().setActionsMax((personnage.getStats().getActionsMax()));
 
         // reception etat des pnj
         serveur.receptionXML();
