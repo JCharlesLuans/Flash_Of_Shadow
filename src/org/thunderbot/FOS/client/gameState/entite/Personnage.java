@@ -50,7 +50,7 @@ public class Personnage {
     protected Animation[] animations = new Animation[8];
 
     /**  Inidique si le personnage est sur un escalier ou pas */
-    private boolean escalierDroite,
+    protected boolean escalierDroite,
                     escalierGauche;
 
     /** Indique si le personnage subit une colision */

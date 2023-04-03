@@ -28,10 +28,6 @@ public class PersonnageJoueurClient extends PersonnageJoueur {
     /** Annimations du personnages */
     private Animation[] animations = new Animation[8];
 
-    /**  Inidique si le personnage est sur un escalier ou pas */
-    private boolean escalierDroite,
-                    escalierGauche;
-
     /**
      * Nouveau personnage joueur de ce client
      * @throws SlickException
