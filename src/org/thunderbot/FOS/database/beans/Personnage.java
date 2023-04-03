@@ -4,6 +4,8 @@
  */
 package org.thunderbot.FOS.database.beans;
 
+import org.thunderbot.FOS.client.gameState.phisique.Stats;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -13,11 +15,15 @@ public class Personnage implements Serializable {
     private int id;
     private String nom;
     private String sprite;
+
     private float x;
     private float y;
     private int idJoueur;
+
     private Classe classe;
+
     private Map map;
+
     private Objet stuffTete;
     private Objet stuffTorse;
     private Objet stuffGant;
@@ -29,6 +35,7 @@ public class Personnage implements Serializable {
     private Titre titre;
 
     private ArrayList<Competence> listeCompetence;
+    private Stats stats;
 
     //Autre
     private int direction;
@@ -41,6 +48,7 @@ public class Personnage implements Serializable {
         sprite = "";
         classe = new Classe();
         map = new Map();
+
         stuffArme = new Objet();
         stuffBotte = new Objet();
         stuffGant = new Objet();
@@ -92,6 +100,8 @@ public class Personnage implements Serializable {
         stuffJambe = personnage.getEquipement().getStuffJambe();
         stuffTete = personnage.getEquipement().getStuffTete();
         stuffTorse = personnage.getEquipement().getStuffTorse();
+
+        stats = personnage.getStats();
 
         faction = new Faction();
         guilde = new Guilde();
@@ -242,6 +252,14 @@ public class Personnage implements Serializable {
         this.titre = titre;
     }
 
+    public Stats getStats() {
+        return stats;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
     @Override
     public String toString() {
         return "Personnage{" +
@@ -265,6 +283,7 @@ public class Personnage implements Serializable {
                 ", direction='" + direction + '\'' +
                 ", moving='" + moving + '\'' +
                 ", competenceList='" + listeCompetence + '\'' +
+                ", stats='" + stats + '\'' +
                 '}';
     }
 

@@ -10,9 +10,11 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.CombatController;
+import org.thunderbot.FOS.client.gameState.phisique.Stats;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.gameState.world.Terrain;
 import org.thunderbot.FOS.client.network.Client;
@@ -45,6 +47,8 @@ public class CombatGameState extends BasicGameState {
 
     private Terrain terrain;
 
+    private StateBasedGame stateBasedGame;
+
     int nombreCaseHauteur;
 
     /** Entité en combats */
@@ -75,6 +79,8 @@ public class CombatGameState extends BasicGameState {
         gameContainer.getInput().addControllerListener(combatController);
         gameContainer.getInput().addMouseListener(combatController);
         gameContainer.getInput().addKeyListener(combatController);
+
+        this.stateBasedGame = stateBasedGame;
 
         terrain = new Terrain();
 
@@ -201,7 +207,7 @@ public class CombatGameState extends BasicGameState {
             // Mise a jour des données sur le serveur puis remise a jours des attributs des paramettres
             client.finServeurCombat(personnageData, listeDataPNJ);
 
-            System.out.println("Fin du combat");
+            stateBasedGame.enterState(MapGameState.ID);
 
     }
 

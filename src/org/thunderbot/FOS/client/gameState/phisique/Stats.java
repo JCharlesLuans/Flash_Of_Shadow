@@ -4,13 +4,15 @@
  */
 package org.thunderbot.FOS.client.gameState.phisique;
 
+import java.io.Serializable;
+
 /**
  * Represente les statistique d'un personnage
  *
  * @author Jean-Charles Luans
  * @version 1.0
  */
-public class Stats {
+public class Stats implements Serializable {
 
     private int vieMax;
     private int manaMax;
@@ -236,10 +238,18 @@ public class Stats {
     @Override
     public String toString() {
         return "Stats{" +
-                "vie=" + vieMax +
-                ", mana=" + manaMax +
-                ", mouvements=" + mouvementsMax +
-                ", actions=" + actionsMax +
+                "vieMax=" + vieMax +
+                ", manaMax=" + manaMax +
+                ", mouvementsMax=" + mouvementsMax +
+                ", actionsMax=" + actionsMax +
+                "vieRestante=" + vieRestante +
+                ", manaRestante=" + manaRestante +
+                ", mouvementsRestants=" + mouvementsRestants +
+                ", actionsRestantes=" + actionsRestantes +
+                ", vieRestante=" + vieRestante +
+                ", manaRestante=" + manaRestante +
+                ", mouvementsRestants=" + mouvementsRestants +
+                ", actionsRestantes=" + actionsRestantes +
                 ", armure=" + armure +
                 ", agilite=" + agilite +
                 ", dexterite=" + dexterite +

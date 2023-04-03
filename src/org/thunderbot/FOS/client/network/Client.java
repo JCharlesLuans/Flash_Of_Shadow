@@ -403,13 +403,17 @@ public class Client {
 
         ArrayList<PNJ> tmpListe;
         Personnage tmpPersonnage;
+
+        // Fusuion de l'etat avant et apres le combats
+        this.personnage.setStats(personnage.getStats());
+
         // envoi requete pour prevenir qu'on met a jour le combat
-        String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.COMBAT + ';' + RequeteServeur.END;
+        String requete = RequeteServeur.UPDATE + ";" + RequeteServeur.COMBAT + ';' + RequeteServeur.END + ';';
         try {
             envoi(new RequeteServeur(requete));
 
             // envoi nouvelle position du joueur;
-            envoiXML(personnage);
+            envoiXML(this.personnage);
 
             // envoi etat pnj
             envoiXML(listePNJ);
@@ -421,10 +425,12 @@ public class Client {
 //                listePNJ.set(i, tmpListe.get(i));
 //            }
 //
-//            // reception etat du joueur
-//            tmpPersonnage = (Personnage) receptionXML();
+            // reception etat du joueur
+            this.personnage = (Personnage) receptionXML();
+
+            System.out.println("Fin du combat");
 //
-//            personnage.setData();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
