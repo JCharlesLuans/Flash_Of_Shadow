@@ -10,6 +10,7 @@ import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
 import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
 import org.thunderbot.FOS.client.statiqueState.layout.ImageFlottante;
+import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 import org.thunderbot.FOS.database.beans.Competence;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import static org.thunderbot.FOS.client.combatState.CombatGameState.TAILLE_CASE;
  * @version 1.0
  */
 public class InterfaceJoueur {
+
+    MedievalSharp police;
 
     CombatGameState combatGameState; // Sur lequelle est afficher l'interface
 
@@ -86,6 +89,8 @@ public class InterfaceJoueur {
 
     public InterfaceJoueur(GameContainer gameContainer, CombatGameState combatGameState, ArrayList<Competence> listeCompetence) throws SlickException {
 
+        police = new MedievalSharp(15);
+
         this.combatGameState = combatGameState;
 
         imgFondInterface = new Image("res/combatState/ui.png");
@@ -128,11 +133,14 @@ public class InterfaceJoueur {
         imageDesc = new ImageFlottante("res/menuState/gui/fondTexte.png");
 
         // Initialisation du bouton suivant, pour indiquer la fin de son tour
-        btnSuivant = new Bouton(((DEBUT_X + LONGUEUR) + positionXCadreCompetenceSupGauche) / 2, yFondInterface + imgFondInterface.getHeight() / 2 + LARGEUR_BOUTON / 2, LARGEUR_BOUTON, LONGUEUR_BOUTON, TXT_BOUTON);
+        btnSuivant = new Bouton(((DEBUT_X + LONGUEUR) + positionXCadreCompetenceSupGauche) / 2, yFondInterface + imgFondInterface.getHeight() / 2 + LARGEUR_BOUTON / 2, LONGUEUR_BOUTON, LARGEUR_BOUTON, TXT_BOUTON);
 
     }
 
     public void render(GameContainer gameContainer, Graphics graphics) {
+
+        graphics.setFont(police.getFont());
+
         imgFondInterface.draw(0, yFondInterface, gameContainer.getWidth(), gameContainer.getHeight());
 
         graphics.setColor(COULEUR_VIE);
@@ -167,6 +175,7 @@ public class InterfaceJoueur {
         if (imgCompetence.length > 3)
             imgCompetence[3].draw(positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche + TAILLE_CASE);
 
+
         imageDesc.render(graphics);
 
 
@@ -190,7 +199,10 @@ public class InterfaceJoueur {
                 for (Competence competence : combatGameState.getPersonnageAAfficher().getCompetences() ) {
                     if (competence.getId() == id) {
                         competenceAAfficher = competence;
-                        imageDesc.setTexte(competenceAAfficher.getNom());
+                        imageDesc.setTexte(competenceAAfficher.getNom() + "\n"
+                                            + competenceAAfficher.getDescription() + "\n"
+                                            + "Actions : " + competence.getCout() + "\n"
+                                            + "Portée : " + competence.getPortee());
                     }
                 }
             }

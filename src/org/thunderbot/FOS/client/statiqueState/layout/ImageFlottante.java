@@ -5,10 +5,7 @@
 
 package org.thunderbot.FOS.client.statiqueState.layout;
 
-import org.newdawn.slick.Font;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.thunderbot.FOS.client.statiqueState.police.MedievalSharp;
 import org.thunderbot.FOS.utils.Tools;
 
@@ -18,7 +15,6 @@ import org.thunderbot.FOS.utils.Tools;
  * @author Jean-Charles Luans
  */
 public class ImageFlottante {
-
     private boolean visible;
     private float x;
     private  float y;
@@ -36,8 +32,14 @@ public class ImageFlottante {
 
     public void render(Graphics graphics) {
         if (visible) {
+            Color tmpColor = graphics.getColor();
+            Font tmpFont = graphics.getFont();
+            graphics.setColor(new Color(255, 255, 255));
+            graphics.setFont(font.getFont());
             graphics.drawImage(image, x, y);
             graphics.drawString(texte, x + 15, y + 10);
+            graphics.setColor(tmpColor);
+            graphics.setFont(tmpFont);
         }
     }
 
@@ -72,4 +74,6 @@ public class ImageFlottante {
     public int getHeight() {
         return image.getHeight();
     }
+
+    public MedievalSharp getFont() { return font;}
 }
