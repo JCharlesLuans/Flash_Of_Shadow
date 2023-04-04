@@ -51,7 +51,14 @@ public class Terrain {
         return nombreCaseHauteur;
     }
 
-    public int mouseClicked(int button, int x, int y, int nbClick) {
+    /**
+     * Permet de retourner l'ID de la case sur laquelle le X et le Y pointent.
+     * Si ils ne pointent sur aucune case -1 est retourner
+     * @param x position a tester
+     * @param y position a tester
+     * @return -1 si aucune case, l'ID de la case sinon
+     */
+    public int inCase(int x, int y) {
         int aRetourner = -1;
 
 
@@ -142,5 +149,20 @@ public class Terrain {
         }
 
         return resteX + resteY <= portee;
+    }
+
+    public int getNombreCase() {
+        return nombreCaseHauteur * nombreCaseLongueur;
+    }
+
+    public Case getCase(int id) {
+
+        for (int i = 0; i < nombreCaseHauteur; i++) {
+            for (int j = 0; j < nombreCaseLongueur; j++) {
+                if (terrain[i][j].getId() == id)
+                    return terrain[i][j];
+            }
+        }
+        return null;
     }
 }

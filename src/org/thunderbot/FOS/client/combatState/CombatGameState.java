@@ -14,7 +14,6 @@ import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
 import org.thunderbot.FOS.client.gameState.phisique.CombatController;
-import org.thunderbot.FOS.client.gameState.phisique.Stats;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.gameState.world.Terrain;
 import org.thunderbot.FOS.client.network.Client;
@@ -251,9 +250,11 @@ public class CombatGameState extends BasicGameState {
      * Verifie que le joueur peut utiliser la compétance passer en ID.
      * Soustrait le cout de la compétance au nombre d'action que peut réaliser le joueur
      * @param id
+     * @return La liste des cases ou le joueur peux cliquer
      */
-    public void action(int idCompetence) {
-        Competence competence = new Competence();
+    public ArrayList<Case> action(int idCompetence) {
+        Competence competence;
+        ArrayList<Case> aRetourner = new ArrayList<>();
 
         // On recherche à quelle compétence correspond l'ID
         for (int i = 0; i < personnageAAfficher.getCompetences().size(); i++) {
@@ -266,11 +267,70 @@ public class CombatGameState extends BasicGameState {
                             personnageAAfficher.getStats().getActionsRestantes() - competence.getCout()
                     );
                     // On l'utilise
-                    System.out.println("Competences : " + competence);
+                    aRetourner = affichageCaseAPorteeCompetence(competence);
                 }
             }
         }
 
+        return aRetourner;
+    }
 
+    /**
+     * Appeller apres un clic sur les bouton compétance.
+     * Affiche les case qui sont a porté pour utiliser les compétance.
+     * @param competence compétance que l'on veux utiliser
+     * @return une arrayliste composée des case sur lequelle le joueur peux cliquer
+     */
+    private ArrayList<Case> affichageCaseAPorteeCompetence(Competence competence) {
+
+        ArrayList<Case> aRetourner = new ArrayList<>();
+
+        // Convertion des coordonner du joueur en coordonner de combats
+        float x = (personnageAAfficher.getPositionX() + 32) / TAILLE_CASE;
+        float y = (personnageAAfficher.getPositionY() + 16) / TAILLE_CASE;
+
+        // Colorier en rouge les case inateniable et en vers celle qui le sont
+        // Parcour du total des cases du terrain
+        for (int i = 1; i <= terrain.getNombreCase(); i++) {
+            if (terrain.caseAPortee(i, competence.getPortee(), x, y)) {
+                terrain.getCase(i).setColorVert(true);
+                aRetourner.add(terrain.getCase(i));
+            } else {
+                terrain.getCase(i).setColorRouge(true);
+            }
+        }
+
+        return aRetourner;
+    }
+
+    /**
+     * @param idCase id de la case sur lequel on clique afin de pouvoir utilisé la compétence
+     * @param idCompetance id de la compétence choisie
+     */
+    public void utilisisationCompetence(int idCase, int idCompetance) {
+
+        Competence competence = new Competence();
+
+        for (Competence competanceJoueur : personnageAAfficher.getCompetences()) {
+            if (idCompetance == competanceJoueur.getId()) {
+                competence = competanceJoueur;
+            }
+        }
+
+        // RAZ de l'affichage des compétance
+        for (int i = 1; i <= terrain.getNombreCase(); i++) {
+            terrain.getCase(i).setNonColorer(true);
+        }
+
+        // Chercher si un PNJ existe sur la case
+        Case caseSelect = terrain.getCase(idCase);
+        for (PersonnageNonJoueur personnageNonJoueur : listePNJAAfficher) {
+            if (caseSelect.inCase((int) personnageNonJoueur.getPositionX(), (int) personnageNonJoueur.getPositionY())) {
+                // => Il existe => On lui applique les dégats et les effets de la compétance
+                personnageNonJoueur.getStats().setVieRestante(personnageNonJoueur.getStats().getVieRestante() - competence.getDegaBase());
+            }
+            // => Il existe pas => On ne fait rien
+        }
+        System.out.println(listePNJAAfficher);
     }
 }

@@ -80,6 +80,11 @@ public class InterfaceJoueur {
     private Image[] imgCompetence;
     private Case[] interactionCompetence;
 
+    /** Indique les cases sur lesquelle il est possible d'utiliser une compétance */
+    private ArrayList<Case> possiblementUtiliser;
+    private boolean attanteJoueur = false; // Bloque l'interface jusqu'a ce que le joueur ai fait un clqiue sur le terrain
+    private int idCompetence;
+
     /** Bouton suivant */
     public static final String TXT_BOUTON = "Tour suivant";
     public static final int LARGEUR_BOUTON = 32;
@@ -213,17 +218,38 @@ public class InterfaceJoueur {
     }
 
     public void mouseClicked(int button, int x, int y, int nbClick) {
+        idCompetence = -1;
 
-        // Gestion du click sur les competence
-        for (int i = 0; i < interactionCompetence.length; i++) {
-            if (interactionCompetence[i].inCase(x, y)) {
-                combatGameState.action(interactionCompetence[i].getId());
+        int idCase = -1;
+
+        if (!attanteJoueur) {
+            // Gestion des déplacement du joueur
+            idCase = combatGameState.getTerrain().inCase(x, y);
+            combatGameState.deplacement(idCase);
+
+            // Gestion du click sur les competence
+            for (int i = 0; i < interactionCompetence.length; i++) {
+                if (interactionCompetence[i].inCase(x, y)) {
+                    idCompetence = interactionCompetence[i].getId();
+                    possiblementUtiliser = combatGameState.action(idCompetence);
+                    attanteJoueur = true;
+                }
             }
-        }
 
-        // Gestion du click sur les boutons
-        if (btnSuivant.isInBouton(x, y)) {
-            combatGameState.tourSuivant();
+            // Gestion du click sur le bouton tour suivant
+            if (btnSuivant.isInBouton(x, y)) {
+                combatGameState.tourSuivant();
+            }
+        } else {
+            for (Case caseTerrain : possiblementUtiliser) {
+                if (caseTerrain.inCase(x, y)) {
+                    idCase = caseTerrain.getId();
+                }
+            }
+            if (idCase != -1) {
+                combatGameState.utilisisationCompetence(idCase, idCompetence);
+            }
+            attanteJoueur = false;
         }
     }
 

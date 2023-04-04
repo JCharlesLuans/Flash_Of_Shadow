@@ -6,8 +6,6 @@ import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
 import org.thunderbot.FOS.client.combatState.CombatGameState;
 
-import java.util.ArrayList;
-
 public class CombatController implements KeyListener, ControllerListener, MouseListener {
 
     private CombatGameState combatGameState;
@@ -92,13 +90,8 @@ public class CombatController implements KeyListener, ControllerListener, MouseL
 
     @Override
     public void mouseClicked(int button, int x, int y, int nbClick) {
-        int id = -1;
 
         combatGameState.getInterfaceJoueur().mouseClicked(button, x, y, nbClick);
-        id = combatGameState.getTerrain().mouseClicked(button, x, y, nbClick);
-
-        combatGameState.deplacement(id);
-
 
         // Fin du combat
         combatGameState.fin();
