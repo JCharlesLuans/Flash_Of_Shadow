@@ -10,6 +10,7 @@ public class Competence implements Serializable {
     private int cout;
     private String nom;
     private String image;
+    private String description;
 
     public int getId() {
         return _id;
@@ -75,6 +76,14 @@ public class Competence implements Serializable {
         this.cout = cout;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Competence{" +
@@ -85,6 +94,7 @@ public class Competence implements Serializable {
                 ", cout=" + cout +
                 ", nom='" + nom + '\'' +
                 ", image='" + image + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

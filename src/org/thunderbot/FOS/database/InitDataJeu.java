@@ -23,13 +23,19 @@ public class InitDataJeu {
 
     private static final String CREATION_COMPETENCE =
             "INSERT INTO " + NOM_TABLE_COMPETENCE
-                + " ( " + COMPETENCE_NOM + ", " + COMPETENCE_DEGAT_BASE + ", " + COMPETENCE_PORTEE + ", " + COMPETENCE_COUT + ", " + COMPETENCE_ID_EFFET + ", " + COMPETENCE_IMAGE + " )"
+            + " ( " + COMPETENCE_NOM + ", "
+                    + COMPETENCE_DEGAT_BASE + ", "
+                    + COMPETENCE_PORTEE + ", "
+                    + COMPETENCE_COUT + ", "
+                    + COMPETENCE_ID_EFFET + ", "
+                    + COMPETENCE_IMAGE + ", "
+                    + COMPETENCE_DESCRIPTION + " )"
             + "VALUES "
-                + " ( 'Coup de point'            , 1, 1, 1, 1, 'coupDePoint.png'),"
-                + " ( 'Tir de fleche'            , 1, 5, 1, 1, 'fleche.png'),"
-                + " ( 'Tir de fleche piégée'     , 1, 3, 1, 2, 'flechePiege.png'),"
-                + " ( 'Tir de fleche explosive'  , 2, 3, 2, 1, 'flecheExplosive.png'),"
-                + " ( 'Tir de fleche empoisonnée', 0, 3, 2, 2, 'flecheEmpoisonnee.png');"
+                + " ( 'Coup de point'            , 1, 1, 1, 1, 'coupDePoint.png', 'Donne un coup de point'),"
+                + " ( 'Tir de fleche'            , 1, 5, 1, 1, 'fleche.png', 'Tir une flèche')"
+                + " ( 'Tir de fleche piégée'     , 1, 3, 1, 2, 'flechePiege.png', 'Tir une flèche piégée),"
+                + " ( 'Tir de fleche explosive'  , 2, 3, 2, 1, 'flecheExplosive.png', 'Tir une flèche explosive),"
+                + " ( 'Tir de fleche empoisonnée', 0, 3, 2, 2, 'flecheEmpoisonnee.png', 'Tir une flèche empoisonnée');"
             ;
 
     private static final String CREATION_EFFET =
