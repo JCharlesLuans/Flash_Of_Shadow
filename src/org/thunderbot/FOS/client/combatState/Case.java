@@ -26,11 +26,11 @@ public class Case {
         graphics.drawRect(x, y, longueur, longueur);
     }
 
-    public boolean mouseClicked(int button, int x, int y, int nbClick) {
-        return this.x < x && x < this.x + longueur && this.y < y && y < this.y + longueur;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public boolean inCase(int x, int y) {
+        return this.x < x && x < this.x + longueur && this.y < y && y < this.y + longueur;
     }
 }

@@ -116,6 +116,7 @@ public class CombatController implements KeyListener, ControllerListener, MouseL
 
     @Override
     public void mouseMoved(int i, int x, int y, int i3) {
+        combatGameState.getInterfaceJoueur().mouseMoved(i, x, y, i3);
     }
 
     @Override

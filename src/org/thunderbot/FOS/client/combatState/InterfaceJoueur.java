@@ -9,6 +9,7 @@ import org.newdawn.slick.*;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageJoueurClient;
 import org.thunderbot.FOS.client.statiqueState.layout.Bouton;
 import org.thunderbot.FOS.client.statiqueState.layout.BoutonImage;
+import org.thunderbot.FOS.client.statiqueState.layout.ImageFlottante;
 import org.thunderbot.FOS.database.beans.Competence;
 
 import java.util.ArrayList;
@@ -67,14 +68,14 @@ public class InterfaceJoueur {
     private int positionXCadreCompetenceSupGauche,
                 positionYCadreCompetenceSupGauche;
 
+    private ImageFlottante imageDesc;
+
     /** Position du cadre des competence */
     private static final int DELTA_COMPTENCE = 16;
 
     /** Liste des compétence du joueur */
     private Image[] imgCompetence;
     private Case[] interactionCompetence;
-
-    private ArrayList<Competence> competences;
 
     /** Bouton suivant */
     public static final String TXT_BOUTON = "Tour suivant";
@@ -123,6 +124,9 @@ public class InterfaceJoueur {
         if (interactionCompetence.length > 3)
             interactionCompetence[3] = new Case(listeCompetence.get(3).getId(), positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche + TAILLE_CASE, TAILLE_CASE);
 
+        // Initialisation de l'image de description flottante
+        imageDesc = new ImageFlottante("res/menuState/gui/fondTexte.png");
+
         // Initialisation du bouton suivant, pour indiquer la fin de son tour
         btnSuivant = new Bouton(((DEBUT_X + LONGUEUR) + positionXCadreCompetenceSupGauche) / 2, yFondInterface + imgFondInterface.getHeight() / 2 + LARGEUR_BOUTON / 2, LARGEUR_BOUTON, LONGUEUR_BOUTON, TXT_BOUTON);
 
@@ -163,15 +167,44 @@ public class InterfaceJoueur {
         if (imgCompetence.length > 3)
             imgCompetence[3].draw(positionXCadreCompetenceSupGauche + TAILLE_CASE, positionYCadreCompetenceSupGauche + TAILLE_CASE);
 
+        imageDesc.render(graphics);
+
+
         btnSuivant.render(graphics);
 
+    }
+
+    public void mouseMoved(int i, int x, int y, int i3) {
+        Competence competenceAAfficher = new Competence();
+        boolean visible = false;
+        int id;
+
+        for (int j = 0; j < interactionCompetence.length; j++) {
+            visible = interactionCompetence[j].inCase(x + TAILLE_CASE, y - TAILLE_CASE) || visible;
+            if (interactionCompetence[j].inCase(x + TAILLE_CASE, y - TAILLE_CASE)) {
+                imageDesc.setX(y);
+                imageDesc.setY(x - imageDesc.getHeight());
+
+                id = interactionCompetence[j].getId();
+
+                for (Competence competence : combatGameState.getPersonnageAAfficher().getCompetences() ) {
+                    if (competence.getId() == id) {
+                        competenceAAfficher = competence;
+                        imageDesc.setTexte(competenceAAfficher.getNom());
+                    }
+                }
+            }
+        }
+
+
+        imageDesc.setVisible(visible);
     }
 
     public void mouseClicked(int button, int x, int y, int nbClick) {
 
         // Gestion du click sur les competence
         for (int i = 0; i < interactionCompetence.length; i++) {
-            if (interactionCompetence[i].mouseClicked(button, x, y, nbClick)) {
+            if (interactionCompetence[i].inCase(x, y)) {
                 combatGameState.action(interactionCompetence[i].getId());
             }
         }

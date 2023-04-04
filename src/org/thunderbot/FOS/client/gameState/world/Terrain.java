@@ -57,7 +57,7 @@ public class Terrain {
 
         for (int i = 0; i < nombreCaseHauteur; i++) {
             for (int j = 0; j < nombreCaseLongueur; j++) {
-                if (terrain[i][j].mouseClicked(button, x, y, nbClick))
+                if (terrain[i][j].inCase(x, y))
                     aRetourner = terrain[i][j].getId();
             }
         }
