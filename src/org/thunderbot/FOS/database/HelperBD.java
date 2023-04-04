@@ -90,7 +90,7 @@ public class HelperBD {
     public static final String COMPETENCE_COUT = "cout";
     public static final String COMPETENCE_ID_EFFET = "idEffet";
     public static final String COMPETENCE_IMAGE = "image";
-    public static final String COMPETENCE_DESCRIPTION = "image";
+    public static final String COMPETENCE_DESCRIPTION = "description";
 
     private static final String CREATION_TABLE_COMPETENCE =
             "CREATE TABLE " + NOM_TABLE_COMPETENCE + " ( "
@@ -100,7 +100,7 @@ public class HelperBD {
                 + COMPETENCE_PORTEE + " INTEGER NOT NULL,"
                 + COMPETENCE_COUT + " INTEGER NOT NULL,"
                 + COMPETENCE_ID_EFFET + " INTEGER NOT NULL REFERENCES " + NOM_TABLE_EFFET + " (" + EFFET_CLE + "),"
-                + COMPETENCE_IMAGE + " TEXT NOT NULL"
+                + COMPETENCE_IMAGE + " TEXT NOT NULL, "
                 + COMPETENCE_DESCRIPTION + " TEXT NOT NULL"
             + ") ;";
 

@@ -32,9 +32,9 @@ public class InitDataJeu {
                     + COMPETENCE_DESCRIPTION + " )"
             + "VALUES "
                 + " ( 'Coup de point'            , 1, 1, 1, 1, 'coupDePoint.png', 'Donne un coup de point'),"
-                + " ( 'Tir de fleche'            , 1, 5, 1, 1, 'fleche.png', 'Tir une flèche')"
-                + " ( 'Tir de fleche piégée'     , 1, 3, 1, 2, 'flechePiege.png', 'Tir une flèche piégée),"
-                + " ( 'Tir de fleche explosive'  , 2, 3, 2, 1, 'flecheExplosive.png', 'Tir une flèche explosive),"
+                + " ( 'Tir de fleche'            , 1, 5, 1, 1, 'fleche.png', 'Tir une flèche'),"
+                + " ( 'Tir de fleche piégée'     , 1, 3, 1, 2, 'flechePiege.png', 'Tir une flèche piégée'),"
+                + " ( 'Tir de fleche explosive'  , 2, 3, 2, 1, 'flecheExplosive.png', 'Tir une flèche explosive'),"
                 + " ( 'Tir de fleche empoisonnée', 0, 3, 2, 2, 'flecheEmpoisonnee.png', 'Tir une flèche empoisonnée');"
             ;
 
