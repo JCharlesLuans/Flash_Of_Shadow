@@ -26,10 +26,10 @@ public class InitDataJeu {
                 + " ( " + COMPETENCE_NOM + ", " + COMPETENCE_DEGAT_BASE + ", " + COMPETENCE_PORTEE + ", " + COMPETENCE_COUT + ", " + COMPETENCE_ID_EFFET + ", " + COMPETENCE_IMAGE + " )"
             + "VALUES "
                 + " ( 'Coup de point'            , 1, 1, 1, 1, 'coupDePoint.png'),"
-                + " ( 'Tir de fleche'            , 1, 1, 5, 1, 'fleche.png'),"
-                + " ( 'Tir de fleche piégée'     , 1, 1, 3, 2, 'flechePiege.png'),"
-                + " ( 'Tir de fleche explosive'  , 1, 1, 3, 2, 'flecheExplosive.png'),"
-                + " ( 'Tir de fleche empoisonnée', 0, 2, 3, 2, 'flecheEmpoisonnee.png');"
+                + " ( 'Tir de fleche'            , 1, 5, 1, 1, 'fleche.png'),"
+                + " ( 'Tir de fleche piégée'     , 1, 3, 1, 2, 'flechePiege.png'),"
+                + " ( 'Tir de fleche explosive'  , 2, 3, 2, 1, 'flecheExplosive.png'),"
+                + " ( 'Tir de fleche empoisonnée', 0, 3, 2, 2, 'flecheEmpoisonnee.png');"
             ;
 
     private static final String CREATION_EFFET =
