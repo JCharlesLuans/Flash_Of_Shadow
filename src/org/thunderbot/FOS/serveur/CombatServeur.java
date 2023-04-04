@@ -124,6 +124,11 @@ public class CombatServeur {
         serveur.envoiXML(personnage);
     }
 
+    public void start() {
+        initCombatPnj();
+        initJoueurCombat();
+    }
+
     public void update() {
 
         Personnage personnage;
@@ -142,11 +147,6 @@ public class CombatServeur {
 
         // envoi etat joueur
         serveur.envoiXML(new Personnage());
-    }
-
-    public void start() {
-        initCombatPnj();
-        initJoueurCombat();
     }
 
     public void end() {

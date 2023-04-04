@@ -247,18 +247,30 @@ public class CombatGameState extends BasicGameState {
     }
 
     /**
-     * Appeller lorsqu'un clique est fair sur l'un des bouton compétence
+     * Appeller lorsqu'un clique est fait sur l'un des bouton compétence.
+     * Verifie que le joueur peut utiliser la compétance passer en ID.
+     * Soustrait le cout de la compétance au nombre d'action que peut réaliser le joueur
      * @param id
      */
     public void action(int idCompetence) {
         Competence competence = new Competence();
+
+        // On recherche à quelle compétence correspond l'ID
         for (int i = 0; i < personnageAAfficher.getCompetences().size(); i++) {
             if (personnageAAfficher.getCompetences().get(i).getId() == idCompetence) {
                 competence = personnageAAfficher.getCompetences().get(i);
-                personnageAAfficher.getStats().setActionsRestantes(personnageAAfficher.getStats().getActionsRestantes() - competence.getCout());
+                // On verifie que l'utilisateur a assez de point d'action pour l'utiliser
+                if (competence.getCout() <= personnageAAfficher.getStats().getActionsRestantes()) {
+
+                    personnageAAfficher.getStats().setActionsRestantes(
+                            personnageAAfficher.getStats().getActionsRestantes() - competence.getCout()
+                    );
+                    // On l'utilise
+                    System.out.println("Competences : " + competence);
+                }
             }
         }
 
-        System.out.println("Competences : " + competence);
+
     }
 }
