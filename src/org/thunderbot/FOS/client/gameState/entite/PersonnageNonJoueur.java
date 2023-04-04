@@ -34,6 +34,7 @@ public class PersonnageNonJoueur extends Personnage{
         this.direction = pnj.getDirection();
         this.sprite = pnj.getSprite();
         this.idMap = pnj.getIdMap();
+
         this.stats = new Stats(pnj.getStatAgilite(), pnj.getStatArmure(), pnj.getStatDexterite(), pnj.getStatInteligence(), pnj.getStatEndurance(), pnj.getStatForce(), pnj.getStatSagesse());
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/pnj/" + pnj.getSprite(), 64, 64 );
         loadAnimation(spriteSheet);

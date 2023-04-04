@@ -7,6 +7,8 @@ import org.newdawn.slick.SpriteSheet;
 import org.thunderbot.FOS.client.gameState.phisique.Stats;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 
+import java.util.Arrays;
+
 /**
  * Représente un personnage, qu'il soit joueur ou non joueur.
  */
@@ -261,8 +263,23 @@ public class Personnage {
     public int getId() {return id;}
     public void setId(int id) {this.id = id;}
 
+    @Override
     public String toString() {
-        return "ServPersonnage(" + nom + ", " + direction + ", " + positionX + ", " + positionY + ", " + moving + ")";
+        return "Personnage{" +
+                "id=" + id +
+                ", moving=" + moving +
+                ", positionX=" + positionX +
+                ", positionY=" + positionY +
+                ", direction=" + direction +
+                ", nom='" + nom + '\'' +
+                ", animations=" + Arrays.toString(animations) +
+                ", escalierDroite=" + escalierDroite +
+                ", escalierGauche=" + escalierGauche +
+                ", collision=" + collision +
+                ", enCombat=" + enCombat +
+                ", sprite='" + sprite + '\'' +
+                ", stats=" + stats +
+                '}';
     }
 
     public Stats getStats() {

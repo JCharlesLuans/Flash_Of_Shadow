@@ -218,6 +218,11 @@ public class CombatGameState extends BasicGameState {
         }
     }
 
+    /**
+     * Déplace le joueur sur la case dont l'ID est passé en paramettre, uniquement si l'ID est a sa porté,
+     * en prennant en compte ses stats
+     * @param id de la case a atteindre
+     */
     public void deplacement(int id) {
         float x, y;
 
@@ -309,6 +314,8 @@ public class CombatGameState extends BasicGameState {
      */
     public void utilisisationCompetence(int idCase, int idCompetance) {
 
+        System.out.println(idCompetance);
+
         Competence competence = new Competence();
 
         for (Competence competanceJoueur : personnageAAfficher.getCompetences()) {
@@ -324,13 +331,16 @@ public class CombatGameState extends BasicGameState {
 
         // Chercher si un PNJ existe sur la case
         Case caseSelect = terrain.getCase(idCase);
-        for (PersonnageNonJoueur personnageNonJoueur : listePNJAAfficher) {
-            if (caseSelect.inCase((int) personnageNonJoueur.getPositionX(), (int) personnageNonJoueur.getPositionY())) {
+        for (int i = 0; i < listePNJAAfficher.size(); i++) {
+            if (caseSelect.inCase((int) listePNJAAfficher.get(i).getPositionX(), (int) listePNJAAfficher.get(i).getPositionY())) {
                 // => Il existe => On lui applique les dégats et les effets de la compétance
-                personnageNonJoueur.getStats().setVieRestante(personnageNonJoueur.getStats().getVieRestante() - competence.getDegaBase());
+                listePNJAAfficher.get(i).getStats().setVieRestante(listePNJAAfficher.get(i).getStats().getVieRestante() - competence.getDegaBase());
+
+                //log
+                System.out.println(competence.getDegaBase());
+                System.out.println(listePNJAAfficher.get(i));
             }
             // => Il existe pas => On ne fait rien
         }
-        System.out.println(listePNJAAfficher);
     }
 }

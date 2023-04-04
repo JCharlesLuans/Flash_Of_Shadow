@@ -77,6 +77,11 @@ public class Stats implements Serializable {
         this.endurance = endurance;
         this.force = force;
         this.sagesse = sagesse;
+
+        calculVie();
+        calculMana();
+        calculMouvement();
+        calculActions();
     }
 
     /**

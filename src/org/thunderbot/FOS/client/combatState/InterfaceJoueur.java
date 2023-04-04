@@ -218,8 +218,6 @@ public class InterfaceJoueur {
     }
 
     public void mouseClicked(int button, int x, int y, int nbClick) {
-        idCompetence = -1;
-
         int idCase = -1;
 
         if (!attanteJoueur) {
