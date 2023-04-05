@@ -6,12 +6,14 @@
 package org.thunderbot.FOS.client.gameState.entite;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.phisique.Stats;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUpChoix;
+import org.thunderbot.FOS.client.statiqueState.layout.ImageFlottante;
 import org.thunderbot.FOS.database.beans.Effet;
 import org.thunderbot.FOS.database.beans.PNJ;
 
@@ -22,11 +24,15 @@ import org.thunderbot.FOS.database.beans.PNJ;
  */
 public class PersonnageNonJoueur extends Personnage{
 
+
+
     private int timer;
 
     private int idMap; // Id de la map sur laquelle se trouve le PNJ
 
     public PersonnageNonJoueur(PNJ pnj) throws SlickException {
+        super();
+
         this.id = pnj.getId();
         this.moving = true;
         this.positionX = pnj.getX();

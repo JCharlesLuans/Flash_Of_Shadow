@@ -382,8 +382,12 @@ public class Client {
             // reception nouvelle position des PNJ
             tmpListe = (ArrayList<PNJ>) receptionXML();
 
+            for (int i = 0; i < listePNJ.size(); i++) {
+                listePNJ.remove(i);
+            }
+
             for (int i = 0; i < tmpListe.size(); i++) {
-                listePNJ.set(i, tmpListe.get(i));
+                listePNJ.add(i, tmpListe.get(i));
                 System.out.println("Apres reception : " + listePNJ.get(i).getEffet());
             }
 

@@ -50,9 +50,9 @@
  </objectgroup>
  <objectgroup id="10" name="collision" width="1" height="1" >
   <object id="5" x="0" y="0" width="193" height="130"/>
-  <object id="6" x="192" y="0" width="1088" height="34"/>
-  <object id="7" x="0" y="132" width="30" height="668"/>
-  <object id="8" x="28" y="704" width="96" height="98"/>
+  <object id="6" x="184" y="0" width="1095" height="34"/>
+  <object id="7" x="0" y="124" width="30" height="676"/>
+  <object id="8" x="25" y="704" width="108" height="98"/>
   <object id="9" x="128" y="762" width="1148" height="38"/>
   <object id="10" x="1246" y="30" width="32" height="770"/>
   <object id="11" x="1182" y="510" width="34" height="36"/>
@@ -64,6 +64,6 @@
   <object id="17" x="316" y="508" width="40" height="42"/>
   <object id="18" x="354" y="604" width="30" height="34"/>
   <object id="19" x="764" y="608" width="38" height="34"/>
-  <object id="20" x="526" y="34" width="325" height="172"/>
+  <object id="20" x="526" y="27" width="325" height="178"/>
  </objectgroup>
 </map>

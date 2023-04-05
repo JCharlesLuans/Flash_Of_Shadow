@@ -128,6 +128,10 @@ public class CombatGameState extends BasicGameState {
             for (PNJ pnjTmp : listeTmp) {
                 listePNJAAfficher.add(new PersonnageNonJoueur(pnjTmp));
             }
+
+            for (int i = 0; i < listePNJAAfficher.size(); i++) {
+                listePNJAAfficher.get(i).setEnCombat(true);
+            }
         } catch (SlickException e) {
             throw new RuntimeException(e);
         }
@@ -188,6 +192,10 @@ public class CombatGameState extends BasicGameState {
 
             for (PNJ pnj : listeDataPNJ) {
                 listePNJAAfficher.add(new PersonnageNonJoueur(pnj));
+            }
+
+            for (int i = 0; i < listePNJAAfficher.size(); i++) {
+                listePNJAAfficher.get(i).setEnCombat(true);
             }
 
             this.personnageAAfficher = new PersonnageJoueurClient(personnageData);

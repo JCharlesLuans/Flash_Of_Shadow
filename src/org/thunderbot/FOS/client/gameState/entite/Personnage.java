@@ -1,9 +1,6 @@
 package org.thunderbot.FOS.client.gameState.entite;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.*;
 import org.thunderbot.FOS.client.gameState.phisique.Stats;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.database.beans.Effet;
@@ -70,6 +67,16 @@ public class Personnage {
 
     /** Effet */
     protected Effet effet;
+
+    /** TAILLE   */
+    public static final int TAILLE = 64;
+
+    private Image barreVie;
+
+    public Personnage() throws SlickException {
+        barreVie = new Image("res/combatState/jauge.png");
+        stats = new Stats();
+    }
 
     /**
      * Charge une animations a partir d'une sprite sheet, en indiquant les début de l'annimation et la fin
@@ -147,7 +154,16 @@ public class Personnage {
         float positionAnimationY = positionY - 60;
 
         graphics.drawAnimation(animations[direction + (moving ? 4 : 0)], positionAnimationX, positionAnimationY);
-        graphics.drawString(nom, positionX - graphics.getFont().getWidth(nom) / 2, positionY - 65);
+        graphics.drawString(nom, positionX - graphics.getFont().getWidth(nom) / 2, positionY - TAILLE);
+        Color tmp = graphics.getColor();
+
+        if (enCombat) {
+            graphics.setColor(new Color(255, 0, 0));
+            float pourcentageVie = (stats.getVieRestante() * barreVie.getWidth() - 16) / stats.getVieMax();
+            graphics.fillRect(positionX - barreVie.getWidth() / 2 + 8, positionY - TAILLE - barreVie.getHeight() + 4, pourcentageVie, barreVie.getHeight() - 8);
+            graphics.drawImage(barreVie, positionX - barreVie.getWidth() / 2, positionY - TAILLE - barreVie.getHeight());
+            graphics.setColor(tmp);
+        }
     }
 
     /**

@@ -27,7 +27,8 @@ public class PersonnageJoueur extends Personnage {
     protected String nomCarte;
     protected Equipement equipement;
 
-    public PersonnageJoueur() {
+    public PersonnageJoueur() throws SlickException {
+        super();
         positionX = 650;
         positionY = 400;
         direction = 0;
