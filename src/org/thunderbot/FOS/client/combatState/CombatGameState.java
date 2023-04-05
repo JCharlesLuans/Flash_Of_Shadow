@@ -261,7 +261,7 @@ public class CombatGameState extends BasicGameState {
                 competence = personnageAAfficher.getCompetences().get(i);
                 // On verifie que l'utilisateur a assez de point d'action pour l'utiliser
                 if (competence.getCout() <= personnageAAfficher.getStats().getActionsRestantes()) {
-
+                    // Deduis le coup de l'utilisation de la compétance
                     personnageAAfficher.getStats().setActionsRestantes(
                             personnageAAfficher.getStats().getActionsRestantes() - competence.getCout()
                     );
@@ -333,6 +333,20 @@ public class CombatGameState extends BasicGameState {
 
             }
             // => Il existe pas => On ne fait rien
+        }
+    }
+
+    public void nonUtilisationCompetence(int idCompetence) {
+        // RAZ de l'affichage des compétance
+        for (int i = 1; i <= terrain.getNombreCase(); i++) {
+            terrain.getCase(i).setNonColorer(true);
+        }
+
+        // RAZ du coup de la compétance
+        for (Competence competanceJoueur : personnageAAfficher.getCompetences()) {
+            if (idCompetence == competanceJoueur.getId()) {
+                personnageAAfficher.getStats().setActionsRestantes(personnageAAfficher.getStats().getActionsRestantes() + competanceJoueur.getCout());
+            }
         }
     }
 }

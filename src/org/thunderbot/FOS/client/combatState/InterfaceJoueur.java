@@ -247,6 +247,9 @@ public class InterfaceJoueur {
             }
             if (idCase != -1) {
                 combatGameState.utilisisationCompetence(idCase, idCompetence);
+            } else {
+                // décolore le terrain et rend le coup de compétance
+                combatGameState.nonUtilisationCompetence(idCompetence);
             }
             attanteJoueur = false;
         }
