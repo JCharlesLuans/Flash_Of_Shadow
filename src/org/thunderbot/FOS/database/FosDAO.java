@@ -109,6 +109,48 @@ public class FosDAO {
         return aRetourner;
     }
 
+    public Personnage getPersonnageById(int id) {
+        Personnage aRetourner = new Personnage();
+
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_PERSONNAGE + " WHERE " + PERSONNAGE_CLE + " = " + id;
+
+        try {
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            aRetourner.setId(rs.getInt(PERSONNAGE_CLE));
+            aRetourner.setNom(rs.getString(PERSONNAGE_NOM));
+            aRetourner.setSprite(rs.getString(PERSONNAGE_SPRITE));
+
+            aRetourner.setX(rs.getFloat(PERSONNAGE_X));
+            aRetourner.setY(rs.getFloat(PERSONNAGE_Y));
+
+            aRetourner.setIdJoueur(rs.getInt(PERSONNAGE_CLE_JOUEUR));
+
+            aRetourner.setClasse(getClasseById(rs.getInt(PERSONNAGE_CLE_CLASSE)));
+
+            aRetourner.setMap(getMapById(rs.getInt(PERSONNAGE_CLE_MAP)));
+
+            aRetourner.setStuffArme(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_ARME)));
+            aRetourner.setStuffBotte(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_BOTTE)));
+            aRetourner.setStuffGant(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_GANT)));
+            aRetourner.setStuffJambe(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_JAMBE)));
+            aRetourner.setStuffTete(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_TETE)));
+            aRetourner.setStuffTorse(getObjetById(rs.getInt(PERSONNAGE_CLE_STUFF_TORSE)));
+
+            aRetourner.setFaction(getFactionById(rs.getInt(PERSONNAGE_CLE_FACTION)));
+            aRetourner.setGuilde(getGuildeById(rs.getInt(PERSONNAGE_CLE_GUILDE)));
+            aRetourner.setTitre(getTitreById(rs.getInt(PERSONNAGE_CLE_TITRE)));
+
+            aRetourner.setListeCompetence(this.getCompetenceByPersonnage(rs.getInt(PERSONNAGE_CLE)));
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
+
     /**
      * Met a jour un personnage dans la base de donnée
      * @param personnage
@@ -621,6 +663,4 @@ public class FosDAO {
     public HelperBD getGestionnaireBase() {
         return gestionnaireBase;
     }
-
-
 }

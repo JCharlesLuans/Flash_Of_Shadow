@@ -164,9 +164,13 @@ public class CombatServeur {
         // reception etat des pnj
         serveur.receptionXML();
 
-        personnage.setMap(accesBD.getMapByName("map_cimetiere.tmx"));
-        personnage.setX(910);
-        personnage.setY(500);
+        if (personnage.getStats().getVieRestante() <= 0) {
+            personnage.setMap(accesBD.getMapByName("map_cimetiere.tmx"));
+            personnage.setX(910);
+            personnage.setY(500);
+        } else {
+            personnage = accesBD.getPersonnageById(personnage.getId());
+        }
 
         // envoi etat joueur
         serveur.envoiXML(personnage);

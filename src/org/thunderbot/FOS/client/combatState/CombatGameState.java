@@ -327,6 +327,7 @@ public class CombatGameState extends BasicGameState {
             if (caseSelect.inCase((int) listePNJAAfficher.get(i).getPositionX(), (int) listePNJAAfficher.get(i).getPositionY())) {
                 // => Il existe => On lui applique les dégats et les effets de la compétance
                 listePNJAAfficher.get(i).getStats().setVieRestante(listePNJAAfficher.get(i).getStats().getVieRestante() - competence.getDegaBase());
+                // TODO gestion des effets
                 if (listePNJAAfficher.get(i).getStats().getVieRestante() <= 0) {
                     listePNJAAfficher.remove(i);
                 }
