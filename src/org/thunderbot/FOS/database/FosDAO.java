@@ -663,4 +663,35 @@ public class FosDAO {
     public HelperBD getGestionnaireBase() {
         return gestionnaireBase;
     }
+
+    public Effet getEffetById(int id) {
+        Effet aRetourner = new Effet();
+
+        String requete =
+                "SELECT * FROM " + NOM_TABLE_EFFET + " WHERE " + EFFET_CLE + " = " + id;
+
+        try {
+            ResultSet rs = gestionnaireBase.executeRequete(requete);
+
+            aRetourner.setId(rs.getInt(EFFET_CLE));
+            aRetourner.setNom(rs.getString(EFFET_NOM));
+            aRetourner.setStatAgilite(rs.getInt(EFFET_STAT_AGILITE));
+            aRetourner.setStatArmure(rs.getInt(EFFET_STAT_ARMURE));
+            aRetourner.setStatDexterite(rs.getInt(EFFET_STAT_DEXTERITE));
+            aRetourner.setStatEndurance(rs.getInt(EFFET_STAT_ENDURANCE));
+            aRetourner.setStatForce(rs.getInt(EFFET_STAT_FORCE));
+            aRetourner.setStatIntelligence(rs.getInt(EFFET_STAT_INTELLIGENCE));
+            aRetourner.setStatSagesse(rs.getInt(EFFET_STAT_SAGESSE));
+            aRetourner.setDps(rs.getInt(EFFET_DPS));
+            aRetourner.setDuree(rs.getInt(EFFET_DUREE));
+            aRetourner.setImage(rs.getString(EFFET_IMAGE));
+
+            rs.close();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return aRetourner;
+    }
 }

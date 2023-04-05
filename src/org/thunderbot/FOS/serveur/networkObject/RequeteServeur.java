@@ -19,6 +19,7 @@ public class RequeteServeur implements Serializable {
     public static final String MOUVEMENT = "move";
 
     public static final String PNJ = "PersonnageNonJoueur";
+    public static final String EFFET = "effet";
 
     public static final String COMBAT = "fight";
     public static final String START = "start";

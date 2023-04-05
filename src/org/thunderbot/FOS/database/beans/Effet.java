@@ -109,4 +109,22 @@ public class Effet {
     public void setImage(String image) {
         this.image = image;
     }
+
+    @Override
+    public String toString() {
+        return "Effet{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", statAgilite=" + statAgilite +
+                ", statArmure=" + statArmure +
+                ", statDexterite=" + statDexterite +
+                ", statEndurance=" + statEndurance +
+                ", statForce=" + statForce +
+                ", statIntelligence=" + statIntelligence +
+                ", statSagesse=" + statSagesse +
+                ", dps=" + dps +
+                ", duree=" + duree +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

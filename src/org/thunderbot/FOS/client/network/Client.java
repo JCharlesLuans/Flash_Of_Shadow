@@ -456,4 +456,27 @@ public class Client {
         envoiXML(personnage);
         return (Personnage) receptionXML();
     }
+
+    /**
+     * Envooi une demande au serveur pour charger les inforamtions relative aux personnages non joueur
+     * se trouvant sur une carte. Le serveur renvoi un objet arrayliste contant ces PNJ.
+     * @param idMap id de la carte dont on veux les PNJ
+     * @return une array list contenant les différent PNJ
+     */
+    public Effet chargementEffet(int idEffet) {
+        Effet aRetourner = new Effet();
+        String requete = RequeteServeur.CHARGEMENT + ";" + RequeteServeur.EFFET+ ";" + idEffet;
+        try {
+            envoi(new RequeteServeur(requete));
+            aRetourner = (Effet) receptionXML();
+
+            //log
+            System.out.println("Effet reçu par le serveur");
+            System.out.println(aRetourner);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return aRetourner;
+    }
 }

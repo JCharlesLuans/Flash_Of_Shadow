@@ -250,6 +250,8 @@ public class Serveur extends Thread {
                     case RequeteServeur.PNJ:
                         chargementPNJ(requeteServeur.getCle());
                         break;
+                    case RequeteServeur.EFFET:
+                        chargementEffet(requeteServeur.getCle());
                 }
                 me.setConnecter(true);
                 break;
@@ -307,6 +309,12 @@ public class Serveur extends Thread {
                 deconnexion();
                 break;
         }
+    }
+
+    private void chargementEffet(String cle) {
+        Effet aRenvoyer = new Effet();
+        aRenvoyer = accesBD.getEffetById(Integer.parseInt(cle));
+        envoiXML(aRenvoyer);
     }
 
 

@@ -6,6 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.thunderbot.FOS.client.gameState.phisique.Stats;
 import org.thunderbot.FOS.client.gameState.world.Carte;
+import org.thunderbot.FOS.database.beans.Effet;
 
 import java.util.Arrays;
 
@@ -66,6 +67,9 @@ public class Personnage {
 
     /** Stats */
     protected Stats stats;
+
+    /** Effet */
+    protected Effet effet;
 
     /**
      * Charge une animations a partir d'une sprite sheet, en indiquant les début de l'annimation et la fin
@@ -272,13 +276,13 @@ public class Personnage {
                 ", positionY=" + positionY +
                 ", direction=" + direction +
                 ", nom='" + nom + '\'' +
-                ", animations=" + Arrays.toString(animations) +
                 ", escalierDroite=" + escalierDroite +
                 ", escalierGauche=" + escalierGauche +
                 ", collision=" + collision +
                 ", enCombat=" + enCombat +
                 ", sprite='" + sprite + '\'' +
                 ", stats=" + stats +
+                ", effet=" + effet +
                 '}';
     }
 
@@ -288,5 +292,13 @@ public class Personnage {
 
     public String getSprite() {
         return sprite;
+    }
+
+    public Effet getEffet() {
+        return effet;
+    }
+
+    public void setEffet(Effet effet) {
+        this.effet = effet;
     }
 }

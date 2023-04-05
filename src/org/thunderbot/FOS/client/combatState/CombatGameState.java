@@ -18,6 +18,7 @@ import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.gameState.world.Terrain;
 import org.thunderbot.FOS.client.network.Client;
 import org.thunderbot.FOS.database.beans.Competence;
+import org.thunderbot.FOS.database.beans.Effet;
 import org.thunderbot.FOS.database.beans.PNJ;
 import org.thunderbot.FOS.database.beans.Personnage;
 
@@ -327,7 +328,11 @@ public class CombatGameState extends BasicGameState {
             if (caseSelect.inCase((int) listePNJAAfficher.get(i).getPositionX(), (int) listePNJAAfficher.get(i).getPositionY())) {
                 // => Il existe => On lui applique les dégats et les effets de la compétance
                 listePNJAAfficher.get(i).getStats().setVieRestante(listePNJAAfficher.get(i).getStats().getVieRestante() - competence.getDegaBase());
-                // TODO gestion des effets
+
+                // Gestion effet
+                listePNJAAfficher.get(i).setEffet(client.chargementEffet(competence.getIdEffet()));
+                System.out.println(listePNJAAfficher); //log
+
                 if (listePNJAAfficher.get(i).getStats().getVieRestante() <= 0) {
                     listePNJAAfficher.remove(i);
                 }

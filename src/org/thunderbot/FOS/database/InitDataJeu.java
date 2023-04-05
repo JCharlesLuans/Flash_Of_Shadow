@@ -53,8 +53,8 @@ public class InitDataJeu {
                         + EFFET_IMAGE
                 + " ) "
             + " VALUES "
-                + " ( 'DEFAUT', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'effet.png' ),"
-                + " ( 'POISON', 0, 0, 0, 0, 0, 0, 0, 1, 3, 'effet.png' );";
+                + " ( 'DEFAUT', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'defaut.png' ),"
+                + " ( 'POISON', 0, 0, 0, 0, 0, 0, 0, 1, 3, 'poison.png' );";
 
 
     private static final String CREATION_FACTION =
@@ -152,7 +152,6 @@ public class InitDataJeu {
                     + LISTE_COMPETENCE_CLE_PERSO + ", "
                     + LISTE_COMPETENCE_EXPERIENCE +  ")"
             + "VALUES "
-            + "( '1', '1', 0),"
             + "( '2', '1', 0),"
             + "( '3', '1', 0),"
             + "( '4', '1', 0),"
