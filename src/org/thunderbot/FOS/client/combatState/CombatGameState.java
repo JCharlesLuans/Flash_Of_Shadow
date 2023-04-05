@@ -248,7 +248,7 @@ public class CombatGameState extends BasicGameState {
      * Appeller lorsqu'un clique est fait sur l'un des bouton compétence.
      * Verifie que le joueur peut utiliser la compétance passer en ID.
      * Soustrait le cout de la compétance au nombre d'action que peut réaliser le joueur
-     * @param id
+     * @param idCompetence id de la compétance choisis
      * @return La liste des cases ou le joueur peux cliquer
      */
     public ArrayList<Case> action(int idCompetence) {
@@ -325,14 +325,11 @@ public class CombatGameState extends BasicGameState {
         Case caseSelect = terrain.getCase(idCase);
         for (int i = 0; i < listePNJAAfficher.size(); i++) {
             if (caseSelect.inCase((int) listePNJAAfficher.get(i).getPositionX(), (int) listePNJAAfficher.get(i).getPositionY())) {
-
                 // => Il existe => On lui applique les dégats et les effets de la compétance
                 listePNJAAfficher.get(i).getStats().setVieRestante(listePNJAAfficher.get(i).getStats().getVieRestante() - competence.getDegaBase());
                 if (listePNJAAfficher.get(i).getStats().getVieRestante() <= 0) {
                     listePNJAAfficher.remove(i);
                 }
-
-
 
             }
             // => Il existe pas => On ne fait rien

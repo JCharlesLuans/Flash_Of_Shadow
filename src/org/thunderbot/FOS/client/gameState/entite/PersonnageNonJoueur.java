@@ -35,8 +35,39 @@ public class PersonnageNonJoueur extends Personnage{
         this.sprite = pnj.getSprite();
         this.idMap = pnj.getIdMap();
 
-        this.stats = pnj.getStats();
+        this.stats = new Stats(pnj.getStats().getVieMax(),
+                pnj.getStats().getManaMax(),
+                pnj.getStats().getMouvementsMax(),
+                pnj.getStats().getActionsMax(),
+                pnj.getStats().getVieRestante(),
+                pnj.getStats().getManaRestante(),
+                pnj.getStats().getMouvementsMax(),
+                pnj.getStats().getActionsRestantes(),
+                pnj.getStats().getAgilite(),
+                pnj.getStats().getArmure(),
+                pnj.getStats().getDexterite(),
+                pnj.getStats().getIntelligence(),
+                pnj.getStats().getEndurance(),
+                pnj.getStats().getForce(),
+                pnj.getStats().getSagesse());
+
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/pnj/" + pnj.getSprite(), 64, 64 );
+        loadAnimation(spriteSheet);
+    }
+
+    public PersonnageNonJoueur(PersonnageNonJoueur personnageNonJoueur) throws SlickException {
+        this.id = personnageNonJoueur.id;
+        this.moving = personnageNonJoueur.moving;
+        this.positionX = personnageNonJoueur.positionX;
+        this.positionY = personnageNonJoueur.positionY;
+        this.nom = personnageNonJoueur.nom;
+        this.direction = personnageNonJoueur.direction;
+        this.sprite = personnageNonJoueur.sprite;
+        this.idMap = personnageNonJoueur.idMap;
+
+        this.stats = personnageNonJoueur.stats;
+
+        SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/pnj/" + sprite, 64, 64 );
         loadAnimation(spriteSheet);
     }
 

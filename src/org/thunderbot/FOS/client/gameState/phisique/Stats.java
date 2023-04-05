@@ -49,13 +49,18 @@ public class Stats implements Serializable {
         this.sagesse = 0;
     }
 
-    public Stats(int vieMax, int manaMax, int mouvementsMax, int actionsMax, int agilite, int armure, int dexterite, int intelligence, int endurance, int force, int sagesse) {
-        this.vieMax = this.vieRestante = vieMax;
-        this.manaMax = this.manaRestante = manaMax;
-        this.mouvementsMax = this.mouvementsRestants = mouvementsMax;
-        this.actionsMax = this.actionsRestantes = actionsMax;
+    public Stats(int vieMax, int manaMax, int mouvementsMax, int actionsMax, int vieRestante, int manaRestante, int mouvementsRestants, int actionsRestantes,int agilite, int armure, int dexterite, int intelligence, int endurance, int force, int sagesse) {
+        this.vieMax = vieMax;
+        this.manaMax = manaMax;
+        this.mouvementsMax =  mouvementsMax;
+        this.actionsMax = actionsMax;
 
-        this.agilite = agilite;
+        this.vieRestante = vieRestante;
+        this.manaRestante = manaRestante;
+        this.mouvementsRestants = mouvementsRestants;
+        this.actionsRestantes = actionsRestantes;
+
+                this.agilite = agilite;
         this.armure = armure;
         this.dexterite = dexterite;
         this.intelligence = intelligence;
@@ -82,6 +87,9 @@ public class Stats implements Serializable {
         calculMana();
         calculMouvement();
         calculActions();
+    }
+
+    public Stats(Stats stats) {
     }
 
     /**
