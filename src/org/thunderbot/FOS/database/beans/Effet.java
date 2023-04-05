@@ -1,5 +1,7 @@
 package org.thunderbot.FOS.database.beans;
 
+import org.thunderbot.FOS.client.gameState.phisique.Stats;
+
 public class Effet {
     private int id;
     private String nom;
@@ -12,6 +14,16 @@ public class Effet {
     private int statSagesse;
     private int dps;
     private int duree;
+    /**
+     * Indique si l'effet est passif ou actif. Un effet passif ne s'appliqueraa qu'une fois,
+     * faisant baisser les stats, un effet actif s'appliquera a chauqe tour
+     */
+    private boolean passif = false;
+
+    /**
+     * Indique si l'effet est activé ou pas
+     */
+    private boolean activer = false;
     private String image;
 
     public int getId() {
@@ -110,6 +122,22 @@ public class Effet {
         this.image = image;
     }
 
+    public boolean isPassif() {
+        return passif;
+    }
+
+    public void setPassif(boolean passif) {
+        this.passif = passif;
+    }
+
+    public boolean isActiver() {
+        return activer;
+    }
+
+    public void setActiver(boolean activer) {
+        this.activer = activer;
+    }
+
     @Override
     public String toString() {
         return "Effet{" +
@@ -124,7 +152,42 @@ public class Effet {
                 ", statSagesse=" + statSagesse +
                 ", dps=" + dps +
                 ", duree=" + duree +
+                ", passif=" + passif +
+                ", activer=" + activer +
                 ", image='" + image + '\'' +
                 '}';
+    }
+
+    /**
+     * Applique l'effet sur les stats passer en paramettre
+     * @param stats
+     */
+    public void appliquerEffet(Stats stats) {
+        // Si il est passif, on diminu les stats une fois, puis on active le boolean actif pour indiquer que c'est fais
+
+        if (!(passif && activer) || !passif) {
+            stats.setAgilite(stats.getAgilite() - statAgilite);
+
+            stats.setArmure(stats.getArmure() - statArmure);
+
+            stats.setDexterite(stats.getDexterite() - statDexterite);
+
+            stats.setEndurance(stats.getEndurance() - statEndurance);
+
+            stats.setForce(stats.getForce() - statForce);
+
+            stats.setIntelligence(stats.getIntelligence() - statIntelligence);
+
+            stats.setSagesse(stats.getSagesse() - statSagesse);
+
+            stats.setVieRestante(stats.getVieRestante() - dps);
+
+            activer = true;
+
+            System.out.println("Reduction de la vie");
+            System.out.println(this);
+            System.out.println(stats);
+        }
+
     }
 }

@@ -38,7 +38,7 @@
    H4sIAAAAAAAACu2W0QrAIAhFi0kv+///3UMMIsy0LbtEFy6EBR00q0gh3JWJiXk5Mq51MTEvjfAlykbla61D4fsia+69+ay537E/PKXhk+YOX58PSWh86PnboX8R+cp3CJGvHFv5pDeW20+q34z6Sn2GwKdhP3x9cedwFt/In1673x98SP+D2ivuv7deGr60wC2WByyS4vugDwAA
   </data>
  </layer>
- <objectgroup id="8" name="trigger" visible="0" width="1" height="1" >
+ <objectgroup id="8" name="trigger" width="1" height="1" >
   <object id="2" type="changementMap" x="3" y="2" width="50" height="793">
    <properties>
     <property name="destiMap" value="map_start_umbra.tmx"/>

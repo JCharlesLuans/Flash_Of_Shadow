@@ -12,6 +12,7 @@ import org.thunderbot.FOS.client.gameState.MapGameState;
 import org.thunderbot.FOS.client.gameState.phisique.Stats;
 import org.thunderbot.FOS.client.gameState.world.Carte;
 import org.thunderbot.FOS.client.statiqueState.layout.FenetrePopUpChoix;
+import org.thunderbot.FOS.database.beans.Effet;
 import org.thunderbot.FOS.database.beans.PNJ;
 
 /**
@@ -50,6 +51,22 @@ public class PersonnageNonJoueur extends Personnage{
                 pnj.getStats().getEndurance(),
                 pnj.getStats().getForce(),
                 pnj.getStats().getSagesse());
+
+        this.effet = new Effet();
+        effet.setId(pnj.getEffet().getId());
+        effet.setNom(pnj.getEffet().getNom());
+        effet.setStatAgilite(pnj.getEffet().getStatAgilite());
+        effet.setStatArmure(pnj.getEffet().getStatArmure());
+        effet.setStatDexterite(pnj.getEffet().getStatDexterite());
+        effet.setStatEndurance(pnj.getEffet().getStatEndurance());
+        effet.setStatForce(pnj.getEffet().getStatForce());
+        effet.setStatIntelligence(pnj.getEffet().getStatIntelligence());
+        effet.setStatSagesse(pnj.getEffet().getStatSagesse());
+        effet.setDps(pnj.getEffet().getDps());
+        effet.setDuree(pnj.getEffet().getDuree());
+        effet.setDuree(pnj.getEffet().getDuree());
+        effet.setPassif(pnj.getEffet().isPassif());
+        effet.setActiver(pnj.getEffet().isActiver());
 
         SpriteSheet spriteSheet = new SpriteSheet("res/texture/sprite/pnj/" + pnj.getSprite(), 64, 64 );
         loadAnimation(spriteSheet);

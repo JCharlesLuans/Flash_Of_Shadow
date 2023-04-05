@@ -331,7 +331,6 @@ public class CombatGameState extends BasicGameState {
 
                 // Gestion effet
                 listePNJAAfficher.get(i).setEffet(client.chargementEffet(competence.getIdEffet()));
-                System.out.println(listePNJAAfficher); //log
 
                 if (listePNJAAfficher.get(i).getStats().getVieRestante() <= 0) {
                     listePNJAAfficher.remove(i);

@@ -150,6 +150,18 @@ public class CombatServeur {
         // reception etat des pnj
         listePnjEnCombat = (ArrayList<PNJ>) serveur.receptionXML();
 
+        // Application des effet si il y en a
+        for (int i = 0; i < listePnjEnCombat.size(); i++) {
+            if (listePnjEnCombat.get(i).getEffet().getId() != 0 && listePnjEnCombat.get(i).getEffet().getId() != 1) {
+                listePnjEnCombat.get(i).getEffet().appliquerEffet(listePnjEnCombat.get(i).getStats());
+            }
+
+            // verification de la  vie du personnage
+            if (listePnjEnCombat.get(i).getStats().getVieRestante() <= 0) {
+                listePnjEnCombat.remove(i);
+            }
+        }
+
         // envoi nouvelle position pnj au client
         serveur.envoiXML(listePnjEnCombat);
 

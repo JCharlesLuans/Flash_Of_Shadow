@@ -384,6 +384,7 @@ public class Client {
 
             for (int i = 0; i < tmpListe.size(); i++) {
                 listePNJ.set(i, tmpListe.get(i));
+                System.out.println("Apres reception : " + listePNJ.get(i).getEffet());
             }
 
             // reception etat du joueur

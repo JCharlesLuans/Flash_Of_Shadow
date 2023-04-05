@@ -20,6 +20,8 @@ public class PNJ implements Serializable {
 
     private int direction;
 
+    private Effet effet;
+
     public PNJ() {
         id = -1;
         nom = "";
@@ -29,9 +31,10 @@ public class PNJ implements Serializable {
         y = -1f;
         stats = new Stats();
         direction = Personnage.HAUT;
+        effet = new Effet();
     }
 
-    public PNJ(int id, String nom, String sprite, int agressif, float x, float y, int statAgilite, int statArmure, int statDexterite, int statForce, int statEndurance, int statInteligence, int statSagesse, int idMap, int idFaction, int idTitre) {
+    public PNJ(int id, String nom, String sprite, int agressif, float x, float y, int statAgilite, int statArmure, int statDexterite, int statForce, int statEndurance, int statInteligence, int statSagesse, int idMap, int idFaction, int idTitre, Effet effet) {
         this.id = id;
         this.nom = nom;
         this.sprite = sprite;
@@ -60,6 +63,7 @@ public class PNJ implements Serializable {
         y = personnageNonJoueur.getPositionY();
 
         stats = personnageNonJoueur.getStats();
+        effet = personnageNonJoueur.getEffet();
         this.idMap = personnageNonJoueur.getIdMap();
         direction = personnageNonJoueur.getDirection();
     }
@@ -72,6 +76,7 @@ public class PNJ implements Serializable {
         this.x               = pnj.x;
         this.y               = pnj.y;
         this.stats           = pnj.stats;
+        this.effet           = pnj.effet;
         this.idMap           = pnj.idMap;
         this.idFaction       = pnj.idFaction;
         this.idTitre         = pnj.idTitre;
@@ -165,6 +170,14 @@ public class PNJ implements Serializable {
         this.stats = stats;
     }
 
+    public void setEffet(Effet effet) {
+        this.effet = effet;
+    }
+
+    public Effet getEffet() {
+        return effet;
+    }
+
     @Override
     public String toString() {
         return "PNJ{" +
@@ -179,6 +192,7 @@ public class PNJ implements Serializable {
                 ", idFaction=" + idFaction +
                 ", idTitre=" + idTitre +
                 ", direction=" + direction +
+                ", effet=" + effet +
                 '}';
     }
 }
