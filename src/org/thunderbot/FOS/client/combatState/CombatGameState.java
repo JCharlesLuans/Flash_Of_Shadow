@@ -124,8 +124,6 @@ public class CombatGameState extends BasicGameState {
 
             listeTmp = client.initialiseCombatPNJ();
 
-            System.out.println(listeTmp);
-
             for (PNJ pnjTmp : listeTmp) {
                 listePNJAAfficher.add(new PersonnageNonJoueur(pnjTmp));
             }
@@ -310,8 +308,6 @@ public class CombatGameState extends BasicGameState {
      */
     public void utilisisationCompetence(int idCase, int idCompetance) {
 
-        System.out.println(idCompetance);
-
         Competence competence = new Competence();
 
         for (Competence competanceJoueur : personnageAAfficher.getCompetences()) {
@@ -329,8 +325,6 @@ public class CombatGameState extends BasicGameState {
         Case caseSelect = terrain.getCase(idCase);
         for (int i = 0; i < listePNJAAfficher.size(); i++) {
             if (caseSelect.inCase((int) listePNJAAfficher.get(i).getPositionX(), (int) listePNJAAfficher.get(i).getPositionY())) {
-
-                System.out.println(listePNJAAfficher.get(i));
 
                 // => Il existe => On lui applique les dégats et les effets de la compétance
                 listePNJAAfficher.get(i).getStats().setVieRestante(listePNJAAfficher.get(i).getStats().getVieRestante() - competence.getDegaBase());

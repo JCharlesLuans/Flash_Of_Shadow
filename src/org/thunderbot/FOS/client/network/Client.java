@@ -428,8 +428,6 @@ public class Client {
 //
             // reception etat du joueur
             this.personnage = (Personnage) receptionXML();
-
-            System.out.println("Fin du combat");
 //
 
         } catch (IOException e) {

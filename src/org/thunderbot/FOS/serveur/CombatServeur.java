@@ -158,8 +158,6 @@ public class CombatServeur {
     }
 
     public void end() {
-        System.out.println("Fin de combat");
-
         // reception du joueur
         Personnage personnage = (Personnage) serveur.receptionXML();
 
@@ -170,10 +168,7 @@ public class CombatServeur {
         personnage.setX(910);
         personnage.setY(500);
 
-        System.out.println(personnage);
-
         // envoi etat joueur
         serveur.envoiXML(personnage);
-
     }
 }
