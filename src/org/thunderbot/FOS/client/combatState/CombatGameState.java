@@ -193,6 +193,9 @@ public class CombatGameState extends BasicGameState {
 
             for (PNJ pnj : listeDataPNJ) {
                 listePNJAAfficher.add(new PersonnageNonJoueur(pnj));
+
+                //log
+                System.out.println(pnj);
             }
 
             this.personnageAAfficher = new PersonnageJoueurClient(personnageData);
@@ -333,12 +336,20 @@ public class CombatGameState extends BasicGameState {
         Case caseSelect = terrain.getCase(idCase);
         for (int i = 0; i < listePNJAAfficher.size(); i++) {
             if (caseSelect.inCase((int) listePNJAAfficher.get(i).getPositionX(), (int) listePNJAAfficher.get(i).getPositionY())) {
+
+                System.out.println(listePNJAAfficher.get(i));
+
                 // => Il existe => On lui applique les dégats et les effets de la compétance
                 listePNJAAfficher.get(i).getStats().setVieRestante(listePNJAAfficher.get(i).getStats().getVieRestante() - competence.getDegaBase());
+                if (listePNJAAfficher.get(i).getStats().getVieRestante() <= 0) {
+                    //log
+                    System.out.println(competence.getDegaBase());
+                    System.out.println("Post compétence : \n" + listePNJAAfficher.get(i));
+                    listePNJAAfficher.remove(i);
+                }
 
-                //log
-                System.out.println(competence.getDegaBase());
-                System.out.println(listePNJAAfficher.get(i));
+
+
             }
             // => Il existe pas => On ne fait rien
         }

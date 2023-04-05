@@ -207,6 +207,7 @@ public class InterfaceJoueur {
                         imageDesc.setTexte(competenceAAfficher.getNom() + "\n"
                                             + competenceAAfficher.getDescription() + "\n"
                                             + "Actions : " + competence.getCout() + "\n"
+                                            + "Dégas : " + competence.getDegaBase() + "\n"
                                             + "Portée : " + competence.getPortee());
                     }
                 }

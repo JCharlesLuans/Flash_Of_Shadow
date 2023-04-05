@@ -2,6 +2,7 @@ package org.thunderbot.FOS.database.beans;
 
 import org.thunderbot.FOS.client.gameState.entite.Personnage;
 import org.thunderbot.FOS.client.gameState.entite.PersonnageNonJoueur;
+import org.thunderbot.FOS.client.gameState.phisique.Stats;
 
 import java.io.Serializable;
 
@@ -12,13 +13,7 @@ public class PNJ implements Serializable {
     private int agressif;
     private float x;
     private float y;
-    private int statAgilite;
-    private int statArmure;
-    private int statDexterite;
-    private int statForce;
-    private int statEndurance;
-    private int statInteligence;
-    private int statSagesse;
+    private Stats stats;
     private int idMap;
     private int idFaction;
     private int idTitre;
@@ -32,14 +27,7 @@ public class PNJ implements Serializable {
         agressif = -1;
         x = -1f;
         y = -1f;
-        statAgilite = -1;
-        statArmure = -1;
-        statDexterite = -1;
-        statEndurance = -1;
-        statForce = -1;
-        statInteligence = -1;
-        statSagesse = -1;
-
+        stats = new Stats();
         direction = Personnage.HAUT;
     }
 
@@ -50,13 +38,13 @@ public class PNJ implements Serializable {
         this.agressif = agressif;
         this.x = x;
         this.y = y;
-        this.statAgilite = statAgilite;
-        this.statArmure = statArmure;
-        this.statDexterite = statDexterite;
-        this.statForce = statForce;
-        this.statEndurance = statEndurance;
-        this.statInteligence = statInteligence;
-        this.statSagesse = statSagesse;
+        stats.setAgilite(statAgilite);
+        stats.setArmure(statArmure);
+        stats.setDexterite(statDexterite);
+        stats.setEndurance(statEndurance);
+        stats.setForce(statForce);
+        stats.setIntelligence(statInteligence);
+        stats.setSagesse(statSagesse);
         this.idMap = idMap;
         this.idFaction = idFaction;
         this.idTitre = idTitre;
@@ -67,17 +55,13 @@ public class PNJ implements Serializable {
         this.nom = personnageNonJoueur.getNom();
         this.sprite = personnageNonJoueur.getSprite();
         agressif = -1;
-        x = -1f;
-        y = -1f;
-        statAgilite = -1;
-        statArmure = -1;
-        statDexterite = -1;
-        statEndurance = -1;
-        statForce = -1;
-        statInteligence = -1;
-        statSagesse = -1;
+
+        x = personnageNonJoueur.getPositionX();
+        y = personnageNonJoueur.getPositionY();
+
+        stats = personnageNonJoueur.getStats();
         this.idMap = personnageNonJoueur.getIdMap();
-        direction = Personnage.HAUT;
+        direction = personnageNonJoueur.getDirection();
     }
 
     public PNJ(PNJ pnj) {
@@ -87,13 +71,7 @@ public class PNJ implements Serializable {
         this.agressif        = pnj.agressif;
         this.x               = pnj.x;
         this.y               = pnj.y;
-        this.statAgilite     = pnj.statAgilite;
-        this.statArmure      = pnj.statArmure;
-        this.statDexterite   = pnj.statDexterite;
-        this.statForce       = pnj.statForce;
-        this.statEndurance   = pnj.statEndurance;
-        this.statInteligence = pnj.statInteligence;
-        this.statSagesse     = pnj.statSagesse;
+        this.stats           = pnj.stats;
         this.idMap           = pnj.idMap;
         this.idFaction       = pnj.idFaction;
         this.idTitre         = pnj.idTitre;
@@ -147,62 +125,6 @@ public class PNJ implements Serializable {
         this.y = y;
     }
 
-    public int getStatAgilite() {
-        return statAgilite;
-    }
-
-    public void setStatAgilite(int statAgilite) {
-        this.statAgilite = statAgilite;
-    }
-
-    public int getStatArmure() {
-        return statArmure;
-    }
-
-    public void setStatArmure(int statArmure) {
-        this.statArmure = statArmure;
-    }
-
-    public int getStatDexterite() {
-        return statDexterite;
-    }
-
-    public void setStatDexterite(int statDexterite) {
-        this.statDexterite = statDexterite;
-    }
-
-    public int getStatForce() {
-        return statForce;
-    }
-
-    public void setStatForce(int statForce) {
-        this.statForce = statForce;
-    }
-
-    public int getStatEndurance() {
-        return statEndurance;
-    }
-
-    public void setStatEndurance(int statEndurance) {
-        this.statEndurance = statEndurance;
-    }
-
-    public int getStatInteligence() {
-        return statInteligence;
-    }
-
-    public void setStatInteligence(int statInteligence) {
-        this.statInteligence = statInteligence;
-    }
-
-    public int getStatSagesse() {
-        return statSagesse;
-    }
-
-    public void setStatSagesse(int statSagesse) {
-        this.statSagesse = statSagesse;
-    }
-
     public int getIdMap() {
         return idMap;
     }
@@ -227,6 +149,22 @@ public class PNJ implements Serializable {
         this.idTitre = idTitre;
     }
 
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public Stats getStats() {
+        return stats;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
     @Override
     public String toString() {
         return "PNJ{" +
@@ -236,24 +174,11 @@ public class PNJ implements Serializable {
                 ", agressif=" + agressif +
                 ", x=" + x +
                 ", y=" + y +
-                ", statAgilite=" + statAgilite +
-                ", statArmure=" + statArmure +
-                ", statDexterite=" + statDexterite +
-                ", statForce=" + statForce +
-                ", statEndurance=" + statEndurance +
-                ", statInteligence=" + statInteligence +
-                ", statSagesse=" + statSagesse +
+                ", stats=" + stats +
                 ", idMap=" + idMap +
                 ", idFaction=" + idFaction +
                 ", idTitre=" + idTitre +
+                ", direction=" + direction +
                 '}';
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    public int getDirection() {
-        return direction;
     }
 }

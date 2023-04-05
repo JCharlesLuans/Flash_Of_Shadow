@@ -59,7 +59,7 @@ public class Personnage implements Serializable {
         guilde = new Guilde();
         titre = new Titre();
 
-        listeCompetence = new ArrayList<>(); // TODO STUB
+        listeCompetence = new ArrayList<>();
 
          direction = 0;
          moving = false;
@@ -107,7 +107,7 @@ public class Personnage implements Serializable {
         guilde = new Guilde();
         titre = new Titre();
 
-        listeCompetence = personnage.getCompetences(); // TODO STUB
+        listeCompetence = personnage.getCompetences();
 
         direction = 0;
         moving = false;

@@ -92,6 +92,14 @@ public class CombatServeur {
             } while (dejaUtilise);
         }
 
+        // Initialise la vie et les autres stats
+        for (int i = 0; i < listePnjEnCombat.size(); i++) {
+            listePnjEnCombat.get(i).getStats().calculVie();
+            listePnjEnCombat.get(i).getStats().calculMouvement();
+            listePnjEnCombat.get(i).getStats().calculMana();
+            listePnjEnCombat.get(i).getStats().calculActions();
+        }
+
         // Renvoi de la liste au joueur
         serveur.envoiXML(listePnjEnCombat);
     }
@@ -140,12 +148,12 @@ public class CombatServeur {
         personnage.getStats().setActionsMax((personnage.getStats().getActionsMax()));
 
         // reception etat des pnj
-        serveur.receptionXML();
+        listePnjEnCombat = (ArrayList<PNJ>) serveur.receptionXML();
 
-        // envoi nouvelle position pnj
+        // envoi nouvelle position pnj au client
         serveur.envoiXML(listePnjEnCombat);
 
-        // envoi etat joueur
+        // envoi etat joueur au client
         serveur.envoiXML(new Personnage());
     }
 

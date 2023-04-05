@@ -375,11 +375,17 @@ public class Client {
 
             // envoi nouvelle position du joueur;
             envoiXML(personnage);
+
             // envoi etat pnj
             envoiXML(listePNJ);
+            //log
+            System.out.println("Envoi serveur :\n" + listePNJ);
 
             // reception nouvelle position des PNJ
             tmpListe = (ArrayList<PNJ>) receptionXML();
+
+            //log
+            System.out.println("Reception serveur :\n" + tmpListe);
 
             for (int i = 0; i < tmpListe.size(); i++) {
                 listePNJ.set(i, tmpListe.get(i));
