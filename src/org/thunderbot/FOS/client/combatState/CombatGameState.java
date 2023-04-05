@@ -140,10 +140,6 @@ public class CombatGameState extends BasicGameState {
     private void initJoueur() {
         try {
             personnageAAfficher = new PersonnageJoueurClient(client.initialiseCombatJoueur());
-
-            //log
-            System.out.println(personnageAAfficher.getCompetences());
-
         } catch (SlickException e) {
             throw new RuntimeException(e);
         }
@@ -193,9 +189,6 @@ public class CombatGameState extends BasicGameState {
 
             for (PNJ pnj : listeDataPNJ) {
                 listePNJAAfficher.add(new PersonnageNonJoueur(pnj));
-
-                //log
-                System.out.println(pnj);
             }
 
             this.personnageAAfficher = new PersonnageJoueurClient(personnageData);
@@ -342,9 +335,6 @@ public class CombatGameState extends BasicGameState {
                 // => Il existe => On lui applique les dégats et les effets de la compétance
                 listePNJAAfficher.get(i).getStats().setVieRestante(listePNJAAfficher.get(i).getStats().getVieRestante() - competence.getDegaBase());
                 if (listePNJAAfficher.get(i).getStats().getVieRestante() <= 0) {
-                    //log
-                    System.out.println(competence.getDegaBase());
-                    System.out.println("Post compétence : \n" + listePNJAAfficher.get(i));
                     listePNJAAfficher.remove(i);
                 }
 
