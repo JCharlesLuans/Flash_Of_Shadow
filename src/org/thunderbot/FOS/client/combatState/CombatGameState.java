@@ -336,6 +336,11 @@ public class CombatGameState extends BasicGameState {
         }
     }
 
+    /**
+     * Permet de désafficher l'interface de selection d'une cible de compétance
+     * et rembourse le joueur sur le coup de la compétence
+     * @param idCompetence id de la compétance a rembourser
+     */
     public void nonUtilisationCompetence(int idCompetence) {
         // RAZ de l'affichage des compétance
         for (int i = 1; i <= terrain.getNombreCase(); i++) {
